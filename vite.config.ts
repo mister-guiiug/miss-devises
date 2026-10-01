@@ -76,6 +76,15 @@ export default defineConfig(({ command }) => {
         // l'échec ne se verrait qu'en console, sur le site déployé, une fois
         // le consentement donné.
         analytics: true,
+        // LES SOURCES DE TAUX, ET ELLES SEULES (recherche R10) : la BCE via
+        // Frankfurter, le marché via jsDelivr puis son repli Cloudflare
+        // Pages. Le sous-domaine du repli porte la date lue
+        // (`2025-10-06.currency-api.pages.dev`), d'où le joker.
+        connectSrc: [
+          'https://api.frankfurter.dev',
+          'https://cdn.jsdelivr.net',
+          'https://*.currency-api.pages.dev',
+        ],
       }),
 
       // Repli SPA : sans `404.html`, rafraîchir un lien profond sert la page
@@ -92,17 +101,17 @@ export default defineConfig(({ command }) => {
       //     `wide.png`), dimensions comprises. Elles décident de l'interface
       //     d'installation — une fiche au lieu d'une ligne et un bouton — et
       //     `npm run screenshots` les régénère depuis un build.
-      // Le squelette n'est pas au catalogue : sans `name`, le manifeste prend
-      // l'identifiant (« miss-devises ») et n'a pas de description — relevé
-      // de l'audit SEO du 29/09/2026 (C12). Une app générée remplace ces trois
-      // valeurs par les siennes, ou s'inscrit au catalogue.
+      // Tant que l'app n'est pas au catalogue, le manifeste prendrait
+      // l'identifiant (« miss-devises ») et n'aurait pas de description
+      // (audit SEO du 29/09/2026, C12) : les trois valeurs sont donc posées
+      // ici. « Miss Devises » tient dans les 12 caractères d'un nom court.
       VitePWA(
         pwaBaseOptions({
           id: APP_ID,
           name: 'Miss Devises',
-          shortName: 'Starter Kit',
+          shortName: 'Miss Devises',
           description:
-            'Squelette d’application web installable : React, Vite, TypeScript, hors ligne, i18n FR/EN et Supabase en option.',
+            'Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.',
         })
       ),
 

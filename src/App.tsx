@@ -5,7 +5,8 @@ import {
   Routes,
   useLocation,
 } from 'react-router-dom';
-import { Home, Info, Settings, UserRound } from 'lucide-react';
+import { ChartLine, Coins, Info, NotebookPen, Settings } from 'lucide-react';
+import { useEffect } from 'react';
 import { AppShell } from '@mister-guiiug/dev-pwa-config/react/app-shell';
 import { ObservabilityBoundary } from '@mister-guiiug/dev-pwa-config/react/error-boundary';
 import { ConnectionBanner } from '@mister-guiiug/dev-pwa-config/react/connection-banner';
@@ -15,9 +16,11 @@ import { AppUpdates } from '@mister-guiiug/dev-pwa-config/react/app-updates';
 import { registerSW } from 'virtual:pwa-register';
 import { useI18n } from './i18n/index.ts';
 import { HomeScreen } from './features/home/HomeScreen.tsx';
+import { HistoryScreen } from './features/history/HistoryScreen.tsx';
+import { CarnetScreen } from './features/carnet/CarnetScreen.tsx';
 import { SettingsScreen } from './features/settings/SettingsScreen.tsx';
 import { AboutScreen } from './features/about/AboutScreen.tsx';
-import { AccountScreen } from './features/account/AccountScreen.tsx';
+import { useTaux } from './rates/store.ts';
 
 /**
  * LE CADRE : `AppShell` du socle (en-tête, contenu borné, barre basse).
@@ -54,22 +57,39 @@ function Shell() {
    */
   usePageViews(pathname);
 
+  /*
+   * LES TAUX DÉMARRENT AVEC LA COQUILLE, PAS AVEC UN ÉCRAN : le cache d'abord,
+   * le réseau ensuite (recherche R8), et une relecture au retour en ligne.
+   * Un écran qui les démarrerait les relancerait à chaque visite.
+   */
+  useEffect(() => {
+    void useTaux.getState().demarrer();
+    const enLigne = () => void useTaux.getState().rafraichir({ force: true });
+    window.addEventListener('online', enLigne);
+    return () => window.removeEventListener('online', enLigne);
+  }, []);
+
   const nav = [
     {
       href: '/',
-      label: t('nav.home'),
-      icon: <Home aria-hidden="true" />,
+      label: t('nav.convert'),
+      icon: <Coins aria-hidden="true" />,
       end: true,
+    },
+    {
+      href: '/historique',
+      label: t('nav.history'),
+      icon: <ChartLine aria-hidden="true" />,
+    },
+    {
+      href: '/carnet',
+      label: t('nav.carnet'),
+      icon: <NotebookPen aria-hidden="true" />,
     },
     {
       href: '/reglages',
       label: t('nav.settings'),
       icon: <Settings aria-hidden="true" />,
-    },
-    {
-      href: '/compte',
-      label: t('nav.account'),
-      icon: <UserRound aria-hidden="true" />,
     },
     {
       href: '/a-propos',
@@ -84,12 +104,13 @@ function Shell() {
    * 23/09/2026 dans un navigateur vierge : le squelette y titrait « Notes »,
    * et trois apps du parc avaient hérité du même travers — « Mes espaces »,
    * « Connexion », le nom du dépôt. Le titre de l'écran descend d'un cran,
-   * en `h2`, dans `HomeScreen`.
+   * en `h2`, dans `ConvertScreen`.
    */
   const titles: Record<string, string> = {
     '/': t('app.name'),
+    '/historique': t('history.title'),
+    '/carnet': t('carnet.title'),
     '/reglages': t('settings.title'),
-    '/compte': t('account.title'),
     '/a-propos': t('about.title'),
   };
 
@@ -143,8 +164,9 @@ function Shell() {
     >
       <Routes>
         <Route path="/" element={<HomeScreen />} />
+        <Route path="/historique" element={<HistoryScreen />} />
+        <Route path="/carnet" element={<CarnetScreen />} />
         <Route path="/reglages" element={<SettingsScreen />} />
-        <Route path="/compte" element={<AccountScreen />} />
         <Route path="/a-propos" element={<AboutScreen />} />
         {/* Le repli de route rend l'accueil ; le repli de SERVEUR est le
             `404.html` posé par `spaFallbackPlugin`. Les deux sont

@@ -1,0 +1,2988 @@
+{
+  "releveLe": "2026-10-01",
+  "devises": {
+    "AED": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 5,
+          "couleur": "#8e5e3c",
+          "largeurMm": 143,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 10,
+          "couleur": "#4e9a55",
+          "largeurMm": 147,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 20,
+          "couleur": "#3fa6c0",
+          "largeurMm": 149,
+          "hauteurMm": 63
+        },
+        {
+          "valeur": 50,
+          "couleur": "#7e57a8",
+          "largeurMm": 151,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 100,
+          "couleur": "#d0507a",
+          "largeurMm": 155,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 200,
+          "couleur": "#e08a3a",
+          "largeurMm": 157,
+          "hauteurMm": 67
+        },
+        {
+          "valeur": 500,
+          "couleur": "#3e64a8",
+          "largeurMm": 159,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#7e7040",
+          "largeurMm": 163,
+          "hauteurMm": 66
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.25,
+          "metal": "argent",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 21
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 24
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/United_Arab_Emirates_dirham",
+        "https://www.polymernotes.com/en/news/the-united-arab-emirates-a-polymer-100-dirham-note-completes-the-series.html"
+      ]
+    },
+    "ARS": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 100,
+          "couleur": "#8a5aa6"
+        },
+        {
+          "valeur": 200,
+          "couleur": "#3e73b8"
+        },
+        {
+          "valeur": 500,
+          "couleur": "#4e9a55"
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#e08a3a"
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#7a6e78"
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#5aa8b8"
+        },
+        {
+          "valeur": 20000,
+          "couleur": "#3e5e98"
+        }
+      ],
+      "pieces": [],
+      "sources": [
+        "https://www.bcra.gob.ar/en/billete-de-2000-de-circulacion/",
+        "https://en.wikipedia.org/wiki/Argentine_peso",
+        "https://es.wikipedia.org/wiki/Peso_(moneda_de_Argentina)"
+      ]
+    },
+    "AUD": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 5,
+          "couleur": "#b0619e",
+          "largeurMm": 130,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 10,
+          "couleur": "#3e8bc9",
+          "largeurMm": 137,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 20,
+          "couleur": "#d9533b",
+          "largeurMm": 144,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 50,
+          "couleur": "#e6b83a",
+          "largeurMm": 151,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 100,
+          "couleur": "#3fa06a",
+          "largeurMm": 158,
+          "hauteurMm": 65
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.05,
+          "metal": "argent",
+          "diametreMm": 19.41
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 23.6
+        },
+        {
+          "valeur": 0.2,
+          "metal": "argent",
+          "diametreMm": 28.65
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 31.65
+        },
+        {
+          "valeur": 1,
+          "metal": "laiton",
+          "diametreMm": 25
+        },
+        {
+          "valeur": 2,
+          "metal": "laiton",
+          "diametreMm": 20.5
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Banknotes_of_the_Australian_dollar",
+        "https://en.wikipedia.org/wiki/Coins_of_the_Australian_dollar"
+      ]
+    },
+    "BRL": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 2,
+          "couleur": "#5a86b8",
+          "largeurMm": 121,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 5,
+          "couleur": "#8a5aa6",
+          "largeurMm": 128,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 10,
+          "couleur": "#c8403f",
+          "largeurMm": 135,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 20,
+          "couleur": "#e6b83a",
+          "largeurMm": 142,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 50,
+          "couleur": "#9a6b3e",
+          "largeurMm": 149,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 100,
+          "couleur": "#3fa6c0",
+          "largeurMm": 156,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 200,
+          "couleur": "#8e8a82",
+          "largeurMm": 142,
+          "hauteurMm": 65
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.05,
+          "metal": "cuivre",
+          "diametreMm": 22
+        },
+        {
+          "valeur": 0.1,
+          "metal": "laiton",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 0.25,
+          "metal": "laiton",
+          "diametreMm": 25
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 1,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 27
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Brazilian_real",
+        "https://www.bcb.gov.br/dinheirobrasileiro/segunda-familia-moedas.html"
+      ]
+    },
+    "CAD": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 5,
+          "couleur": "#3e7cc0",
+          "largeurMm": 152.4,
+          "hauteurMm": 69.85
+        },
+        {
+          "valeur": 10,
+          "couleur": "#7b4f9e",
+          "largeurMm": 152.4,
+          "hauteurMm": 69.85
+        },
+        {
+          "valeur": 20,
+          "couleur": "#4e9a5a",
+          "largeurMm": 152.4,
+          "hauteurMm": 69.85
+        },
+        {
+          "valeur": 50,
+          "couleur": "#c8443d",
+          "largeurMm": 152.4,
+          "hauteurMm": 69.85
+        },
+        {
+          "valeur": 100,
+          "couleur": "#9c6b3e",
+          "largeurMm": 152.4,
+          "hauteurMm": 69.85
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.05,
+          "metal": "argent",
+          "diametreMm": 21.2
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 18.03
+        },
+        {
+          "valeur": 0.25,
+          "metal": "argent",
+          "diametreMm": 23.88
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 27.13
+        },
+        {
+          "valeur": 1,
+          "metal": "laiton",
+          "diametreMm": 26.5
+        },
+        {
+          "valeur": 2,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 28
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Banknotes_of_the_Canadian_dollar",
+        "https://en.wikipedia.org/wiki/Coins_of_the_Canadian_dollar",
+        "https://www.bankofcanada.ca/2026/09/bank-canada-unveils-new-vertical-20-bank-note/"
+      ]
+    },
+    "CHF": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 10,
+          "couleur": "#e5c53b",
+          "largeurMm": 123,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 20,
+          "couleur": "#c9342f",
+          "largeurMm": 130,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 50,
+          "couleur": "#4e9a3a",
+          "largeurMm": 137,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 100,
+          "couleur": "#3d6fb6",
+          "largeurMm": 144,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 200,
+          "couleur": "#8b5a2b",
+          "largeurMm": 151,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#7a4f9a",
+          "largeurMm": 158,
+          "hauteurMm": 70
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.05,
+          "metal": "laiton",
+          "diametreMm": 17.15
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 19.15
+        },
+        {
+          "valeur": 0.2,
+          "metal": "argent",
+          "diametreMm": 21.05
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 18.2
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 23.2
+        },
+        {
+          "valeur": 2,
+          "metal": "argent",
+          "diametreMm": 27.4
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 31.45
+        }
+      ],
+      "sources": [
+        "https://www.snb.ch/en/the-snb/mandates-goals/cash/series-9",
+        "https://en.wikipedia.org/wiki/Banknotes_of_the_Swiss_franc",
+        "https://en.wikipedia.org/wiki/Coins_of_the_Swiss_franc"
+      ]
+    },
+    "CNY": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 1,
+          "couleur": "#6e9a5a",
+          "largeurMm": 130,
+          "hauteurMm": 63
+        },
+        {
+          "valeur": 5,
+          "couleur": "#8a5aa0",
+          "largeurMm": 135,
+          "hauteurMm": 63
+        },
+        {
+          "valeur": 10,
+          "couleur": "#3e64a8",
+          "largeurMm": 140,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 20,
+          "couleur": "#c0773f",
+          "largeurMm": 145,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 50,
+          "couleur": "#3fa09a",
+          "largeurMm": 150,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 100,
+          "couleur": "#d23a3a",
+          "largeurMm": 155,
+          "hauteurMm": 77
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 19
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 20.5
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 22.25
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Fifth_series_of_the_renminbi",
+        "https://en.wikipedia.org/wiki/Renminbi"
+      ]
+    },
+    "CZK": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 100,
+          "couleur": "#3fa6a0",
+          "largeurMm": 140,
+          "hauteurMm": 69
+        },
+        {
+          "valeur": 200,
+          "couleur": "#e08a3a",
+          "largeurMm": 146,
+          "hauteurMm": 69
+        },
+        {
+          "valeur": 500,
+          "couleur": "#8e5e3c",
+          "largeurMm": 152,
+          "hauteurMm": 69
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#7e57a8",
+          "largeurMm": 158,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#6e9a4e",
+          "largeurMm": 164,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#8c8c8c",
+          "largeurMm": 170,
+          "hauteurMm": 74
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 2,
+          "metal": "argent",
+          "diametreMm": 21.5
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 10,
+          "metal": "cuivre",
+          "diametreMm": 24.5
+        },
+        {
+          "valeur": 20,
+          "metal": "laiton",
+          "diametreMm": 26
+        },
+        {
+          "valeur": 50,
+          "metal": "autre",
+          "diametreMm": 27.5
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Czech_koruna",
+        "https://www.cnb.cz/en/banknotes-and-coins/banknotes/"
+      ]
+    },
+    "DKK": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 50,
+          "couleur": "#7e57a8",
+          "largeurMm": 125,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 100,
+          "couleur": "#e09a3a",
+          "largeurMm": 135,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 200,
+          "couleur": "#4e9a55",
+          "largeurMm": 145,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 500,
+          "couleur": "#3e73b8",
+          "largeurMm": 155,
+          "hauteurMm": 72
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.5,
+          "metal": "cuivre",
+          "diametreMm": 21.5
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 20.25
+        },
+        {
+          "valeur": 2,
+          "metal": "argent",
+          "diametreMm": 24.5
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 28.5
+        },
+        {
+          "valeur": 10,
+          "metal": "laiton",
+          "diametreMm": 23.35
+        },
+        {
+          "valeur": 20,
+          "metal": "laiton",
+          "diametreMm": 27
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Danish_krone",
+        "https://www.nationalbanken.dk/en/what-we-do/notes-and-coins/danish-banknotes-today"
+      ]
+    },
+    "EGP": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 0.25,
+          "couleur": "#5a7eb8",
+          "largeurMm": 130,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 0.5,
+          "couleur": "#a08a4a",
+          "largeurMm": 135,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 1,
+          "couleur": "#c9a97a",
+          "largeurMm": 140,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 5,
+          "couleur": "#3f9a8a",
+          "largeurMm": 145,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 10,
+          "couleur": "#e07a3a",
+          "largeurMm": 132,
+          "hauteurMm": 69
+        },
+        {
+          "valeur": 20,
+          "couleur": "#6fbf9a",
+          "largeurMm": 137,
+          "hauteurMm": 69
+        },
+        {
+          "valeur": 50,
+          "couleur": "#a0503a",
+          "largeurMm": 160,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 100,
+          "couleur": "#3fa0b0",
+          "largeurMm": 165,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 200,
+          "couleur": "#7e7a3a",
+          "largeurMm": 165,
+          "hauteurMm": 72
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.25,
+          "metal": "argent",
+          "diametreMm": 21
+        },
+        {
+          "valeur": 0.5,
+          "metal": "laiton",
+          "diametreMm": 25
+        },
+        {
+          "valeur": 1,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 25
+        }
+      ],
+      "sources": ["https://en.wikipedia.org/wiki/Egyptian_pound"]
+    },
+    "EUR": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 5,
+          "couleur": "#8f9a9e",
+          "largeurMm": 120,
+          "hauteurMm": 62
+        },
+        {
+          "valeur": 10,
+          "couleur": "#c2524a",
+          "largeurMm": 127,
+          "hauteurMm": 67
+        },
+        {
+          "valeur": 20,
+          "couleur": "#4f7fb5",
+          "largeurMm": 133,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 50,
+          "couleur": "#e3893b",
+          "largeurMm": 140,
+          "hauteurMm": 77
+        },
+        {
+          "valeur": 100,
+          "couleur": "#4e9b6b",
+          "largeurMm": 147,
+          "hauteurMm": 77
+        },
+        {
+          "valeur": 200,
+          "couleur": "#c9a24c",
+          "largeurMm": 153,
+          "hauteurMm": 77
+        },
+        {
+          "valeur": 500,
+          "couleur": "#8b5c9e",
+          "largeurMm": 160,
+          "hauteurMm": 82,
+          "plusEmis": true
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "metal": "cuivre",
+          "diametreMm": 16.25
+        },
+        {
+          "valeur": 0.02,
+          "metal": "cuivre",
+          "diametreMm": 18.75
+        },
+        {
+          "valeur": 0.05,
+          "metal": "cuivre",
+          "diametreMm": 21.25
+        },
+        {
+          "valeur": 0.1,
+          "metal": "laiton",
+          "diametreMm": 19.75
+        },
+        {
+          "valeur": 0.2,
+          "metal": "laiton",
+          "diametreMm": 22.25
+        },
+        {
+          "valeur": 0.5,
+          "metal": "laiton",
+          "diametreMm": 24.25
+        },
+        {
+          "valeur": 1,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 23.25
+        },
+        {
+          "valeur": 2,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 25.75
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Euro_banknotes",
+        "https://en.wikipedia.org/wiki/Euro_coins",
+        "https://en.wikipedia.org/wiki/500_euro_note"
+      ]
+    },
+    "GBP": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 5,
+          "couleur": "#3aa3a0",
+          "largeurMm": 125,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 10,
+          "couleur": "#e27a35",
+          "largeurMm": 132,
+          "hauteurMm": 69
+        },
+        {
+          "valeur": 20,
+          "couleur": "#7a4b9c",
+          "largeurMm": 139,
+          "hauteurMm": 73
+        },
+        {
+          "valeur": 50,
+          "couleur": "#c23a3c",
+          "largeurMm": 146,
+          "hauteurMm": 77
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "metal": "cuivre",
+          "diametreMm": 20.3
+        },
+        {
+          "valeur": 0.02,
+          "metal": "cuivre",
+          "diametreMm": 25.9
+        },
+        {
+          "valeur": 0.05,
+          "metal": "argent",
+          "diametreMm": 18
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 24.5
+        },
+        {
+          "valeur": 0.2,
+          "metal": "argent",
+          "diametreMm": 21.4
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 27.3
+        },
+        {
+          "valeur": 1,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 23.43
+        },
+        {
+          "valeur": 2,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 28.4
+        }
+      ],
+      "sources": [
+        "https://www.bankofengland.co.uk/banknotes/current-banknotes",
+        "https://en.wikipedia.org/wiki/Banknotes_of_the_pound_sterling",
+        "https://en.wikipedia.org/wiki/Coins_of_the_pound_sterling"
+      ]
+    },
+    "HKD": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 10,
+          "couleur": "#8a5aa6",
+          "largeurMm": 134,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 20,
+          "couleur": "#3e73b8",
+          "largeurMm": 143,
+          "hauteurMm": 71.5
+        },
+        {
+          "valeur": 50,
+          "couleur": "#4e9a5a",
+          "largeurMm": 148,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 100,
+          "couleur": "#c8403a",
+          "largeurMm": 153,
+          "hauteurMm": 76.5
+        },
+        {
+          "valeur": 500,
+          "couleur": "#8b5e3c",
+          "largeurMm": 158,
+          "hauteurMm": 79
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#d4a93c",
+          "largeurMm": 163,
+          "hauteurMm": 81.5
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.1,
+          "metal": "laiton",
+          "diametreMm": 17.5
+        },
+        {
+          "valeur": 0.2,
+          "metal": "laiton",
+          "diametreMm": 19
+        },
+        {
+          "valeur": 0.5,
+          "metal": "laiton",
+          "diametreMm": 22.5
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 25.5
+        },
+        {
+          "valeur": 2,
+          "metal": "argent",
+          "diametreMm": 28
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 27
+        },
+        {
+          "valeur": 10,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 24
+        }
+      ],
+      "sources": [
+        "https://www.bochk.com/dam/bochk/desktop/top/aboutus/banknote/2018/index_en.html",
+        "https://en.wikipedia.org/wiki/Hong_Kong_ten-dollar_note",
+        "https://en.wikipedia.org/wiki/Coins_of_the_Hong_Kong_dollar"
+      ]
+    },
+    "HUF": {
+      "decimales": 0,
+      "billets": [
+        {
+          "valeur": 500,
+          "couleur": "#c8403f",
+          "largeurMm": 154,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#3e73b8",
+          "largeurMm": 154,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#8e5e3c",
+          "largeurMm": 154,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#e6b83a",
+          "largeurMm": 154,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#8e3b6e",
+          "largeurMm": 154,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 20000,
+          "couleur": "#2e8a8a",
+          "largeurMm": 154,
+          "hauteurMm": 70
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 5,
+          "metal": "laiton",
+          "diametreMm": 21.2
+        },
+        {
+          "valeur": 10,
+          "metal": "argent",
+          "diametreMm": 24.8
+        },
+        {
+          "valeur": 20,
+          "metal": "laiton",
+          "diametreMm": 26.3
+        },
+        {
+          "valeur": 50,
+          "metal": "argent",
+          "diametreMm": 27.4
+        },
+        {
+          "valeur": 100,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 23.8
+        },
+        {
+          "valeur": 200,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 28.3
+        }
+      ],
+      "sources": [
+        "https://www.mnb.hu/bankjegy-es-erme/ermeink",
+        "https://www.mnb.hu/bankjegy-es-erme/bankjegyeink/500-forintos-bankjegy",
+        "https://net.jogtar.hu/jogszabaly?docid=a1400031.mnb"
+      ]
+    },
+    "IDR": {
+      "decimales": 0,
+      "billets": [
+        {
+          "valeur": 1000,
+          "couleur": "#7fa650",
+          "largeurMm": 121,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#8c8c8c",
+          "largeurMm": 126,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#9a6e45",
+          "largeurMm": 131,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#7e57a8",
+          "largeurMm": 136,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 20000,
+          "couleur": "#3e9a5a",
+          "largeurMm": 141,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 50000,
+          "couleur": "#3e6fb8",
+          "largeurMm": 146,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 100000,
+          "couleur": "#c8403f",
+          "largeurMm": 151,
+          "hauteurMm": 65
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 100,
+          "metal": "argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 200,
+          "metal": "argent",
+          "diametreMm": 25
+        },
+        {
+          "valeur": 500,
+          "metal": "argent",
+          "diametreMm": 27
+        },
+        {
+          "valeur": 1000,
+          "metal": "argent",
+          "diametreMm": 24
+        }
+      ],
+      "sources": [
+        "https://www.bi.go.id/id/rupiah/gambar-uang/default.aspx",
+        "https://www.detik.com/edu/detikpedia/d-6243873/ciri-ciri-uang-baru-2022-tiap-pecahan-begini-bedanya",
+        "https://id.wikipedia.org/wiki/Uang_koin_rupiah"
+      ]
+    },
+    "ILS": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 20,
+          "couleur": "#c8403f",
+          "largeurMm": 129,
+          "hauteurMm": 71
+        },
+        {
+          "valeur": 50,
+          "couleur": "#4e9a55",
+          "largeurMm": 136,
+          "hauteurMm": 71
+        },
+        {
+          "valeur": 100,
+          "couleur": "#e08a3a",
+          "largeurMm": 143,
+          "hauteurMm": 71
+        },
+        {
+          "valeur": 200,
+          "couleur": "#3e73b8",
+          "largeurMm": 150,
+          "hauteurMm": 71
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.1,
+          "metal": "laiton",
+          "diametreMm": 22
+        },
+        {
+          "valeur": 0.5,
+          "metal": "laiton",
+          "diametreMm": 26
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 18
+        },
+        {
+          "valeur": 2,
+          "metal": "argent",
+          "diametreMm": 21.6
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 24
+        },
+        {
+          "valeur": 10,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 23
+        }
+      ],
+      "sources": ["https://en.wikipedia.org/wiki/Israeli_new_shekel"]
+    },
+    "INR": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 10,
+          "couleur": "#7b4a2e",
+          "largeurMm": 123,
+          "hauteurMm": 63
+        },
+        {
+          "valeur": 20,
+          "couleur": "#c8c850",
+          "largeurMm": 129,
+          "hauteurMm": 63
+        },
+        {
+          "valeur": 50,
+          "couleur": "#4fb3d9",
+          "largeurMm": 135,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 100,
+          "couleur": "#a897c8",
+          "largeurMm": 142,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 200,
+          "couleur": "#f0c030",
+          "largeurMm": 146,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 500,
+          "couleur": "#8e8e86",
+          "largeurMm": 150,
+          "hauteurMm": 66
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 2,
+          "metal": "argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 5,
+          "metal": "laiton",
+          "diametreMm": 25
+        },
+        {
+          "valeur": 10,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 27
+        },
+        {
+          "valeur": 20,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 27
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mahatma_Gandhi_New_Series",
+        "https://en.wikipedia.org/wiki/Coins_of_the_Indian_rupee"
+      ]
+    },
+    "ISK": {
+      "decimales": 0,
+      "billets": [
+        {
+          "valeur": 500,
+          "couleur": "#c8403f",
+          "largeurMm": 145,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#7e57a8",
+          "largeurMm": 150,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#8e5e3c",
+          "plusEmis": true
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#2e6e9e",
+          "largeurMm": 155,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#3e64b8",
+          "largeurMm": 162,
+          "hauteurMm": 70
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 21.5
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 24.5
+        },
+        {
+          "valeur": 10,
+          "metal": "argent",
+          "diametreMm": 27.5
+        },
+        {
+          "valeur": 50,
+          "metal": "laiton",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 100,
+          "metal": "laiton",
+          "diametreMm": 25.5
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Icelandic_kr%C3%B3na",
+        "https://www.visindavefur.is/svar.php?id=30697"
+      ]
+    },
+    "JOD": {
+      "decimales": 3,
+      "billets": [
+        {
+          "valeur": 1,
+          "couleur": "#5a9a4e",
+          "largeurMm": 133,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 5,
+          "couleur": "#c8503a",
+          "largeurMm": 137,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 10,
+          "couleur": "#3e64a8",
+          "largeurMm": 141,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 20,
+          "couleur": "#3f9aa8",
+          "largeurMm": 145,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 50,
+          "couleur": "#7e4f6e",
+          "largeurMm": 149,
+          "hauteurMm": 74
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "metal": "cuivre",
+          "diametreMm": 25
+        },
+        {
+          "valeur": 0.05,
+          "metal": "argent",
+          "diametreMm": 26
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 28
+        },
+        {
+          "valeur": 0.25,
+          "metal": "laiton",
+          "diametreMm": 26.5
+        },
+        {
+          "valeur": 0.5,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 29
+        }
+      ],
+      "sources": ["https://en.wikipedia.org/wiki/Jordanian_dinar"]
+    },
+    "JPY": {
+      "decimales": 0,
+      "billets": [
+        {
+          "valeur": 1000,
+          "couleur": "#4a74b5",
+          "largeurMm": 150,
+          "hauteurMm": 76
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#5e8f5a",
+          "largeurMm": 154,
+          "hauteurMm": 76
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#8a6aae",
+          "largeurMm": 156,
+          "hauteurMm": 76
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#9a6b45",
+          "largeurMm": 160,
+          "hauteurMm": 76
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 5,
+          "metal": "laiton",
+          "diametreMm": 22
+        },
+        {
+          "valeur": 10,
+          "metal": "cuivre",
+          "diametreMm": 23.5
+        },
+        {
+          "valeur": 50,
+          "metal": "argent",
+          "diametreMm": 21
+        },
+        {
+          "valeur": 100,
+          "metal": "argent",
+          "diametreMm": 22.6
+        },
+        {
+          "valeur": 500,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 26.5
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Banknotes_of_the_Japanese_yen",
+        "https://en.wikipedia.org/wiki/Coins_of_the_Japanese_yen",
+        "https://en.wikipedia.org/wiki/500_yen_coin"
+      ]
+    },
+    "KRW": {
+      "decimales": 0,
+      "billets": [
+        {
+          "valeur": 1000,
+          "couleur": "#4a7ec0",
+          "largeurMm": 136,
+          "hauteurMm": 68
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#e07a45",
+          "largeurMm": 142,
+          "hauteurMm": 68
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#5aa05a",
+          "largeurMm": 148,
+          "hauteurMm": 68
+        },
+        {
+          "valeur": 50000,
+          "couleur": "#e3b53e",
+          "largeurMm": 154,
+          "hauteurMm": 68
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 10,
+          "metal": "cuivre",
+          "diametreMm": 18
+        },
+        {
+          "valeur": 50,
+          "metal": "argent",
+          "diametreMm": 21.6
+        },
+        {
+          "valeur": 100,
+          "metal": "argent",
+          "diametreMm": 24
+        },
+        {
+          "valeur": 500,
+          "metal": "argent",
+          "diametreMm": 26.5
+        }
+      ],
+      "sources": ["https://en.wikipedia.org/wiki/South_Korean_won"]
+    },
+    "MAD": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 20,
+          "couleur": "#7e57a8",
+          "largeurMm": 130,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 50,
+          "couleur": "#4e9a55",
+          "largeurMm": 137,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 100,
+          "couleur": "#8e5e3c",
+          "largeurMm": 144,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 200,
+          "couleur": "#3e64a8",
+          "largeurMm": 151,
+          "hauteurMm": 70
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.1,
+          "metal": "laiton",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 0.2,
+          "metal": "laiton",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 21
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 24
+        },
+        {
+          "valeur": 5,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 25
+        },
+        {
+          "valeur": 10,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 27
+        }
+      ],
+      "sources": [
+        "https://www.bkam.ma/Billets-et-monnaies/Billets-et-pieces-en-circulation/Billets-en-circulation/Serie-2023/Billet-de-100-dh",
+        "https://www.bkam.ma/Billets-et-monnaies/Billets-et-pieces-en-circulation/Pieces-en-circulation/Serie-2023/5-dirham",
+        "https://en.wikipedia.org/wiki/Moroccan_dirham"
+      ]
+    },
+    "MUR": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 25,
+          "couleur": "#8a5aa6",
+          "largeurMm": 135,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 50,
+          "couleur": "#3e73b8",
+          "largeurMm": 140,
+          "hauteurMm": 68
+        },
+        {
+          "valeur": 100,
+          "couleur": "#e08a3a",
+          "largeurMm": 145,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 200,
+          "couleur": "#4e9a55",
+          "largeurMm": 150,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 500,
+          "couleur": "#8e5e3c",
+          "largeurMm": 155,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#3fa6c0",
+          "largeurMm": 160,
+          "hauteurMm": 76
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#c8403f",
+          "largeurMm": 165,
+          "hauteurMm": 78
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.05,
+          "metal": "cuivre",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 0.2,
+          "metal": "argent",
+          "diametreMm": 19
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 23.6
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 26.6
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 31
+        },
+        {
+          "valeur": 10,
+          "metal": "argent",
+          "diametreMm": 28
+        },
+        {
+          "valeur": 20,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 28
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mauritian_rupee",
+        "https://www.bom.mu/bank-notes-coins/polymer-notes/communique"
+      ]
+    },
+    "MXN": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 20,
+          "couleur": "#4e9a55",
+          "largeurMm": 120,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 50,
+          "couleur": "#8a4fa0",
+          "largeurMm": 125,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 100,
+          "couleur": "#c8403f",
+          "largeurMm": 132,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 200,
+          "couleur": "#5a9a4e",
+          "largeurMm": 139,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 500,
+          "couleur": "#3e64a8",
+          "largeurMm": 146,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#8c8c8c",
+          "largeurMm": 153,
+          "hauteurMm": 65
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 14
+        },
+        {
+          "valeur": 0.2,
+          "metal": "argent",
+          "diametreMm": 15.3
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 17
+        },
+        {
+          "valeur": 1,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 21
+        },
+        {
+          "valeur": 2,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 5,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 25.5
+        },
+        {
+          "valeur": 10,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 28
+        },
+        {
+          "valeur": 20,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 30
+        }
+      ],
+      "sources": [
+        "https://www.banxico.org.mx/billetes-y-monedas/billete-1000-pesos-familia-.html",
+        "https://www.banxico.org.mx/billetes-y-monedas/moneda-20-pesos-c-reciente-00001.html",
+        "https://en.wikipedia.org/wiki/Mexican_peso"
+      ]
+    },
+    "MYR": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 1,
+          "couleur": "#3e73b8",
+          "largeurMm": 120,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 5,
+          "couleur": "#4e9a55",
+          "largeurMm": 135,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 10,
+          "couleur": "#c8403f",
+          "largeurMm": 140,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 20,
+          "couleur": "#e08a3a",
+          "largeurMm": 145,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 50,
+          "couleur": "#3fa0a8",
+          "largeurMm": 145,
+          "hauteurMm": 69
+        },
+        {
+          "valeur": 100,
+          "couleur": "#7e57a8",
+          "largeurMm": 150,
+          "hauteurMm": 69
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.05,
+          "metal": "argent",
+          "diametreMm": 17.78
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 18.8
+        },
+        {
+          "valeur": 0.2,
+          "metal": "laiton",
+          "diametreMm": 20.6
+        },
+        {
+          "valeur": 0.5,
+          "metal": "laiton",
+          "diametreMm": 22.65
+        }
+      ],
+      "sources": ["https://en.wikipedia.org/wiki/Malaysian_ringgit"]
+    },
+    "NOK": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 50,
+          "couleur": "#4e9a55",
+          "largeurMm": 126,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 100,
+          "couleur": "#c8403f",
+          "largeurMm": 133,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 200,
+          "couleur": "#3e73b8",
+          "largeurMm": 140,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 500,
+          "couleur": "#e0a03a",
+          "largeurMm": 147,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#7e57a8",
+          "largeurMm": 154,
+          "hauteurMm": 70
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 21
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 26
+        },
+        {
+          "valeur": 10,
+          "metal": "laiton",
+          "diametreMm": 24
+        },
+        {
+          "valeur": 20,
+          "metal": "laiton",
+          "diametreMm": 27.5
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Norwegian_krone",
+        "https://www.norges-bank.no/en/topics/notes-and-coins/legal-tender-notes-coins/",
+        "https://www.norges-bank.no/en/topics/notes-and-coins/legal-tender-notes-coins/20-krone-coin/20-design/"
+      ]
+    },
+    "NZD": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 5,
+          "couleur": "#e58a3a",
+          "largeurMm": 135,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 10,
+          "couleur": "#3a79c2",
+          "largeurMm": 140,
+          "hauteurMm": 68
+        },
+        {
+          "valeur": 20,
+          "couleur": "#4fa55a",
+          "largeurMm": 145,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 50,
+          "couleur": "#7e57a8",
+          "largeurMm": 150,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 100,
+          "couleur": "#c9443f",
+          "largeurMm": 155,
+          "hauteurMm": 74
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.1,
+          "metal": "cuivre",
+          "diametreMm": 20.5
+        },
+        {
+          "valeur": 0.2,
+          "metal": "argent",
+          "diametreMm": 21.75
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 24.75
+        },
+        {
+          "valeur": 1,
+          "metal": "laiton",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 2,
+          "metal": "laiton",
+          "diametreMm": 26.5
+        }
+      ],
+      "sources": ["https://en.wikipedia.org/wiki/New_Zealand_dollar"]
+    },
+    "PHP": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 20,
+          "couleur": "#e08a3a",
+          "largeurMm": 160,
+          "hauteurMm": 66,
+          "plusEmis": true
+        },
+        {
+          "valeur": 50,
+          "couleur": "#c8403f",
+          "largeurMm": 160,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 100,
+          "couleur": "#8a6ab0",
+          "largeurMm": 160,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 200,
+          "couleur": "#4e9a55",
+          "largeurMm": 160,
+          "hauteurMm": 66,
+          "plusEmis": true
+        },
+        {
+          "valeur": 500,
+          "couleur": "#e6b83a",
+          "largeurMm": 160,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#3e73b8",
+          "largeurMm": 160,
+          "hauteurMm": 66
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "metal": "argent",
+          "diametreMm": 15
+        },
+        {
+          "valeur": 0.05,
+          "metal": "argent",
+          "diametreMm": 16
+        },
+        {
+          "valeur": 0.25,
+          "metal": "argent",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 25
+        },
+        {
+          "valeur": 10,
+          "metal": "argent",
+          "diametreMm": 27
+        },
+        {
+          "valeur": 20,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 30
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/New_Generation_Currency_Series",
+        "https://en.wikipedia.org/wiki/Philippine_peso"
+      ]
+    },
+    "PLN": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 10,
+          "couleur": "#8a7a4a",
+          "largeurMm": 120,
+          "hauteurMm": 60
+        },
+        {
+          "valeur": 20,
+          "couleur": "#9a6aa6",
+          "largeurMm": 126,
+          "hauteurMm": 63
+        },
+        {
+          "valeur": 50,
+          "couleur": "#3e5ea8",
+          "largeurMm": 132,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 100,
+          "couleur": "#4e8a55",
+          "largeurMm": 138,
+          "hauteurMm": 69
+        },
+        {
+          "valeur": 200,
+          "couleur": "#c88a3a",
+          "largeurMm": 144,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 500,
+          "couleur": "#8a7e9e",
+          "largeurMm": 150,
+          "hauteurMm": 75
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "metal": "laiton",
+          "diametreMm": 15.5
+        },
+        {
+          "valeur": 0.02,
+          "metal": "laiton",
+          "diametreMm": 17.5
+        },
+        {
+          "valeur": 0.05,
+          "metal": "laiton",
+          "diametreMm": 19.5
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 16.5
+        },
+        {
+          "valeur": 0.2,
+          "metal": "argent",
+          "diametreMm": 18.5
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 20.5
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 2,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 21.5
+        },
+        {
+          "valeur": 5,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 24
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Polish_coins_and_banknotes",
+        "https://pl.wikipedia.org/wiki/Monety_obiegowe_III_Rzeczypospolitej",
+        "https://en.wikipedia.org/wiki/Polish_z%C5%82oty"
+      ]
+    },
+    "RON": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 1,
+          "couleur": "#4e9a55",
+          "largeurMm": 120,
+          "hauteurMm": 62
+        },
+        {
+          "valeur": 5,
+          "couleur": "#8a5aa6",
+          "largeurMm": 127,
+          "hauteurMm": 67
+        },
+        {
+          "valeur": 10,
+          "couleur": "#d06a7a",
+          "largeurMm": 133,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 20,
+          "couleur": "#7e8a3e",
+          "largeurMm": 136,
+          "hauteurMm": 77
+        },
+        {
+          "valeur": 50,
+          "couleur": "#e6b83a",
+          "largeurMm": 140,
+          "hauteurMm": 77
+        },
+        {
+          "valeur": 100,
+          "couleur": "#3e73b8",
+          "largeurMm": 147,
+          "hauteurMm": 82
+        },
+        {
+          "valeur": 200,
+          "couleur": "#e08a3a",
+          "largeurMm": 150,
+          "hauteurMm": 82
+        },
+        {
+          "valeur": 500,
+          "couleur": "#7e7a90",
+          "largeurMm": 153,
+          "hauteurMm": 82
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "metal": "laiton",
+          "diametreMm": 16.75
+        },
+        {
+          "valeur": 0.05,
+          "metal": "cuivre",
+          "diametreMm": 18.25
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 20.5
+        },
+        {
+          "valeur": 0.5,
+          "metal": "laiton",
+          "diametreMm": 23.75
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Romanian_leu",
+        "https://ro.wikipedia.org/wiki/Leu_rom%C3%A2nesc"
+      ]
+    },
+    "SEK": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 20,
+          "couleur": "#8a5aa6",
+          "largeurMm": 120,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 50,
+          "couleur": "#e09a3a",
+          "largeurMm": 126,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 100,
+          "couleur": "#3e73b8",
+          "largeurMm": 133,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 200,
+          "couleur": "#4e9a55",
+          "largeurMm": 140,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 500,
+          "couleur": "#c8403f",
+          "largeurMm": 147,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#8e6a45",
+          "largeurMm": 154,
+          "hauteurMm": 66
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 1,
+          "metal": "cuivre",
+          "diametreMm": 19.5
+        },
+        {
+          "valeur": 2,
+          "metal": "cuivre",
+          "diametreMm": 22.5
+        },
+        {
+          "valeur": 5,
+          "metal": "laiton",
+          "diametreMm": 23.75
+        },
+        {
+          "valeur": 10,
+          "metal": "laiton",
+          "diametreMm": 20.5
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Swedish_krona",
+        "https://sv.wikipedia.org/wiki/Svenska_mynt"
+      ]
+    },
+    "SGD": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 2,
+          "couleur": "#8a5aa6",
+          "largeurMm": 126,
+          "hauteurMm": 63
+        },
+        {
+          "valeur": 5,
+          "couleur": "#4e9a55",
+          "largeurMm": 133,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 10,
+          "couleur": "#c8403f",
+          "largeurMm": 141,
+          "hauteurMm": 69
+        },
+        {
+          "valeur": 50,
+          "couleur": "#3f6fb8",
+          "largeurMm": 156,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 100,
+          "couleur": "#e08a3a",
+          "largeurMm": 162,
+          "hauteurMm": 77
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#6e4a8e",
+          "largeurMm": 170,
+          "hauteurMm": 83,
+          "plusEmis": true
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#8e6a3e",
+          "largeurMm": 180,
+          "hauteurMm": 90,
+          "plusEmis": true
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.05,
+          "metal": "laiton",
+          "diametreMm": 16.75
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 18.5
+        },
+        {
+          "valeur": 0.2,
+          "metal": "argent",
+          "diametreMm": 21
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 1,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 24.65
+        }
+      ],
+      "sources": ["https://en.wikipedia.org/wiki/Singapore_dollar"]
+    },
+    "THB": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 20,
+          "couleur": "#4e9a5a",
+          "largeurMm": 138,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 50,
+          "couleur": "#3e73b8",
+          "largeurMm": 144,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 100,
+          "couleur": "#c8403f",
+          "largeurMm": 150,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 500,
+          "couleur": "#7e57a8",
+          "largeurMm": 156,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#8e6a45",
+          "largeurMm": 162,
+          "hauteurMm": 72
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.25,
+          "metal": "cuivre",
+          "diametreMm": 16
+        },
+        {
+          "valeur": 0.5,
+          "metal": "cuivre",
+          "diametreMm": 18
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 2,
+          "metal": "laiton",
+          "diametreMm": 21.75
+        },
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 24
+        },
+        {
+          "valeur": 10,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 26
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Banknotes_of_the_Thai_baht",
+        "https://www.royalthaimint.net/ewtadmin/ewt/mint_web/ewt_news.php?nid=784"
+      ]
+    },
+    "TND": {
+      "decimales": 3,
+      "billets": [
+        {
+          "valeur": 5,
+          "couleur": "#4e9a55",
+          "largeurMm": 143,
+          "hauteurMm": 73
+        },
+        {
+          "valeur": 10,
+          "couleur": "#3e73b8",
+          "largeurMm": 148,
+          "hauteurMm": 73
+        },
+        {
+          "valeur": 20,
+          "couleur": "#c8403f",
+          "largeurMm": 153,
+          "hauteurMm": 76
+        },
+        {
+          "valeur": 50,
+          "couleur": "#8e5e3c",
+          "largeurMm": 158,
+          "hauteurMm": 79
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "metal": "laiton"
+        },
+        {
+          "valeur": 0.02,
+          "metal": "laiton"
+        },
+        {
+          "valeur": 0.05,
+          "metal": "laiton"
+        },
+        {
+          "valeur": 0.1,
+          "metal": "laiton"
+        },
+        {
+          "valeur": 0.2,
+          "metal": "laiton",
+          "diametreMm": 29
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent"
+        },
+        {
+          "valeur": 1,
+          "metal": "argent"
+        },
+        {
+          "valeur": 2,
+          "metal": "argent",
+          "diametreMm": 29.4
+        },
+        {
+          "valeur": 5,
+          "metal": "bimetal-argent-or"
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Tunisian_dinar",
+        "https://kapitalis.com/tunisie/2022/04/28/tunisie-les-principales-caracteristiques-des-nouveaux-billets-de-banque-mis-en-circulation/",
+        "https://destination-tunis.fr/informations-utiles/dinar-tunisien/"
+      ]
+    },
+    "TRY": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 5,
+          "couleur": "#8a5aa0",
+          "largeurMm": 130,
+          "hauteurMm": 64
+        },
+        {
+          "valeur": 10,
+          "couleur": "#c8403f",
+          "largeurMm": 136,
+          "hauteurMm": 64
+        },
+        {
+          "valeur": 20,
+          "couleur": "#4e9a55",
+          "largeurMm": 142,
+          "hauteurMm": 68
+        },
+        {
+          "valeur": 50,
+          "couleur": "#e08a3a",
+          "largeurMm": 148,
+          "hauteurMm": 68
+        },
+        {
+          "valeur": 100,
+          "couleur": "#3e73b8",
+          "largeurMm": 154,
+          "hauteurMm": 72
+        },
+        {
+          "valeur": 200,
+          "couleur": "#d27aa0",
+          "largeurMm": 160,
+          "hauteurMm": 72
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "metal": "laiton",
+          "diametreMm": 16.5
+        },
+        {
+          "valeur": 0.05,
+          "metal": "argent",
+          "diametreMm": 17.5
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 18.5
+        },
+        {
+          "valeur": 0.25,
+          "metal": "argent",
+          "diametreMm": 20.5
+        },
+        {
+          "valeur": 0.5,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 23.85
+        },
+        {
+          "valeur": 1,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 26.15
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Turkish_lira",
+        "https://en.wikipedia.org/wiki/Banknotes_of_Turkey"
+      ]
+    },
+    "USD": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 1,
+          "couleur": "#7c8f72",
+          "largeurMm": 156,
+          "hauteurMm": 67
+        },
+        {
+          "valeur": 2,
+          "couleur": "#71886a",
+          "largeurMm": 156,
+          "hauteurMm": 67
+        },
+        {
+          "valeur": 5,
+          "couleur": "#9a8fb0",
+          "largeurMm": 156,
+          "hauteurMm": 67
+        },
+        {
+          "valeur": 10,
+          "couleur": "#d4a06a",
+          "largeurMm": 156,
+          "hauteurMm": 67
+        },
+        {
+          "valeur": 20,
+          "couleur": "#a2b48e",
+          "largeurMm": 156,
+          "hauteurMm": 67
+        },
+        {
+          "valeur": 50,
+          "couleur": "#b795a8",
+          "largeurMm": 156,
+          "hauteurMm": 67
+        },
+        {
+          "valeur": 100,
+          "couleur": "#7fa9b8",
+          "largeurMm": 156,
+          "hauteurMm": 67
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "metal": "cuivre",
+          "diametreMm": 19.05
+        },
+        {
+          "valeur": 0.05,
+          "metal": "argent",
+          "diametreMm": 21.21
+        },
+        {
+          "valeur": 0.1,
+          "metal": "argent",
+          "diametreMm": 17.91
+        },
+        {
+          "valeur": 0.25,
+          "metal": "argent",
+          "diametreMm": 24.26
+        },
+        {
+          "valeur": 0.5,
+          "metal": "argent",
+          "diametreMm": 30.61
+        },
+        {
+          "valeur": 1,
+          "metal": "laiton",
+          "diametreMm": 26.5
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Federal_Reserve_Note",
+        "https://www.uscurrency.gov/denominations",
+        "https://en.wikipedia.org/wiki/Coins_of_the_United_States_dollar"
+      ]
+    },
+    "VND": {
+      "decimales": 0,
+      "billets": [
+        {
+          "valeur": 1000,
+          "couleur": "#7e5aa0",
+          "largeurMm": 134,
+          "hauteurMm": 65,
+          "plusEmis": true
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#6e4a35",
+          "largeurMm": 134,
+          "hauteurMm": 65,
+          "plusEmis": true
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#2e6e7e",
+          "largeurMm": 134,
+          "hauteurMm": 64,
+          "plusEmis": true
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#b08a3e",
+          "largeurMm": 132,
+          "hauteurMm": 60
+        },
+        {
+          "valeur": 20000,
+          "couleur": "#2e7e9a",
+          "largeurMm": 136,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 50000,
+          "couleur": "#a05a7a",
+          "largeurMm": 140,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 100000,
+          "couleur": "#3e7a4a",
+          "largeurMm": 144,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 200000,
+          "couleur": "#b0503a",
+          "largeurMm": 148,
+          "hauteurMm": 65
+        },
+        {
+          "valeur": 500000,
+          "couleur": "#4a6fa5",
+          "largeurMm": 152,
+          "hauteurMm": 65
+        }
+      ],
+      "pieces": [],
+      "sources": [
+        "https://sbv.gov.vn/en/w/sbv615814",
+        "https://en.wikipedia.org/wiki/Vietnamese_%C4%91%E1%BB%93ng"
+      ]
+    },
+    "XAF": {
+      "decimales": 0,
+      "billets": [
+        {
+          "valeur": 500,
+          "couleur": "#8c8c8c"
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#3e73b8"
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#d27aa0"
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#4e9a55"
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#7e57a8"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 14.94
+        },
+        {
+          "valeur": 2,
+          "metal": "argent",
+          "diametreMm": 18
+        },
+        {
+          "valeur": 5,
+          "metal": "laiton",
+          "diametreMm": 15.9
+        },
+        {
+          "valeur": 10,
+          "metal": "laiton",
+          "diametreMm": 18
+        },
+        {
+          "valeur": 25,
+          "metal": "laiton",
+          "diametreMm": 22.75
+        },
+        {
+          "valeur": 50,
+          "metal": "argent",
+          "diametreMm": 22
+        },
+        {
+          "valeur": 100,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 24
+        },
+        {
+          "valeur": 200,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 27
+        },
+        {
+          "valeur": 500,
+          "metal": "argent",
+          "diametreMm": 26
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Central_African_CFA_franc",
+        "https://www.cameroon-tribune.cm/article.html/52971/fr.html/monnaie-les-nouveaux-billets-devoiles",
+        "https://www.financialafrik.com/2025/04/03/la-beac-met-en-circulation-une-nouvelle-serie-de-pieces-de-monnaie-type-2024/"
+      ]
+    },
+    "XOF": {
+      "decimales": 0,
+      "billets": [
+        {
+          "valeur": 500,
+          "couleur": "#e08a3a"
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#c8403f",
+          "largeurMm": 125,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 2000,
+          "couleur": "#3e73b8",
+          "largeurMm": 130,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#4e9a55",
+          "largeurMm": 140,
+          "hauteurMm": 74
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#7e57a8",
+          "largeurMm": 145,
+          "hauteurMm": 74
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 15
+        },
+        {
+          "valeur": 5,
+          "metal": "laiton",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 10,
+          "metal": "laiton",
+          "diametreMm": 23.5
+        },
+        {
+          "valeur": 25,
+          "metal": "laiton",
+          "diametreMm": 27
+        },
+        {
+          "valeur": 50,
+          "metal": "argent",
+          "diametreMm": 22
+        },
+        {
+          "valeur": 100,
+          "metal": "argent",
+          "diametreMm": 26
+        },
+        {
+          "valeur": 200,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 24.5
+        },
+        {
+          "valeur": 500,
+          "metal": "bimetal-argent-or",
+          "diametreMm": 28.8
+        }
+      ],
+      "sources": [
+        "https://www.bceao.int/fr/content/pieces-en-circulation",
+        "http://www.aacb.org/fr/book/export/html/198",
+        "https://en.wikipedia.org/wiki/West_African_CFA_franc"
+      ]
+    },
+    "XPF": {
+      "decimales": 0,
+      "billets": [
+        {
+          "valeur": 500,
+          "couleur": "#4e9a55",
+          "largeurMm": 120,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 1000,
+          "couleur": "#e0a060",
+          "largeurMm": 126,
+          "hauteurMm": 66
+        },
+        {
+          "valeur": 5000,
+          "couleur": "#3e73b8",
+          "largeurMm": 132,
+          "hauteurMm": 73
+        },
+        {
+          "valeur": 10000,
+          "couleur": "#c8403f",
+          "largeurMm": 138,
+          "hauteurMm": 73
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 5,
+          "metal": "argent",
+          "diametreMm": 21
+        },
+        {
+          "valeur": 10,
+          "metal": "argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 20,
+          "metal": "argent",
+          "diametreMm": 26
+        },
+        {
+          "valeur": 50,
+          "metal": "laiton",
+          "diametreMm": 24
+        },
+        {
+          "valeur": 100,
+          "metal": "laiton",
+          "diametreMm": 27
+        },
+        {
+          "valeur": 200,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 25
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/CFP_franc",
+        "https://www.ieom.fr/Les-pieces-et-billets-en-circulation",
+        "https://numismag.com/fr/2021/04/03/la-nouvelle-gamme-de-pieces-en-francs-pacifique-2021-ieom-institut-d-emission-d-outre-mer-2/"
+      ]
+    },
+    "ZAR": {
+      "decimales": 2,
+      "billets": [
+        {
+          "valeur": 10,
+          "couleur": "#4e9a55",
+          "largeurMm": 128,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 20,
+          "couleur": "#9a6e45",
+          "largeurMm": 134,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 50,
+          "couleur": "#8a4f8e",
+          "largeurMm": 140,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 100,
+          "couleur": "#3e64a8",
+          "largeurMm": 146,
+          "hauteurMm": 70
+        },
+        {
+          "valeur": 200,
+          "couleur": "#e08a3a",
+          "largeurMm": 152,
+          "hauteurMm": 70
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.1,
+          "metal": "cuivre",
+          "diametreMm": 16
+        },
+        {
+          "valeur": 0.2,
+          "metal": "laiton",
+          "diametreMm": 19
+        },
+        {
+          "valeur": 0.5,
+          "metal": "laiton",
+          "diametreMm": 22
+        },
+        {
+          "valeur": 1,
+          "metal": "argent",
+          "diametreMm": 20
+        },
+        {
+          "valeur": 2,
+          "metal": "argent",
+          "diametreMm": 23
+        },
+        {
+          "valeur": 5,
+          "metal": "bimetal-or-argent",
+          "diametreMm": 26
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/South_African_rand",
+        "https://en.wikipedia.org/wiki/Coins_of_the_South_African_rand",
+        "https://www.gov.za/news/media-statements/reserve-bank-highlights-country%E2%80%99s-fourth-decimal-coin-series-september-12-sep"
+      ]
+    }
+  }
+}

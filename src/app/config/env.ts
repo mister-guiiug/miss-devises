@@ -13,13 +13,12 @@ const log = createLogger('config');
  * et dans une CI sans secrets — ce que les cinq apps local-first font par
  * nature et que les autres doivent savoir faire.
  *
- * Tout est OPTIONNEL ici parce que ce squelette démarre sans rien. Une app qui
+ * Tout est OPTIONNEL ici parce que l'application démarre sans rien. Une app qui
  * exige une variable la rend obligatoire dans ce schéma ET la déclare dans
  * `config/env.manifest.json`, d'où dérivent `.env.example` et le `required-env`
  * du déploiement.
  */
 const schema = z.object({
-  VITE_BACKEND: z.enum(['local']).optional(),
   VITE_SENTRY_DSN: z.string().url().optional().or(z.literal('')),
   VITE_BASE_PATH: z.string().optional(),
 });
@@ -41,34 +40,3 @@ function read(): Env {
 }
 
 export const env = read();
-
-export interface ConfigReportEntry {
-  name: string;
-  present: boolean;
-  /** Ce que l'app fait quand elle manque. */
-  fallback: string;
-}
-
-/**
- * Ce que l'écran de réglages doit pouvoir dire d'un build DÉJÀ EN LIGNE.
- *
- * C'est le troisième garde, après celui du déploiement et celui du build : eux
- * arrêtent une configuration absente avant publication, celui-ci la rend
- * visible quand elle a quand même réussi à passer. Sans lui, un utilisateur
- * voit une app qui « ne marche pas » là où elle marche exactement comme prévu,
- * sur son repli.
- */
-export function configReport(): ConfigReportEntry[] {
-  return [
-    {
-      name: 'VITE_SENTRY_DSN',
-      present: Boolean(env.VITE_SENTRY_DSN),
-      fallback: "l'observabilité se tait",
-    },
-    {
-      name: 'VITE_BACKEND',
-      present: Boolean(env.VITE_BACKEND),
-      fallback: 'stockage local de cet appareil',
-    },
-  ];
-}

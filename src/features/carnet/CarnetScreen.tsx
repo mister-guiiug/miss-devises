@@ -1,0 +1,226 @@
+import { useEffect, useState, type FormEvent } from 'react';
+import { NotebookPen, Pencil, Trash2 } from 'lucide-react';
+import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
+import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
+import { EmptyState } from '@mister-guiiug/dev-pwa-config/react/empty-state';
+import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
+import { Sheet } from '@mister-guiiug/dev-pwa-config/react/sheet';
+import { useToast } from '@mister-guiiug/dev-pwa-config/react/toast';
+import { useI18n } from '../../i18n/index.ts';
+import { useTaux } from '../../rates/store.ts';
+import { tauxDuJour } from '../../rates/service.ts';
+import type { ConversionEnregistree } from '../../backend/ports.ts';
+import {
+  formaterDate,
+  formaterMontant,
+  formaterPourcentage,
+  formaterTaux,
+} from '../../domain/money.ts';
+import {
+  auTauxDuJour,
+  deviseEtrangere,
+  totauxParDevise,
+} from '../../domain/carnet.ts';
+import { useCarnet } from './store.ts';
+
+/**
+ * Le carnet (récit 4) : les conversions gardées, chacune refaite au taux du
+ * jour, renommables, supprimables avec annulation, et leurs totaux par devise
+ * (EF-010 à EF-012).
+ */
+export function CarnetScreen() {
+  const { t, m, fmt } = useI18n();
+  const conversions = useCarnet(s => s.conversions);
+  const ready = useCarnet(s => s.ready);
+  const load = useCarnet(s => s.load);
+  const [aRenommer, setARenommer] = useState<ConversionEnregistree>();
+
+  useEffect(() => {
+    if (!ready) void load();
+  }, [ready, load]);
+
+  if (ready && conversions.length === 0) {
+    return (
+      <EmptyState
+        icon={<NotebookPen aria-hidden="true" />}
+        title={t('carnet.vide')}
+        description={t('carnet.videAide')}
+      />
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      <h2 className="sr-only">{t('carnet.title')}</h2>
+      <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+        {fmt.plural(conversions.length, m.carnet.count, {
+          count: conversions.length,
+        })}
+      </p>
+      <ul className="m-0 flex list-none flex-col gap-2 p-0">
+        {conversions.map(c => (
+          <Ligne key={c.id} conversion={c} onRenommer={() => setARenommer(c)} />
+        ))}
+      </ul>
+      <Totaux conversions={conversions} />
+      <Renommer
+        conversion={aRenommer}
+        onFermer={() => setARenommer(undefined)}
+      />
+    </div>
+  );
+}
+
+function Ligne({
+  conversion: c,
+  onRenommer,
+}: {
+  conversion: ConversionEnregistree;
+  onRenommer: () => void;
+}) {
+  const { t, locale } = useI18n();
+  const toast = useToast();
+  const remove = useCarnet(s => s.remove);
+  const undoRemove = useCarnet(s => s.undoRemove);
+  const etat = useTaux(s => s.etat);
+  const code = deviseEtrangere(c);
+  const jour = tauxDuJour(code, etat, new Date());
+  const refaite = jour ? auTauxDuJour(c, jour.taux) : undefined;
+  const montant = (m: { code: string; montant: number }) =>
+    formaterMontant(m.montant, m.code, locale);
+
+  function supprimer() {
+    remove(c.id);
+    toast.show(t('carnet.supprime'), {
+      action: { label: t('carnet.annuler'), onAction: () => undoRemove(c.id) },
+    });
+  }
+
+  return (
+    <li>
+      <Card className="flex flex-col gap-1">
+        <div className="flex items-start gap-2">
+          <h3 className="m-0 min-w-0 flex-1 text-base font-semibold break-words">
+            {c.libelle}
+          </h3>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onRenommer}
+            aria-label={t('carnet.renommerLigne', { libelle: c.libelle })}
+          >
+            <Pencil aria-hidden="true" className="size-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={supprimer}
+            aria-label={t('carnet.supprimerLigne', { libelle: c.libelle })}
+          >
+            <Trash2 aria-hidden="true" className="size-4" />
+          </Button>
+        </div>
+        <p className="m-0 font-semibold">
+          {montant(c.de)} → {montant(c.vers)}
+        </p>
+        <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+          {t('carnet.taux', {
+            date: formaterDate(c.dateTaux, locale),
+            taux: `${formaterTaux(c.taux, locale)} ${code}`,
+          })}
+          {' · '}
+          {t(`convert.source.${c.source}`)}
+        </p>
+        {refaite && (
+          <p className="m-0 text-sm">
+            {t('carnet.aujourdhui', {
+              montant: formaterMontant(refaite.montant, c.vers.code, locale),
+              ecart: formaterPourcentage(refaite.ecart, locale),
+            })}
+          </p>
+        )}
+      </Card>
+    </li>
+  );
+}
+
+/** Les totaux par devise étrangère, dès qu'une devise a deux lignes. */
+function Totaux({
+  conversions,
+}: {
+  conversions: readonly ConversionEnregistree[];
+}) {
+  const { t, locale } = useI18n();
+  const totaux = totauxParDevise(conversions).filter(total => total.nombre > 1);
+  if (totaux.length === 0) return null;
+  return (
+    <section aria-labelledby="carnet-totaux" className="flex flex-col gap-1">
+      <h3 id="carnet-totaux" className="m-0 text-base font-semibold">
+        {t('carnet.totaux')}
+      </h3>
+      <ul className="m-0 flex list-none flex-col gap-1 p-0 text-sm">
+        {totaux.map(total => (
+          <li key={total.code}>
+            {t('carnet.total', {
+              montant: formaterMontant(total.devise, total.code, locale),
+              euros: formaterMontant(total.euros, 'EUR', locale),
+            })}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/** La feuille de renommage : le libellé actuel, prêt à être corrigé. */
+function Renommer({
+  conversion,
+  onFermer,
+}: {
+  conversion: ConversionEnregistree | undefined;
+  onFermer: () => void;
+}) {
+  const { t } = useI18n();
+  const rename = useCarnet(s => s.rename);
+  const [libelle, setLibelle] = useState('');
+  const [pour, setPour] = useState<string>();
+
+  // Le champ repart du libellé de la ligne choisie, à chaque ouverture.
+  if (conversion && conversion.id !== pour) {
+    setPour(conversion.id);
+    setLibelle(conversion.libelle);
+  }
+
+  async function valider(event: FormEvent) {
+    event.preventDefault();
+    if (!conversion || !libelle.trim()) return;
+    await rename(conversion.id, libelle);
+    setPour(undefined);
+    onFermer();
+  }
+
+  return (
+    <Sheet
+      open={conversion !== undefined}
+      title={t('carnet.renommerTitre')}
+      onClose={() => {
+        setPour(undefined);
+        onFermer();
+      }}
+    >
+      <form onSubmit={valider} className="flex flex-col gap-3">
+        <TextField
+          label={t('convert.libelle')}
+          value={libelle}
+          onChange={event => setLibelle(event.target.value)}
+          maxLength={120}
+          autoComplete="off"
+          enterKeyHint="done"
+        />
+        <Button type="submit" aria-disabled={!libelle.trim()}>
+          {t('carnet.valider')}
+        </Button>
+      </form>
+    </Sheet>
+  );
+}

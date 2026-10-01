@@ -25,8 +25,8 @@
  * ferait deux thèmes qui divergent en silence.
  */
 @theme {
-  --color-primary: #3b6ea5;
-  --color-primary-soft: #dce8f5;
+  --color-primary: #a16207;
+  --color-primary-soft: #fdf3d7;
   --radius-card: 0.875rem;
 }
 
@@ -39,7 +39,8 @@
   --dwc-text: #131720;
   --dwc-text-soft: #5a6472;
   --dwc-border: #d9dfe7;
-  --dwc-primary: #3b6ea5;
+  /* L'or des pièces : 4,9 contre le blanc, AA. */
+  --dwc-primary: #a16207;
   --dwc-primary-contrast: #ffffff;
   --dwc-danger: #b3261e;
   --dwc-success: #1b6b3a;
@@ -55,8 +56,8 @@
   --dwc-text: #e8ecf2;
   --dwc-text-soft: #a3adbb;
   --dwc-border: #2c333d;
-  --dwc-primary: #7fb0e0;
-  --dwc-primary-contrast: #0f1115;
+  --dwc-primary: #facc15;
+  --dwc-primary-contrast: #1a1300;
   --dwc-danger: #f2b8b5;
   --dwc-success: #7fd6a0;
   --dwc-warning: #e8c07d;
