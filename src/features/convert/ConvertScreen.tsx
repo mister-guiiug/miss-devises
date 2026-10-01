@@ -10,6 +10,7 @@ import { nomDevise } from '../../domain/currencies.ts';
 import { deriver, useConversion, type Champ } from './conversion.ts';
 import { CurrencyPicker } from './CurrencyPicker.tsx';
 import { RateLine } from './RateLine.tsx';
+import { SaveForm } from './SaveForm.tsx';
 
 /** Les devises que l'appareil sait convertir : celles des deux sources. */
 function codesDe(etat: EtatTaux): string[] {
@@ -99,6 +100,7 @@ export function ConvertScreen() {
         horsLigne={echec}
         onReessayer={() => void rafraichir({ force: true })}
       />
+      <SaveForm devise={devise} jour={jour} derive={d} champ={saisie.champ} />
     </div>
   );
 }

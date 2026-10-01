@@ -8,6 +8,7 @@ import { useTaux } from '../../rates/store.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import { useConversion } from './conversion.ts';
 import { ConvertScreen } from './ConvertScreen.tsx';
+import { useCarnet } from '../carnet/store.ts';
 
 const AUJOURDHUI = new Date().toISOString().slice(0, 10);
 const lisible = (texte: string) => texte.replace(/\s/g, ' ');
@@ -116,5 +117,54 @@ describe('l’écran Convertir (récit 1)', () => {
     expect(
       screen.getByLabelText('Montant en yen japonais')
     ).toBeInTheDocument();
+  });
+});
+
+describe('enregistrer au carnet (récit 4)', () => {
+  beforeEach(() => {
+    useCarnet.setState({ conversions: [], pending: null, error: null });
+  });
+
+  it('garde la conversion, son libellé, son taux et sa date', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.type(
+      screen.getByLabelText('Montant en livre égyptienne'),
+      '200'
+    );
+    await user.type(screen.getByLabelText('Libellé'), 'Visite du musée');
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }));
+
+    const [gardee] = useCarnet.getState().conversions;
+    expect(gardee?.libelle).toBe('Visite du musée');
+    expect(gardee?.de).toEqual({ code: 'EGP', montant: 200 });
+    expect(gardee?.vers.code).toBe('EUR');
+    expect(gardee?.vers.montant).toBeCloseTo(200 / 58.83, 10);
+    expect(gardee).toMatchObject({
+      taux: 58.83,
+      source: 'marche',
+      dateTaux: AUJOURDHUI,
+    });
+    expect(
+      await screen.findByText('Enregistré dans le carnet.')
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Libellé')).toHaveValue('');
+  });
+
+  it('sans libellé, la paire et le montant en tiennent lieu', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.type(screen.getByLabelText('Montant en euros'), '20');
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }));
+    const [gardee] = useCarnet.getState().conversions;
+    expect(lisible(gardee?.libelle ?? '')).toBe('20,00 € → EGP');
+    expect(gardee?.de).toEqual({ code: 'EUR', montant: 20 });
+  });
+
+  it('rien à enregistrer sans montant', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }));
+    expect(useCarnet.getState().conversions).toHaveLength(0);
   });
 });

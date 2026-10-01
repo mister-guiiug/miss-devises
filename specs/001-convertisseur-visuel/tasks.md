@@ -96,14 +96,16 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
 
 ## Phase 6 : récit 4, garder une conversion avec un libellé (P2)
 
-- [ ] T024 [R4] Tests puis l'enregistrement depuis l'écran de conversion
-      (libellé, libellé par défaut).
-- [ ] T025 [R4] Tests puis `src/features/carnet/CarnetScreen.tsx` :
+- [x] T024 [R4] Tests puis l'enregistrement depuis l'écran de conversion
+      (libellé, libellé par défaut) : `SaveForm.tsx`.
+- [x] T025 [R4] Tests puis `src/features/carnet/CarnetScreen.tsx` :
       contre-valeur du jour et écart, renommer, supprimer annulable (toast du
-      socle), totaux par devise, carnet vide.
-- [ ] T026 [R4] Export et import du carnet dans les réglages.
-- [ ] T027 [R4] e2e `@critical` : enregistrer, recharger, renommer, supprimer,
-      annuler.
+      socle), totaux par devise, carnet vide. Les calculs vivent dans
+      `src/domain/carnet.ts`.
+- [x] T026 [R4] Export et import du carnet dans les réglages (branchés au
+      récit 1 ; l'export est éprouvé par l'e2e du carnet).
+- [x] T027 [R4] e2e `@critical` : enregistrer, recharger, renommer, supprimer,
+      annuler ; plus l'export en fichier et axe sur le carnet vide et plein.
 
 ## Phase 7 : récit 5, composer avec ses billets (P3)
 

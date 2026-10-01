@@ -36,6 +36,24 @@ test.describe('@a11y accessibilité', () => {
     });
   });
 
+  test('carnet vide, puis avec une ligne, sans violation', async ({ page }) => {
+    await page.goto('/carnet');
+    await expect(
+      page.getByText('Aucune conversion enregistrée.')
+    ).toBeVisible();
+    await expectNoA11yViolations(page, AxeBuilder, expect);
+
+    await page.goto('/');
+    await page.getByLabel('Montant en livre égyptienne').fill('200');
+    await page.getByLabel('Libellé').fill('Visite du musée');
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+    await page.getByRole('link', { name: 'Carnet' }).click();
+    await expect(
+      page.getByRole('heading', { name: 'Visite du musée' })
+    ).toBeVisible();
+    await expectNoA11yViolations(page, AxeBuilder, expect);
+  });
+
   test('À propos : coquille + FamilyAbout sans violation', async ({ page }) => {
     await page.goto('/a-propos');
     await expect(page.locator('[data-dwc="family-about"]')).toBeVisible();

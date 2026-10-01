@@ -5,7 +5,7 @@ import {
   Routes,
   useLocation,
 } from 'react-router-dom';
-import { ChartLine, Coins, Info, Settings } from 'lucide-react';
+import { ChartLine, Coins, Info, NotebookPen, Settings } from 'lucide-react';
 import { useEffect } from 'react';
 import { AppShell } from '@mister-guiiug/dev-pwa-config/react/app-shell';
 import { ObservabilityBoundary } from '@mister-guiiug/dev-pwa-config/react/error-boundary';
@@ -17,6 +17,7 @@ import { registerSW } from 'virtual:pwa-register';
 import { useI18n } from './i18n/index.ts';
 import { HomeScreen } from './features/home/HomeScreen.tsx';
 import { HistoryScreen } from './features/history/HistoryScreen.tsx';
+import { CarnetScreen } from './features/carnet/CarnetScreen.tsx';
 import { SettingsScreen } from './features/settings/SettingsScreen.tsx';
 import { AboutScreen } from './features/about/AboutScreen.tsx';
 import { useTaux } from './rates/store.ts';
@@ -81,6 +82,11 @@ function Shell() {
       icon: <ChartLine aria-hidden="true" />,
     },
     {
+      href: '/carnet',
+      label: t('nav.carnet'),
+      icon: <NotebookPen aria-hidden="true" />,
+    },
+    {
       href: '/reglages',
       label: t('nav.settings'),
       icon: <Settings aria-hidden="true" />,
@@ -103,6 +109,7 @@ function Shell() {
   const titles: Record<string, string> = {
     '/': t('app.name'),
     '/historique': t('history.title'),
+    '/carnet': t('carnet.title'),
     '/reglages': t('settings.title'),
     '/a-propos': t('about.title'),
   };
@@ -158,6 +165,7 @@ function Shell() {
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/historique" element={<HistoryScreen />} />
+        <Route path="/carnet" element={<CarnetScreen />} />
         <Route path="/reglages" element={<SettingsScreen />} />
         <Route path="/a-propos" element={<AboutScreen />} />
         {/* Le repli de route rend l'accueil ; le repli de SERVEUR est le
