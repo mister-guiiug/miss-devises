@@ -133,11 +133,15 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
       historique de la BCE, le code de la devise.
 - [x] T032 e2e `@a11y` (axe) sur chaque écran, thèmes clair et sombre ;
       vérification à 320 px et 390 × 664 (dans le navigateur, à chaque récit).
-- [ ] T033 Poids relevé en CI ; budget reposé à +10 % si la mesure le demande.
+- [x] T033 Poids relevé en CI ; budget reposé à +10 % si la mesure le demande :
+      568 / 246 / 189 kB (run 36911097532), contre 527 / 288 / 175 hérités.
 - [ ] T034 Protection de `main` : `node scripts/apply-rulesets.mjs miss-devises`
-      depuis le socle, une fois les contextes de CI observés.
+      depuis le socle, une fois les contextes de CI observés. Contextes observés
+      sur la PR 2 ; reste l'accord du propriétaire, le ruleset étant un réglage
+      du dépôt.
 - [ ] T035 Inscription au catalogue du socle : `apps-catalog.js` et palette
-      dans `themes.js` (pull request sur dev-pwa-config).
+      dans `themes.js` (pull request sur dev-pwa-config). Ouverte :
+      dev-pwa-config#416, à fusionner après cette PR et son déploiement.
 
 ## Dépendances et ordre
 
