@@ -1,71 +1,59 @@
 import { z } from 'zod';
 
 /**
- * Le modèle, décrit par un schéma dont le type est DÉRIVÉ.
+ * Le modèle, décrit par un schéma dont le type est DÉRIVÉ (ADR 0002).
  *
  * Le schéma sert deux fois : il type le code, et il valide ce qui remonte du
- * stockage — une donnée écrite par une version antérieure, ou par une autre
- * main. Écrire l'interface d'un côté et la validation de l'autre, c'est
- * s'engager à les garder d'accord.
+ * stockage — une donnée écrite par une version antérieure, ou un fichier
+ * importé.
  */
-export const noteSchema = z.object({
-  id: z.string().min(1),
-  text: z.string().min(1).max(2000),
-  createdAt: z.string(),
+const CODE = z.string().regex(/^[A-Z]{3}$/);
+const MONTANT = z.object({ code: CODE, montant: z.number().positive() });
+
+export const conversionSchema = z
+  .object({
+    id: z.string().min(1),
+    libelle: z.string().trim().min(1).max(120),
+    de: MONTANT,
+    vers: MONTANT,
+    /** Unités de la devise étrangère pour un euro. */
+    taux: z.number().positive(),
+    source: z.enum(['bce', 'marche']),
+    dateTaux: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    creeeLe: z.string(),
+  })
+  // « Des monnaies d'euros » : l'euro est toujours l'une des deux devises
+  // (spécification 001, clarifications).
+  .refine(c => c.de.code === 'EUR' || c.vers.code === 'EUR', {
+    message: 'l’euro doit être l’une des deux devises',
+  });
+
+export type ConversionEnregistree = z.infer<typeof conversionSchema>;
+
+export const carnetSchema = z.object({
+  conversions: z.array(conversionSchema),
 });
 
-export type Note = z.infer<typeof noteSchema>;
-
-export const notesSchema = z.object({
-  notes: z.array(noteSchema),
-});
-
-export type NotesSnapshot = z.infer<typeof notesSchema>;
+export type CarnetInstantane = z.infer<typeof carnetSchema>;
 
 /**
- * LE PORT, et rien d'autre.
- *
- * Un port décrit ce dont l'application a besoin, pas ce qu'un fournisseur sait
- * faire. C'est ce qui permet de remplacer les adaptateurs UN PAR UN — d'avoir
- * Supabase pour les notes et le local pour le reste, en production, sans big
- * bang. `composeBackend` du socle existe pour cette manœuvre exacte.
- *
- * TOUT EST ASYNCHRONE, MÊME CE QUI NE L'EST PAS EN LOCAL.
- *
- * La première version de ce port était synchrone : `load(): NotesSnapshot`.
- * C'était l'implémentation locale — `localStorage`, donc synchrone — dessinée
- * en interface. Elle rendait le port **inimplémentable par un adaptateur
- * distant**, ce qui n'est apparu qu'en écrivant celui de Supabase. Un port
- * dessiné sur une seule implémentation n'est pas un port : c'est cette
- * implémentation, avec un autre nom.
- *
- * Le prix est réel — l'écran doit gérer un état de chargement même en local,
- * où il n'y en a pas — et il est plus faible que celui de la découverte
- * tardive : à ce moment-là, ce sont les écrans qu'il faut reprendre.
+ * LE PORT DU CARNET (contrat `ports.md`). Même forme que le port `notes` du
+ * squelette, dont il prend la place : des mutations, pas un instantané, et
+ * tout asynchrone, même en local — un adaptateur distant doit pouvoir
+ * l'implémenter sans que les écrans changent.
  */
-/**
- * DES MUTATIONS, PAS UN INSTANTANÉ. La première version de ce port n'avait
- * que `save(snapshot)` : l'adaptateur Supabase effaçait TOUTES les lignes de
- * l'utilisateur puis réinsérait la liste, à chaque note ajoutée — son propre
- * commentaire annonçait la limite. `add` et `remove` disent ce qui a changé ;
- * le distant touche une ligne, le local réécrit son magasin (il ne sait rien
- * faire d'autre, et ça ne coûte rien).
- *
- * `import` est le seul chemin qui REMPLACE tout : c'est celui de l'écran de
- * réglages, et il rend ce qu'il a retenu — validé par le schéma, comme ce qui
- * vient du disque ou du réseau.
- */
-export interface NotesRepository {
-  load(): Promise<NotesSnapshot>;
-  add(note: Note): Promise<void>;
+export interface CarnetRepository {
+  load(): Promise<CarnetInstantane>;
+  add(conversion: ConversionEnregistree): Promise<void>;
+  rename(id: string, libelle: string): Promise<void>;
   remove(id: string): Promise<void>;
   clear(): Promise<void>;
-  /** L'état courant en JSON, pour l'export de l'écran de réglages. */
+  /** L'état courant en JSON (`{ v, data }`), pour l'export des réglages. */
   export(): Promise<string | null>;
-  /** Remplace tout par un JSON exporté, validé ; rejette un fichier illisible. */
-  import(json: string): Promise<NotesSnapshot>;
+  /** Remplace tout par un export valide ; rejette un fichier illisible. */
+  import(json: string): Promise<CarnetInstantane>;
 }
 
 export interface Backend {
-  notes: NotesRepository;
+  carnet: CarnetRepository;
 }

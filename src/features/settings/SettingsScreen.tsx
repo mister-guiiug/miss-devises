@@ -7,9 +7,8 @@ import { SegmentedControl } from '@mister-guiiug/dev-pwa-config/react/segmented-
 import { ChromePrefs } from '@mister-guiiug/dev-pwa-config/react/chrome-prefs';
 import { dateSlug, downloadText } from '@mister-guiiug/dev-pwa-config/download';
 import { useI18n } from '../../i18n/index.ts';
-import { backend, coverage } from '../../backend/index.ts';
-import { useNotes } from '../home/store.ts';
-import { configReport } from '../../app/config/env.ts';
+import { backend } from '../../backend/index.ts';
+import { useCarnet } from '../carnet/store.ts';
 
 /**
  * L'écran de réglages : le seul écran que TOUTES les apps de la famille ont, et
@@ -17,44 +16,44 @@ import { configReport } from '../../app/config/env.ts';
  * (`ChromePrefs`, `AppVersion`, `FamilyApps`, `ConfirmDialog`, `downloadText`)
  * et non l'écran. Onze apps en ont un, de 142 à 728 lignes.
  *
- * Ce qu'il montre ici et qui manque partout ailleurs : **le diagnostic de
- * configuration**. Une app déjà en ligne doit pouvoir dire ce qui lui manque et
- * sur quoi elle est retombée, au lieu de laisser croire qu'un compte distant
- * fonctionne alors que tout est resté sur l'appareil.
- *
  * IMPORTER, PAS SEULEMENT EXPORTER. Quinze apps du parc savent exporter ;
  * presque aucune ne sait relire son propre fichier à l'écran — et c'est le
  * seul moyen de changer d'appareil sans compte. Le fichier passe par le port
  * (`versioned-store.import()` en local), donc par le schéma : un fichier
- * d'une autre app ou tronqué est refusé sans rien effacer. Quand des notes
- * existent, l'import demande confirmation, parce qu'il REMPLACE.
+ * d'une autre app ou tronqué est refusé sans rien effacer. Quand le carnet
+ * contient déjà des conversions, l'import demande confirmation, parce qu'il
+ * REMPLACE.
  */
 export function SettingsScreen() {
   const { t, m, fmt, locale, setLocale, locales } = useI18n();
-  const clear = useNotes(state => state.clear);
-  const importJson = useNotes(state => state.importJson);
-  const notes = useNotes(state => state.notes);
-  const ready = useNotes(state => state.ready);
-  const load = useNotes(state => state.load);
-  const error = useNotes(state => state.error);
+  const clear = useCarnet(state => state.clear);
+  const importJson = useCarnet(state => state.importJson);
+  const conversions = useCarnet(state => state.conversions);
+  const ready = useCarnet(state => state.ready);
+  const load = useCarnet(state => state.load);
+  const error = useCarnet(state => state.error);
   const [confirming, setConfirming] = useState(false);
 
   // Ouvert directement (lien profond, rechargement), cet écran ne sait pas si
-  // des notes existent tant que le port n'a pas été lu : sans cette lecture,
+  // des conversions existent tant que le port n'a pas été lu : sans cette lecture,
   // l'import remplacerait sans demander. La première version le faisait.
   useEffect(() => {
     if (!ready) void load();
   }, [ready, load]);
   const fileInput = useRef<HTMLInputElement>(null);
-  /** Le fichier lu, en attente de confirmation parce que des notes existent. */
+  /** Le fichier lu, en attente de confirmation parce que le carnet n'est pas vide. */
   const [pending, setPending] = useState<string | null>(null);
   const [imported, setImported] = useState<number | null>(null);
   const [failed, setFailed] = useState(false);
 
-  const exportNotes = async () => {
-    const json = await backend.notes.export();
+  const exporter = async () => {
+    const json = await backend.carnet.export();
     if (json)
-      downloadText(json, `notes-${dateSlug()}.json`, 'application/json');
+      downloadText(
+        json,
+        `miss-devises-carnet-${dateSlug()}.json`,
+        'application/json'
+      );
   };
 
   const runImport = async (json: string) => {
@@ -71,7 +70,7 @@ export function SettingsScreen() {
     event.target.value = '';
     if (!file) return;
     const json = await file.text();
-    if (notes.length > 0) setPending(json);
+    if (conversions.length > 0) setPending(json);
     else await runImport(json);
   };
 
@@ -93,26 +92,9 @@ export function SettingsScreen() {
       </Card>
 
       <Card>
-        <CardHeader
-          title={t('settings.backend')}
-          subtitle={coverage.kind ?? t('settings.backendLocal')}
-        />
-        <ul className="m-0 list-none p-0 text-sm">
-          {configReport().map(entry => (
-            <li key={entry.name} className="flex justify-between gap-3 py-1">
-              <code>{entry.name}</code>
-              <span style={{ color: 'var(--dwc-text-soft)' }}>
-                {entry.present ? '✓' : entry.fallback}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </Card>
-
-      <Card>
         <CardHeader title={t('settings.data')} />
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => void exportNotes()}>
+          <Button variant="outline" onClick={() => void exporter()}>
             {t('settings.export')}
           </Button>
           <Button variant="outline" onClick={() => fileInput.current?.click()}>

@@ -18,9 +18,11 @@ jobs:
   ci:
     uses: mister-guiiug/dev-pwa-config/.github/workflows/pwa-ci.yml@v6
     with:
-      # Les e2e du squelette tournent en CI : c'est lui qui doit prouver que la
-      # suite marche, avant qu'une app ne la copie.
+      # Les e2e tournent en CI, sur le bureau ET sur un téléphone : l'app sert
+      # en voyage, et c'est sur un écran de poche qu'elle doit tenir (CR-005).
+      # `mobile-chrome` réutilise Chromium, rien de plus à installer.
       run-e2e: true
+      e2e-project: chromium mobile-chrome
       # Second avis TypeScript 7, NON BLOQUANT. La 6 reste la référence : c'est
       # elle que typescript-eslint résout, et il refuse la 7.0 par une assertion
       # à l'import. Le jour où typescript-eslint#10940 se ferme, cette entrée

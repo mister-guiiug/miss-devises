@@ -22,6 +22,18 @@ export function AboutScreen() {
         <CardHeader title={t('about.title')} subtitle={t('app.tagline')} />
         <p className="m-0">{t('about.what')}</p>
       </Card>
+      {/* La provenance des taux, la raison des dessins et ce qui part chez un
+          tiers : les trois choses que la constitution demande de dire
+          (principes I et III, contrainte de confidentialité). */}
+      <Card>
+        <CardHeader title={t('about.sources')} />
+        <p className="m-0">{t('about.sourcesBody')}</p>
+      </Card>
+      <Card>
+        <CardHeader title={t('about.billets')} />
+        <p className="m-0">{t('about.billetsBody')}</p>
+        <p className="m-0 mt-2">{t('about.vieprivee')}</p>
+      </Card>
     </FamilyAbout>
   );
 }

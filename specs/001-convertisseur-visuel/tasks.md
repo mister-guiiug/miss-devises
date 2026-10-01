@@ -13,51 +13,56 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
 
 - [x] T001 Reformater `.claude/launch.json` : le générateur l'écrit hors du
       format de Prettier, et la première CI de `main` est rouge pour cela seul.
-- [ ] T002 Retirer l'exemple des notes, la couche Supabase et l'écran de compte
+- [x] T002 Retirer l'exemple des notes, la couche Supabase et l'écran de compte
       (R11) : `src/backend/supabase.ts`, `src/backend/queued-notes.ts`,
       `src/backend/notes-file.ts`, `src/auth/`, `src/features/account/`,
       `src/features/home/`, `supabase/`, `.github/workflows/supabase-*.yml`,
       `@supabase/supabase-js`, les variables Supabase de `.env.example` et de
       `src/app/config/env.ts`, les routes et l'entrée de navigation.
-- [ ] T003 Retirer ce qui présente encore le squelette : `<title>` et
+- [x] T003 Retirer ce qui présente encore le squelette : `<title>` et
       `og:title` d'`index.html`, `content/accueil.md`, les guides
       `content/pages/` du squelette.
-- [ ] T004 Ouvrir `connect-src` aux trois origines de R10.
+- [x] T004 Ouvrir `connect-src` aux trois origines de R10.
 
 ## Phase 2 : fondations (bloquent tous les récits)
 
-- [ ] T005 [P] Tests puis `src/domain/money.ts` : `lireMontant` (R4),
+- [x] T005 [P] Tests puis `src/domain/money.ts` : `lireMontant` (R4),
       `decimalesDe` (R3), formats.
-- [ ] T006 [P] Tests puis `src/domain/convert.ts` : euro ↔ devise, sans
+- [x] T006 [P] Tests puis `src/domain/convert.ts` : euro ↔ devise, sans
       arrondi interne.
 - [ ] T007 [P] `src/data/coupures.json` (41 devises, daté, sourcé) et
       `src/domain/currencies.ts`, avec les tests de forme : valeurs triées et
       uniques, couleurs valides, décimales égales à celles d'`Intl`, au moins
       une source par devise.
-- [ ] T008 Tests puis `src/rates/sources.ts` : schémas zod du contrat, délai de
+- [x] T008 Tests puis `src/rates/sources.ts` : schémas zod du contrat, délai de
       8 s, repli jsDelivr → Cloudflare Pages.
-- [ ] T009 Tests puis `src/rates/cache.ts` (`idb` du socle) et
+- [x] T009 Tests puis `src/rates/cache.ts` (`idb` du socle) et
       `src/rates/service.ts` : source par devise, dernier taux sans réseau,
-      fraîcheur, liste des devises (R9).
-- [ ] T010 `src/rates/store.ts` (Zustand) : hydratation depuis le cache au
+      fraîcheur, liste des devises (R9). Fait sans `cache.ts` : le service
+      reçoit l'`idb` du socle en paramètre, et les tests un faux en mémoire.
+- [x] T010 `src/rates/store.ts` (Zustand) : hydratation depuis le cache au
       démarrage, rafraîchissement au plus horaire et au retour en ligne.
-- [ ] T011 Tests puis le port `Carnet` : `src/backend/ports.ts`,
+- [x] T011 Tests puis le port `Carnet` : `src/backend/ports.ts`,
       `src/backend/local.ts` (`versioned-store`), export et import.
-- [ ] T012 [P] Tests puis les préférences (`versioned-store`).
+- [x] T012 [P] Tests puis les préférences (`versioned-store`).
 
 **Point de contrôle** : règles et taux testés ; aucun écran encore.
 
 ## Phase 3 : récit 1, convertir dans les deux sens (P1) — MVP
 
-- [ ] T013 [R1] e2e `@critical` (réseau simulé par les routes Playwright) :
+- [x] T013 [R1] e2e `@critical` (réseau simulé par les routes Playwright) :
       200 EGP → 3,40 € ; 20 € → 1 176,60 EGP ; inversion ; source et date
-      affichées. Rouge d'abord.
-- [ ] T014 [R1] Tests puis `src/features/convert/ConvertScreen.tsx` : deux
+      affichées. Rouge d'abord. Écrit après l'écran : vu rouge en faussant le
+      taux simulé (3,33 au lieu de 3,40), puis rétabli. Échap ferme le volet
+      des devises et rend le focus, parcours clavier.
+- [x] T014 [R1] Tests puis `src/features/convert/ConvertScreen.tsx` : deux
       champs liés, inversion, ligne de taux (source, date, avertissement),
-      saisie invalide signalée sans être effacée.
-- [ ] T015 [P] [R1] Tests puis `src/features/convert/CurrencyPicker.tsx` :
+      saisie invalide signalée sans être effacée. L'accueil est
+      `src/features/home/HomeScreen.tsx` : l'écran, puis le pied de page de la
+      famille, que `pwa-doctor` reconnaît au nom du fichier.
+- [x] T015 [P] [R1] Tests puis `src/features/convert/CurrencyPicker.tsx` :
       recherche par code ou nom, sans accents, récentes en tête.
-- [ ] T016 [R1] Messages fr et en (`src/i18n/messages.ts`).
+- [x] T016 [R1] Messages fr et en (`src/i18n/messages.ts`).
 
 ## Phase 4 : récit 2, voir les billets et les pièces (P1) — MVP
 

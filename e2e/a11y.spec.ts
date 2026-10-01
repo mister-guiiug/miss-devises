@@ -6,8 +6,15 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { expectNoA11yViolations } from '@mister-guiiug/dev-pwa-config/playwright-a11y';
+import { simulerTaux } from './taux.ts';
 
 test.describe('@a11y accessibilité', () => {
+  // La conversion se vérifie AVEC un taux : sans lui, axe ne verrait que
+  // l'écran d'attente.
+  test.beforeEach(async ({ page }) => {
+    await simulerTaux(page);
+  });
+
   test("page d'accueil sans violation WCAG A/AA", async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('[data-dwc="app-shell-skip"]')).toBeAttached();
