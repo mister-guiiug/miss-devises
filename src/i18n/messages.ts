@@ -95,6 +95,14 @@ const fr = {
       'Cette période n’a pas encore été consultée : elle sera disponible hors ligne une fois chargée.',
     incomplete: 'Quelques dates manquent : la courbe passe au-dessus.',
     courbe: 'Évolution de 1 € en {code} sur {periode}',
+    periode: 'Période',
+    le: 'le {date}',
+    hausse: 'en hausse',
+    baisse: 'en baisse',
+    stable: 'stable',
+    description:
+      '{nombre} points du {debut} au {fin} : de {premier} à {dernier}, plus bas {min}, plus haut {max}.',
+    sourceDates: '{source}, du {debut} au {fin}',
   },
   carnet: {
     title: 'Carnet',
@@ -232,6 +240,14 @@ const en: typeof fr = {
       'This period has not been viewed yet: it will be available offline once loaded.',
     incomplete: 'A few dates are missing: the curve skips over them.',
     courbe: '€1 in {code} over {periode}',
+    periode: 'Period',
+    le: 'on {date}',
+    hausse: 'rising',
+    baisse: 'falling',
+    stable: 'flat',
+    description:
+      '{nombre} points from {debut} to {fin}: from {premier} to {dernier}, low {min}, high {max}.',
+    sourceDates: '{source}, from {debut} to {fin}',
   },
   carnet: {
     title: 'Log',

@@ -97,26 +97,46 @@ export function decimalesDe(code: string): number {
  * Arrondi au plus proche, demi vers le haut, à `decimales` chiffres. Le
  * décalage par la notation exponentielle évite le piège du flottant :
  * `1.005 * 100` vaut 100,49999…, et un `Math.round` direct rendrait 1,00.
+ *
+ * L'EXPOSANT S'AJOUTE, IL NE SE COLLE PAS : JavaScript écrit lui-même `1e-7`
+ * ou `1e+21`, et « 1e-7 » suivi de « e2 » n'est plus un nombre.
  */
 export function arrondir(montant: number, decimales: number): number {
-  const decale = Math.round(Number(`${montant}e${decimales}`));
-  return Number(`${decale}e-${decimales}`);
+  if (!Number.isFinite(montant)) return montant;
+  return decaler(Math.round(decaler(montant, decimales)), -decimales);
+}
+
+/** `x × 10^n`, par l'exposant écrit et non par une multiplication. */
+function decaler(x: number, n: number): number {
+  const [mantisse, exposant = '0'] = String(x).split('e');
+  return Number(`${mantisse}e${Number(exposant) + n}`);
 }
 
 /**
  * Le montant tel qu'on le lit : arrondi À L'AFFICHAGE seulement, aux
  * décimales de la devise, dans le format de la langue (constitution,
- * principe I).
+ * principe I). `signe` : un écart, qui montre son « + » comme son « - ».
  */
 export function formaterMontant(
   montant: number,
   code: string,
-  langue: Langue
+  langue: Langue,
+  { signe = false }: { signe?: boolean } = {}
 ): string {
   const decimales = decimalesDe(code);
   return formatCurrency(arrondir(montant, decimales), langue, code, {
     minimumFractionDigits: decimales,
     maximumFractionDigits: decimales,
+    ...(signe ? { signDisplay: 'exceptZero' } : {}),
+  });
+}
+
+/** Une variation (0,047 pour +4,7 %), signée, à une décimale. */
+export function formaterPourcentage(fraction: number, langue: Langue): string {
+  return formatNumber(fraction, langue, {
+    style: 'percent',
+    maximumFractionDigits: 1,
+    signDisplay: 'exceptZero',
   });
 }
 

@@ -66,10 +66,13 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
 
 ## Phase 4 : récit 2, voir les billets et les pièces (P1) — MVP
 
-- [ ] T017 [P] [R2] Tests puis `src/domain/decompose.ts` (R5).
-- [ ] T018 [P] [R2] Tests puis `src/features/money/Banknote.tsx` et
+- [x] T017 [P] [R2] Tests puis `src/domain/decompose.ts` (R5). Écrire ces tests
+      a révélé que `arrondir` rendait NaN en notation exponentielle (« 0,0000001 »
+      affichait un champ vide) : corrigé, avec son test.
+- [x] T018 [P] [R2] Tests puis `src/features/money/Banknote.tsx` et
       `Coin.tsx` (R6) : proportions, couleur, texte contrasté, libellé
-      accessible.
+      accessible. Le contraste WCAG est écrit ici (`src/domain/contraste.ts`) :
+      le socle n'en exporte pas. Bimétal : le centre, puis l'anneau.
 - [ ] T019 [R2] `src/features/money/MoneySheet.tsx` (feuille du socle) : billets
       et pièces avec contre-valeur, bascule de sens, composition du montant,
       devise sans coupures.
@@ -79,11 +82,17 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
 
 ## Phase 5 : récit 3, comparer avec l'historique (P2)
 
-- [ ] T021 [P] [R3] Tests puis `src/domain/history.ts` : statistiques,
-      comparaison à une date, grille d'échantillonnage (R2).
-- [ ] T022 [R3] Tests puis `src/features/history/HistoryScreen.tsx` : périodes,
+- [x] T021 [P] [R3] Tests puis `src/domain/history.ts` : statistiques,
+      comparaison à une date, grille d'échantillonnage (R2). La série de la BCE
+      finit désormais sur le taux du jour : lue avant 16 h, elle s'arrêtait à
+      la veille jusqu'au soir.
+- [x] T022 [R3] Tests puis `src/features/history/HistoryScreen.tsx` : périodes,
       courbe (géométrie `sparkline` du socle), `Stat`, comparaison, hors ligne.
-- [ ] T023 [R3] e2e de l'historique (réseau simulé).
+      Le contrôle axe a trouvé un `<dl>` invalide dans le `Stat` du socle :
+      corrigé en amont (dev-pwa-config#415) ; la règle `definition-list` est
+      écartée de ce seul contrôle jusqu'à la montée.
+- [x] T023 [R3] e2e de l'historique (réseau simulé) : un an de BCE en une
+      requête (CR-004), comparaison du montant, changement de période.
 
 ## Phase 6 : récit 4, garder une conversion avec un libellé (P2)
 

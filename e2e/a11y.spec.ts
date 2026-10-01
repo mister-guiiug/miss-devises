@@ -22,6 +22,20 @@ test.describe('@a11y accessibilité', () => {
     await expectNoA11yViolations(page, AxeBuilder, expect);
   });
 
+  // Axe ne juge que ce qui est rendu : on attend la courbe et ses chiffres,
+  // pas l'écran de chargement.
+  test('historique sans violation, courbe chargée', async ({ page }) => {
+    await page.goto('/historique');
+    await expect(page.getByText('Plus haut', { exact: true })).toBeVisible();
+    // EXCEPTION TEMPORAIRE, UNE RÈGLE SEULEMENT : le `Stat` du socle 6.21
+    // rend un `<dl>` invalide (un `<div>` autour du seul `<dt>`). Corrigé en
+    // amont par dev-pwa-config#415 ; retirer l'option à la montée qui
+    // l'embarque. Tout le reste de l'écran reste contrôlé.
+    await expectNoA11yViolations(page, AxeBuilder, expect, {
+      disableRules: ['definition-list'],
+    });
+  });
+
   test('À propos : coquille + FamilyAbout sans violation', async ({ page }) => {
     await page.goto('/a-propos');
     await expect(page.locator('[data-dwc="family-about"]')).toBeVisible();

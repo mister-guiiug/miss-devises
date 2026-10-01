@@ -4,6 +4,7 @@ import {
   decimalesDe,
   formaterDate,
   formaterMontant,
+  formaterPourcentage,
   formaterTaux,
   lireMontant,
 } from './money.ts';
@@ -72,6 +73,14 @@ describe('arrondir', () => {
     expect(arrondir(1.005, 2)).toBe(1.01);
     expect(arrondir(1176.6, 0)).toBe(1177);
   });
+
+  // `String(1e-7)` s'écrit « 1e-7 » : collé à « e2 », il donnait « 1e-7e2 »,
+  // soit NaN, et « NaN € » à l'écran pour une saisie de « 0,0000001 ».
+  it('tient les nombres que JavaScript écrit en notation exponentielle', () => {
+    expect(arrondir(1e-7, 2)).toBe(0);
+    expect(arrondir(1.5e-7, 7)).toBe(2e-7);
+    expect(arrondir(1e21, 2)).toBe(1e21);
+  });
 });
 
 describe('formaterMontant : arrondi à l’affichage, aux décimales de la devise', () => {
@@ -79,6 +88,10 @@ describe('formaterMontant : arrondi à l’affichage, aux décimales de la devis
     expect(lisible(formaterMontant(3.39963, 'EUR', 'fr'))).toBe('3,40 €');
     expect(lisible(formaterMontant(1176.6, 'EGP', 'fr'))).toBe('1 176,60 EGP');
     expect(lisible(formaterMontant(1234.5, 'JPY', 'fr'))).toBe('1 235 JPY');
+  });
+
+  it('un montant infime s’affiche à zéro, pas en NaN', () => {
+    expect(lisible(formaterMontant(1.7e-9, 'EUR', 'fr'))).toBe('0,00 €');
   });
 
   it('en anglais', () => {
@@ -102,5 +115,22 @@ describe('formaterTaux : cinq chiffres significatifs', () => {
     [0.016997, 'fr', '0,016997'],
   ] as const)('%d en %s : %s', (taux, langue, attendu) => {
     expect(lisible(formaterTaux(taux, langue))).toBe(attendu);
+  });
+});
+
+describe('les écarts : un signe, toujours', () => {
+  it('formaterMontant signé', () => {
+    expect(
+      lisible(formaterMontant(-0.1604, 'EUR', 'fr', { signe: true }))
+    ).toBe('-0,16 €');
+    expect(lisible(formaterMontant(53, 'EGP', 'fr', { signe: true }))).toBe(
+      '+53,00 EGP'
+    );
+  });
+
+  it('formaterPourcentage : une décimale, signé, zéro sans signe', () => {
+    expect(lisible(formaterPourcentage(0.0472, 'fr'))).toBe('+4,7 %');
+    expect(formaterPourcentage(-0.0472, 'en')).toBe('-4.7%');
+    expect(lisible(formaterPourcentage(0.00004, 'fr'))).toBe('0 %');
   });
 });

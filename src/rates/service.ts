@@ -128,6 +128,22 @@ export function bornesBce(
   return { debut: iso(debut), fin: iso(debutDuJour(maintenant)) };
 }
 
+/**
+ * La série prolongée du taux du jour, s'il est plus récent que son dernier
+ * point. Jamais l'inverse : un instantané plus ancien ne s'ajoute pas.
+ */
+function raccorder(
+  points: PointSerie[],
+  code: string,
+  instantane: Instantane | undefined
+): PointSerie[] {
+  const taux = instantane?.taux[code];
+  if (!instantane || taux === undefined) return points;
+  const dernier = points.at(-1)?.date;
+  if (dernier !== undefined && dernier >= instantane.date) return points;
+  return [...points, { date: instantane.date, taux }];
+}
+
 /** Exécute des tâches avec au plus `n` en cours. */
 async function parPaquets<T, R>(
   elements: T[],
@@ -202,11 +218,18 @@ export function createServiceTaux({
       if (sourceDe(code, etat.bce) === 'bce') {
         const { debut, fin } = bornesBce(periode, maintenantDate);
         const cle = `serie:bce:${code}:${debut}:${fin}`;
-        const gardee = await cache.get<PointSerie[]>(cle);
-        if (gardee) return { source: 'bce', points: gardee, complete: true };
-        const points = await lireSerieBce(code, debut, fin, recuperer, signal);
-        await cache.set(cle, points);
-        return { source: 'bce', points, complete: true };
+        let points = await cache.get<PointSerie[]>(cle);
+        if (!points) {
+          points = await lireSerieBce(code, debut, fin, recuperer, signal);
+          await cache.set(cle, points);
+        }
+        // Lue avant la publication de 16 h, la série gardée s'arrête à la
+        // veille : le taux du jour la prolonge, sans toucher au cache.
+        return {
+          source: 'bce',
+          points: raccorder(points, code, etat.bce),
+          complete: true,
+        };
       }
 
       // Le marché : chaque date est un fichier complet, gardé une fois pour
@@ -230,16 +253,10 @@ export function createServiceTaux({
         const taux = jour?.taux[code];
         if (jour && taux !== undefined) points.push({ date: jour.date, taux });
       }
-      const duJour = etat.marche?.taux[code];
-      if (etat.marche && duJour !== undefined) {
-        if (points.at(-1)?.date !== etat.marche.date) {
-          points.push({ date: etat.marche.date, taux: duJour });
-        }
-      }
       return {
         source: 'marche',
-        points,
-        complete: jours.every(Boolean) && duJour !== undefined,
+        points: raccorder(points, code, etat.marche),
+        complete: jours.every(Boolean) && etat.marche?.taux[code] !== undefined,
       };
     },
   };

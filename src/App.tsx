@@ -5,7 +5,7 @@ import {
   Routes,
   useLocation,
 } from 'react-router-dom';
-import { Coins, Info, Settings } from 'lucide-react';
+import { ChartLine, Coins, Info, Settings } from 'lucide-react';
 import { useEffect } from 'react';
 import { AppShell } from '@mister-guiiug/dev-pwa-config/react/app-shell';
 import { ObservabilityBoundary } from '@mister-guiiug/dev-pwa-config/react/error-boundary';
@@ -16,6 +16,7 @@ import { AppUpdates } from '@mister-guiiug/dev-pwa-config/react/app-updates';
 import { registerSW } from 'virtual:pwa-register';
 import { useI18n } from './i18n/index.ts';
 import { HomeScreen } from './features/home/HomeScreen.tsx';
+import { HistoryScreen } from './features/history/HistoryScreen.tsx';
 import { SettingsScreen } from './features/settings/SettingsScreen.tsx';
 import { AboutScreen } from './features/about/AboutScreen.tsx';
 import { useTaux } from './rates/store.ts';
@@ -75,6 +76,11 @@ function Shell() {
       end: true,
     },
     {
+      href: '/historique',
+      label: t('nav.history'),
+      icon: <ChartLine aria-hidden="true" />,
+    },
+    {
       href: '/reglages',
       label: t('nav.settings'),
       icon: <Settings aria-hidden="true" />,
@@ -96,6 +102,7 @@ function Shell() {
    */
   const titles: Record<string, string> = {
     '/': t('app.name'),
+    '/historique': t('history.title'),
     '/reglages': t('settings.title'),
     '/a-propos': t('about.title'),
   };
@@ -150,6 +157,7 @@ function Shell() {
     >
       <Routes>
         <Route path="/" element={<HomeScreen />} />
+        <Route path="/historique" element={<HistoryScreen />} />
         <Route path="/reglages" element={<SettingsScreen />} />
         <Route path="/a-propos" element={<AboutScreen />} />
         {/* Le repli de route rend l'accueil ; le repli de SERVEUR est le

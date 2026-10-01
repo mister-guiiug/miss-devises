@@ -141,6 +141,33 @@ describe('le service : cache d’abord, réseau ensuite', () => {
     expect(recuperer).toHaveBeenCalledTimes(1);
   });
 
+  // La BCE publie vers 16 h. Une série lue le matin s'arrête à la veille, et
+  // sa clé (datée du jour) la sert telle quelle jusqu'au soir : sans ce
+  // raccord, l'historique dirait « aujourd'hui » avec le taux d'hier, pendant
+  // que l'écran Convertir montre celui du jour.
+  it('une série de la BCE finit sur le taux du jour, même gardée avant sa publication', async () => {
+    const cache = cacheEnMemoire();
+    const recuperer = vi.fn<Recuperer>(async () => ({
+      base: 'EUR',
+      start_date: '2025-10-01',
+      end_date: '2026-09-30',
+      rates: { '2025-10-01': { USD: 1.17 }, '2026-09-30': { USD: 1.07 } },
+    }));
+    const service = createServiceTaux({
+      cache,
+      recuperer,
+      maintenant: () => MAINTENANT,
+    });
+    const hier = { ...bce, date: '2026-09-30', taux: { USD: 1.07 } };
+    const matin = await service.serie('USD', '1A', { bce: hier, marche });
+    expect(matin.points.at(-1)).toEqual({ date: '2026-09-30', taux: 1.07 });
+
+    const soir = await service.serie('USD', '1A', { bce, marche });
+    expect(soir.points.at(-1)).toEqual({ date: '2026-10-01', taux: 1.0812 });
+    expect(soir.points).toHaveLength(3);
+    expect(recuperer).toHaveBeenCalledTimes(1);
+  });
+
   it('une série de marché lit chaque date une fois, et dit si elle est complète', async () => {
     const cache = cacheEnMemoire();
     const recuperer = vi.fn<Recuperer>(async (url: string) => {
