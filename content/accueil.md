@@ -12,7 +12,7 @@ Pour les 29 devises qu'elle publie, les taux de référence de la Banque central
 
 ## Vos données
 
-Le carnet et les réglages restent dans votre navigateur, sans compte, et s'exportent en fichier. Pour lire un taux, l'application interroge api.frankfurter.dev, cdn.jsdelivr.net et currency-api.pages.dev, qui voient l'adresse IP de l'appareil et rien d'autre. Sentry n'est chargé que si un DSN est posé au build ; PostHog, dans son nuage européen, ne mesure l'audience qu'après accord dans un bandeau.
+Le carnet et les réglages restent dans votre navigateur, sans compte, et s'exportent en fichier. Pour lire un taux, l'application interroge api.frankfurter.dev, cdn.jsdelivr.net et currency-api.pages.dev, qui voient l'adresse IP de l'appareil, les dates demandées et, pour un historique de la BCE, le code de la devise ; jamais un montant ni un libellé. Sentry n'est chargé que si un DSN est posé au build ; PostHog, dans son nuage européen, ne mesure l'audience qu'après accord dans un bandeau.
 
 ## Prix
 

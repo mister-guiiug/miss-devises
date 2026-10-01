@@ -168,7 +168,7 @@ const fr = {
     billetsBody:
       'Ils sont dessinés à leur couleur et à leurs proportions, jamais reproduits : la reproduction des billets est encadrée, voire interdite, par les banques centrales.',
     vieprivee:
-      'Le carnet et les réglages restent sur cet appareil. Pour lire un taux, l’application interroge api.frankfurter.dev, cdn.jsdelivr.net et currency-api.pages.dev, qui voient l’adresse IP de l’appareil et rien d’autre.',
+      'Le carnet et les réglages restent sur cet appareil. Pour lire un taux, l’application interroge api.frankfurter.dev, cdn.jsdelivr.net et currency-api.pages.dev, qui voient l’adresse IP de l’appareil, les dates demandées et, pour un historique de la BCE, le code de la devise ; jamais un montant ni un libellé.',
   },
 };
 
@@ -327,7 +327,7 @@ const en: typeof fr = {
     billetsBody:
       'They are drawn in their colour and proportions, never reproduced: central banks restrict, or forbid, banknote reproduction.',
     vieprivee:
-      'The log and the settings stay on this device. To read a rate, the app queries api.frankfurter.dev, cdn.jsdelivr.net and currency-api.pages.dev, which see the device’s IP address and nothing else.',
+      'The log and the settings stay on this device. To read a rate, the app queries api.frankfurter.dev, cdn.jsdelivr.net and currency-api.pages.dev, which see the device’s IP address, the requested dates and, for an ECB history, the currency code; never an amount or a label.',
   },
 };
 

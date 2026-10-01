@@ -122,13 +122,17 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
 
 ## Phase 8 : finitions
 
-- [ ] T029 [P] Icône (`public/favicon.svg`), icônes PWA (`npm run icons`),
-      couleurs de marque (`src/index.css`).
-- [ ] T030 [P] Image de partage et captures (`npm run screenshots`).
-- [ ] T031 [P] README : fonctionnalités, sources des taux et des coupures,
-      section « Confidentialité » (R10).
-- [ ] T032 e2e `@a11y` (axe) sur chaque écran, thèmes clair et sombre ;
-      vérification à 320 px et 390 × 664.
+- [x] T029 [P] Icône (`public/favicon.svg`), icônes PWA (`npm run icons`),
+      couleurs de marque (`src/index.css`) : l'or des pièces, `#a16207`, qu'aucune
+      app de la famille ne porte ; 4,9 contre le blanc, 4,6 contre le fond.
+- [x] T030 [P] Image de partage et captures (`npm run screenshots`), mises en
+      scène par `scripts/captures.mjs` : le volet ouvert, l'historique comparé.
+- [x] T031 [P] README : fonctionnalités, sources des taux et des coupures,
+      section « Confidentialité » (R10). Elle a corrigé une affirmation des
+      textes de l'app : les sources voient aussi les dates et, pour un
+      historique de la BCE, le code de la devise.
+- [x] T032 e2e `@a11y` (axe) sur chaque écran, thèmes clair et sombre ;
+      vérification à 320 px et 390 × 664 (dans le navigateur, à chaque récit).
 - [ ] T033 Poids relevé en CI ; budget reposé à +10 % si la mesure le demande.
 - [ ] T034 Protection de `main` : `node scripts/apply-rulesets.mjs miss-devises`
       depuis le socle, une fois les contextes de CI observés.

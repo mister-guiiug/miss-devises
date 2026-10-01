@@ -13,7 +13,7 @@ const log = createLogger('config');
  * et dans une CI sans secrets — ce que les cinq apps local-first font par
  * nature et que les autres doivent savoir faire.
  *
- * Tout est OPTIONNEL ici parce que ce squelette démarre sans rien. Une app qui
+ * Tout est OPTIONNEL ici parce que l'application démarre sans rien. Une app qui
  * exige une variable la rend obligatoire dans ce schéma ET la déclare dans
  * `config/env.manifest.json`, d'où dérivent `.env.example` et le `required-env`
  * du déploiement.
