@@ -1,10 +1,6 @@
-export type Metal =
-  | 'cuivre'
-  | 'laiton'
-  | 'argent'
-  | 'bimetal-or-argent'
-  | 'bimetal-argent-or'
-  | 'autre';
+import type { Metal } from '../../data/coupures.ts';
+
+export type { Metal };
 
 /**
  * Une teinte par famille de métal, pas par alliage : l'œil distingue le

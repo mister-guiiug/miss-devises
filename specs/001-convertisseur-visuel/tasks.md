@@ -30,10 +30,13 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
       `decimalesDe` (R3), formats.
 - [x] T006 [P] Tests puis `src/domain/convert.ts` : euro ↔ devise, sans
       arrondi interne.
-- [ ] T007 [P] `src/data/coupures.json` (41 devises, daté, sourcé) et
+- [x] T007 [P] `src/data/coupures.json` (41 devises, daté, sourcé) et
       `src/domain/currencies.ts`, avec les tests de forme : valeurs triées et
       uniques, couleurs valides, décimales égales à celles d'`Intl`, au moins
-      une source par devise.
+      une source par devise. Relevé par un agent, revu à la main (EUR, USD,
+      GBP, CHF, JPY, EGP), documenté dans `coupures.md`. Trois corrections :
+      bimétal permuté (le relevé nommait l'anneau d'abord), IDR et HUF à 0
+      décimale comme `Intl`, et R5 rectifiée (MUR n'est pas canonique).
 - [x] T008 Tests puis `src/rates/sources.ts` : schémas zod du contrat, délai de
       8 s, repli jsDelivr → Cloudflare Pages.
 - [x] T009 Tests puis `src/rates/cache.ts` (`idb` du socle) et
@@ -73,10 +76,12 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
       `Coin.tsx` (R6) : proportions, couleur, texte contrasté, libellé
       accessible. Le contraste WCAG est écrit ici (`src/domain/contraste.ts`) :
       le socle n'en exporte pas. Bimétal : le centre, puis l'anneau.
-- [ ] T019 [R2] `src/features/money/MoneySheet.tsx` (feuille du socle) : billets
+- [x] T019 [R2] `src/features/money/MoneySheet.tsx` (feuille du socle) : billets
       et pièces avec contre-valeur, bascule de sens, composition du montant,
-      devise sans coupures.
-- [ ] T020 [R2] e2e `@critical` du volet.
+      devise sans coupures. Le jeu de données se charge à l'ouverture (un
+      morceau à part, précaché) ; une contre-valeur qui s'arrondit à zéro se dit
+      « moins de 0,01 € ».
+- [x] T020 [R2] e2e `@critical` du volet, et axe volet ouvert.
 
 **Point de contrôle** : le MVP (récits 1 et 2) se livre et se déploie seul.
 

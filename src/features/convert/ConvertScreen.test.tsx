@@ -168,3 +168,21 @@ describe('enregistrer au carnet (récit 4)', () => {
     expect(useCarnet.getState().conversions).toHaveLength(0);
   });
 });
+
+describe('le volet des billets et des pièces (récit 2)', () => {
+  it('s’ouvre depuis Convertir, et compose le montant saisi', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.type(
+      screen.getByLabelText('Montant en livre égyptienne'),
+      '200'
+    );
+    await user.click(screen.getByRole('button', { name: 'Billets et pièces' }));
+    const volet = screen.getByRole('dialog', { name: 'Billets et pièces' });
+    expect(
+      await within(volet).findByRole('region', {
+        name: /Composition de 200,00\sEGP/,
+      })
+    ).toBeInTheDocument();
+  });
+});

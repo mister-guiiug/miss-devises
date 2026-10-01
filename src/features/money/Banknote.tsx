@@ -10,8 +10,11 @@ interface Props {
   hauteurMm?: number;
   /** Largeur dessinée, en pixels CSS. */
   largeur: number;
-  /** Le nom lu par un lecteur d'écran : la valeur et son équivalent. */
-  libelle: string;
+  /**
+   * Le nom lu par un lecteur d'écran : la valeur et son équivalent. Sans
+   * lui, le dessin est décoratif : le texte voisin dit déjà tout.
+   */
+  libelle?: string;
   plusEmis?: boolean;
 }
 
@@ -44,8 +47,9 @@ export function Banknote({
 
   return (
     <svg
-      role="img"
-      aria-label={libelle}
+      {...(libelle
+        ? { role: 'img', 'aria-label': libelle }
+        : { 'aria-hidden': true })}
       width={largeur}
       height={largeur * rapport}
       viewBox={`0 0 ${L} ${h}`}

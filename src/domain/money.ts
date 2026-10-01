@@ -158,3 +158,43 @@ export function formaterDate(date: string, langue: Langue): string {
 export function formaterTaux(taux: number, langue: Langue): string {
   return formatNumber(taux, langue, { maximumSignificantDigits: 5 });
 }
+
+/** Les décimales d'une valeur de coupure : aucune pour un entier. */
+function decimalesDeValeur(valeur: number, code: string) {
+  const decimales = Number.isInteger(valeur) ? 0 : decimalesDe(code);
+  return { minimumFractionDigits: decimales, maximumFractionDigits: decimales };
+}
+
+/**
+ * Un montant dit avec le nom de sa devise, pour un lecteur d'écran :
+ * « 200 livres égyptiennes », « 0,25 livre égyptienne » (récit 2,
+ * scénario 5). Un entier s'écrit sans décimales.
+ */
+export function nommerMontant(
+  valeur: number,
+  code: string,
+  langue: Langue
+): string {
+  return formatCurrency(valeur, langue, code, {
+    currencyDisplay: 'name',
+    ...decimalesDeValeur(valeur, code),
+  });
+}
+
+/** La valeur écrite sur un billet ou une pièce : « 200 », « 0,25 ». */
+export function formaterValeur(
+  valeur: number,
+  code: string,
+  langue: Langue
+): string {
+  return formatNumber(valeur, langue, decimalesDeValeur(valeur, code));
+}
+
+/** Une coupure avec sa devise : « 200 EGP », « 0,20 € ». */
+export function formaterCoupure(
+  valeur: number,
+  code: string,
+  langue: Langue
+): string {
+  return formatCurrency(valeur, langue, code, decimalesDeValeur(valeur, code));
+}

@@ -2,11 +2,14 @@ import { describe, expect, it } from 'vitest';
 import {
   arrondir,
   decimalesDe,
+  formaterCoupure,
   formaterDate,
   formaterMontant,
   formaterPourcentage,
   formaterTaux,
+  formaterValeur,
   lireMontant,
+  nommerMontant,
 } from './money.ts';
 
 // Les espaces de `Intl` (insécable U+00A0, fine insécable U+202F) rendus
@@ -132,5 +135,37 @@ describe('les écarts : un signe, toujours', () => {
     expect(lisible(formaterPourcentage(0.0472, 'fr'))).toBe('+4,7 %');
     expect(formaterPourcentage(-0.0472, 'en')).toBe('-4.7%');
     expect(lisible(formaterPourcentage(0.00004, 'fr'))).toBe('0 %');
+  });
+});
+
+describe('nommerMontant : un montant dit en toutes lettres de devise', () => {
+  it.each([
+    [200, 'EGP', 'fr', '200 livres égyptiennes'],
+    [0.25, 'EGP', 'fr', '0,25 livre égyptienne'],
+    [0.5, 'EUR', 'fr', '0,50 euro'],
+    [200, 'EGP', 'en', '200 Egyptian pounds'],
+  ] as const)('%d %s en %s : « %s »', (valeur, code, langue, attendu) => {
+    expect(lisible(nommerMontant(valeur, code, langue))).toBe(attendu);
+  });
+});
+
+describe('formaterValeur : la valeur écrite sur une coupure', () => {
+  it.each([
+    [200, 'EGP', 'fr', '200'],
+    [0.25, 'EGP', 'fr', '0,25'],
+    [0.5, 'EUR', 'fr', '0,50'],
+    [10000, 'JPY', 'fr', '10 000'],
+  ] as const)('%d %s en %s : « %s »', (valeur, code, langue, attendu) => {
+    expect(lisible(formaterValeur(valeur, code, langue))).toBe(attendu);
+  });
+});
+
+describe('formaterCoupure : une coupure, avec sa devise', () => {
+  it.each([
+    [200, 'EGP', 'fr', '200 EGP'],
+    [0.2, 'EUR', 'fr', '0,20 €'],
+    [5, 'EUR', 'en', '€5'],
+  ] as const)('%d %s en %s : « %s »', (valeur, code, langue, attendu) => {
+    expect(lisible(formaterCoupure(valeur, code, langue))).toBe(attendu);
   });
 });

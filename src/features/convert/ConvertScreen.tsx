@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
-import { ArrowUpDown } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { ArrowUpDown, Banknote as IconeBillets } from 'lucide-react';
+import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
 import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
 import { useI18n } from '../../i18n/index.ts';
@@ -11,6 +12,7 @@ import { deriver, useConversion, type Champ } from './conversion.ts';
 import { CurrencyPicker } from './CurrencyPicker.tsx';
 import { RateLine } from './RateLine.tsx';
 import { SaveForm } from './SaveForm.tsx';
+import { MoneySheet } from '../money/MoneySheet.tsx';
 
 /** Les devises que l'appareil sait convertir : celles des deux sources. */
 function codesDe(etat: EtatTaux): string[] {
@@ -40,6 +42,7 @@ export function ConvertScreen() {
   const haut = useConversion(s => s.haut);
   const saisir = useConversion(s => s.saisir);
   const inverser = useConversion(s => s.inverser);
+  const [volet, setVolet] = useState(false);
 
   const codes = useMemo(() => codesDe(etat), [etat]);
   const jour = tauxDuJour(devise, etat, new Date());
@@ -100,7 +103,19 @@ export function ConvertScreen() {
         horsLigne={echec}
         onReessayer={() => void rafraichir({ force: true })}
       />
+      <Button variant="outline" block onClick={() => setVolet(true)}>
+        <IconeBillets aria-hidden="true" className="size-5" />
+        {t('convert.billets')}
+      </Button>
       <SaveForm devise={devise} jour={jour} derive={d} champ={saisie.champ} />
+      <MoneySheet
+        open={volet}
+        onClose={() => setVolet(false)}
+        devise={devise}
+        taux={jour?.taux}
+        montantDevise={d.montantDevise}
+        montantEuro={d.montantEuro}
+      />
     </div>
   );
 }

@@ -7,7 +7,8 @@ interface Props {
   texte: string;
   /** Diamètre dessiné, en pixels CSS. */
   diametre: number;
-  libelle: string;
+  /** Sans libellé, le dessin est décoratif (voir `Banknote`). */
+  libelle?: string;
   plusEmis?: boolean;
 }
 
@@ -26,8 +27,9 @@ export function Coin({
 
   return (
     <svg
-      role="img"
-      aria-label={libelle}
+      {...(libelle
+        ? { role: 'img', 'aria-label': libelle }
+        : { 'aria-hidden': true })}
       width={diametre}
       height={diametre}
       viewBox="0 0 100 100"

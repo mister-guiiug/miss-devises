@@ -54,6 +54,16 @@ test.describe('@a11y accessibilité', () => {
     await expectNoA11yViolations(page, AxeBuilder, expect);
   });
 
+  test('volet des billets ouvert, sans violation', async ({ page }) => {
+    await page.goto('/');
+    await page.getByLabel('Montant en livre égyptienne').fill('200');
+    await page.getByRole('button', { name: 'Billets et pièces' }).click();
+    await expect(
+      page.getByRole('region', { name: /Composition de/ })
+    ).toBeVisible();
+    await expectNoA11yViolations(page, AxeBuilder, expect);
+  });
+
   test('À propos : coquille + FamilyAbout sans violation', async ({ page }) => {
     await page.goto('/a-propos');
     await expect(page.locator('[data-dwc="family-about"]')).toBeVisible();

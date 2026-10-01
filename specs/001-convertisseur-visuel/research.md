@@ -70,9 +70,15 @@ deux séparateurs décimaux rendent la saisie invalide, sans l'effacer.
 billets et pièces encore émis, du plus grand au plus petit ; ce qui reste sous la
 plus petite pièce est dit comme tel.
 
-**Pourquoi** : les systèmes de coupures des 41 devises sont canoniques
-(1-2-5, ou 25-50) ; le glouton y donne le nombre minimal de coupures. Les
-entiers évitent les erreurs de virgule flottante (0,1 + 0,2).
+**Pourquoi** : le glouton donne toujours une composition juste, et le nombre
+minimal de coupures dans un système canonique (1-2-5, ou 25-50). Les entiers
+évitent les erreurs de virgule flottante (0,1 + 0,2).
+
+**Vérifié sur le relevé du 01/10/2026**, contre une programmation dynamique :
+40 systèmes sur 41 sont canoniques. La roupie mauricienne ne l'est pas : un
+billet de 25 et une pièce de 20 coexistent, et 40 roupies donnent 25 + 10 + 5
+au lieu de 20 + 20. La composition reste juste, avec une coupure de plus ; un
+test du jeu de données fige cette exception, et en signalerait une nouvelle.
 
 ## R6. Dessiner billets et pièces
 

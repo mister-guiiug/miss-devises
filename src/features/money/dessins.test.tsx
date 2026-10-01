@@ -113,3 +113,20 @@ describe('Coin : une pièce stylisée', () => {
     expect(centre?.getAttribute('fill')).toBe(TEINTES.laiton);
   });
 });
+
+describe('sans libellé, un dessin est décoratif', () => {
+  it('ni rôle ni nom : le texte voisin dit tout', () => {
+    const { container } = render(
+      <>
+        <Banknote couleur="#7a5c8f" texte="200" code="EUR" largeur={56} />
+        <Coin metal="cuivre" texte="0,05" diametre={28} />
+      </>
+    );
+    expect(screen.queryAllByRole('img')).toHaveLength(0);
+    const dessins = container.querySelectorAll('svg');
+    expect([...dessins].map(d => d.getAttribute('aria-hidden'))).toEqual([
+      'true',
+      'true',
+    ]);
+  });
+});
