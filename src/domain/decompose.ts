@@ -64,3 +64,20 @@ export function decomposer(montant: number, systeme: Systeme): Decomposition {
   }
   return { lignes, reste: reste / facteur };
 }
+
+/**
+ * Le total de coupures comptées (récit 5), en unités mineures ENTIÈRES :
+ * dix pièces de 0,10 font 1, pas 0,9999999999999999.
+ */
+export function sommer(
+  lignes: readonly { valeur: number; nombre: number }[],
+  decimales: number
+): number {
+  const facteur = 10 ** decimales;
+  const mineures = lignes.reduce(
+    (total, { valeur, nombre }) =>
+      total + Math.round(arrondir(valeur, decimales) * facteur) * nombre,
+    0
+  );
+  return mineures / facteur;
+}

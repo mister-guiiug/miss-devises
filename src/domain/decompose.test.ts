@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { decomposer, type Systeme } from './decompose.ts';
+import { decomposer, sommer, type Systeme } from './decompose.ts';
 
 // Des systèmes de coupures écrits ici, et non lus dans `coupures.json` : ces
 // tests éprouvent l'algorithme, pas le jeu de données.
@@ -114,5 +114,28 @@ describe('decomposer : un montant en billets et pièces (recherche R5)', () => {
     expect(
       decomposer(12.345, { decimales: 2, billets: [], pieces: [] })
     ).toEqual({ lignes: [], reste: 12.35 });
+  });
+});
+
+describe('sommer : des coupures comptées, en unités entières', () => {
+  it('0,10 + 0,20 font 0,30, et deux billets de 100 plus 1 font 201', () => {
+    expect(
+      sommer(
+        [
+          { valeur: 0.1, nombre: 1 },
+          { valeur: 0.2, nombre: 1 },
+        ],
+        2
+      )
+    ).toBe(0.3);
+    expect(
+      sommer(
+        [
+          { valeur: 100, nombre: 2 },
+          { valeur: 1, nombre: 1 },
+        ],
+        2
+      )
+    ).toBe(201);
   });
 });

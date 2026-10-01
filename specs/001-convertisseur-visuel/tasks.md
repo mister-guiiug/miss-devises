@@ -114,8 +114,11 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
 
 ## Phase 7 : récit 5, composer avec ses billets (P3)
 
-- [ ] T028 [R5] Tests puis la composition au toucher dans le volet (compteur
-      par coupure, retrait, remise à zéro).
+- [x] T028 [R5] Tests puis la composition au toucher dans le volet (compteur
+      par coupure, retrait, remise à zéro). Chaque coupure devient un bouton
+      nommé, compteur compris ; le total, en région `status` toujours présente,
+      s'annonce dès la première coupure ; « Utiliser ce montant » le reporte
+      dans Convertir. Somme en unités entières (`sommer`).
 
 ## Phase 8 : finitions
 

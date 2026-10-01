@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { I18nProvider } from '../../i18n/index.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import { MoneySheet } from './MoneySheet.tsx';
+import { useConversion } from '../convert/conversion.ts';
 
 const lisible = (texte: string | null | undefined) =>
   (texte ?? '').replace(/\s/g, ' ');
@@ -33,12 +34,16 @@ function monter(options: Options = {}) {
   );
 }
 
-/** Les noms des dessins d'une section, dans l'ordre de l'écran. */
+/**
+ * Les noms des coupures d'une section, dans l'ordre de l'écran : chaque
+ * coupure est un bouton qu'on touche (récit 5), nommé comme le dessin.
+ */
 async function dessins(section: string) {
   const region = await screen.findByRole('region', { name: section });
   return within(region)
-    .getAllByRole('img')
-    .map(img => lisible(img.getAttribute('aria-label')));
+    .getAllByRole('button')
+    .map(bouton => lisible(bouton.getAttribute('aria-label')))
+    .filter(nom => !nom.startsWith('Retirer'));
 }
 
 beforeEach(() => {
@@ -120,5 +125,71 @@ describe('le volet des billets et des pièces (récit 2)', () => {
     expect(
       screen.getByRole('link', { name: /wikipedia\.org/ })
     ).toBeInTheDocument();
+  });
+});
+
+describe('composer un montant au toucher (récit 5)', () => {
+  const billet100 = /^Billet de 100 livres égyptiennes, soit 1,70\s€/;
+  const piece1 = /^Pièce de 1 livre égyptienne, soit 0,02\s€/;
+
+  it('deux billets de 100 et une pièce de 1 : 201 EGP, convertis', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.click(await screen.findByRole('button', { name: billet100 }));
+    await user.click(screen.getByRole('button', { name: billet100 }));
+    await user.click(screen.getByRole('button', { name: piece1 }));
+    // Le compteur se lit sur la coupure, et se dit au lecteur d'écran.
+    expect(
+      screen.getByRole('button', {
+        name: /^Billet de 100 livres égyptiennes, soit 1,70\s€, 2 ajoutés$/,
+      })
+    ).toBeInTheDocument();
+    expect(lisible(screen.getByTestId('total-compose').textContent)).toBe(
+      'Total : 201,00 EGP, soit 3,42 €'
+    );
+  });
+
+  it('retirer une coupure, puis tout remettre à zéro', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.click(await screen.findByRole('button', { name: billet100 }));
+    await user.click(screen.getByRole('button', { name: billet100 }));
+    await user.click(
+      screen.getByRole('button', { name: /^Retirer un 100\sEGP$/ })
+    );
+    expect(lisible(screen.getByTestId('total-compose').textContent)).toBe(
+      'Total : 100,00 EGP, soit 1,70 €'
+    );
+    await user.click(screen.getByRole('button', { name: 'Remettre à zéro' }));
+    expect(screen.queryByTestId('total-compose')).toBeNull();
+  });
+
+  it('« Utiliser ce montant » le reporte dans Convertir', async () => {
+    const user = userEvent.setup();
+    let ferme = false;
+    render(
+      <I18nProvider>
+        <MoneySheet
+          open
+          onClose={() => {
+            ferme = true;
+          }}
+          devise="EGP"
+          taux={58.83}
+          montantDevise={null}
+          montantEuro={null}
+        />
+      </I18nProvider>
+    );
+    await user.click(await screen.findByRole('button', { name: billet100 }));
+    await user.click(screen.getByRole('button', { name: piece1 }));
+    await user.click(
+      screen.getByRole('button', { name: 'Utiliser ce montant' })
+    );
+    expect(useConversion.getState().saisie).toEqual({
+      champ: 'devise',
+      texte: '101',
+    });
+    expect(ferme).toBe(true);
   });
 });

@@ -1,4 +1,6 @@
 import { useEffect, useId, useState, type ReactNode } from 'react';
+import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
+import { formatNumber } from '@mister-guiiug/dev-pwa-config/format';
 import { Sheet } from '@mister-guiiug/dev-pwa-config/react/sheet';
 import { SegmentedControl } from '@mister-guiiug/dev-pwa-config/react/segmented-control';
 import { useI18n } from '../../i18n/index.ts';
@@ -11,7 +13,7 @@ import {
   type Piece,
 } from '../../data/coupures.ts';
 import { convertir } from '../../domain/convert.ts';
-import { decomposer } from '../../domain/decompose.ts';
+import { decomposer, sommer } from '../../domain/decompose.ts';
 import {
   arrondir,
   decimalesDe,
@@ -21,6 +23,7 @@ import {
   formaterValeur,
   nommerMontant,
 } from '../../domain/money.ts';
+import { useConversion } from '../convert/conversion.ts';
 import { Banknote } from './Banknote.tsx';
 import { Coin } from './Coin.tsx';
 
@@ -52,7 +55,8 @@ export function MoneySheet({
   montantDevise,
   montantEuro,
 }: Props) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const saisir = useConversion(s => s.saisir);
   const sens = usePreferences(s => s.sensVolet);
   const basculer = usePreferences(s => s.basculerVolet);
   const [coupures, setCoupures] = useState<Coupures>();
@@ -86,8 +90,10 @@ export function MoneySheet({
   } else if (!systeme) {
     contenu = <p className="m-0 text-sm">{t('money.inconnues')}</p>;
   } else {
+    // `key` : basculer de devise repart d'une composition vide.
     contenu = (
       <Contenu
+        key={code}
         code={code}
         autre={sens === 'devise' ? 'EUR' : devise}
         systeme={systeme}
@@ -95,6 +101,18 @@ export function MoneySheet({
         versEuro={sens === 'devise'}
         montant={sens === 'devise' ? montantDevise : montantEuro}
         releveLe={coupures.releveLe}
+        onUtiliser={total => {
+          // Le total devient la saisie de Convertir, dans son champ : sans
+          // séparateur de milliers, aux décimales de la devise.
+          saisir(
+            sens === 'devise' ? 'devise' : 'euro',
+            formatNumber(total, locale, {
+              maximumFractionDigits: decimalesDe(code),
+              useGrouping: false,
+            })
+          );
+          onClose();
+        }}
       />
     );
   }
@@ -131,6 +149,8 @@ interface PropsContenu {
   versEuro: boolean;
   montant: number | null;
   releveLe: string;
+  /** « Utiliser ce montant » : le total composé au toucher (récit 5). */
+  onUtiliser: (total: number) => void;
 }
 
 function Contenu({
@@ -141,8 +161,11 @@ function Contenu({
   versEuro,
   montant,
   releveLe,
+  onUtiliser,
 }: PropsContenu) {
-  const { t, locale } = useI18n();
+  const { t, m, fmt, locale } = useI18n();
+  // Combien de chaque coupure on a touchée : clé `billet-100`, `piece-0.5`.
+  const [compte, setCompte] = useState<Record<string, number>>({});
   const idBillets = useId();
   const idPieces = useId();
   const idComposition = useId();
@@ -207,7 +230,9 @@ function Contenu({
       ? Math.max(base * 0.55, (base * p.diametreMm) / diametreMax)
       : base * 0.8;
 
-  const billet = (b: Billet, base?: number, avecLibelle = true) => (
+  // Les dessins sont muets : le bouton qui les porte, ou le texte de la
+  // composition, dit déjà la coupure.
+  const billet = (b: Billet, base?: number) => (
     <Banknote
       couleur={b.couleur}
       texte={formaterValeur(b.valeur, code, locale)}
@@ -215,28 +240,105 @@ function Contenu({
       largeurMm={b.largeurMm}
       hauteurMm={b.hauteurMm}
       largeur={largeurDe(b, base)}
-      libelle={
-        avecLibelle
-          ? b.plusEmis
-            ? `${libelle('billet', b.valeur)}, ${t('money.plusEmis')}`
-            : libelle('billet', b.valeur)
-          : undefined
-      }
       plusEmis={b.plusEmis}
     />
   );
-  const piece = (p: Piece, base?: number, avecLibelle = true) => (
+  const piece = (p: Piece, base?: number) => (
     <Coin
       metal={p.metal}
       texte={formaterValeur(p.valeur, code, locale)}
       diametre={diametreDe(p, base)}
-      libelle={avecLibelle ? libelle('piece', p.valeur) : undefined}
       plusEmis={p.plusEmis}
     />
   );
 
   const composition =
     montant !== null && montant > 0 ? decomposer(montant, systeme) : undefined;
+
+  // Récit 5 : les coupures touchées, leur total et sa contre-valeur.
+  const ajouter = (cle: string) =>
+    setCompte(c => ({ ...c, [cle]: (c[cle] ?? 0) + 1 }));
+  const retirer = (cle: string) =>
+    setCompte(c => {
+      const { [cle]: n = 0, ...autres } = c;
+      return n > 1 ? { ...autres, [cle]: n - 1 } : autres;
+    });
+  const touchees = [
+    ...systeme.billets.map(b => ({ cle: `billet-${b.valeur}`, b })),
+    ...systeme.pieces.map(p => ({ cle: `piece-${p.valeur}`, b: p })),
+  ].flatMap(({ cle, b }) =>
+    compte[cle] ? [{ valeur: b.valeur, nombre: compte[cle] }] : []
+  );
+  const total = sommer(touchees, systeme.decimales);
+  const contreTotal = contre(total);
+
+  /**
+   * Une coupure qu'on touche pour l'ajouter. Le bouton porte le nom complet,
+   * compteur compris : le dessin et la légende, à l'intérieur, sont muets.
+   */
+  const touche = (
+    cle: string,
+    genre: 'billet' | 'piece',
+    valeur: number,
+    dessin: ReactNode,
+    plusEmis = false
+  ) => {
+    const n = compte[cle] ?? 0;
+    const nom = [
+      libelle(genre, valeur),
+      plusEmis ? t('money.plusEmis') : '',
+      n > 0 ? fmt.plural(n, m.money.compte, { count: n }) : '',
+    ]
+      .filter(Boolean)
+      .join(', ');
+    return (
+      <li key={cle} className="flex flex-col items-center gap-1">
+        <button
+          type="button"
+          onClick={() => ajouter(cle)}
+          aria-label={nom}
+          className="relative flex flex-col items-center gap-1 rounded-lg p-1"
+        >
+          {dessin}
+          {legende(valeur)}
+          {plusEmis && (
+            <span
+              aria-hidden="true"
+              className="text-xs italic"
+              style={{ color: 'var(--dwc-text-soft)' }}
+            >
+              {t('money.plusEmis')}
+            </span>
+          )}
+          {n > 0 && (
+            <span
+              aria-hidden="true"
+              className="absolute -top-1 -right-1 min-w-6 rounded-full px-1.5 text-xs font-bold"
+              style={{
+                background: 'var(--dwc-primary)',
+                color: 'var(--dwc-primary-contrast, #fff)',
+              }}
+            >
+              ×{n}
+            </span>
+          )}
+        </button>
+        {n > 0 && (
+          <button
+            type="button"
+            onClick={() => retirer(cle)}
+            aria-label={t('money.retirer', {
+              valeur: formaterCoupure(valeur, code, locale),
+            })}
+            className="flex size-8 items-center justify-center rounded-full border text-base"
+            style={{ borderColor: 'var(--dwc-border-strong)' }}
+          >
+            −
+          </button>
+        )}
+      </li>
+    );
+  };
 
   return (
     <>
@@ -260,8 +362,8 @@ function Contenu({
                   className="flex items-center gap-2 text-sm"
                 >
                   {ligne.type === 'piece' && p
-                    ? piece(p, 32, false)
-                    : b && billet(b, 56, false)}
+                    ? piece(p, 32)
+                    : b && billet(b, 56)}
                   {t('money.ajoute', {
                     nombre: ligne.nombre,
                     valeur: formaterCoupure(ligne.valeur, code, locale),
@@ -280,27 +382,25 @@ function Contenu({
         </section>
       )}
 
+      <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+        {t('money.toucher')}
+      </p>
+
       {systeme.billets.length > 0 && (
         <section aria-labelledby={idBillets} className="flex flex-col gap-2">
           <h3 id={idBillets} className="m-0 text-base font-semibold">
             {t('money.billets')}
           </h3>
           <ul className="m-0 grid list-none grid-cols-2 gap-3 p-0">
-            {systeme.billets.map(b => (
-              <li key={b.valeur} className="flex flex-col items-center gap-1">
-                {billet(b)}
-                {legende(b.valeur)}
-                {b.plusEmis && (
-                  <span
-                    aria-hidden="true"
-                    className="text-xs italic"
-                    style={{ color: 'var(--dwc-text-soft)' }}
-                  >
-                    {t('money.plusEmis')}
-                  </span>
-                )}
-              </li>
-            ))}
+            {systeme.billets.map(b =>
+              touche(
+                `billet-${b.valeur}`,
+                'billet',
+                b.valeur,
+                billet(b),
+                b.plusEmis
+              )
+            )}
           </ul>
         </section>
       )}
@@ -310,19 +410,50 @@ function Contenu({
           <h3 id={idPieces} className="m-0 text-base font-semibold">
             {t('money.pieces')}
           </h3>
-          <ul className="m-0 grid list-none grid-cols-3 gap-3 p-0">
-            {systeme.pieces.map(p => (
-              <li
-                key={p.valeur}
-                className="flex flex-col items-center justify-end gap-1"
-              >
-                {piece(p)}
-                {legende(p.valeur)}
-              </li>
-            ))}
+          <ul className="m-0 grid list-none grid-cols-3 items-end gap-3 p-0">
+            {systeme.pieces.map(p =>
+              touche(
+                `piece-${p.valeur}`,
+                'piece',
+                p.valeur,
+                piece(p),
+                p.plusEmis
+              )
+            )}
           </ul>
         </section>
       )}
+
+      {/* La région vit toujours : un lecteur d'écran annonce le total dès la
+          première coupure touchée, pas seulement à la deuxième. */}
+      <div
+        role="status"
+        className="sticky bottom-0 flex flex-col gap-2 empty:hidden"
+        style={{ background: 'var(--dwc-surface)' }}
+      >
+        {total > 0 && (
+          <>
+            <p data-testid="total-compose" className="m-0 pt-2 font-semibold">
+              {contreTotal
+                ? t('money.total', {
+                    montant: formaterMontant(total, code, locale),
+                    contre: contreTotal.lu,
+                  })
+                : t('money.totalSeul', {
+                    montant: formaterMontant(total, code, locale),
+                  })}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Button onClick={() => onUtiliser(total)}>
+                {t('money.utiliser')}
+              </Button>
+              <Button variant="ghost" onClick={() => setCompte({})}>
+                {t('money.remettre')}
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
 
       <footer
         className="flex flex-col gap-1 text-xs"

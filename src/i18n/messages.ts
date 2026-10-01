@@ -82,6 +82,12 @@ const fr = {
     pieceSeule: 'Pièce de {valeur}',
     contre: '≈ {montant}',
     moinsDe: 'moins de {montant}',
+    total: 'Total : {montant}, soit {contre}',
+    totalSeul: 'Total : {montant}',
+    compte: {
+      one: '{count} ajouté',
+      other: '{count} ajoutés',
+    },
   },
   history: {
     title: 'Historique',
@@ -236,6 +242,12 @@ const en: typeof fr = {
     pieceSeule: '{valeur} coin',
     contre: '≈ {montant}',
     moinsDe: 'less than {montant}',
+    total: 'Total: {montant}, i.e. {contre}',
+    totalSeul: 'Total: {montant}',
+    compte: {
+      one: '{count} added',
+      other: '{count} added',
+    },
   },
   history: {
     title: 'History',
