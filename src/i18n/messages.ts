@@ -165,6 +165,7 @@ const fr = {
   },
   settings: {
     title: 'Réglages',
+    conversion: 'Conversion',
     reference: 'Monnaie de référence',
     referenceAide:
       'Convertir, l’historique et le carnet comptent dans cette devise. Les conversions déjà gardées restent dans la leur.',
@@ -173,9 +174,12 @@ const fr = {
     margeAide:
       'Retranchée du montant reçu. Le taux affiché reste le taux indicatif.',
     margeOption: '{marge} %',
-    margeSaisie: 'Marge personnalisée',
-    margeUnite: 'Pour cent, de 0 à 100.',
+    margeSaisie: 'Marge, en pour cent',
+    margeUnite: 'De 0 à 100.',
     margeInvalide: 'Entre 0 et 100.',
+    margeExemple:
+      'Pour {montant} changés, vous recevez l’équivalent de {recu} : le bureau garde {garde}.',
+    autre: 'Autre',
     decimales: 'Chiffres après la virgule',
     decimalesAide:
       'Le montant calculé. « Auto » suit le nombre de chiffres de la devise.',
@@ -183,9 +187,19 @@ const fr = {
     decimalesSaisie: 'Nombre de chiffres',
     decimalesUnite: 'De 0 à 8. Vide : ceux de la devise.',
     decimalesInvalide: 'Un nombre entier, de 0 à 8.',
-    appearance: 'Apparence',
+    decimalesApercu: 'Aperçu : {montant}',
+    affichage: 'Affichage',
+    theme: 'Thème',
+    themeSysteme: 'Système',
+    themeClair: 'Clair',
+    themeSombre: 'Sombre',
     language: 'Langue',
     data: 'Carnet',
+    carnetVide: 'Le carnet est vide.',
+    carnetCompte: {
+      one: '{count} conversion sur cet appareil.',
+      other: '{count} conversions sur cet appareil.',
+    },
     export: 'Exporter le carnet',
     import: 'Importer un carnet',
     importConfirm: 'Remplacer le carnet actuel ?',
@@ -196,9 +210,18 @@ const fr = {
       other: '{count} conversions importées.',
     },
     importFailed: 'Fichier refusé : {error}',
-    reset: 'Tout effacer',
+    reset: 'Effacer le carnet',
+    resetAide:
+      'Supprime définitivement les conversions de cet appareil. Exportez-les d’abord pour les garder.',
     resetConfirm: 'Effacer tout le carnet ?',
     resetBody: 'Cette action est définitive.',
+    application: 'Application',
+    recharger: 'Recharger l’application',
+    rechargement: 'Rechargement…',
+    forcer: 'Forcer la mise à jour',
+    rechargerAide:
+      '« Recharger » relance l’application et relit les taux. Si elle semble ancienne ou bloquée, « Forcer la mise à jour » vide son cache puis la recharge : vos conversions et vos réglages restent.',
+    majPrete: 'Une nouvelle version est prête : rechargez pour l’utiliser.',
   },
   about: {
     title: 'À propos',
@@ -393,6 +416,7 @@ const en: typeof fr = {
   },
   settings: {
     title: 'Settings',
+    conversion: 'Conversion',
     reference: 'Reference currency',
     referenceAide:
       'Convert, the history and the log count in this currency. Conversions already saved keep their own.',
@@ -401,9 +425,12 @@ const en: typeof fr = {
     margeAide:
       'Taken off the amount you receive. The rate shown stays the indicative rate.',
     margeOption: '{marge}%',
-    margeSaisie: 'Custom margin',
-    margeUnite: 'Percent, from 0 to 100.',
+    margeSaisie: 'Margin, in percent',
+    margeUnite: 'From 0 to 100.',
     margeInvalide: 'Between 0 and 100.',
+    margeExemple:
+      'For {montant} exchanged, you receive the equivalent of {recu}: the bureau keeps {garde}.',
+    autre: 'Other',
     decimales: 'Digits after the decimal point',
     decimalesAide:
       'The calculated amount. “Auto” follows the currency’s own digits.',
@@ -411,9 +438,19 @@ const en: typeof fr = {
     decimalesSaisie: 'Number of digits',
     decimalesUnite: 'From 0 to 8. Empty: the currency’s own.',
     decimalesInvalide: 'A whole number, from 0 to 8.',
-    appearance: 'Appearance',
+    decimalesApercu: 'Preview: {montant}',
+    affichage: 'Display',
+    theme: 'Theme',
+    themeSysteme: 'System',
+    themeClair: 'Light',
+    themeSombre: 'Dark',
     language: 'Language',
     data: 'Log',
+    carnetVide: 'The log is empty.',
+    carnetCompte: {
+      one: '{count} conversion on this device.',
+      other: '{count} conversions on this device.',
+    },
     export: 'Export the log',
     import: 'Import a log',
     importConfirm: 'Replace the current log?',
@@ -424,9 +461,18 @@ const en: typeof fr = {
       other: '{count} conversions imported.',
     },
     importFailed: 'File rejected: {error}',
-    reset: 'Erase everything',
+    reset: 'Erase the log',
+    resetAide:
+      'Permanently deletes the conversions on this device. Export them first to keep them.',
     resetConfirm: 'Erase the whole log?',
     resetBody: 'This cannot be undone.',
+    application: 'App',
+    recharger: 'Reload the app',
+    rechargement: 'Reloading…',
+    forcer: 'Force the update',
+    rechargerAide:
+      '“Reload” restarts the app and reads the rates again. If it looks outdated or stuck, “Force the update” clears its cache, then reloads it: your conversions and settings stay.',
+    majPrete: 'A new version is ready: reload to use it.',
   },
   about: {
     title: 'About',

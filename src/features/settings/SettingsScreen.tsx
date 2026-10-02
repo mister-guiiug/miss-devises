@@ -1,27 +1,47 @@
-import { useEffect, useRef, useState, type ChangeEvent, useMemo } from 'react';
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type ComponentType,
+  type ReactNode,
+} from 'react';
+import { Monitor, Moon, Sun } from 'lucide-react';
 import { formatNumber } from '@mister-guiiug/dev-pwa-config/format';
 import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
-import { Card, CardHeader } from '@mister-guiiug/dev-pwa-config/react/card';
+import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
 import { ConfirmDialog } from '@mister-guiiug/dev-pwa-config/react/confirm-dialog';
 import { ConsentSection } from '@mister-guiiug/dev-pwa-config/react/consent-section';
 import { SegmentedControl } from '@mister-guiiug/dev-pwa-config/react/segmented-control';
-import { ChromePrefs } from '@mister-guiiug/dev-pwa-config/react/chrome-prefs';
+import { ThemeToggle } from '@mister-guiiug/dev-pwa-config/react/theme-toggle';
+import { useThemeContext } from '@mister-guiiug/dev-pwa-config/react/theme-provider';
+import { AppVersion } from '@mister-guiiug/dev-pwa-config/react/app-version';
+import { useAppUpdates } from '@mister-guiiug/dev-pwa-config/react/app-updates';
+import { applyUpdate } from '@mister-guiiug/dev-pwa-config/sw-update';
 import { dateSlug, downloadText } from '@mister-guiiug/dev-pwa-config/download';
 import { useI18n } from '../../i18n/index.ts';
 import { backend } from '../../backend/index.ts';
 import { usePreferences } from '../../app/preferences.ts';
+import { rechargerLaPage } from '../../app/application.ts';
 import { useTaux } from '../../rates/store.ts';
 import { codesConnus } from '../../rates/service.ts';
 import { useCarnet } from '../carnet/store.ts';
 import { CurrencyPicker } from '../convert/CurrencyPicker.tsx';
-import { arrondir, lireMontant } from '../../domain/money.ts';
+import { arrondir, decimalesDe, lireMontant } from '../../domain/money.ts';
 
 /**
  * L'écran de réglages : le seul écran que TOUTES les apps de la famille ont, et
  * dont la COMPOSITION reste métier — c'est pourquoi le socle livre les briques
- * (`ChromePrefs`, `AppVersion`, `FamilyApps`, `ConfirmDialog`, `downloadText`)
- * et non l'écran. Onze apps en ont un, de 142 à 728 lignes.
+ * (`ThemeProvider`, `AppVersion`, `AppUpdates`, `ConfirmDialog`,
+ * `downloadText`) et non l'écran.
+ *
+ * QUATRE SECTIONS, PAS SIX CARTES. Relevé du 03/10/2026 : six cartes de même
+ * rang, deux écrans de téléphone, des titres qui sautaient du `h1` de
+ * l'en-tête aux `h3` des cartes. Chaque section est une carte titrée au rang 2
+ * — Conversion, Affichage, Carnet, Application —, ses réglages au rang 3.
  *
  * IMPORTER, PAS SEULEMENT EXPORTER. Quinze apps du parc savent exporter ;
  * presque aucune ne sait relire son propre fichier à l'écran — et c'est le
@@ -42,10 +62,6 @@ export function SettingsScreen() {
   const [confirming, setConfirming] = useState(false);
   const reference = usePreferences(state => state.reference);
   const choisirReference = usePreferences(state => state.choisirReference);
-  const marge = usePreferences(state => state.marge);
-  const choisirMarge = usePreferences(state => state.choisirMarge);
-  const decimales = usePreferences(state => state.decimales);
-  const choisirDecimales = usePreferences(state => state.choisirDecimales);
   const etat = useTaux(state => state.etat);
   const codes = useMemo(() => codesConnus(etat), [etat]);
 
@@ -60,6 +76,7 @@ export function SettingsScreen() {
   const [pending, setPending] = useState<string | null>(null);
   const [imported, setImported] = useState<number | null>(null);
   const [failed, setFailed] = useState(false);
+  const nombre = conversions.length;
 
   const exporter = async () => {
     const json = await backend.carnet.export();
@@ -91,91 +108,79 @@ export function SettingsScreen() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* LA MONNAIE DE RÉFÉRENCE (spécification 002, récit 1) : celle dans
-          laquelle on compte. La liste est celle de Convertir, drapeaux
-          compris ; choisir la devise affichée échange les deux. */}
       <Card>
-        <CardHeader title={t('settings.reference')} />
+        <TitreSection>{t('settings.conversion')}</TitreSection>
+        <Reglages>
+          {/* LA MONNAIE DE RÉFÉRENCE (spécification 002, récit 1) : celle
+              dans laquelle on compte. La liste est celle de Convertir,
+              drapeaux compris ; choisir la devise affichée échange les deux. */}
+          <Reglage
+            titre={t('settings.reference')}
+            aide={t('settings.referenceAide')}
+          >
+            <div className="w-full">
+              <CurrencyPicker
+                code={reference}
+                codes={codes}
+                recentes={[]}
+                onChoisir={choisirReference}
+                etiquette={t('settings.referenceChoisir')}
+                titre={t('settings.reference')}
+              />
+            </div>
+          </Reglage>
+          <Reglage titre={t('settings.marge')} aide={t('settings.margeAide')}>
+            <ChoixMarge reference={reference} />
+          </Reglage>
+          <Reglage
+            titre={t('settings.decimales')}
+            aide={t('settings.decimalesAide')}
+          >
+            <ChoixDecimales reference={reference} />
+          </Reglage>
+        </Reglages>
+      </Card>
+
+      <Card>
+        <TitreSection>{t('settings.affichage')}</TitreSection>
+        <Reglages>
+          <Reglage titre={t('settings.theme')}>
+            <ChoixTheme />
+          </Reglage>
+          <Reglage titre={t('settings.language')}>
+            {/* Chaque langue se nomme dans la sienne, comme partout ailleurs :
+                « FR / EN » ne dit rien à qui ne lit pas l'autre. */}
+            <SegmentedControl
+              value={locale}
+              onChange={value => setLocale(value as typeof locale)}
+              ariaLabel={t('settings.language')}
+              options={locales.map(code => ({
+                value: code,
+                label: (
+                  <span lang={code}>{NOMS_DES_LANGUES[code] ?? code}</span>
+                ),
+              }))}
+            />
+          </Reglage>
+        </Reglages>
+      </Card>
+
+      <Card>
+        <TitreSection>{t('settings.data')}</TitreSection>
         <p
           className="m-0 mb-3 text-sm"
           style={{ color: 'var(--dwc-text-soft)' }}
         >
-          {t('settings.referenceAide')}
+          {nombre === 0
+            ? t('settings.carnetVide')
+            : fmt.plural(nombre, m.settings.carnetCompte, { count: nombre })}
         </p>
-        <CurrencyPicker
-          code={reference}
-          codes={codes}
-          recentes={[]}
-          onChoisir={choisirReference}
-          etiquette={t('settings.referenceChoisir')}
-          titre={t('settings.reference')}
-        />
-      </Card>
-
-      <Card>
-        <CardHeader title={t('settings.marge')} />
-        <p
-          className="m-0 mb-3 text-sm"
-          style={{ color: 'var(--dwc-text-soft)' }}
-        >
-          {t('settings.margeAide')}
-        </p>
-        <SegmentedControl
-          value={String(marge)}
-          onChange={value => choisirMarge(Number(value))}
-          ariaLabel={t('settings.marge')}
-          options={[0, 2, 5, 10].map(valeur => ({
-            value: String(valeur),
-            label: t('settings.margeOption', { marge: valeur }),
-          }))}
-        />
-        <ChampMarge marge={marge} onChoisir={choisirMarge} />
-      </Card>
-
-      <Card>
-        <CardHeader title={t('settings.decimales')} />
-        <p
-          className="m-0 mb-3 text-sm"
-          style={{ color: 'var(--dwc-text-soft)' }}
-        >
-          {t('settings.decimalesAide')}
-        </p>
-        <SegmentedControl
-          value={decimales === null ? 'auto' : String(decimales)}
-          onChange={value =>
-            choisirDecimales(value === 'auto' ? null : Number(value))
-          }
-          ariaLabel={t('settings.decimales')}
-          options={[
-            { value: 'auto', label: t('settings.decimalesAuto') },
-            ...[0, 2, 4, 6].map(valeur => ({
-              value: String(valeur),
-              label: String(valeur),
-            })),
-          ]}
-        />
-        <ChampDecimales decimales={decimales} onChoisir={choisirDecimales} />
-      </Card>
-
-      <Card>
-        <CardHeader title={t('settings.appearance')} />
-        <ChromePrefs label={t('settings.appearance')}>
-          <SegmentedControl
-            value={locale}
-            onChange={value => setLocale(value as typeof locale)}
-            ariaLabel={t('settings.language')}
-            options={locales.map(code => ({
-              value: code,
-              label: code.toUpperCase(),
-            }))}
-          />
-        </ChromePrefs>
-      </Card>
-
-      <Card>
-        <CardHeader title={t('settings.data')} />
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => void exporter()}>
+          <Button
+            variant="outline"
+            disabled={nombre === 0}
+            onClick={() => void exporter()}
+          >
             {t('settings.export')}
           </Button>
           <Button variant="outline" onClick={() => fileInput.current?.click()}>
@@ -192,9 +197,6 @@ export function SettingsScreen() {
             aria-label={t('settings.import')}
             onChange={event => void onFile(event)}
           />
-          <Button variant="danger" onClick={() => setConfirming(true)}>
-            {t('settings.reset')}
-          </Button>
         </div>
         {imported !== null && (
           <p role="status" className="m-0 mt-3 text-sm">
@@ -206,19 +208,41 @@ export function SettingsScreen() {
             {t('settings.importFailed', { error })}
           </p>
         )}
+        {/* L'EFFACEMENT À PART, sous un filet, avec ce qu'il fait : il
+            côtoyait l'export, rouge et sans un mot, à un geste de lui. */}
+        <div
+          className="mt-4 flex flex-col items-start gap-2 border-t pt-4"
+          style={{ borderColor: 'var(--dwc-border)' }}
+        >
+          <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+            {t('settings.resetAide')}
+          </p>
+          <Button
+            variant="danger"
+            disabled={nombre === 0}
+            onClick={() => setConfirming(true)}
+          >
+            {t('settings.reset')}
+          </Button>
+        </div>
+      </Card>
+
+      <Card>
+        <TitreSection>{t('settings.application')}</TitreSection>
+        <ReglagesApplication />
       </Card>
 
       {/* LA MESURE D’AUDIENCE SE RETIRE ICI, EN UN CLIC, comme elle s’accepte
           au bandeau (RGPD, art. 7.3). Relevé du 29/09/2026 : dix-huit apps
           mesuraient après consentement, aucune ne permettait d’y revenir.
           Mêmes clé et chargeur que le bandeau d’`App.tsx`, titre au rang des
-          `CardHeader`. Sans clé, la section ne rend rien : `empty:hidden`
+          sections. Sans clé, la section ne rend rien : `empty:hidden`
           retire alors la carte restée vide. */}
       <Card className="empty:hidden">
         <ConsentSection
           posthogKey={import.meta.env.VITE_POSTHOG_KEY}
           loader={() => import('posthog-js/dist/module.slim.js')}
-          headingLevel={3}
+          headingLevel={2}
           titleClassName="text-fluid-base font-semibold"
         />
       </Card>
@@ -250,7 +274,303 @@ export function SettingsScreen() {
   );
 }
 
-/** La marge tapée, de 0 à 100. Les raccourcis remplissent le champ. */
+/** Le nom de chaque langue, dans cette langue. */
+const NOMS_DES_LANGUES: Record<string, string> = {
+  fr: 'Français',
+  en: 'English',
+};
+
+/**
+ * Le titre d'une section, au rang 2, en sur-titre : petites capitales,
+ * couleur atténuée. Plus grand que les titres de réglage, il les écrasait ;
+ * plus petit sans changer de forme, il se lisait comme l'un d'eux.
+ */
+function TitreSection({ children }: { children: ReactNode }) {
+  return (
+    <h2
+      className="m-0 mb-4 text-xs font-semibold tracking-wider uppercase"
+      style={{ color: 'var(--dwc-text-soft)' }}
+    >
+      {children}
+    </h2>
+  );
+}
+
+/** Les réglages d'une section, séparés d'un filet. */
+function Reglages({ children }: { children: ReactNode }) {
+  return (
+    <div
+      className="flex flex-col divide-y"
+      style={{ borderColor: 'var(--dwc-border)' }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/** Un réglage : son titre au rang 3, ce qu'il fait, puis sa commande. */
+function Reglage({
+  titre,
+  aide,
+  children,
+}: {
+  titre: string;
+  aide?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className="flex flex-col items-start gap-2 py-4 first:pt-0 last:pb-0"
+      style={{ borderColor: 'var(--dwc-border)' }}
+    >
+      <h3 className="m-0 text-base font-semibold">{titre}</h3>
+      {aide && (
+        <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+          {aide}
+        </p>
+      )}
+      {children}
+    </div>
+  );
+}
+
+/** Les raccourcis de la marge, en pour cent. */
+const RACCOURCIS_MARGE = [0, 2, 5, 10];
+
+/**
+ * LA MARGE : des raccourcis, et un champ seulement pour « Autre ». Le champ
+ * libre (#20) restait ouvert sous les raccourcis et répétait leur valeur ;
+ * il ne s'ouvre plus qu'à la demande, ou quand la marge enregistrée n'est
+ * pas un raccourci. Un exemple dit ce qu'elle retient, dans la monnaie de
+ * référence.
+ */
+function ChoixMarge({ reference }: { reference: string }) {
+  const { t, locale } = useI18n();
+  const marge = usePreferences(state => state.marge);
+  const choisirMarge = usePreferences(state => state.choisirMarge);
+  const [libre, setLibre] = useState(() => !RACCOURCIS_MARGE.includes(marge));
+  const montant = (n: number) =>
+    `${formatNumber(n, locale, { maximumFractionDigits: 2 })} ${reference}`;
+
+  return (
+    <>
+      <SegmentedControl
+        value={libre ? 'autre' : String(marge)}
+        onChange={value => {
+          if (value === 'autre') {
+            setLibre(true);
+            return;
+          }
+          setLibre(false);
+          choisirMarge(Number(value));
+        }}
+        ariaLabel={t('settings.marge')}
+        options={[
+          ...RACCOURCIS_MARGE.map(valeur => ({
+            value: String(valeur),
+            label: t('settings.margeOption', { marge: valeur }),
+          })),
+          { value: 'autre', label: t('settings.autre') },
+        ]}
+      />
+      {libre && <ChampMarge marge={marge} onChoisir={choisirMarge} />}
+      {marge > 0 && (
+        <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+          {t('settings.margeExemple', {
+            montant: montant(100),
+            recu: montant(arrondir(100 - marge, 2)),
+            garde: montant(marge),
+          })}
+        </p>
+      )}
+    </>
+  );
+}
+
+/** Les raccourcis des décimales ; « Auto » suit la devise. */
+const RACCOURCIS_DECIMALES = [0, 2, 4, 6];
+/** Le montant de l'aperçu : assez de chiffres pour que chaque choix se voie. */
+const EXEMPLE = 1234.5678;
+
+/**
+ * LES DÉCIMALES : des raccourcis, un champ seulement pour « Autre », et
+ * l'aperçu d'un montant tel qu'il s'affichera.
+ */
+function ChoixDecimales({ reference }: { reference: string }) {
+  const { t, locale } = useI18n();
+  const decimales = usePreferences(state => state.decimales);
+  const choisirDecimales = usePreferences(state => state.choisirDecimales);
+  const [libre, setLibre] = useState(
+    () => decimales !== null && !RACCOURCIS_DECIMALES.includes(decimales)
+  );
+  const chiffres = decimales ?? decimalesDe(reference);
+  const apercu = formatNumber(arrondir(EXEMPLE, chiffres), locale, {
+    minimumFractionDigits: chiffres,
+    maximumFractionDigits: chiffres,
+  });
+
+  return (
+    <>
+      <SegmentedControl
+        value={
+          libre ? 'autre' : decimales === null ? 'auto' : String(decimales)
+        }
+        onChange={value => {
+          if (value === 'autre') {
+            setLibre(true);
+            return;
+          }
+          setLibre(false);
+          choisirDecimales(value === 'auto' ? null : Number(value));
+        }}
+        ariaLabel={t('settings.decimales')}
+        options={[
+          { value: 'auto', label: t('settings.decimalesAuto') },
+          ...RACCOURCIS_DECIMALES.map(valeur => ({
+            value: String(valeur),
+            label: String(valeur),
+          })),
+          { value: 'autre', label: t('settings.autre') },
+        ]}
+      />
+      {libre && (
+        <ChampDecimales decimales={decimales} onChoisir={choisirDecimales} />
+      )}
+      <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+        {t('settings.decimalesApercu', { montant: `${apercu} ${reference}` })}
+      </p>
+    </>
+  );
+}
+
+/** Une option de la bascule du thème : son icône, puis son nom. */
+function Option({
+  icone: Icone,
+  children,
+}: {
+  icone: ComponentType<{
+    className?: string;
+    'aria-hidden'?: boolean | 'true';
+  }>;
+  children: ReactNode;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <Icone aria-hidden="true" className="size-4" />
+      {children}
+    </span>
+  );
+}
+
+/**
+ * LE THÈME, NOMMÉ. L'écran ne montrait qu'une icône qui faisait défiler les
+ * trois thèmes : on ne savait ni lequel était choisi, ni ce que donnerait le
+ * clic. Les trois se voient ici. L'état est celui de `ThemeProvider` (voir
+ * `App.tsx`) : le même que la bascule de l'en-tête, qui suit. Sans
+ * fournisseur, la bascule du socle prend le relais plutôt qu'un second
+ * `useTheme`, qui écrirait le thème à côté du premier.
+ */
+function ChoixTheme() {
+  const { t } = useI18n();
+  const contexte = useThemeContext();
+  if (!contexte) return <ThemeToggle showLabel />;
+  return (
+    <SegmentedControl
+      value={contexte.theme}
+      onChange={value => contexte.setTheme(value)}
+      ariaLabel={t('settings.theme')}
+      options={[
+        {
+          value: 'system',
+          label: <Option icone={Monitor}>{t('settings.themeSysteme')}</Option>,
+        },
+        {
+          value: 'light',
+          label: <Option icone={Sun}>{t('settings.themeClair')}</Option>,
+        },
+        {
+          value: 'dark',
+          label: <Option icone={Moon}>{t('settings.themeSombre')}</Option>,
+        },
+      ]}
+    />
+  );
+}
+
+/**
+ * RECHARGER L'APPLICATION. Installée, elle n'a ni barre d'adresse ni bouton
+ * de rechargement : ce réglage est son seul moyen de repartir de zéro.
+ *
+ * - « Recharger » relance la page ; quand une nouvelle version attend, il
+ *   l'applique (`update` d'`AppUpdates`) au lieu de recharger l'ancienne.
+ * - « Forcer la mise à jour » est le geste du socle pour une application
+ *   restée ancienne ou bloquée (`forceUpdate`, ou `applyUpdate({ hard })`
+ *   hors fournisseur) : il vide son cache et la recharge. Ni le carnet ni les
+ *   réglages ne sont touchés (`sw-update.js` : jamais `localStorage`,
+ *   `sessionStorage` ni IndexedDB).
+ */
+function ReglagesApplication() {
+  const { t } = useI18n();
+  const majs = useAppUpdates();
+  const [enCours, setEnCours] = useState(false);
+  const occupe = enCours || majs?.updating === true;
+  const idAide = useId();
+
+  const recharger = () => {
+    if (majs?.needRefresh) {
+      void majs.update();
+      return;
+    }
+    setEnCours(true);
+    rechargerLaPage();
+  };
+  const forcer = () => {
+    if (majs) {
+      void majs.forceUpdate();
+      return;
+    }
+    setEnCours(true);
+    void applyUpdate({ hard: true });
+  };
+
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <AppVersion className="m-0 text-sm" />
+      {majs?.needRefresh && (
+        <p role="status" className="m-0 text-sm font-semibold">
+          {t('settings.majPrete')}
+        </p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        <Button
+          onClick={recharger}
+          disabled={occupe}
+          loading={occupe}
+          aria-describedby={idAide}
+        >
+          {occupe ? t('settings.rechargement') : t('settings.recharger')}
+        </Button>
+        <Button
+          variant="outline"
+          onClick={forcer}
+          disabled={occupe}
+          aria-describedby={idAide}
+        >
+          {t('settings.forcer')}
+        </Button>
+      </div>
+      <p
+        id={idAide}
+        className="m-0 text-sm"
+        style={{ color: 'var(--dwc-text-soft)' }}
+      >
+        {t('settings.rechargerAide')}
+      </p>
+    </div>
+  );
+}
+
+/** La marge tapée, de 0 à 100. */
 function ChampMarge({
   marge,
   onChoisir,
@@ -265,7 +585,7 @@ function ChampMarge({
 
   return (
     <TextField
-      className="mt-3"
+      className="w-full max-w-xs"
       label={t('settings.margeSaisie')}
       hint={t('settings.margeUnite')}
       inputMode="decimal"
@@ -310,7 +630,7 @@ function ChampDecimales({
 
   return (
     <TextField
-      className="mt-3"
+      className="w-full max-w-xs"
       label={t('settings.decimalesSaisie')}
       hint={t('settings.decimalesUnite')}
       inputMode="numeric"
