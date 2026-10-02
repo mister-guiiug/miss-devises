@@ -17,15 +17,20 @@ laisse pas croire à un prix de bureau de change.
 ### II. L'appareil d'abord
 
 Tout ce que l'utilisateur crée (carnet, préférences) reste sur son appareil,
-sans compte, et s'exporte en fichier. Le réseau ne sert qu'à lire des taux
-publics. Ce qui a été lu une fois reste disponible hors ligne.
+sans compte, et s'exporte en fichier. Le réseau ne sert qu'à lire des données
+publiques : les taux, et, quand l'utilisateur les demande, les photos libres
+des billets et des pièces. Ce qui a été lu une fois reste disponible hors
+ligne.
 
 ### III. Visuel, accessible et légal
 
 Les billets et les pièces se dessinent en formes stylisées (couleur dominante,
-valeur, proportions) : aucune reproduction, ni image ni imitation. Chaque
-élément visuel porte son équivalent textuel ; la couleur n'est jamais la seule
-information.
+valeur, proportions). À la demande de l'utilisateur, une photo peut remplacer
+le dessin, à quatre conditions : publiée sous licence libre ou avec la
+permission de son émetteur, montrée réduite, d'une seule face, et créditée
+(auteur, licence, source). L'application n'imite aucun billet et n'en héberge
+aucune image. Chaque élément visuel porte son équivalent textuel ; la couleur
+n'est jamais la seule information.
 
 ### IV. Lisible partout
 
@@ -50,8 +55,9 @@ applications partagent se propose au socle plutôt que de se copier.
 
 - Poids sous le budget du squelette (`totalGzipKb`, `mainChunkKb`), et
   `pwa-doctor --strict` à zéro défaut.
-- Toute requête vers un tiers (sources de taux) est nommée dans la section
-  « Confidentialité » du README.
+- Toute requête vers un tiers (sources de taux, photos) est nommée dans la
+  section « Confidentialité » du README, et dans l'application avant la
+  première qui n'est pas indispensable.
 - Aucun secret dans le dépôt ; les sources de taux retenues n'en demandent pas.
 - `main` est protégé : tout passe par une pull request et une CI verte.
 - Aucune signature d'assistant dans les commits, les pull requests ou la
@@ -72,5 +78,14 @@ request qui dit ce qui change et pourquoi, et relève sa version : majeure pour
 un principe retiré ou renversé, mineure pour un principe ajouté, correctif pour
 une précision.
 
-**Version** : 1.0.0 · **Ratifiée le** : 01/10/2026 · **Dernière modification** :
-01/10/2026
+**Version** : 2.0.0 · **Ratifiée le** : 01/10/2026 · **Dernière modification** :
+02/10/2026
+
+### Modifications
+
+- **2.0.0** (02/10/2026) : le principe III, qui excluait toute image, permet
+  désormais une photo libre, réduite, d'une seule face et créditée, à la
+  demande de l'utilisateur ; le principe II l'admet parmi les lectures du
+  réseau ; la contrainte de confidentialité nomme ce tiers. Majeure : un
+  principe est renversé en partie. Raison : la demande de vraies images de
+  billets et de pièces (spécification 002, récit 3).
