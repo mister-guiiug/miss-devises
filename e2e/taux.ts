@@ -8,8 +8,20 @@ const BCE = { USD: 1.0812, JPY: 162.4, GBP: 0.8512, CHF: 0.9381 };
 const BCE_AVANT = { USD: 1.17, JPY: 158.2, GBP: 0.8721, CHF: 0.9302 };
 
 /** Le marché aujourd'hui, et à toutes les dates passées. */
-const MARCHE = { egp: 58.83, usd: 1.0815, mad: 10.81, tnd: 3.312 };
-const MARCHE_AVANT = { egp: 56.18, usd: 1.17, mad: 10.62, tnd: 3.29 };
+const MARCHE = {
+  egp: 58.83,
+  usd: 1.0815,
+  mad: 10.81,
+  tnd: 3.312,
+  xof: 655.957,
+};
+const MARCHE_AVANT = {
+  egp: 56.18,
+  usd: 1.17,
+  mad: 10.62,
+  tnd: 3.29,
+  xof: 655.957,
+};
 
 const DATE = /(\d{4}-\d{2}-\d{2})/;
 

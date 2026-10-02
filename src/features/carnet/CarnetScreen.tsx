@@ -21,6 +21,7 @@ import {
   deviseEtrangere,
   totauxParDevise,
 } from '../../domain/carnet.ts';
+import { Drapeau } from '../../ui/Drapeau.tsx';
 import { useCarnet } from './store.ts';
 
 /**
@@ -120,8 +121,21 @@ function Ligne({
             <Trash2 aria-hidden="true" className="size-4" />
           </Button>
         </div>
+        {/* Les drapeaux sont en ligne, dans le texte : celui-ci reste
+            « 200,00 EGP → 3,40 € », espaces compris. */}
         <p className="m-0 font-semibold">
-          {montant(c.de)} → {montant(c.vers)}
+          <Drapeau
+            code={c.de.code}
+            hauteur={12}
+            className="mr-1.5 inline-block align-[-1px]"
+          />
+          {montant(c.de)} →{' '}
+          <Drapeau
+            code={c.vers.code}
+            hauteur={12}
+            className="mr-1.5 inline-block align-[-1px]"
+          />
+          {montant(c.vers)}
         </p>
         <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
           {t('carnet.taux', {
