@@ -160,15 +160,39 @@ const fr = {
   },
   about: {
     title: 'À propos',
-    what: 'Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.',
+    accroche: 'Le convertisseur de devises qui montre l’argent.',
+    fonctions: 'Ce qu’elle fait',
+    fonction: {
+      convertir:
+        'Convertir dans les deux sens, à chaque chiffre, avec la source et la date du taux.',
+      billets:
+        'Voir les billets et les pièces de 41 devises, et composer un montant en les touchant.',
+      historique:
+        'Comparer un montant à ce qu’il valait il y a un mois, six mois ou un an.',
+      carnet:
+        'Garder ses conversions dans un carnet, chacune avec son libellé.',
+      horsLigne: 'Convertir hors ligne, avec les derniers taux connus.',
+    },
     sources: 'D’où viennent les taux',
-    sourcesBody:
-      'Les taux de référence de la Banque centrale européenne, via Frankfurter, pour les 29 devises qu’elle publie ; pour les autres, les taux de marché de fawazahmed0/currency-api. Ils sont indicatifs : un bureau de change applique ses propres taux et ses frais.',
+    source: {
+      bce: 'les taux de référence de la Banque centrale européenne, pour les 29 devises qu’elle publie.',
+      marche: 'les taux de marché, pour toutes les autres devises.',
+    },
+    indicatif:
+      'Ils sont indicatifs : un bureau de change applique ses propres taux et ses frais.',
     billets: 'Billets et pièces',
     billetsBody:
       'Ils sont dessinés à leur couleur et à leurs proportions, jamais reproduits : la reproduction des billets est encadrée, voire interdite, par les banques centrales.',
-    vieprivee:
-      'Le carnet et les réglages restent sur cet appareil. Pour lire un taux, l’application interroge api.frankfurter.dev, cdn.jsdelivr.net et currency-api.pages.dev, qui voient l’adresse IP de l’appareil, les dates demandées et, pour un historique de la BCE, le code de la devise ; jamais un montant ni un libellé.',
+    confidentialite: 'Confidentialité',
+    surAppareil:
+      'Le carnet et les réglages restent sur cet appareil, sans compte. L’export en fichier est la seule façon de les en sortir.',
+    tiers:
+      'Pour lire un taux, l’application interroge ces trois adresses. Elles voient l’adresse IP de l’appareil, les dates demandées et, pour un historique de la BCE, le code de la devise ; jamais un montant ni un libellé.',
+    sansMesure: 'Ni mesure d’audience, ni cookie, ni publicité.',
+    credits: 'Crédits',
+    credit: {
+      drapeaux: 'les drapeaux, sous licence MIT.',
+    },
   },
 };
 
@@ -319,15 +343,38 @@ const en: typeof fr = {
   },
   about: {
     title: 'About',
-    what: 'A visual currency converter: banknotes and coins in plain sight, conversion both ways, rate history and labelled conversions.',
+    accroche: 'The currency converter that shows the money.',
+    fonctions: 'What it does',
+    fonction: {
+      convertir:
+        'Convert both ways, at every keystroke, with the source and date of the rate.',
+      billets:
+        'See the banknotes and coins of 41 currencies, and build an amount by tapping them.',
+      historique:
+        'Compare an amount with what it was worth a month, six months or a year ago.',
+      carnet: 'Keep your conversions in a log, each with its own label.',
+      horsLigne: 'Convert offline, with the last known rates.',
+    },
     sources: 'Where the rates come from',
-    sourcesBody:
-      'The European Central Bank reference rates, through Frankfurter, for the 29 currencies it publishes; for the others, the market rates of fawazahmed0/currency-api. They are indicative: an exchange office applies its own rates and fees.',
+    source: {
+      bce: 'the European Central Bank reference rates, for the 29 currencies it publishes.',
+      marche: 'market rates, for every other currency.',
+    },
+    indicatif:
+      'They are indicative: an exchange office applies its own rates and fees.',
     billets: 'Banknotes and coins',
     billetsBody:
       'They are drawn in their colour and proportions, never reproduced: central banks restrict, or forbid, banknote reproduction.',
-    vieprivee:
-      'The log and the settings stay on this device. To read a rate, the app queries api.frankfurter.dev, cdn.jsdelivr.net and currency-api.pages.dev, which see the device’s IP address, the requested dates and, for an ECB history, the currency code; never an amount or a label.',
+    confidentialite: 'Privacy',
+    surAppareil:
+      'The log and the settings stay on this device, without an account. Exporting a file is the only way to take them out.',
+    tiers:
+      'To read a rate, the app queries these three addresses. They see the device’s IP address, the requested dates and, for an ECB history, the currency code; never an amount or a label.',
+    sansMesure: 'No audience measurement, no cookie, no advertising.',
+    credits: 'Credits',
+    credit: {
+      drapeaux: 'the flags, under the MIT licence.',
+    },
   },
 };
 
