@@ -12,6 +12,8 @@ interface Props {
   jour: TauxDuJour | undefined;
   pret: boolean;
   horsLigne: boolean;
+  /** Marge en pour cent. 0 : le taux indicatif, sans phrase. */
+  marge?: number;
   onReessayer: () => void;
 }
 
@@ -21,7 +23,13 @@ interface Props {
  * « 1 € = 58,83 EGP », ou « 1 CHF = 62,692 EGP » : la référence se dit
  * comme `Intl` l'écrit, symbole compris (spécification 002).
  */
-export function RateLine({ jour, pret, horsLigne, onReessayer }: Props) {
+export function RateLine({
+  jour,
+  pret,
+  horsLigne,
+  marge = 0,
+  onReessayer,
+}: Props) {
   const { t, locale } = useI18n();
 
   if (!jour) {
@@ -58,6 +66,11 @@ export function RateLine({ jour, pret, horsLigne, onReessayer }: Props) {
         {' · '}
         {t('convert.indicatif')}
       </p>
+      {marge > 0 && (
+        <p className="m-0" style={{ color: 'var(--dwc-text-soft)' }}>
+          {t('convert.marge', { marge })}
+        </p>
+      )}
       {jour.fraicheur === 'ancien' && (
         <p
           className="m-0 font-semibold"

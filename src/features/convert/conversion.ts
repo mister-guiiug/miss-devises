@@ -48,11 +48,13 @@ export function deriver(
   devise: string,
   reference: string,
   taux: number | undefined,
-  langue: Langue
+  langue: Langue,
+  /** Marge en pour cent, retranchée du montant reçu. */
+  marge = 0
 ): Derive {
   const valeur = lireMontant(saisie.texte, langue);
   const invalide = saisie.texte.trim() !== '' && valeur === null;
-  const calcule =
+  const brut =
     valeur === null || taux === undefined
       ? null
       : convertir(
@@ -60,6 +62,7 @@ export function deriver(
           taux,
           saisie.champ === 'devise' ? 'versReference' : 'versDevise'
         );
+  const calcule = brut === null || marge <= 0 ? brut : brut * (1 - marge / 100);
 
   if (saisie.champ === 'devise') {
     return {
@@ -86,6 +89,8 @@ interface EtatConversion {
   haut: Champ;
   saisir: (champ: Champ, texte: string) => void;
   inverser: () => void;
+  /** Rouvre une ligne du carnet : le montant saisi, son champ en haut. */
+  reprendre: (saisie: Saisie) => void;
 }
 
 /**
@@ -98,4 +103,5 @@ export const useConversion = create<EtatConversion>(set => ({
   saisir: (champ, texte) => set({ saisie: { champ, texte } }),
   inverser: () =>
     set(etat => ({ haut: etat.haut === 'devise' ? 'reference' : 'devise' })),
+  reprendre: saisie => set({ saisie, haut: saisie.champ }),
 }));

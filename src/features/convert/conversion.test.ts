@@ -80,6 +80,19 @@ describe('deriver : un champ saisi, l’autre calculé', () => {
     expect(lisible(d.texteReference)).toBe('1 624');
   });
 
+  it('une marge de 2 % réduit le montant reçu, pas le montant saisi', () => {
+    const d = deriver(
+      { champ: 'devise', texte: '200' },
+      'EGP',
+      'USD',
+      50,
+      'fr',
+      2
+    );
+    expect(d.montantDevise).toBe(200);
+    expect(d.montantReference).toBeCloseTo(3.92, 5);
+  });
+
   it('un champ vide n’est pas une erreur', () => {
     const d = deriver(
       { champ: 'devise', texte: '' },

@@ -44,6 +44,7 @@ export interface DeviseListee {
   code: string;
   nom: string;
   recente?: boolean;
+  epinglee?: boolean;
 }
 
 /**
@@ -55,20 +56,31 @@ export function listerDevises(
   codes: Iterable<string>,
   langue: Langue,
   recentes: readonly string[] = [],
-  exclure?: string
+  exclure?: string,
+  epinglees: readonly string[] = []
 ): DeviseListee[] {
   const disponibles = new Set(codes);
   if (exclure) disponibles.delete(exclure);
-  const enTete = recentes
-    .filter(code => disponibles.has(code))
-    .map(code => ({ code, nom: nomDevise(code, langue), recente: true }));
+  const enTete = (liste: readonly string[], marque: 'epinglee' | 'recente') =>
+    liste
+      .filter(code => disponibles.has(code))
+      .filter(code => marque === 'epinglee' || !epinglees.includes(code))
+      .map(code => ({
+        code,
+        nom: nomDevise(code, langue),
+        [marque]: true as const,
+      }));
   const reste = [...disponibles]
-    .filter(code => !recentes.includes(code))
+    .filter(code => !epinglees.includes(code) && !recentes.includes(code))
     .map(code => ({ code, nom: nomDevise(code, langue) }))
     .sort((a, b) =>
       a.nom.localeCompare(b.nom, langue, { sensitivity: 'base' })
     );
-  return [...enTete, ...reste];
+  return [
+    ...enTete(epinglees, 'epinglee'),
+    ...enTete(recentes, 'recente'),
+    ...reste,
+  ];
 }
 
 /** Minuscules, sans accents : « Égyptienne » se trouve en tapant « egy ». */

@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import { ToastProvider } from '@mister-guiiug/dev-pwa-config/react/toast';
 import { I18nProvider } from '../../i18n/index.ts';
 import { useTaux } from '../../rates/store.ts';
@@ -33,11 +34,13 @@ const taxi: ConversionEnregistree = {
 
 function monter() {
   render(
-    <I18nProvider>
-      <ToastProvider>
-        <CarnetScreen />
-      </ToastProvider>
-    </I18nProvider>
+    <MemoryRouter>
+      <I18nProvider>
+        <ToastProvider>
+          <CarnetScreen />
+        </ToastProvider>
+      </I18nProvider>
+    </MemoryRouter>
   );
 }
 

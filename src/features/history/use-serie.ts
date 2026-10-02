@@ -12,10 +12,10 @@ export type EtatSerie =
  * le réseau ensuite. Une période jamais lue, hors ligne, est `indisponible`
  * (récit 3, scénario 4).
  *
- * ON ATTEND DE SAVOIR QUELLE SOURCE LIRE. Tant que les taux de la BCE ne sont
- * pas connus, une devise qu'elle publie passerait pour une devise de marché :
- * un an d'historique coûterait 53 lectures au lieu d'une (CR-004), pour être
- * jeté dès que la BCE répond.
+ * ON ATTEND LE TAUX DU JOUR. Tant que sa relecture est en cours, la grille de
+ * marché ne part pas : un an, c'est jusqu'à 53 lectures (CR-004), et elles ne
+ * doivent pas concurrencer le taux affiché. On attend aussi de connaître la
+ * BCE : sans elle, une devise qu'elle publie passerait pour du marché.
  */
 export function useSerie(
   reference: string,
@@ -25,7 +25,7 @@ export function useSerie(
   const etat = useTaux(s => s.etat);
   const pret = useTaux(s => s.pret);
   const chargement = useTaux(s => s.chargement);
-  const sourceConnue = pret && (etat.bce !== undefined || !chargement);
+  const sourceConnue = pret && !chargement;
   const cle = `${reference}:${code}:${periode}`;
   const [lu, setLu] = useState<{ cle: string; etat: EtatSerie }>();
 

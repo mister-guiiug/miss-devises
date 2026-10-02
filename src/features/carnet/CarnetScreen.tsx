@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { NotebookPen, Pencil, Trash2 } from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
@@ -6,11 +7,13 @@ import { EmptyState } from '@mister-guiiug/dev-pwa-config/react/empty-state';
 import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
 import { Sheet } from '@mister-guiiug/dev-pwa-config/react/sheet';
 import { useToast } from '@mister-guiiug/dev-pwa-config/react/toast';
+import { formatNumber } from '@mister-guiiug/dev-pwa-config/format';
 import { useI18n } from '../../i18n/index.ts';
 import { useTaux } from '../../rates/store.ts';
 import { tauxDuJour } from '../../rates/service.ts';
 import type { ConversionEnregistree } from '../../backend/ports.ts';
 import {
+  decimalesDe,
   formaterCoupure,
   formaterDate,
   formaterMontant,
@@ -20,8 +23,11 @@ import {
 import {
   auTauxDuJour,
   deviseEtrangere,
+  reprise,
   totauxParPaire,
 } from '../../domain/carnet.ts';
+import { usePreferences } from '../../app/preferences.ts';
+import { useConversion } from '../convert/conversion.ts';
 import { Drapeau } from '../../ui/Drapeau.tsx';
 import { useCarnet } from './store.ts';
 
@@ -41,12 +47,17 @@ export function CarnetScreen() {
     if (!ready) void load();
   }, [ready, load]);
 
+  const navigate = useNavigate();
+
   if (ready && conversions.length === 0) {
     return (
       <EmptyState
         icon={<NotebookPen aria-hidden="true" />}
         title={t('carnet.vide')}
         description={t('carnet.videAide')}
+        action={
+          <Button onClick={() => navigate('/')}>{t('carnet.ouvrir')}</Button>
+        }
       />
     );
   }
@@ -84,6 +95,9 @@ function Ligne({
   const toast = useToast();
   const remove = useCarnet(s => s.remove);
   const undoRemove = useCarnet(s => s.undoRemove);
+  const navigate = useNavigate();
+  const poserPaire = usePreferences(s => s.poserPaire);
+  const reprendreSaisie = useConversion(s => s.reprendre);
   const etat = useTaux(s => s.etat);
   const code = deviseEtrangere(c);
   // Refaite au taux du jour de SA paire : sa référence, pas celle du moment.
@@ -106,6 +120,25 @@ function Ligne({
           <h3 className="m-0 min-w-0 flex-1 text-base font-semibold break-words">
             {c.libelle}
           </h3>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              const ligne = reprise(c);
+              poserPaire(ligne.reference, ligne.devise);
+              reprendreSaisie({
+                champ: ligne.champ,
+                texte: formatNumber(ligne.montant, locale, {
+                  useGrouping: false,
+                  maximumFractionDigits: decimalesDe(c.de.code),
+                }),
+              });
+              navigate('/');
+            }}
+            aria-label={t('carnet.reprendreLigne', { libelle: c.libelle })}
+          >
+            {t('carnet.reprendre')}
+          </Button>
           <Button
             variant="ghost"
             size="sm"
