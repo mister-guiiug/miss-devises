@@ -31,6 +31,8 @@ function cacheEnMemoire(): CacheTaux & { valeurs: Map<string, unknown> } {
       valeurs.set(cle, valeur);
       return true;
     },
+    keys: async () => [...valeurs.keys()],
+    remove: async (cle: string) => valeurs.delete(cle),
   };
 }
 
@@ -253,5 +255,32 @@ describe('le service : cache d’abord, réseau ensuite', () => {
     expect(serie.points[0]?.taux).toBeCloseTo(58 / 0.94, 12);
     // Le dernier point est le taux du jour, croisé lui aussi.
     expect(serie.points.at(-1)?.taux).toBeCloseTo(58.83 / 0.9384, 12);
+  });
+});
+
+describe('le ménage du cache (spécification 002, recherche R8)', () => {
+  it('efface les séries de la BCE d’un autre jour et les relevés de plus de 400 jours', async () => {
+    const cache = cacheEnMemoire();
+    const garder = [
+      'taux:bce',
+      'taux:marche',
+      'serie:bce:USD:2025-10-01:2026-10-01',
+      'jour:2026-09-28',
+      'jour:2025-09-01',
+    ];
+    const effacer = [
+      'serie:bce:USD:2025-09-30:2026-09-30',
+      'serie:bce:CHF:2026-04-01:2026-09-15',
+      'jour:2025-08-26',
+      'jour:2024-01-01',
+    ];
+    for (const cle of [...garder, ...effacer]) cache.valeurs.set(cle, {});
+    const service = createServiceTaux({
+      cache,
+      recuperer: vi.fn<Recuperer>(),
+      maintenant: () => MAINTENANT,
+    });
+    expect(await service.menage()).toBe(effacer.length);
+    expect([...cache.valeurs.keys()].sort()).toEqual([...garder].sort());
   });
 });

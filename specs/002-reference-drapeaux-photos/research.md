@@ -118,11 +118,14 @@ paragraphe sous « Billets et pièces ».
 ## R7. Une courbe qui se lit
 
 **Décision** : sous la courbe, un curseur natif (`<input type="range">`) qui
-parcourt les points : clavier, doigt et lecteur d'écran sans code de plus. La
-date et le taux du point choisi s'écrivent au-dessus, dans une région
-`status` ; la courbe marque le point. Le pointeur sur la courbe déplace le même
-curseur. Les axes sont du texte : plus haut et plus bas à gauche, première et
-dernière date dessous.
+parcourt les points : clavier, doigt et lecteur d'écran sans code de plus. Son
+`aria-valuetext` dit la date et le taux du point, et un lecteur d'écran
+l'annonce à chaque pas. La même lecture s'écrit au-dessus de la courbe, pour
+l'œil, cachée au lecteur d'écran qui l'entend déjà ; la courbe marque le
+point. Le pointeur sur la courbe déplace le même curseur. Les axes sont du
+texte : plus haut au-dessus de la courbe, plus bas au-dessous, contre leurs
+repères (posés dessus, ils en cachaient un morceau), première et dernière date
+dessous.
 
 **Écarté** : une bibliothèque de graphiques (001, R7) ; un SVG interactif seul,
 qu'aucun lecteur d'écran ne parcourt.

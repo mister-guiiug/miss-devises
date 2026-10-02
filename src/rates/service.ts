@@ -40,9 +40,15 @@ export interface Serie {
 export interface CacheTaux {
   get<T>(cle: string): Promise<T | undefined>;
   set(cle: string, valeur: unknown): Promise<boolean>;
+  keys(): Promise<string[]>;
+  remove(cle: string): Promise<boolean>;
 }
 
 const JOUR = 86_400_000;
+/** Au-delà, aucune grille du marché ne demande plus un relevé (001, R2). */
+const GARDE_JOURS = 400;
+const SERIE_BCE = /^serie:bce:[A-Z]{3}:\d{4}-\d{2}-\d{2}:(\d{4}-\d{2}-\d{2})$/;
+const RELEVE = /^jour:(\d{4}-\d{2}-\d{2})$/;
 const PARALLELES = 6;
 
 const iso = (date: Date) => date.toISOString().slice(0, 10);
@@ -248,6 +254,27 @@ export function createServiceTaux({
         await cache.set('taux:marche', marche.value);
       }
       return etat;
+    },
+
+    /**
+     * LE MÉNAGE (spécification 002, recherche R8). La clé d'une série de la
+     * BCE finit à la date du jour : chaque jour de consultation en écrivait
+     * une nouvelle, jamais relue ensuite. Celles d'un autre jour partent, et
+     * les relevés du marché de plus de 400 jours aussi. Rend le nombre de
+     * clés effacées.
+     */
+    async menage(): Promise<number> {
+      const jour = debutDuJour(maintenant());
+      const aujourdhui = iso(jour);
+      const limite = iso(new Date(jour.getTime() - GARDE_JOURS * JOUR));
+      const perimees = (await cache.keys()).filter(cle => {
+        const fin = SERIE_BCE.exec(cle)?.[1];
+        if (fin !== undefined) return fin !== aujourdhui;
+        const date = RELEVE.exec(cle)?.[1];
+        return date !== undefined && date < limite;
+      });
+      await Promise.all(perimees.map(cle => cache.remove(cle)));
+      return perimees.length;
     },
 
     /**
