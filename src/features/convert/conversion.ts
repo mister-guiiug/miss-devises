@@ -26,9 +26,14 @@ export interface Derive {
   invalide: boolean;
 }
 
-/** Un montant à éditer : nombre seul, aux décimales de la devise. */
-function texteDe(montant: number, code: string, langue: Langue): string {
-  const decimales = decimalesDe(code);
+/** Un montant à éditer : nombre seul. `choix` remplace les décimales de la devise. */
+function texteDe(
+  montant: number,
+  code: string,
+  langue: Langue,
+  choix: number | null
+): string {
+  const decimales = choix ?? decimalesDe(code);
   return formatNumber(arrondir(montant, decimales), langue, {
     minimumFractionDigits: decimales,
     maximumFractionDigits: decimales,
@@ -50,7 +55,9 @@ export function deriver(
   taux: number | undefined,
   langue: Langue,
   /** Marge en pour cent, retranchée du montant reçu. */
-  marge = 0
+  marge = 0,
+  /** Chiffres du montant calculé. `null` : ceux de la devise. */
+  decimales: number | null = null
 ): Derive {
   const valeur = lireMontant(saisie.texte, langue);
   const invalide = saisie.texte.trim() !== '' && valeur === null;
@@ -70,14 +77,15 @@ export function deriver(
       montantReference: calcule,
       texteDevise: saisie.texte,
       texteReference:
-        calcule === null ? '' : texteDe(calcule, reference, langue),
+        calcule === null ? '' : texteDe(calcule, reference, langue, decimales),
       invalide,
     };
   }
   return {
     montantDevise: calcule,
     montantReference: valeur,
-    texteDevise: calcule === null ? '' : texteDe(calcule, devise, langue),
+    texteDevise:
+      calcule === null ? '' : texteDe(calcule, devise, langue, decimales),
     texteReference: saisie.texte,
     invalide,
   };

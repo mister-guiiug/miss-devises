@@ -184,6 +184,7 @@ function Comparaison({
 }) {
   const { t, locale } = useI18n();
   const saisie = useConversion(s => s.saisie);
+  const decimales = usePreferences(s => s.decimales);
   const d = deriver(saisie, devise, reference, stats.fin.taux, locale);
   const enDevise = saisie.champ === 'devise';
   const montant = enDevise ? d.montantDevise : d.montantReference;
@@ -200,14 +201,15 @@ function Comparaison({
     stats.debut.taux,
     stats.fin.taux
   );
+  const options = decimales === null ? {} : { decimales };
   const montantDe = (valeur: number) =>
-    formaterMontant(valeur, codeContre, locale);
+    formaterMontant(valeur, codeContre, locale, options);
 
   return (
     <div className="flex flex-col gap-1 text-sm">
       <p className="m-0">
         {t('history.comparaison', {
-          montant: formaterMontant(montant, codeSaisi, locale),
+          montant: formaterMontant(montant, codeSaisi, locale, options),
           avant: montantDe(c.avant),
           date: formaterDate(stats.debut.date, locale),
           maintenant: montantDe(c.maintenant),
@@ -215,7 +217,10 @@ function Comparaison({
       </p>
       <p className="m-0 font-semibold">
         {t('history.ecart', {
-          ecart: formaterMontant(c.ecart, codeContre, locale, { signe: true }),
+          ecart: formaterMontant(c.ecart, codeContre, locale, {
+            signe: true,
+            ...options,
+          }),
           pourcentage: formaterPourcentage(c.pourcentage, locale),
         })}
       </p>

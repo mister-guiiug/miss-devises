@@ -23,10 +23,17 @@ const schema = z.object({
    * préférence d'avant elles se lit sans épingle, sans relever la version.
    */
   epinglees: z.array(CODE).max(6).default([]),
-  /** Pour cent retranchés du montant reçu. 0 : le taux indicatif. */
-  marge: z
-    .union([z.literal(0), z.literal(2), z.literal(5), z.literal(10)])
-    .default(0),
+  /**
+   * Pour cent retranchés du montant reçu, de 0 à 100. 0 : le taux
+   * indicatif. Une valeur libre : les raccourcis 0, 2, 5 et 10 n'épuisent
+   * pas les marges d'un bureau.
+   */
+  marge: z.number().min(0).max(100).default(0),
+  /**
+   * Chiffres après la virgule du montant calculé. `null` : ceux de la
+   * devise. Ajouté avec un défaut, il ne relève pas la version.
+   */
+  decimales: z.number().int().min(0).max(8).nullable().default(null),
 });
 
 export type Preferences = z.infer<typeof schema>;
@@ -49,6 +56,7 @@ export const DEFAUTS: Preferences = {
   avisPhotos: false,
   epinglees: [],
   marge: 0,
+  decimales: null,
 };
 
 /**
@@ -88,7 +96,8 @@ interface EtatPreferences extends Preferences {
   /** L'avis sur Wikimedia est lu, et les photos choisies. */
   accepterPhotos: () => void;
   epingler: (code: string) => void;
-  choisirMarge: (marge: Preferences['marge']) => void;
+  choisirMarge: (marge: number) => void;
+  choisirDecimales: (decimales: number | null) => void;
   /** Pose la référence et la devise d'un coup, pour rouvrir une ligne. */
   poserPaire: (reference: string, devise: string) => void;
 }
@@ -108,6 +117,7 @@ export function creerPreferences() {
         avisPhotos,
         epinglees,
         marge,
+        decimales,
       } = get();
       preferencesStore.save({
         reference,
@@ -119,6 +129,7 @@ export function creerPreferences() {
         avisPhotos,
         epinglees,
         marge,
+        decimales,
       });
     };
     return {
@@ -154,7 +165,21 @@ export function creerPreferences() {
             : [code, ...actuelles].slice(0, 6),
         });
       },
-      choisirMarge: marge => sauver({ marge }),
+      choisirMarge: marge => {
+        if (!Number.isFinite(marge)) return;
+        const borne = Math.min(100, Math.max(0, marge));
+        sauver({ marge: Math.round(borne * 100) / 100 });
+      },
+      choisirDecimales: decimales => {
+        if (decimales === null) {
+          sauver({ decimales: null });
+          return;
+        }
+        if (!Number.isInteger(decimales) || decimales < 0 || decimales > 8) {
+          return;
+        }
+        sauver({ decimales });
+      },
       poserPaire: (reference, devise) => {
         if (reference === devise) return;
         sauver({

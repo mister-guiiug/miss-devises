@@ -4,6 +4,7 @@ import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
 import { useToast } from '@mister-guiiug/dev-pwa-config/react/toast';
 import { useI18n } from '../../i18n/index.ts';
 import { formaterMontant } from '../../domain/money.ts';
+import { usePreferences } from '../../app/preferences.ts';
 import type { TauxDuJour } from '../../rates/service.ts';
 import { useCarnet } from '../carnet/store.ts';
 import type { Champ, Derive } from './conversion.ts';
@@ -38,6 +39,7 @@ export function SaveForm({
   const { t, locale } = useI18n();
   const toast = useToast();
   const ajouter = useCarnet(s => s.add);
+  const decimales = usePreferences(s => s.decimales);
   const [libelle, setLibelle] = useState('');
 
   const enDevise = champ === 'devise';
@@ -58,7 +60,7 @@ export function SaveForm({
     await ajouter({
       libelle:
         libelle.trim() ||
-        `${formaterMontant(saisi, codeSaisi, locale)} → ${codeCalcule}`,
+        `${formaterMontant(saisi, codeSaisi, locale, decimales === null ? {} : { decimales })} → ${codeCalcule}`,
       de: { code: codeSaisi, montant: saisi },
       vers: { code: codeCalcule, montant: calcule },
       reference,

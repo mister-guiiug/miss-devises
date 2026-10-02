@@ -38,6 +38,7 @@ export function ConvertScreen() {
   const epinglees = usePreferences(s => s.epinglees);
   const epingler = usePreferences(s => s.epingler);
   const marge = usePreferences(s => s.marge);
+  const decimales = usePreferences(s => s.decimales);
   const choisirDevise = usePreferences(s => s.choisirDevise);
   const saisie = useConversion(s => s.saisie);
   const haut = useConversion(s => s.haut);
@@ -47,9 +48,19 @@ export function ConvertScreen() {
 
   const codes = useMemo(() => codesConnus(etat), [etat]);
   const jour = tauxDuJour(reference, devise, etat, new Date());
-  const d = deriver(saisie, devise, reference, jour?.taux, locale, marge);
+  const d = deriver(
+    saisie,
+    devise,
+    reference,
+    jour?.taux,
+    locale,
+    marge,
+    decimales
+  );
   const indicatif =
-    marge === 0 ? d : deriver(saisie, devise, reference, jour?.taux, locale);
+    marge === 0
+      ? d
+      : deriver(saisie, devise, reference, jour?.taux, locale, 0, decimales);
 
   // « Montant en livres égyptiennes », « Montant en euros » : un montant se
   // compte au pluriel, dans les deux langues.

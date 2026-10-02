@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent, useMemo } from 'react';
+import { formatNumber } from '@mister-guiiug/dev-pwa-config/format';
+import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card, CardHeader } from '@mister-guiiug/dev-pwa-config/react/card';
 import { ConfirmDialog } from '@mister-guiiug/dev-pwa-config/react/confirm-dialog';
@@ -13,6 +15,7 @@ import { useTaux } from '../../rates/store.ts';
 import { codesConnus } from '../../rates/service.ts';
 import { useCarnet } from '../carnet/store.ts';
 import { CurrencyPicker } from '../convert/CurrencyPicker.tsx';
+import { arrondir, lireMontant } from '../../domain/money.ts';
 
 /**
  * L'écran de réglages : le seul écran que TOUTES les apps de la famille ont, et
@@ -41,6 +44,8 @@ export function SettingsScreen() {
   const choisirReference = usePreferences(state => state.choisirReference);
   const marge = usePreferences(state => state.marge);
   const choisirMarge = usePreferences(state => state.choisirMarge);
+  const decimales = usePreferences(state => state.decimales);
+  const choisirDecimales = usePreferences(state => state.choisirDecimales);
   const etat = useTaux(state => state.etat);
   const codes = useMemo(() => codesConnus(etat), [etat]);
 
@@ -117,13 +122,39 @@ export function SettingsScreen() {
         </p>
         <SegmentedControl
           value={String(marge)}
-          onChange={value => choisirMarge(Number(value) as typeof marge)}
+          onChange={value => choisirMarge(Number(value))}
           ariaLabel={t('settings.marge')}
           options={[0, 2, 5, 10].map(valeur => ({
             value: String(valeur),
             label: t('settings.margeOption', { marge: valeur }),
           }))}
         />
+        <ChampMarge marge={marge} onChoisir={choisirMarge} />
+      </Card>
+
+      <Card>
+        <CardHeader title={t('settings.decimales')} />
+        <p
+          className="m-0 mb-3 text-sm"
+          style={{ color: 'var(--dwc-text-soft)' }}
+        >
+          {t('settings.decimalesAide')}
+        </p>
+        <SegmentedControl
+          value={decimales === null ? 'auto' : String(decimales)}
+          onChange={value =>
+            choisirDecimales(value === 'auto' ? null : Number(value))
+          }
+          ariaLabel={t('settings.decimales')}
+          options={[
+            { value: 'auto', label: t('settings.decimalesAuto') },
+            ...[0, 2, 4, 6].map(valeur => ({
+              value: String(valeur),
+              label: String(valeur),
+            })),
+          ]}
+        />
+        <ChampDecimales decimales={decimales} onChoisir={choisirDecimales} />
       </Card>
 
       <Card>
@@ -216,5 +247,101 @@ export function SettingsScreen() {
         onCancel={() => setPending(null)}
       />
     </div>
+  );
+}
+
+/** La marge tapée, de 0 à 100. Les raccourcis remplissent le champ. */
+function ChampMarge({
+  marge,
+  onChoisir,
+}: {
+  marge: number;
+  onChoisir: (marge: number) => void;
+}) {
+  const { t, locale } = useI18n();
+  const affiche = formatNumber(marge, locale, { maximumFractionDigits: 2 });
+  const [brouillon, setBrouillon] = useState<string | null>(null);
+  const [erreur, setErreur] = useState(false);
+
+  return (
+    <TextField
+      className="mt-3"
+      label={t('settings.margeSaisie')}
+      hint={t('settings.margeUnite')}
+      inputMode="decimal"
+      autoComplete="off"
+      value={brouillon ?? affiche}
+      error={erreur ? t('settings.margeInvalide') : undefined}
+      onFocus={event => {
+        setBrouillon(affiche);
+        event.currentTarget.select();
+      }}
+      onBlur={() => {
+        setBrouillon(null);
+        setErreur(false);
+      }}
+      onChange={event => {
+        const suivant = event.target.value;
+        setBrouillon(suivant);
+        const lu = lireMontant(suivant, locale);
+        if (lu === null || lu < 0 || lu > 100) {
+          setErreur(suivant.trim() !== '');
+          return;
+        }
+        setErreur(false);
+        onChoisir(arrondir(lu, 2));
+      }}
+    />
+  );
+}
+
+/** Un nombre de 0 à 8. Vide : les décimales de la devise. */
+function ChampDecimales({
+  decimales,
+  onChoisir,
+}: {
+  decimales: number | null;
+  onChoisir: (decimales: number | null) => void;
+}) {
+  const { t } = useI18n();
+  const affiche = decimales === null ? '' : String(decimales);
+  const [brouillon, setBrouillon] = useState<string | null>(null);
+  const [erreur, setErreur] = useState(false);
+
+  return (
+    <TextField
+      className="mt-3"
+      label={t('settings.decimalesSaisie')}
+      hint={t('settings.decimalesUnite')}
+      inputMode="numeric"
+      autoComplete="off"
+      placeholder={t('settings.decimalesAuto')}
+      value={brouillon ?? affiche}
+      error={erreur ? t('settings.decimalesInvalide') : undefined}
+      onFocus={event => {
+        setBrouillon(affiche);
+        event.currentTarget.select();
+      }}
+      onBlur={() => {
+        setBrouillon(null);
+        setErreur(false);
+      }}
+      onChange={event => {
+        const suivant = event.target.value;
+        setBrouillon(suivant);
+        const lu = suivant.trim();
+        if (lu === '') {
+          setErreur(false);
+          onChoisir(null);
+          return;
+        }
+        if (!/^\d+$/.test(lu) || Number(lu) > 8) {
+          setErreur(true);
+          return;
+        }
+        setErreur(false);
+        onChoisir(Number(lu));
+      }}
+    />
   );
 }

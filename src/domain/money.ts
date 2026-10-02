@@ -121,9 +121,11 @@ export function formaterMontant(
   montant: number,
   code: string,
   langue: Langue,
-  { signe = false }: { signe?: boolean } = {}
+  {
+    signe = false,
+    decimales = decimalesDe(code),
+  }: { signe?: boolean; decimales?: number } = {}
 ): string {
-  const decimales = decimalesDe(code);
   return formatCurrency(arrondir(montant, decimales), langue, code, {
     minimumFractionDigits: decimales,
     maximumFractionDigits: decimales,

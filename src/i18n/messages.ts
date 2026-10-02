@@ -173,6 +173,16 @@ const fr = {
     margeAide:
       'Retranchée du montant reçu. Le taux affiché reste le taux indicatif.',
     margeOption: '{marge} %',
+    margeSaisie: 'Marge personnalisée',
+    margeUnite: 'Pour cent, de 0 à 100.',
+    margeInvalide: 'Entre 0 et 100.',
+    decimales: 'Chiffres après la virgule',
+    decimalesAide:
+      'Le montant calculé. « Auto » suit le nombre de chiffres de la devise.',
+    decimalesAuto: 'Auto',
+    decimalesSaisie: 'Nombre de chiffres',
+    decimalesUnite: 'De 0 à 8. Vide : ceux de la devise.',
+    decimalesInvalide: 'Un nombre entier, de 0 à 8.',
     appearance: 'Apparence',
     language: 'Langue',
     data: 'Carnet',
@@ -391,6 +401,16 @@ const en: typeof fr = {
     margeAide:
       'Taken off the amount you receive. The rate shown stays the indicative rate.',
     margeOption: '{marge}%',
+    margeSaisie: 'Custom margin',
+    margeUnite: 'Percent, from 0 to 100.',
+    margeInvalide: 'Between 0 and 100.',
+    decimales: 'Digits after the decimal point',
+    decimalesAide:
+      'The calculated amount. “Auto” follows the currency’s own digits.',
+    decimalesAuto: 'Auto',
+    decimalesSaisie: 'Number of digits',
+    decimalesUnite: 'From 0 to 8. Empty: the currency’s own.',
+    decimalesInvalide: 'A whole number, from 0 to 8.',
     appearance: 'Appearance',
     language: 'Language',
     data: 'Log',
