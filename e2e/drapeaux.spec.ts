@@ -46,14 +46,14 @@ test.describe('@critical 002, récit 2 : un drapeau pour chaque devise', () => {
   test('le volet et le carnet montrent les drapeaux de la paire', async ({
     page,
   }) => {
-    await page.getByLabel('Montant en livre égyptienne').fill('200');
+    await page.getByLabel('Montant en livres égyptiennes').fill('200');
     await page.getByRole('button', { name: 'Billets et pièces' }).click();
     const volet = page.getByRole('dialog', { name: 'Billets et pièces' });
     await expect(
       drapeau(volet.getByRole('tab', { name: 'En EGP' }))
     ).toHaveAttribute('data-drapeau', 'EG');
     await expect(
-      drapeau(volet.getByRole('tab', { name: 'En euros' }))
+      drapeau(volet.getByRole('tab', { name: 'En EUR' }))
     ).toHaveAttribute('data-drapeau', 'EU');
     await page.keyboard.press('Escape');
 

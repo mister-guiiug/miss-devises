@@ -7,6 +7,7 @@ const musee: ConversionEnregistree = {
   libelle: 'Visite du musée',
   de: { code: 'EGP', montant: 200 },
   vers: { code: 'EUR', montant: 3.39963 },
+  reference: 'EUR',
   taux: 58.83,
   source: 'marche',
   dateTaux: '2026-10-01',
@@ -51,7 +52,7 @@ describe('le carnet local', () => {
     const { carnet } = createLocalBackend();
     await carnet.add(musee);
     const json = await carnet.export();
-    expect(JSON.parse(json ?? '')).toMatchObject({ v: 1 });
+    expect(JSON.parse(json ?? '')).toMatchObject({ v: 2 });
     await carnet.clear();
     expect((await carnet.import(json ?? '')).conversions).toEqual([musee]);
   });
@@ -65,13 +66,42 @@ describe('le carnet local', () => {
     expect((await carnet.load()).conversions).toEqual([musee]);
   });
 
-  it('refuse une conversion où l’euro n’est d’aucun côté', async () => {
+  it('importe un fichier de la version 1 : l’euro pour référence', async () => {
     const { carnet } = createLocalBackend();
-    const sansEuro = {
-      ...musee,
-      vers: { code: 'USD', montant: 3.6 },
-    };
+    const { reference: _, ...v1 } = musee;
+    const json = JSON.stringify({ v: 1, data: { conversions: [v1] } });
+    expect((await carnet.import(json)).conversions).toEqual([musee]);
+  });
+
+  it('refuse, en version 1, une conversion où l’euro n’est d’aucun côté', async () => {
+    const { carnet } = createLocalBackend();
+    const { reference: _, ...v1 } = musee;
+    const sansEuro = { ...v1, vers: { code: 'USD', montant: 3.6 } };
     const json = JSON.stringify({ v: 1, data: { conversions: [sansEuro] } });
     await expect(carnet.import(json)).rejects.toThrow();
+  });
+
+  it('garde une paire sans l’euro, avec sa référence', async () => {
+    const { carnet } = createLocalBackend();
+    const enFrancs: ConversionEnregistree = {
+      ...musee,
+      vers: { code: 'CHF', montant: 3.19 },
+      reference: 'CHF',
+      taux: 62.69,
+    };
+    await carnet.add(enFrancs);
+    expect((await createLocalBackend().carnet.load()).conversions).toEqual([
+      enFrancs,
+    ]);
+  });
+
+  it('refuse une référence qui n’est d’aucun côté, ou deux côtés pareils', async () => {
+    const { carnet } = createLocalBackend();
+    const etrangere = { ...musee, reference: 'CHF' };
+    const pareils = { ...musee, vers: { code: 'EGP', montant: 200 } };
+    for (const fausse of [etrangere, pareils]) {
+      const json = JSON.stringify({ v: 2, data: { conversions: [fausse] } });
+      await expect(carnet.import(json)).rejects.toThrow();
+    }
   });
 });

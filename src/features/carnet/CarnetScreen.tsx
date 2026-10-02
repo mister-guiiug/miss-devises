@@ -11,6 +11,7 @@ import { useTaux } from '../../rates/store.ts';
 import { tauxDuJour } from '../../rates/service.ts';
 import type { ConversionEnregistree } from '../../backend/ports.ts';
 import {
+  formaterCoupure,
   formaterDate,
   formaterMontant,
   formaterPourcentage,
@@ -19,7 +20,7 @@ import {
 import {
   auTauxDuJour,
   deviseEtrangere,
-  totauxParDevise,
+  totauxParPaire,
 } from '../../domain/carnet.ts';
 import { Drapeau } from '../../ui/Drapeau.tsx';
 import { useCarnet } from './store.ts';
@@ -85,7 +86,8 @@ function Ligne({
   const undoRemove = useCarnet(s => s.undoRemove);
   const etat = useTaux(s => s.etat);
   const code = deviseEtrangere(c);
-  const jour = tauxDuJour(code, etat, new Date());
+  // Refaite au taux du jour de SA paire : sa référence, pas celle du moment.
+  const jour = tauxDuJour(c.reference, code, etat, new Date());
   const refaite = jour ? auTauxDuJour(c, jour.taux) : undefined;
   const montant = (m: { code: string; montant: number }) =>
     formaterMontant(m.montant, m.code, locale);
@@ -140,6 +142,7 @@ function Ligne({
         <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
           {t('carnet.taux', {
             date: formaterDate(c.dateTaux, locale),
+            un: formaterCoupure(1, c.reference, locale),
             taux: `${formaterTaux(c.taux, locale)} ${code}`,
           })}
           {' · '}
@@ -158,14 +161,17 @@ function Ligne({
   );
 }
 
-/** Les totaux par devise étrangère, dès qu'une devise a deux lignes. */
+/**
+ * Les totaux par paire (devise étrangère et référence), dès qu'une paire a
+ * deux lignes.
+ */
 function Totaux({
   conversions,
 }: {
   conversions: readonly ConversionEnregistree[];
 }) {
   const { t, locale } = useI18n();
-  const totaux = totauxParDevise(conversions).filter(total => total.nombre > 1);
+  const totaux = totauxParPaire(conversions).filter(total => total.nombre > 1);
   if (totaux.length === 0) return null;
   return (
     <section aria-labelledby="carnet-totaux" className="flex flex-col gap-1">
@@ -174,10 +180,14 @@ function Totaux({
       </h3>
       <ul className="m-0 flex list-none flex-col gap-1 p-0 text-sm">
         {totaux.map(total => (
-          <li key={total.code}>
+          <li key={`${total.code}/${total.reference}`}>
             {t('carnet.total', {
               montant: formaterMontant(total.devise, total.code, locale),
-              euros: formaterMontant(total.euros, 'EUR', locale),
+              reference: formaterMontant(
+                total.montantReference,
+                total.reference,
+                locale
+              ),
             })}
           </li>
         ))}

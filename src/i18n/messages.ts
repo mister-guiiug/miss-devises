@@ -30,10 +30,9 @@ const fr = {
     devise: 'Devise',
     choisir: 'Changer de devise',
     montant: 'Montant en {nom}',
-    montantEuro: 'Montant en euros',
     inverser: 'Inverser les deux devises',
     invalide: 'Montant illisible : chiffres, et une virgule ou un point.',
-    taux: '1 € = {taux}',
+    taux: '{un} = {taux}',
     tauxInverse: '1 {code} = {taux}',
     source: {
       bce: 'taux de référence de la BCE',
@@ -61,7 +60,6 @@ const fr = {
     billets: 'Billets',
     pieces: 'Pièces',
     voirDevise: 'En {code}',
-    voirEuro: 'En euros',
     composition: 'Composition de {montant}',
     reste: 'Reste {montant}, sous la plus petite pièce.',
     inconnues:
@@ -107,7 +105,7 @@ const fr = {
     horsLigne:
       'Cette période n’a pas encore été consultée : elle sera disponible hors ligne une fois chargée.',
     incomplete: 'Quelques dates manquent : la courbe passe au-dessus.',
-    courbe: 'Évolution de 1 € en {code} sur {periode}',
+    courbe: 'Évolution de {un} en {code} sur {periode}',
     periode: 'Période',
     le: 'le {date}',
     hausse: 'en hausse',
@@ -123,7 +121,7 @@ const fr = {
     videAide:
       'Depuis Convertir, donnez un libellé à une conversion et enregistrez-la.',
     aujourdhui: 'Aujourd’hui : {montant} ({ecart})',
-    taux: 'Taux du {date} : 1 € = {taux}',
+    taux: 'Taux du {date} : {un} = {taux}',
     renommer: 'Renommer',
     renommerTitre: 'Renommer la conversion',
     renommerLigne: 'Renommer « {libelle} »',
@@ -133,7 +131,7 @@ const fr = {
     supprime: 'Conversion supprimée.',
     annuler: 'Annuler',
     totaux: 'Totaux',
-    total: '{montant}, soit {euros}',
+    total: '{montant}, soit {reference}',
     count: {
       one: '{count} conversion',
       other: '{count} conversions',
@@ -141,6 +139,10 @@ const fr = {
   },
   settings: {
     title: 'Réglages',
+    reference: 'Monnaie de référence',
+    referenceAide:
+      'Convertir, l’historique et le carnet comptent dans cette devise. Les conversions déjà gardées restent dans la leur.',
+    referenceChoisir: 'Changer de monnaie de référence',
     appearance: 'Apparence',
     language: 'Langue',
     data: 'Carnet',
@@ -214,10 +216,9 @@ const en: typeof fr = {
     devise: 'Currency',
     choisir: 'Change currency',
     montant: 'Amount in {nom}',
-    montantEuro: 'Amount in euros',
     inverser: 'Swap the two currencies',
     invalide: 'Unreadable amount: digits, and one comma or point.',
-    taux: '€1 = {taux}',
+    taux: '{un} = {taux}',
     tauxInverse: '1 {code} = {taux}',
     source: {
       bce: 'ECB reference rate',
@@ -245,7 +246,6 @@ const en: typeof fr = {
     billets: 'Banknotes',
     pieces: 'Coins',
     voirDevise: 'In {code}',
-    voirEuro: 'In euros',
     composition: 'Breakdown of {montant}',
     reste: '{montant} left, below the smallest coin.',
     inconnues:
@@ -291,7 +291,7 @@ const en: typeof fr = {
     horsLigne:
       'This period has not been viewed yet: it will be available offline once loaded.',
     incomplete: 'A few dates are missing: the curve skips over them.',
-    courbe: '€1 in {code} over {periode}',
+    courbe: '{un} in {code} over {periode}',
     periode: 'Period',
     le: 'on {date}',
     hausse: 'rising',
@@ -306,7 +306,7 @@ const en: typeof fr = {
     vide: 'No saved conversions.',
     videAide: 'In Convert, give a conversion a label and save it.',
     aujourdhui: 'Today: {montant} ({ecart})',
-    taux: 'Rate of {date}: €1 = {taux}',
+    taux: 'Rate of {date}: {un} = {taux}',
     renommer: 'Rename',
     renommerTitre: 'Rename the conversion',
     renommerLigne: 'Rename “{libelle}”',
@@ -316,7 +316,7 @@ const en: typeof fr = {
     supprime: 'Conversion deleted.',
     annuler: 'Undo',
     totaux: 'Totals',
-    total: '{montant}, i.e. {euros}',
+    total: '{montant}, i.e. {reference}',
     count: {
       one: '{count} conversion',
       other: '{count} conversions',
@@ -324,6 +324,10 @@ const en: typeof fr = {
   },
   settings: {
     title: 'Settings',
+    reference: 'Reference currency',
+    referenceAide:
+      'Convert, the history and the log count in this currency. Conversions already saved keep their own.',
+    referenceChoisir: 'Change the reference currency',
     appearance: 'Appearance',
     language: 'Language',
     data: 'Log',

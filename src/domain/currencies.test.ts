@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { chercherDevises, listerDevises, nomDevise } from './currencies.ts';
+import {
+  chercherDevises,
+  listerDevises,
+  nomAuPluriel,
+  nomDevise,
+} from './currencies.ts';
 
 describe('nomDevise : le nom d’une devise, par Intl', () => {
   it('en français, avec une majuscule en tête de liste', () => {
@@ -16,17 +21,48 @@ describe('nomDevise : le nom d’une devise, par Intl', () => {
   });
 });
 
-describe('listerDevises', () => {
-  const codes = ['USD', 'EGP', 'JPY', 'EUR', 'MAD'];
+describe('nomAuPluriel : « Montant en livres égyptiennes »', () => {
+  it('en français et en anglais', () => {
+    expect(nomAuPluriel('EGP', 'fr')).toBe('livres égyptiennes');
+    expect(nomAuPluriel('EUR', 'fr')).toBe('euros');
+    expect(nomAuPluriel('CHF', 'fr')).toBe('francs suisses');
+    expect(nomAuPluriel('EGP', 'en')).toBe('Egyptian pounds');
+    expect(nomAuPluriel('EUR', 'en')).toBe('euros');
+  });
 
-  it('écarte l’euro et trie par nom, les récentes en tête', () => {
-    const liste = listerDevises(codes, 'fr', ['MAD', 'JPY']);
-    expect(liste.map(d => d.code)).toEqual(['MAD', 'JPY', 'USD', 'EGP']);
+  it('un code inconnu se nomme par lui-même', () => {
+    expect(nomAuPluriel('ZZZ', 'fr')).toBe('ZZZ');
+  });
+});
+
+describe('listerDevises', () => {
+  const codes = ['USD', 'EGP', 'JPY', 'EUR', 'MAD', 'CHF'];
+
+  it('écarte la référence et trie par nom, les récentes en tête', () => {
+    const liste = listerDevises(codes, 'fr', ['MAD', 'JPY'], 'CHF');
+    expect(liste.map(d => d.code)).toEqual(['MAD', 'JPY', 'USD', 'EUR', 'EGP']);
     expect(liste[0]).toEqual({
       code: 'MAD',
       nom: 'Dirham marocain',
       recente: true,
     });
+  });
+
+  it('avec l’euro pour référence, l’euro n’est pas proposé', () => {
+    const liste = listerDevises(codes, 'fr', ['MAD', 'JPY'], 'EUR');
+    expect(liste.map(d => d.code)).not.toContain('EUR');
+  });
+
+  it('sans référence à écarter, toutes les devises', () => {
+    const liste = listerDevises(codes, 'fr', ['MAD', 'JPY']);
+    expect(liste.map(d => d.code)).toEqual([
+      'MAD',
+      'JPY',
+      'USD',
+      'EUR',
+      'CHF',
+      'EGP',
+    ]);
   });
 });
 

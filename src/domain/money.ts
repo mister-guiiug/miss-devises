@@ -159,6 +159,20 @@ export function formaterTaux(taux: number, langue: Langue): string {
   return formatNumber(taux, langue, { maximumSignificantDigits: 5 });
 }
 
+/**
+ * Un taux dit dans une devise, à cinq chiffres significatifs : « 0,016998 € »,
+ * « €0.016998 », « 0,015951 CHF ». La place et la forme du symbole sont
+ * celles d'`Intl`, dans chaque langue (spécification 002 : la référence
+ * n'est plus toujours l'euro).
+ */
+export function formaterTauxEn(
+  taux: number,
+  code: string,
+  langue: Langue
+): string {
+  return formatCurrency(taux, langue, code, { maximumSignificantDigits: 5 });
+}
+
 /** Les décimales d'une valeur de coupure : aucune pour un entier. */
 function decimalesDeValeur(valeur: number, code: string) {
   const decimales = Number.isInteger(valeur) ? 0 : decimalesDe(code);

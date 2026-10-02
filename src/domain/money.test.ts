@@ -7,6 +7,7 @@ import {
   formaterMontant,
   formaterPourcentage,
   formaterTaux,
+  formaterTauxEn,
   formaterValeur,
   lireMontant,
   nommerMontant,
@@ -118,6 +119,17 @@ describe('formaterTaux : cinq chiffres significatifs', () => {
     [0.016997, 'fr', '0,016997'],
   ] as const)('%d en %s : %s', (taux, langue, attendu) => {
     expect(lisible(formaterTaux(taux, langue))).toBe(attendu);
+  });
+});
+
+describe('formaterTauxEn : un taux dit dans une devise, cinq chiffres significatifs', () => {
+  it.each([
+    [1 / 58.83, 'EUR', 'fr', '0,016998 €'],
+    [1 / 58.83, 'EUR', 'en', '€0.016998'],
+    [1 / 62.6918, 'CHF', 'fr', '0,015951 CHF'],
+    [2.76051, 'JPY', 'fr', '2,7605 JPY'],
+  ] as const)('%d %s en %s : %s', (taux, code, langue, attendu) => {
+    expect(lisible(formaterTauxEn(taux, code, langue))).toBe(attendu);
   });
 });
 

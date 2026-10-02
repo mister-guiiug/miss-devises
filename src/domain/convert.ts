@@ -1,13 +1,13 @@
 /**
  * Le sens d'une conversion, vu de la devise étrangère : `versDevise` part de
- * l'euro, `versEuro` y revient.
+ * la monnaie de référence, `versReference` y revient.
  */
-export type Sens = 'versDevise' | 'versEuro';
+export type Sens = 'versDevise' | 'versReference';
 
 /**
- * Convertit entre l'euro et une devise. Le taux s'exprime en unités de la
- * devise pour UN euro, comme le publient les deux sources (58,83 EGP pour
- * 1 €).
+ * Convertit entre la référence et une devise. Le taux s'exprime en unités de
+ * la devise pour UNE unité de la référence : avec l'euro, tel que le publient
+ * les deux sources (58,83 EGP pour 1 €) ; sinon, le taux croisé.
  *
  * AUCUN ARRONDI ICI : il n'a lieu qu'à l'affichage (recherche R3). Arrondir en
  * route ferait dériver un aller-retour.

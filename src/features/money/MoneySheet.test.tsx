@@ -13,11 +13,15 @@ interface Options {
   devise?: string;
   taux?: number;
   montantDevise?: number | null;
-  montantEuro?: number | null;
+  montantReference?: number | null;
 }
 
 function monter(options: Options = {}) {
-  const { devise = 'EGP', montantDevise = null, montantEuro = null } = options;
+  const {
+    devise = 'EGP',
+    montantDevise = null,
+    montantReference = null,
+  } = options;
   // `taux: undefined` est un cas éprouvé : pas de valeur par défaut ici.
   const taux = 'taux' in options ? options.taux : 58.83;
   render(
@@ -26,9 +30,10 @@ function monter(options: Options = {}) {
         open
         onClose={() => {}}
         devise={devise}
+        reference="EUR"
         taux={taux}
         montantDevise={montantDevise}
-        montantEuro={montantEuro}
+        montantReference={montantReference}
       />
     </I18nProvider>
   );
@@ -49,7 +54,11 @@ async function dessins(section: string) {
 beforeEach(() => {
   localStorage.clear();
   localStorage.setItem('dwc_locale', 'fr');
-  usePreferences.setState({ devise: 'EGP', sensVolet: 'devise' });
+  usePreferences.setState({
+    reference: 'EUR',
+    devise: 'EGP',
+    sensVolet: 'devise',
+  });
 });
 
 afterEach(cleanup);
@@ -78,16 +87,44 @@ describe('le volet des billets et des pièces (récit 2)', () => {
     const user = userEvent.setup();
     monter();
     await screen.findByRole('region', { name: 'Billets' });
-    await user.click(screen.getByRole('tab', { name: 'En euros' }));
+    await user.click(screen.getByRole('tab', { name: 'En EUR' }));
     const billets = await dessins('Billets');
     expect(billets).toContain('Billet de 200 euros, soit 11 766,00 EGP');
-    expect(usePreferences.getState().sensVolet).toBe('euro');
+    expect(usePreferences.getState().sensVolet).toBe('reference');
     // Le billet de 500 € a cours légal, mais n'est plus émis.
     expect(screen.getByText(/n’est plus émis/)).toBeInTheDocument();
   });
 
+  it('avec le franc pour référence, ses coupures valent des livres', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ reference: 'CHF' });
+    render(
+      <I18nProvider>
+        <MoneySheet
+          open
+          onClose={() => {}}
+          devise="EGP"
+          reference="CHF"
+          taux={62.69}
+          montantDevise={null}
+          montantReference={null}
+        />
+      </I18nProvider>
+    );
+    await screen.findByRole('region', { name: 'Billets' });
+    expect(screen.getByRole('tab', { name: 'En CHF' })).toBeInTheDocument();
+    // Les livres d'abord, chacune en francs suisses.
+    expect((await dessins('Billets')).at(-1)).toBe(
+      'Billet de 200 livres égyptiennes, soit 3,19 CHF'
+    );
+    await user.click(screen.getByRole('tab', { name: 'En CHF' }));
+    expect(await dessins('Billets')).toContain(
+      'Billet de 10 francs suisses, soit 626,90 EGP'
+    );
+  });
+
   it('compose le montant saisi : 200 EGP, un billet de 200', async () => {
-    monter({ montantDevise: 200, montantEuro: 200 / 58.83 });
+    monter({ montantDevise: 200, montantReference: 200 / 58.83 });
     const composition = await screen.findByRole('region', {
       name: /Composition de 200,00\sEGP/,
     });
@@ -95,7 +132,7 @@ describe('le volet des billets et des pièces (récit 2)', () => {
   });
 
   it('dit ce qui reste sous la plus petite pièce', async () => {
-    monter({ montantDevise: 1176.66, montantEuro: 20 });
+    monter({ montantDevise: 1176.66, montantReference: 20 });
     expect(
       lisible(
         (await screen.findByText(/sous la plus petite pièce/)).textContent
@@ -177,7 +214,8 @@ describe('composer un montant au toucher (récit 5)', () => {
           devise="EGP"
           taux={58.83}
           montantDevise={null}
-          montantEuro={null}
+          reference="EUR"
+          montantReference={null}
         />
       </I18nProvider>
     );
