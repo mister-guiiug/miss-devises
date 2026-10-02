@@ -114,9 +114,29 @@ function Shell() {
     '/a-propos': t('about.title'),
   };
 
+  /*
+   * LA MARQUE DEVANT LE TITRE, SUR CHAQUE ÉCRAN. C'est le MÊME FICHIER qui
+   * fait le favicon et dont `npm run icons` tire les icônes du manifeste :
+   * l'en-tête, l'onglet et l'application installée montrent le même logo.
+   * `AppShell` ne transmet pas le `leading` d'`AppHeader` ; son titre
+   * accepte un nœud, le logo y entre. `alt=""` : le titre le suit et le dit.
+   */
+  const titre = (
+    <span className="inline-flex items-center gap-2">
+      <img
+        src={`${import.meta.env.BASE_URL}favicon.svg`}
+        alt=""
+        width={28}
+        height={28}
+        className="size-7 shrink-0"
+      />
+      {titles[pathname] ?? t('app.name')}
+    </span>
+  );
+
   return (
     <AppShell
-      title={titles[pathname] ?? t('app.name')}
+      title={titre}
       backHref={pathname === '/' ? undefined : '/'}
       linkComponent={Link}
       hrefProp="to"
