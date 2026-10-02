@@ -4,7 +4,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { expectNoA11yViolations } from '@mister-guiiug/dev-pwa-config/playwright-a11y';
-import { simulerTaux } from './taux.ts';
+import { simulerPhotos, simulerTaux } from './taux.ts';
 
 interface Ecran {
   nom: string;
@@ -37,6 +37,29 @@ const ECRANS: Ecran[] = [
       await expect(
         page.getByRole('region', { name: /Composition de/ })
       ).toBeVisible();
+    },
+  },
+  {
+    nom: 'volet des billets, avis avant les photos',
+    aller: async page => {
+      await saisir200(page);
+      await page.getByRole('button', { name: 'Billets et pièces' }).click();
+      const volet = page.getByRole('dialog', { name: 'Billets et pièces' });
+      await volet.getByRole('tab', { name: 'Photos' }).click();
+      await expect(
+        volet.getByRole('button', { name: 'Afficher les photos' })
+      ).toBeVisible();
+    },
+  },
+  {
+    nom: 'volet des billets, en photos',
+    aller: async page => {
+      await saisir200(page);
+      await page.getByRole('button', { name: 'Billets et pièces' }).click();
+      const volet = page.getByRole('dialog', { name: 'Billets et pièces' });
+      await volet.getByRole('tab', { name: 'Photos' }).click();
+      await volet.getByRole('button', { name: 'Afficher les photos' }).click();
+      await expect(volet.locator('img[data-photo]').first()).toBeVisible();
     },
   },
   {
@@ -97,6 +120,7 @@ for (const theme of ['light', 'dark'] as const) {
     // l'écran d'attente.
     test.beforeEach(async ({ page }) => {
       await simulerTaux(page);
+      await simulerPhotos(page);
     });
 
     for (const ecran of ECRANS) {

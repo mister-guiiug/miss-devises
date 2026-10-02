@@ -30,6 +30,16 @@ import { devPortOf } from '@mister-guiiug/dev-pwa-config/apps-catalog';
 const analyze = process.env.ANALYZE === '1';
 const APP_ID = 'miss-devises';
 
+/**
+ * LES HÔTES DES PHOTOS (spécification 002, recherche R5) : les vignettes de
+ * Wikimedia Commons, et ses originaux quand ils sont plus étroits que la
+ * vignette. Ils ne servent qu'en mode photos, que l'utilisateur choisit.
+ */
+const HOTES_PHOTOS = [
+  'https://thumb.wikimedia.org',
+  'https://upload.wikimedia.org',
+];
+
 export default defineConfig(({ command }) => {
   // `VITE_BASE_PATH` est prioritaire : le déploiement famille le pose, et la
   // CI Lighthouse le met à `/` pour servir le build à la racine. Sans cette
@@ -85,6 +95,8 @@ export default defineConfig(({ command }) => {
           'https://cdn.jsdelivr.net',
           'https://*.currency-api.pages.dev',
         ],
+        // Les photos des coupures, et elles seules en plus du défaut.
+        imgSrc: ["'self'", 'data:', 'blob:', ...HOTES_PHOTOS],
       }),
 
       // Repli SPA : sans `404.html`, rafraîchir un lien profond sert la page
@@ -112,6 +124,25 @@ export default defineConfig(({ command }) => {
           shortName: 'Miss Devises',
           description:
             'Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.',
+          // Les photos déjà vues restent hors ligne. La règle d'images du
+          // socle ne voit pas une autre origine (Workbox n'y applique une
+          // expression régulière que depuis le début de l'adresse) : celle-ci
+          // la nomme. Statut 200 seulement : les images partent en CORS, une
+          // réponse opaque n'a rien à faire ici.
+          runtimeCaching: [
+            {
+              urlPattern: /^https:\/\/(thumb|upload)\.wikimedia\.org\//,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'photos-commons',
+                expiration: {
+                  maxEntries: 200,
+                  maxAgeSeconds: 60 * 60 * 24 * 90,
+                },
+                cacheableResponse: { statuses: [200] },
+              },
+            },
+          ],
         })
       ),
 

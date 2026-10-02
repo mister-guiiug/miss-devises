@@ -106,7 +106,7 @@ choisis.
 2. **Étant donné** le volet ouvert, **quand** je passe en photos, **alors**
    l'application dit d'abord, une fois, que les photos viennent de Wikimedia
    Commons, qui voit l'adresse IP de l'appareil et les images demandées ; puis
-   chaque coupure couverte montre sa photo, recto, réduite.
+   chaque coupure couverte montre sa photo, d'une seule face, réduite.
 3. **Étant donné** une photo affichée, **alors** son crédit (auteur, licence,
    lien vers la page du fichier) se lit dans le volet.
 4. **Étant donné** une coupure sans photo libre, ou une photo qui ne se charge
@@ -213,7 +213,7 @@ curseur au clavier et lire la date et le taux annoncés.
   dessins par défaut ; le choix gardé.
 - **EF-009** : une photo NE DOIT être montrée que si elle est hébergée sur
   Wikimedia Commons sous licence libre ou avec la permission de son émetteur,
-  recto seul, réduite, avec son crédit (auteur, licence, lien).
+  d'une seule face, réduite, avec son crédit (auteur, licence, lien).
 - **EF-010** : aucune requête NE DOIT partir vers Wikimedia tant que
   l'utilisateur n'a pas choisi les photos ; avant la première, l'application
   DOIT dire ce que Wikimedia voit.
