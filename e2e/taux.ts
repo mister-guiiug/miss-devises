@@ -96,3 +96,40 @@ export async function simulerTaux(
   );
   return journal;
 }
+
+/** Une image PNG d'un pixel : ce que la simulation rend pour chaque photo. */
+const PIXEL = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
+  'base64'
+);
+
+export interface RequetePhoto {
+  url: string;
+  referent: string | undefined;
+  cookie: string | undefined;
+}
+
+/**
+ * LES PHOTOS DE WIKIMEDIA SONT SIMULÉES, elles aussi : un pixel par image,
+ * avec l'en-tête CORS que Commons envoie. Rend le JOURNAL des requêtes, avec
+ * ce qu'elles emportent (référent, cookie) : la spécification 002 veut
+ * qu'elles n'emportent ni l'un ni l'autre, et aucune en mode dessins.
+ */
+export async function simulerPhotos(page: Page): Promise<RequetePhoto[]> {
+  const journal: RequetePhoto[] = [];
+  await page.route(/^https:\/\/(thumb|upload)\.wikimedia\.org\//, route => {
+    const entetes = route.request().headers();
+    journal.push({
+      url: route.request().url(),
+      referent: entetes['referer'],
+      cookie: entetes['cookie'],
+    });
+    return route.fulfill({
+      status: 200,
+      contentType: 'image/png',
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: PIXEL,
+    });
+  });
+  return journal;
+}

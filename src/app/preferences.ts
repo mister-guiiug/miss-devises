@@ -10,6 +10,14 @@ const schema = z.object({
   recentes: z.array(CODE).max(6),
   sensVolet: z.enum(['devise', 'reference']),
   periode: z.enum(['1M', '6M', '1A']),
+  /**
+   * Dessins ou photos dans le volet (spécification 002, récit 3). Ajoutés
+   * avec une valeur par défaut, ils ne relèvent pas la version : une
+   * préférence d'avant eux se lit en dessins, l'avis encore à lire.
+   */
+  images: z.enum(['dessins', 'photos']).default('dessins'),
+  /** L'avis sur Wikimedia a été lu : il ne s'affiche qu'une fois. */
+  avisPhotos: z.boolean().default(false),
 });
 
 export type Preferences = z.infer<typeof schema>;
@@ -28,6 +36,8 @@ export const DEFAUTS: Preferences = {
   recentes: [],
   sensVolet: 'devise',
   periode: '1A',
+  images: 'dessins',
+  avisPhotos: false,
 };
 
 /**
@@ -63,6 +73,9 @@ interface EtatPreferences extends Preferences {
   choisirReference: (code: string) => void;
   basculerVolet: () => void;
   choisirPeriode: (periode: Preferences['periode']) => void;
+  choisirImages: (images: Preferences['images']) => void;
+  /** L'avis sur Wikimedia est lu, et les photos choisies. */
+  accepterPhotos: () => void;
 }
 
 /** Une fabrique, pour qu'un test relise les préférences comme au rechargement. */
@@ -70,13 +83,23 @@ export function creerPreferences() {
   return create<EtatPreferences>((set, get) => {
     const sauver = (changement: Partial<Preferences>) => {
       set(changement);
-      const { reference, devise, recentes, sensVolet, periode } = get();
+      const {
+        reference,
+        devise,
+        recentes,
+        sensVolet,
+        periode,
+        images,
+        avisPhotos,
+      } = get();
       preferencesStore.save({
         reference,
         devise,
         recentes,
         sensVolet,
         periode,
+        images,
+        avisPhotos,
       });
     };
     return {
@@ -102,6 +125,8 @@ export function creerPreferences() {
           sensVolet: get().sensVolet === 'devise' ? 'reference' : 'devise',
         }),
       choisirPeriode: periode => sauver({ periode }),
+      choisirImages: images => sauver({ images }),
+      accepterPhotos: () => sauver({ images: 'photos', avisPhotos: true }),
     };
   });
 }

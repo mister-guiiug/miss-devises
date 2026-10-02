@@ -30,6 +30,11 @@ const CREDITS = [
     url: 'https://gitlab.com/catamphetamine/country-flag-icons',
     cle: 'drapeaux',
   },
+  {
+    nom: 'Wikimedia Commons',
+    url: 'https://commons.wikimedia.org/',
+    cle: 'photos',
+  },
 ] as const;
 
 /** Les origines que l'application interroge : celles de `connect-src`. */
@@ -149,6 +154,7 @@ export function AboutScreen() {
               </li>
             ))}
           </ul>
+          <p className="m-0">{t('about.tiersPhotos')}</p>
           {sansMesure && <p className="m-0">{t('about.sansMesure')}</p>}
         </div>
       </Card>

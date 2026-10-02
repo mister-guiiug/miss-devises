@@ -86,6 +86,23 @@ const fr = {
       one: '{count} ajouté',
       other: '{count} ajoutés',
     },
+    images: 'Dessins ou photos',
+    dessins: 'Dessins',
+    photos: 'Photos',
+    avisTitre: 'Les photos viennent de Wikimedia Commons',
+    avis: 'Pour les afficher, l’appareil les demande aux serveurs de la Wikimedia Foundation (États-Unis), qui voient son adresse IP, son navigateur, l’heure et les images demandées, donc les coupures affichées ; ni référent ni cookie ne leur est envoyé. Les dessins, eux, ne demandent rien à personne.',
+    avisAfficher: 'Afficher les photos',
+    avisGarder: 'Garder les dessins',
+    aucunePhoto:
+      'Aucune photo libre pour cette devise : ses billets et ses pièces restent dessinés.',
+    sansPhoto: {
+      one: '{count} coupure sur {total} n’a pas de photo libre : elle reste dessinée.',
+      other:
+        '{count} coupures sur {total} n’ont pas de photo libre : elles restent dessinées.',
+    },
+    credit: 'Crédit',
+    creditDe: 'Crédit de la photo : {coupure}, sur Wikimedia Commons',
+    credits: 'Crédits des photos',
   },
   history: {
     title: 'Historique',
@@ -186,16 +203,20 @@ const fr = {
       'Ils sont indicatifs : un bureau de change applique ses propres taux et ses frais.',
     billets: 'Billets et pièces',
     billetsBody:
-      'Ils sont dessinés à leur couleur et à leurs proportions, jamais reproduits : la reproduction des billets est encadrée, voire interdite, par les banques centrales.',
+      'Ils sont dessinés à leur couleur et à leurs proportions. À la demande, le volet montre à la place des photos libres de Wikimedia Commons, réduites, d’une seule face et créditées ; les devises dont la banque centrale encadre ou interdit la reproduction gardent leurs dessins.',
     confidentialite: 'Confidentialité',
     surAppareil:
       'Le carnet et les réglages restent sur cet appareil, sans compte. L’export en fichier est la seule façon de les en sortir.',
     tiers:
       'Pour lire un taux, l’application interroge ces trois adresses. Elles voient l’adresse IP de l’appareil, les dates demandées et, pour un historique de la BCE, le code de la devise ; jamais un montant ni un libellé.',
+    tiersPhotos:
+      'En mode photos seulement, le navigateur demande les images à thumb.wikimedia.org et upload.wikimedia.org (Wikimedia Foundation, États-Unis), qui voient l’adresse IP de l’appareil, son navigateur et les images demandées ; ni référent ni cookie ne leur est envoyé.',
     sansMesure: 'Ni mesure d’audience, ni cookie, ni publicité.',
     credits: 'Crédits',
     credit: {
       drapeaux: 'les drapeaux, sous licence MIT.',
+      photos:
+        'les photos des billets et des pièces, chacune sous sa licence et créditée dans le volet.',
     },
   },
 };
@@ -274,6 +295,23 @@ const en: typeof fr = {
       one: '{count} added',
       other: '{count} added',
     },
+    images: 'Drawings or photos',
+    dessins: 'Drawings',
+    photos: 'Photos',
+    avisTitre: 'The photos come from Wikimedia Commons',
+    avis: 'To show them, the device requests them from the Wikimedia Foundation servers (United States), which see its IP address, its browser, the time and the requested images, hence the denominations shown; no referrer and no cookie is sent. The drawings ask nothing of anyone.',
+    avisAfficher: 'Show the photos',
+    avisGarder: 'Keep the drawings',
+    aucunePhoto:
+      'No free photo for this currency: its banknotes and coins stay drawn.',
+    sansPhoto: {
+      one: '{count} denomination out of {total} has no free photo: it stays drawn.',
+      other:
+        '{count} denominations out of {total} have no free photo: they stay drawn.',
+    },
+    credit: 'Credit',
+    creditDe: 'Photo credit: {coupure}, on Wikimedia Commons',
+    credits: 'Photo credits',
   },
   history: {
     title: 'History',
@@ -372,16 +410,20 @@ const en: typeof fr = {
       'They are indicative: an exchange office applies its own rates and fees.',
     billets: 'Banknotes and coins',
     billetsBody:
-      'They are drawn in their colour and proportions, never reproduced: central banks restrict, or forbid, banknote reproduction.',
+      'They are drawn in their colour and proportions. On request, the sheet shows free photos from Wikimedia Commons instead, reduced, one side only and credited; currencies whose central bank restricts or forbids reproduction keep their drawings.',
     confidentialite: 'Privacy',
     surAppareil:
       'The log and the settings stay on this device, without an account. Exporting a file is the only way to take them out.',
     tiers:
       'To read a rate, the app queries these three addresses. They see the device’s IP address, the requested dates and, for an ECB history, the currency code; never an amount or a label.',
+    tiersPhotos:
+      'In photo mode only, the browser requests the images from thumb.wikimedia.org and upload.wikimedia.org (Wikimedia Foundation, United States), which see the device’s IP address, its browser and the requested images; no referrer and no cookie is sent.',
     sansMesure: 'No audience measurement, no cookie, no advertising.',
     credits: 'Credits',
     credit: {
       drapeaux: 'the flags, under the MIT licence.',
+      photos:
+        'the photos of banknotes and coins, each under its own licence and credited in the sheet.',
     },
   },
 };
