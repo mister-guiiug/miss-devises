@@ -31,9 +31,12 @@ défaut, zéro dette, zéro info.
    paire.
 4. **Drapeaux** : ouvrir la liste des devises ; chacune a son drapeau, le franc
    CFA un signe neutre. Hors ligne, les drapeaux restent.
-5. **Photos** : ouvrir le volet de l'euro, passer en photos ; lire l'avis, voir
-   les vignettes et leurs crédits. Revenir aux dessins : plus aucune requête
-   vers Wikimedia (onglet Réseau).
+5. **Photos** : ouvrir le volet de l'euro ; la rangée « Vraies photos » dit
+   d'avance « 13 sur 15 coupures ». Activer l'interrupteur ; lire l'avis,
+   ouvert dans la rangée, voir les vignettes et leurs crédits, et l'étiquette
+   « Dessin » des coupures sans photo. Revenir aux dessins : plus aucune
+   requête vers Wikimedia (onglet Réseau). Pour la livre sterling,
+   l'interrupteur est grisé et dit pourquoi.
 6. **À propos** : à 320 px, nom, version, fonctions, sources liées,
    confidentialité, crédits ; rien ne déborde.
 7. **Historique** : changer de devise depuis l'écran ; promener le curseur au

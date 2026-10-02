@@ -99,6 +99,13 @@ une pull request par phase.
       les doutes sur les pièces EGP, le JOD, l'INR et le « specimen » de la BCE
       sont écrits dans `photos.md`.
 
+## Phase 9 : la bascule des photos
+
+- [x] T029 [R3] Tests puis la rangée « Vraies photos » (`BasculePhotos`) à la
+      place de la seconde bascule : compte des coupures photographiées, avis
+      dans la rangée et focus, interrupteur grisé sans photo, étiquette
+      « Dessin » ; e2e et axe suivent l'interrupteur.
+
 ## Dépendances et ordre
 
 - Phase 1 → À propos → drapeaux → référence → historique → photos. Les
