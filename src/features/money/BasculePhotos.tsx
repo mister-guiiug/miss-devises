@@ -102,8 +102,8 @@ export function BasculePhotos({
         >
           {/* La piste et sa pastille : la couleur n'est pas seule à parler,
               la pastille change de côté. Éteinte, la piste doit se voir sur
-              la rangée (3:1, WCAG 1.4.11) : la palette de l'app ne définit
-              pas `--dwc-border-strong`, d'où le repli sur le texte atténué.
+              la rangée (3:1, WCAG 1.4.11) : c'est le contour d'un contrôle,
+              `--dwc-border-strong`, que `src/palette.test.ts` mesure.
               La pastille prend la couleur qui contraste avec sa piste dans
               les deux thèmes, pas un blanc en dur : sur l'or du thème
               sombre, un blanc ne se distingue presque plus. */}
@@ -113,7 +113,7 @@ export function BasculePhotos({
             style={{
               background: actif
                 ? 'var(--dwc-primary)'
-                : 'var(--dwc-border-strong, var(--dwc-text-soft))',
+                : 'var(--dwc-border-strong)',
               opacity: inactif ? 0.5 : 1,
             }}
           >
