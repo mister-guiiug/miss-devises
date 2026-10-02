@@ -80,8 +80,10 @@ une pull request par phase.
 
 ## Phase 7 : finitions
 
-- [ ] T026 Poids relevé en CI à chaque phase ; budget reposé si la mesure le
-      demande, avec sa raison dans `package.json`.
+- [x] T026 Poids relevé en CI à chaque phase ; budget reposé si la mesure le
+      demande, avec sa raison dans `package.json`. Mesuré en CI après la
+      fusion (run 37056163050) : 239,4 kB gzip sous 246, préchargé et morceau
+      principal sous leurs bornes ; le budget ne bouge pas.
 - [x] T027 Captures et image de partage (`npm run screenshots`) si l'écran
       principal a changé.
 
