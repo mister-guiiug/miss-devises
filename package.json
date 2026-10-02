@@ -30,10 +30,10 @@
     "screenshots": "pwa-screenshots --wide-path historique --prepare scripts/captures.mjs --locale fr-FR"
   },
   "bundleBudget": {
-    "_pourquoi": "REPOSÉ À +10 % DE LA MESURE EN CI, le 01/10/2026, quand Miss Devises a remplacé l’exemple du squelette (run 36911097532 de la PR 2 : morceau principal 516 kB brut, 223,2 kB gzip au total, 171,1 kB préchargés). Les bornes héritées du squelette (527 / 288 / 175) ne laissaient plus que 2 % de marge sur deux d’entre elles, et 29 % sur la troisième, qui ne mesurait donc plus rien. La formule est celle de pwa-bundle-budget : poids courant + 10 %, arrondi au kilo-octet supérieur. MESURER EN CI, PAS EN LOCAL : gh run view <id> -R mister-guiiug/miss-devises --log | grep 'TOTAL gzip'. Le jeu de données des coupures (5,6 kB gzip) est un morceau à part, chargé à l’ouverture du volet : il compte dans le total, pas dans le préchargé. posthog-js (environ 49 kB gzip, build slim) n’est chargé qu’après accord, et ne compte que dans le total.",
-    "totalGzipKb": 246,
-    "preloadGzipKb": 189,
-    "mainChunkKb": 568
+    "_pourquoi": "REPOSÉ À +10 % DE LA MESURE EN CI, le 03/10/2026, quand les Réglages (PR 22) ont laissé 0,2 % de marge au total (run 37078622970 : 245,5 kB gzip au total, 182,3 kB préchargés, morceau principal 552 kB brut). Depuis la pose du 01/10 (223,2 kB), l’app a pris 22 kB avec ses fonctions : photos de Commons, lien Wikipédia, monnaie de référence, marge et décimales, puis les Réglages en quatre sections. Pose précédente, le 01/10/2026, quand Miss Devises a remplacé l’exemple du squelette (run 36911097532 de la PR 2 : morceau principal 516 kB brut, 223,2 kB gzip au total, 171,1 kB préchargés). Les bornes héritées du squelette (527 / 288 / 175) ne laissaient plus que 2 % de marge sur deux d’entre elles, et 29 % sur la troisième, qui ne mesurait donc plus rien. La formule est celle de pwa-bundle-budget : poids courant + 10 %, arrondi au kilo-octet supérieur. MESURER EN CI, PAS EN LOCAL : gh run view <id> -R mister-guiiug/miss-devises --log | grep 'TOTAL gzip'. Le jeu de données des coupures (5,6 kB gzip) est un morceau à part, chargé à l’ouverture du volet : il compte dans le total, pas dans le préchargé. posthog-js (environ 49 kB gzip, build slim) n’est chargé qu’après accord, et ne compte que dans le total.",
+    "totalGzipKb": 271,
+    "preloadGzipKb": 201,
+    "mainChunkKb": 608
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
