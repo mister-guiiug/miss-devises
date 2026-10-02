@@ -33,10 +33,12 @@ interface Props {
   onClose: () => void;
   /** La devise étrangère de l'écran Convertir. */
   devise: string;
-  /** Unités de la devise pour un euro ; sans lui, pas de contre-valeur. */
+  /** La monnaie de référence : l'euro par défaut (spécification 002). */
+  reference: string;
+  /** Unités de la devise pour une unité de la référence ; sans lui, pas de contre-valeur. */
   taux: number | undefined;
   montantDevise: number | null;
-  montantEuro: number | null;
+  montantReference: number | null;
 }
 
 /** Largeur du plus grand billet d'une devise, et diamètre de la plus grande pièce. */
@@ -46,15 +48,17 @@ const DIAMETRE_PIECE = 56;
 /**
  * Le volet des billets et des pièces (récit 2) : chaque coupure dessinée, du
  * plus petit au plus grand, avec sa contre-valeur ; la bascule vers les
- * coupures de l'euro ; la composition du montant saisi (EF-005, EF-007).
+ * coupures de la référence ; la composition du montant saisi (EF-005,
+ * EF-007).
  */
 export function MoneySheet({
   open,
   onClose,
   devise,
+  reference,
   taux,
   montantDevise,
-  montantEuro,
+  montantReference,
 }: Props) {
   const { t, locale } = useI18n();
   const saisir = useConversion(s => s.saisir);
@@ -78,7 +82,7 @@ export function MoneySheet({
     };
   }, [open, coupures]);
 
-  const code = sens === 'devise' ? devise : 'EUR';
+  const code = sens === 'devise' ? devise : reference;
   const systeme = coupures?.devises[code];
 
   let contenu: ReactNode;
@@ -96,17 +100,17 @@ export function MoneySheet({
       <Contenu
         key={code}
         code={code}
-        autre={sens === 'devise' ? 'EUR' : devise}
+        autre={sens === 'devise' ? reference : devise}
         systeme={systeme}
         taux={taux}
-        versEuro={sens === 'devise'}
-        montant={sens === 'devise' ? montantDevise : montantEuro}
+        versReference={sens === 'devise'}
+        montant={sens === 'devise' ? montantDevise : montantReference}
         releveLe={coupures.releveLe}
         onUtiliser={total => {
           // Le total devient la saisie de Convertir, dans son champ : sans
           // séparateur de milliers, aux décimales de la devise.
           saisir(
-            sens === 'devise' ? 'devise' : 'euro',
+            sens,
             formatNumber(total, locale, {
               maximumFractionDigits: decimalesDe(code),
               useGrouping: false,
@@ -136,8 +140,12 @@ export function MoneySheet({
               ),
             },
             {
-              value: 'euro',
-              label: <Segment code="EUR">{t('money.voirEuro')}</Segment>,
+              value: 'reference',
+              label: (
+                <Segment code={reference}>
+                  {t('money.voirDevise', { code: reference })}
+                </Segment>
+              ),
             },
           ]}
           ariaLabel={t('money.sens')}
@@ -166,8 +174,8 @@ interface PropsContenu {
   autre: string;
   systeme: DeviseCoupures;
   taux: number | undefined;
-  /** `true` : les coupures de la devise, valant des euros. */
-  versEuro: boolean;
+  /** `true` : les coupures de la devise, valant leur montant en référence. */
+  versReference: boolean;
   montant: number | null;
   releveLe: string;
   /** « Utiliser ce montant » : le total composé au toucher (récit 5). */
@@ -179,7 +187,7 @@ function Contenu({
   autre,
   systeme,
   taux,
-  versEuro,
+  versReference,
   montant,
   releveLe,
   onUtiliser,
@@ -200,7 +208,7 @@ function Contenu({
     const montantAutre = convertir(
       valeur,
       taux,
-      versEuro ? 'versEuro' : 'versDevise'
+      versReference ? 'versReference' : 'versDevise'
     );
     const decimales = decimalesDe(autre);
     if (arrondir(montantAutre, decimales) === 0) {

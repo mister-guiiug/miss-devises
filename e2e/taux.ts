@@ -14,6 +14,7 @@ const MARCHE = {
   mad: 10.81,
   tnd: 3.312,
   xof: 655.957,
+  chf: 0.9384,
 };
 const MARCHE_AVANT = {
   egp: 56.18,
@@ -21,6 +22,7 @@ const MARCHE_AVANT = {
   mad: 10.62,
   tnd: 3.29,
   xof: 655.957,
+  chf: 0.95,
 };
 
 const DATE = /(\d{4}-\d{2}-\d{2})/;
@@ -53,13 +55,17 @@ export async function simulerTaux(
             json: { amount: 1, base: 'EUR', date: AUJOURDHUI, rates: BCE },
           });
         }
-        // Une série : `/v1/<début>..<fin>?symbols=<code>`, deux points.
+        // Une série : `/v1/<début>..<fin>?symbols=<codes>`, deux points.
+        // Une paire sans l'euro demande ses deux codes d'un coup (002, R2).
         const bornes = /\/v1\/(\d{4}-\d{2}-\d{2})\.\.(\d{4}-\d{2}-\d{2})/.exec(
           url
         );
-        const code = new URL(url).searchParams.get('symbols') ?? '';
-        if (bornes?.[1] && bornes[2] && code in BCE) {
-          const cle = code as keyof typeof BCE;
+        const codes = (new URL(url).searchParams.get('symbols') ?? '')
+          .split(',')
+          .filter((code): code is keyof typeof BCE => code in BCE);
+        if (bornes?.[1] && bornes[2] && codes.length > 0) {
+          const releve = (taux: typeof BCE) =>
+            Object.fromEntries(codes.map(code => [code, taux[code]]));
           return route.fulfill({
             json: {
               amount: 1,
@@ -67,8 +73,8 @@ export async function simulerTaux(
               start_date: bornes[1],
               end_date: bornes[2],
               rates: {
-                [bornes[1]]: { [code]: BCE_AVANT[cle] },
-                [bornes[2]]: { [code]: BCE[cle] },
+                [bornes[1]]: releve(BCE_AVANT),
+                [bornes[2]]: releve(BCE),
               },
             },
           });

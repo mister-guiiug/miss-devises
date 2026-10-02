@@ -105,26 +105,34 @@ export async function lireBce(
   return { source: 'bce', date: json.date, taux: json.rates };
 }
 
-/** Une série de la BCE, en une requête, triée par date. */
-export async function lireSerieBce(
-  code: string,
+/**
+ * Les séries de la BCE pour une ou deux devises, en UNE requête (spécification
+ * 002, recherche R2), chacune triée par date. Une date où une devise manque
+ * est sautée pour elle seule.
+ */
+export async function lireSeriesBce(
+  codes: readonly string[],
   debut: string,
   fin: string,
   recuperer: Recuperer,
   signal?: AbortSignal
-): Promise<PointSerie[]> {
+): Promise<Record<string, PointSerie[]>> {
   const json = schemaSerieBce.parse(
     await recuperer(
-      `${URL_BCE}/${debut}..${fin}?base=EUR&symbols=${code}`,
+      `${URL_BCE}/${debut}..${fin}?base=EUR&symbols=${codes.join(',')}`,
       signal
     )
   );
-  return Object.entries(json.rates)
-    .flatMap(([date, taux]) => {
-      const valeur = taux[code];
-      return valeur === undefined ? [] : [{ date, taux: valeur }];
-    })
-    .sort((a, b) => a.date.localeCompare(b.date));
+  const dates = Object.keys(json.rates).sort();
+  return Object.fromEntries(
+    codes.map(code => [
+      code,
+      dates.flatMap(date => {
+        const valeur = json.rates[date]?.[code];
+        return valeur === undefined ? [] : [{ date, taux: valeur }];
+      }),
+    ])
+  );
 }
 
 /**

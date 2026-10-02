@@ -39,20 +39,20 @@ une pull request par phase.
 
 ## Phase 4 : récit 1, la monnaie de référence (P1)
 
-- [ ] T009 [P] [R1] Tests puis `src/domain/reference.ts` : source d'une paire,
+- [x] T009 [P] [R1] Tests puis `src/domain/reference.ts` : source d'une paire,
       taux croisé (recherche R1).
-- [ ] T010 [R1] Tests puis `src/rates/` : taux du jour et série d'une paire
+- [x] T010 [R1] Tests puis `src/rates/` : taux du jour et série d'une paire
       (recherche R2), une requête pour un an de BCE.
-- [ ] T011 [P] [R1] Tests puis les préférences en version 2 (migration,
+- [x] T011 [P] [R1] Tests puis les préférences en version 2 (migration,
       échange quand la référence devient la devise affichée).
-- [ ] T012 [P] [R1] Tests puis le carnet en version 2 : schéma, migration,
+- [x] T012 [P] [R1] Tests puis le carnet en version 2 : schéma, migration,
       import d'un fichier de version 1, totaux par paire.
-- [ ] T013 [R1] Les écrans : Convertir, ligne de taux, enregistrement, volet,
+- [x] T013 [R1] Les écrans : Convertir, ligne de taux, enregistrement, volet,
       historique, carnet ; la référence dans les réglages.
-- [ ] T014 [R1] e2e `@critical` : référence CHF, conversion dans les deux
+- [x] T014 [R1] e2e `@critical` : référence CHF, conversion dans les deux
       sens, rechargement ; les parcours de la 001 à l'identique avec l'euro
       (CR-001).
-- [ ] T015 [R1] Messages fr et en ; README (fonctionnalités).
+- [x] T015 [R1] Messages fr et en ; README (fonctionnalités).
 
 ## Phase 5 : récit 3, les photos (P2)
 

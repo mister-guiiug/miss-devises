@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import type { ConversionEnregistree } from '../backend/ports.ts';
-import { auTauxDuJour, deviseEtrangere, totauxParDevise } from './carnet.ts';
+import { auTauxDuJour, deviseEtrangere, totauxParPaire } from './carnet.ts';
 
 const musee: ConversionEnregistree = {
   id: 'c1',
   libelle: 'Visite du musée',
   de: { code: 'EGP', montant: 200 },
   vers: { code: 'EUR', montant: 200 / 58.83 },
+  reference: 'EUR',
   taux: 58.83,
   source: 'marche',
   dateTaux: '2026-10-01',
@@ -31,10 +32,22 @@ const hotel: ConversionEnregistree = {
   source: 'bce',
 };
 
-describe('deviseEtrangere : l’autre côté de l’euro', () => {
-  it('que l’euro soit le départ ou l’arrivée', () => {
+/** En francs suisses : 62,69 livres pour un franc. */
+const souk: ConversionEnregistree = {
+  ...musee,
+  id: 'c4',
+  libelle: 'Souk',
+  de: { code: 'CHF', montant: 10 },
+  vers: { code: 'EGP', montant: 626.9 },
+  reference: 'CHF',
+  taux: 62.69,
+};
+
+describe('deviseEtrangere : l’autre côté de la référence', () => {
+  it('que la référence soit le départ ou l’arrivée', () => {
     expect(deviseEtrangere(musee)).toBe('EGP');
     expect(deviseEtrangere(taxi)).toBe('EGP');
+    expect(deviseEtrangere(souk)).toBe('EGP');
   });
 });
 
@@ -50,19 +63,37 @@ describe('auTauxDuJour : la même conversion, refaite aujourd’hui (EF-012)', (
     expect(r.montant).toBeCloseTo(20 * 59.2, 10);
     expect(r.ecart).toBeCloseTo(59.2 / 58.83 - 1, 10);
   });
+
+  it('10 CHF vers la livre, au taux croisé du jour', () => {
+    const r = auTauxDuJour(souk, 63);
+    expect(r.montant).toBeCloseTo(630, 10);
+    expect(r.ecart).toBeCloseTo(630 / 626.9 - 1, 10);
+  });
 });
 
-describe('totauxParDevise : par devise étrangère, et en euros', () => {
+describe('totauxParPaire : par devise étrangère et par référence', () => {
   it('additionne chaque côté, quel que soit le sens', () => {
-    const totaux = totauxParDevise([musee, taxi, hotel]);
-    expect(totaux.map(t => t.code)).toEqual(['EGP', 'USD']);
+    const totaux = totauxParPaire([musee, taxi, hotel]);
+    expect(totaux.map(t => `${t.code}/${t.reference}`)).toEqual([
+      'EGP/EUR',
+      'USD/EUR',
+    ]);
     const egp = totaux[0];
     expect(egp?.nombre).toBe(2);
     expect(egp?.devise).toBeCloseTo(200 + 20 * 58.83, 10);
-    expect(egp?.euros).toBeCloseTo(200 / 58.83 + 20, 10);
+    expect(egp?.montantReference).toBeCloseTo(200 / 58.83 + 20, 10);
+  });
+
+  it('ne mêle pas deux références : la livre en euros, la livre en francs', () => {
+    const totaux = totauxParPaire([musee, souk, taxi]);
+    expect(totaux.map(t => `${t.code}/${t.reference}`)).toEqual([
+      'EGP/EUR',
+      'EGP/CHF',
+    ]);
+    expect(totaux[1]?.montantReference).toBe(10);
   });
 
   it('un carnet vide n’a pas de total', () => {
-    expect(totauxParDevise([])).toEqual([]);
+    expect(totauxParPaire([])).toEqual([]);
   });
 });

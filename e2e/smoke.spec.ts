@@ -19,7 +19,7 @@ test.describe('@critical récit 1 : convertir dans les deux sens', () => {
     page,
   }) => {
     await page.goto('/');
-    const egp = page.getByLabel('Montant en livre égyptienne');
+    const egp = page.getByLabel('Montant en livres égyptiennes');
     const eur = page.getByLabel('Montant en euros');
     await egp.fill('200');
     await expect(eur).toHaveValue('3,40');
@@ -31,7 +31,7 @@ test.describe('@critical récit 1 : convertir dans les deux sens', () => {
 
   test('la ligne de taux dit la source et la date', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText(/1 € = 58,83 EGP/)).toBeVisible();
+    await expect(page.getByText(/1\s€ = 58,83 EGP/)).toBeVisible();
     await expect(page.getByText(/taux de marché, du/)).toBeVisible();
   });
 
@@ -61,7 +61,7 @@ test.describe('@critical récit 1 : convertir dans les deux sens', () => {
 
   test('inverser garde les montants', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Montant en livre égyptienne').fill('200');
+    await page.getByLabel('Montant en livres égyptiennes').fill('200');
     await page
       .getByRole('button', { name: 'Inverser les deux devises' })
       .click();

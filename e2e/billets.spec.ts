@@ -16,7 +16,7 @@ test.describe('@critical récits 2 et 5 : billets et pièces', () => {
     page,
   }) => {
     await page.goto('/');
-    await page.getByLabel('Montant en livre égyptienne').fill('200');
+    await page.getByLabel('Montant en livres égyptiennes').fill('200');
     await page.getByRole('button', { name: 'Billets et pièces' }).click();
     const volet = page.getByRole('dialog', { name: 'Billets et pièces' });
 
@@ -29,7 +29,7 @@ test.describe('@critical récits 2 et 5 : billets et pièces', () => {
       volet.getByRole('region', { name: /Composition de 200,00\sEGP/ })
     ).toContainText(/1 × 200\sEGP/);
 
-    await volet.getByRole('tab', { name: 'En euros' }).click();
+    await volet.getByRole('tab', { name: 'En EUR' }).click();
     // Le billet de 500 € a cours légal, mais n'est plus émis.
     await expect(billets.last()).toHaveAccessibleName(
       /^Billet de 500 euros, soit 29\s415,00\sEGP, n’est plus émis$/
@@ -55,7 +55,7 @@ test.describe('@critical récits 2 et 5 : billets et pièces', () => {
 
     await volet.getByRole('button', { name: 'Utiliser ce montant' }).click();
     await expect(volet).toBeHidden();
-    await expect(page.getByLabel('Montant en livre égyptienne')).toHaveValue(
+    await expect(page.getByLabel('Montant en livres égyptiennes')).toHaveValue(
       '201'
     );
     await expect(page.getByLabel('Montant en euros')).toHaveValue('3,42');
