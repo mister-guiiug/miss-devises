@@ -85,11 +85,12 @@ Une pull request par étape, dans cet ordre, chacune verte et déployable seule 
 2. récit 4, À propos ;
 3. récit 2, les drapeaux ;
 4. récit 1, la monnaie de référence ;
-5. récit 3, les photos ;
-6. récit 5, l'historique.
+5. récit 5, l'historique ;
+6. récit 3, les photos.
 
 Les drapeaux passent avant la référence : le choix de la référence, dans les
-réglages, se fait déjà avec eux.
+réglages, se fait déjà avec eux. Les photos passent en dernier : leur relevé
+sur Commons, devise par devise, est le plus long.
 
 ## Phases
 

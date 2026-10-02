@@ -70,12 +70,13 @@ une pull request par phase.
 
 ## Phase 6 : récit 5, l'historique (P3)
 
-- [ ] T022 [R5] Le choix de la devise sur l'écran d'historique.
-- [ ] T023 [R5] Tests puis la courbe : axes, curseur, région `status`
+- [x] T022 [R5] Le choix de la devise sur l'écran d'historique.
+- [x] T023 [R5] Tests puis la courbe : axes, curseur et sa lecture
       (recherche R7).
-- [ ] T024 [P] [R5] Tests puis le ménage du cache au démarrage (recherche R8).
-- [ ] T025 [R5] e2e : changer de devise sur place, lire un point au clavier ;
-      axe.
+- [x] T024 [P] [R5] Tests puis le ménage du cache au démarrage (recherche R8).
+- [x] T025 [R5] e2e : changer de devise sur place, lire un point au clavier ;
+      axe. L'exception `definition-list` du contrôle axe de l'historique est
+      retirée : le socle 6.22.0 rend un `<dl>` valide.
 
 ## Phase 7 : finitions
 
@@ -86,7 +87,9 @@ une pull request par phase.
 
 ## Dépendances et ordre
 
-- Phase 1 → À propos → drapeaux → référence → photos → historique.
+- Phase 1 → À propos → drapeaux → référence → historique → photos. Les
+  photos, prévues avant l'historique, passent après lui : leur relevé sur
+  Commons est le plus long.
 - Les drapeaux avant la référence : le choix de la référence s'en sert.
 - Les photos après la référence : le volet bascule déjà entre la devise et la
   référence.
