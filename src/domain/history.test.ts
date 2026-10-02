@@ -38,7 +38,7 @@ describe('statistiques : la série d’une période (récit 3)', () => {
 
 describe('comparer : le montant saisi au début de la période et aujourd’hui', () => {
   it('200 EGP valaient 3,56 € il y a un an, 3,40 € aujourd’hui', () => {
-    const c = comparer(200, 'versEuro', 56.18, 58.83);
+    const c = comparer(200, 'versReference', 56.18, 58.83);
     expect(c.avant).toBeCloseTo(3.56, 2);
     expect(c.maintenant).toBeCloseTo(3.4, 2);
     expect(c.ecart).toBeCloseTo(200 / 58.83 - 200 / 56.18, 10);

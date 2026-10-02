@@ -7,6 +7,7 @@ const musee = {
   libelle: 'Visite du musée',
   de: { code: 'EGP', montant: 200 },
   vers: { code: 'EUR', montant: 3.39963 },
+  reference: 'EUR',
   taux: 58.83,
   source: 'marche' as const,
   dateTaux: '2026-10-01',

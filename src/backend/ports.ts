@@ -16,16 +16,22 @@ export const conversionSchema = z
     libelle: z.string().trim().min(1).max(120),
     de: MONTANT,
     vers: MONTANT,
-    /** Unités de la devise étrangère pour un euro. */
+    /**
+     * La monnaie de référence du moment, l'un des deux côtés (spécification
+     * 002) : l'euro pour toute conversion d'avant elle.
+     */
+    reference: CODE,
+    /** Unités de l'autre devise pour une unité de la référence. */
     taux: z.number().positive(),
     source: z.enum(['bce', 'marche']),
     dateTaux: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     creeeLe: z.string(),
   })
-  // « Des monnaies d'euros » : l'euro est toujours l'une des deux devises
-  // (spécification 001, clarifications).
-  .refine(c => c.de.code === 'EUR' || c.vers.code === 'EUR', {
-    message: 'l’euro doit être l’une des deux devises',
+  .refine(c => c.de.code !== c.vers.code, {
+    message: 'les deux devises doivent différer',
+  })
+  .refine(c => c.reference === c.de.code || c.reference === c.vers.code, {
+    message: 'la référence doit être l’une des deux devises',
   });
 
 export type ConversionEnregistree = z.infer<typeof conversionSchema>;

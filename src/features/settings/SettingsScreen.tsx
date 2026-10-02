@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card, CardHeader } from '@mister-guiiug/dev-pwa-config/react/card';
 import { ConfirmDialog } from '@mister-guiiug/dev-pwa-config/react/confirm-dialog';
@@ -8,7 +8,11 @@ import { ChromePrefs } from '@mister-guiiug/dev-pwa-config/react/chrome-prefs';
 import { dateSlug, downloadText } from '@mister-guiiug/dev-pwa-config/download';
 import { useI18n } from '../../i18n/index.ts';
 import { backend } from '../../backend/index.ts';
+import { usePreferences } from '../../app/preferences.ts';
+import { useTaux } from '../../rates/store.ts';
+import { codesConnus } from '../../rates/service.ts';
 import { useCarnet } from '../carnet/store.ts';
+import { CurrencyPicker } from '../convert/CurrencyPicker.tsx';
 
 /**
  * L'écran de réglages : le seul écran que TOUTES les apps de la famille ont, et
@@ -33,6 +37,10 @@ export function SettingsScreen() {
   const load = useCarnet(state => state.load);
   const error = useCarnet(state => state.error);
   const [confirming, setConfirming] = useState(false);
+  const reference = usePreferences(state => state.reference);
+  const choisirReference = usePreferences(state => state.choisirReference);
+  const etat = useTaux(state => state.etat);
+  const codes = useMemo(() => codesConnus(etat), [etat]);
 
   // Ouvert directement (lien profond, rechargement), cet écran ne sait pas si
   // des conversions existent tant que le port n'a pas été lu : sans cette lecture,
@@ -76,6 +84,27 @@ export function SettingsScreen() {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* LA MONNAIE DE RÉFÉRENCE (spécification 002, récit 1) : celle dans
+          laquelle on compte. La liste est celle de Convertir, drapeaux
+          compris ; choisir la devise affichée échange les deux. */}
+      <Card>
+        <CardHeader title={t('settings.reference')} />
+        <p
+          className="m-0 mb-3 text-sm"
+          style={{ color: 'var(--dwc-text-soft)' }}
+        >
+          {t('settings.referenceAide')}
+        </p>
+        <CurrencyPicker
+          code={reference}
+          codes={codes}
+          recentes={[]}
+          onChoisir={choisirReference}
+          etiquette={t('settings.referenceChoisir')}
+          titre={t('settings.reference')}
+        />
+      </Card>
+
       <Card>
         <CardHeader title={t('settings.appearance')} />
         <ChromePrefs label={t('settings.appearance')}>

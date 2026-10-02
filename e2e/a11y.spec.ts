@@ -16,7 +16,7 @@ interface Ecran {
 
 async function saisir200(page: Page) {
   await page.goto('/');
-  await page.getByLabel('Montant en livre égyptienne').fill('200');
+  await page.getByLabel('Montant en livres égyptiennes').fill('200');
   await expect(page.getByLabel('Montant en euros')).toHaveValue('3,40');
 }
 

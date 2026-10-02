@@ -17,6 +17,7 @@ const musee: ConversionEnregistree = {
   libelle: 'Visite du musée',
   de: { code: 'EGP', montant: 200 },
   vers: { code: 'EUR', montant: 200 / 58.83 },
+  reference: 'EUR',
   taux: 58.83,
   source: 'marche',
   dateTaux: '2026-10-01',
@@ -92,6 +93,38 @@ describe('le carnet (récit 4)', () => {
     monter();
     const totaux = screen.getByRole('region', { name: 'Totaux' });
     expect(lisible(totaux.textContent)).toContain('1 376,60 EGP, soit 23,40 €');
+  });
+
+  it('une ligne en francs garde sa référence, et se refait dans la sienne', () => {
+    const souk: ConversionEnregistree = {
+      ...musee,
+      id: 'c3',
+      libelle: 'Souk',
+      de: { code: 'CHF', montant: 10 },
+      vers: { code: 'EGP', montant: 626.9 },
+      reference: 'CHF',
+      taux: 62.69,
+    };
+    useTaux.setState({
+      etat: {
+        marche: {
+          source: 'marche',
+          date: AUJOURDHUI,
+          taux: { EGP: 59.2, CHF: 0.94 },
+        },
+      },
+    });
+    useCarnet.setState({ conversions: [souk, taxi, musee] });
+    monter();
+    const texte = lisible(ligne('Souk').textContent);
+    expect(texte).toContain('10,00 CHF → 626,90 EGP');
+    expect(texte).toContain('1 CHF = 62,69 EGP');
+    // 59,2 / 0,94 = 62,98 livres pour un franc aujourd'hui.
+    expect(texte).toContain('Aujourd’hui : 629,79 EGP (+0,5 %)');
+    // La livre en euros et la livre en francs ne se totalisent pas ensemble.
+    const totaux = screen.getByRole('region', { name: 'Totaux' });
+    expect(lisible(totaux.textContent)).toContain('1 376,60 EGP, soit 23,40 €');
+    expect(lisible(totaux.textContent)).not.toContain('CHF');
   });
 
   it('renomme une ligne', async () => {

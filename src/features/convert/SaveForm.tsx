@@ -10,6 +10,8 @@ import type { Champ, Derive } from './conversion.ts';
 
 interface Props {
   devise: string;
+  /** La monnaie de référence : l'euro par défaut (spécification 002). */
+  reference: string;
   jour: TauxDuJour | undefined;
   derive: Derive;
   /** Le champ saisi : il devient le départ de la conversion gardée. */
@@ -20,17 +22,18 @@ interface Props {
  * Garder la conversion affichée, avec un libellé (récit 4, EF-010). Le
  * montant tapé est le départ, l'autre l'arrivée ; le taux, sa source et sa
  * date sont ceux de l'écran. Sans libellé, la paire et le montant en
- * tiennent lieu : « 200,00 EGP → EUR ».
+ * tiennent lieu : « 200,00 EGP → EUR ». La conversion garde sa référence :
+ * en changer plus tard ne la réécrit pas.
  */
-export function SaveForm({ devise, jour, derive, champ }: Props) {
+export function SaveForm({ devise, reference, jour, derive, champ }: Props) {
   const { t, locale } = useI18n();
   const toast = useToast();
   const ajouter = useCarnet(s => s.add);
   const [libelle, setLibelle] = useState('');
 
   const enDevise = champ === 'devise';
-  const saisi = enDevise ? derive.montantDevise : derive.montantEuro;
-  const calcule = enDevise ? derive.montantEuro : derive.montantDevise;
+  const saisi = enDevise ? derive.montantDevise : derive.montantReference;
+  const calcule = enDevise ? derive.montantReference : derive.montantDevise;
   const possible =
     jour !== undefined &&
     saisi !== null &&
@@ -41,14 +44,15 @@ export function SaveForm({ devise, jour, derive, champ }: Props) {
   async function enregistrer(event: FormEvent) {
     event.preventDefault();
     if (!jour || saisi === null || calcule === null || !possible) return;
-    const codeSaisi = enDevise ? devise : 'EUR';
-    const codeCalcule = enDevise ? 'EUR' : devise;
+    const codeSaisi = enDevise ? devise : reference;
+    const codeCalcule = enDevise ? reference : devise;
     await ajouter({
       libelle:
         libelle.trim() ||
         `${formaterMontant(saisi, codeSaisi, locale)} → ${codeCalcule}`,
       de: { code: codeSaisi, montant: saisi },
       vers: { code: codeCalcule, montant: calcule },
+      reference,
       taux: jour.taux,
       source: jour.source,
       dateTaux: jour.date,

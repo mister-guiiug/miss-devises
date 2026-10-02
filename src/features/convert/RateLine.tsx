@@ -1,6 +1,11 @@
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { useI18n } from '../../i18n/index.ts';
-import { formaterDate, formaterTaux } from '../../domain/money.ts';
+import {
+  formaterCoupure,
+  formaterDate,
+  formaterTaux,
+  formaterTauxEn,
+} from '../../domain/money.ts';
 import type { TauxDuJour } from '../../rates/service.ts';
 
 interface Props {
@@ -13,6 +18,8 @@ interface Props {
 /**
  * La ligne de taux : le taux dans les deux sens, sa source, sa date, et ce
  * qui doit alerter (principe I, EF-003). Jamais un taux sans sa provenance.
+ * « 1 € = 58,83 EGP », ou « 1 CHF = 62,692 EGP » : la référence se dit
+ * comme `Intl` l'écrit, symbole compris (spécification 002).
  */
 export function RateLine({ jour, pret, horsLigne, onReessayer }: Props) {
   const { t, locale } = useI18n();
@@ -34,12 +41,13 @@ export function RateLine({ jour, pret, horsLigne, onReessayer }: Props) {
     <div role="status" className="flex flex-col gap-0.5 text-sm">
       <p className="m-0 font-semibold">
         {t('convert.taux', {
+          un: formaterCoupure(1, jour.reference, locale),
           taux: `${formaterTaux(jour.taux, locale)} ${jour.code}`,
         })}
         {' · '}
         {t('convert.tauxInverse', {
           code: jour.code,
-          taux: `${formaterTaux(1 / jour.taux, locale)} €`,
+          taux: formaterTauxEn(1 / jour.taux, jour.reference, locale),
         })}
       </p>
       <p className="m-0" style={{ color: 'var(--dwc-text-soft)' }}>

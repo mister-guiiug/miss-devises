@@ -4,7 +4,6 @@ import {
   createServiceTaux,
   fraicheur,
   grilleMarche,
-  sourceDe,
   tauxDuJour,
   type CacheTaux,
 } from './service.ts';
@@ -15,12 +14,12 @@ const MAINTENANT = new Date('2026-10-01T12:00:00Z');
 const bce: Instantane = {
   source: 'bce',
   date: '2026-10-01',
-  taux: { USD: 1.0812, JPY: 162.4 },
+  taux: { USD: 1.0812, JPY: 162.4, CHF: 0.9381 },
 };
 const marche: Instantane = {
   source: 'marche',
   date: '2026-10-01',
-  taux: { USD: 1.0815, EGP: 58.83 },
+  taux: { EUR: 1, USD: 1.0815, EGP: 58.83, CHF: 0.9384 },
 };
 
 function cacheEnMemoire(): CacheTaux & { valeurs: Map<string, unknown> } {
@@ -35,20 +34,6 @@ function cacheEnMemoire(): CacheTaux & { valeurs: Map<string, unknown> } {
   };
 }
 
-describe('sourceDe : une source par devise (recherche R1)', () => {
-  it('la BCE pour une devise qu’elle publie, même si le marché l’a aussi', () => {
-    expect(sourceDe('USD', bce)).toBe('bce');
-  });
-
-  it('le marché pour une devise que la BCE ne publie pas', () => {
-    expect(sourceDe('EGP', bce)).toBe('marche');
-  });
-
-  it('le marché tant que la BCE n’est pas connue', () => {
-    expect(sourceDe('USD', undefined)).toBe('marche');
-  });
-});
-
 describe('fraicheur : plus de 3 jours, le taux est ancien (R8)', () => {
   it.each([
     ['2026-10-01', 'frais'],
@@ -59,22 +44,40 @@ describe('fraicheur : plus de 3 jours, le taux est ancien (R8)', () => {
   });
 });
 
-describe('tauxDuJour', () => {
-  it('prend le taux de la source de la devise, avec sa date', () => {
-    expect(tauxDuJour('USD', { bce, marche }, MAINTENANT)).toEqual({
+describe('tauxDuJour : le taux d’une paire, avec sa source et sa date', () => {
+  it('avec l’euro pour référence, le taux publié par la source de la devise', () => {
+    expect(tauxDuJour('EUR', 'USD', { bce, marche }, MAINTENANT)).toEqual({
+      reference: 'EUR',
       code: 'USD',
       taux: 1.0812,
       source: 'bce',
       date: '2026-10-01',
       fraicheur: 'frais',
     });
-    expect(tauxDuJour('EGP', { bce, marche }, MAINTENANT)?.source).toBe(
+    expect(tauxDuJour('EUR', 'EGP', { bce, marche }, MAINTENANT)?.source).toBe(
       'marche'
     );
   });
 
+  it('entre deux devises de la BCE, le taux croisé de la BCE', () => {
+    const jour = tauxDuJour('CHF', 'USD', { bce, marche }, MAINTENANT);
+    expect(jour?.source).toBe('bce');
+    expect(jour?.taux).toBeCloseTo(1.0812 / 0.9381, 12);
+  });
+
+  it('dès qu’une des deux manque à la BCE, les deux au taux de marché', () => {
+    const jour = tauxDuJour('CHF', 'EGP', { bce, marche }, MAINTENANT);
+    expect(jour?.source).toBe('marche');
+    expect(jour?.taux).toBeCloseTo(58.83 / 0.9384, 12);
+  });
+
   it('ne rend rien pour une devise inconnue ; jamais un taux inventé', () => {
-    expect(tauxDuJour('XOF', { bce, marche }, MAINTENANT)).toBeUndefined();
+    expect(
+      tauxDuJour('EUR', 'XOF', { bce, marche }, MAINTENANT)
+    ).toBeUndefined();
+    expect(
+      tauxDuJour('XOF', 'EGP', { bce, marche }, MAINTENANT)
+    ).toBeUndefined();
   });
 });
 
@@ -134,8 +137,8 @@ describe('le service : cache d’abord, réseau ensuite', () => {
       recuperer,
       maintenant: () => MAINTENANT,
     });
-    const premiere = await service.serie('USD', '1A', { bce, marche });
-    const seconde = await service.serie('USD', '1A', { bce, marche });
+    const premiere = await service.serie('EUR', 'USD', '1A', { bce, marche });
+    const seconde = await service.serie('EUR', 'USD', '1A', { bce, marche });
     expect(premiere.points).toHaveLength(2);
     expect(seconde).toEqual(premiere);
     expect(recuperer).toHaveBeenCalledTimes(1);
@@ -159,10 +162,13 @@ describe('le service : cache d’abord, réseau ensuite', () => {
       maintenant: () => MAINTENANT,
     });
     const hier = { ...bce, date: '2026-09-30', taux: { USD: 1.07 } };
-    const matin = await service.serie('USD', '1A', { bce: hier, marche });
+    const matin = await service.serie('EUR', 'USD', '1A', {
+      bce: hier,
+      marche,
+    });
     expect(matin.points.at(-1)).toEqual({ date: '2026-09-30', taux: 1.07 });
 
-    const soir = await service.serie('USD', '1A', { bce, marche });
+    const soir = await service.serie('EUR', 'USD', '1A', { bce, marche });
     expect(soir.points.at(-1)).toEqual({ date: '2026-10-01', taux: 1.0812 });
     expect(soir.points).toHaveLength(3);
     expect(recuperer).toHaveBeenCalledTimes(1);
@@ -182,13 +188,70 @@ describe('le service : cache d’abord, réseau ensuite', () => {
       recuperer,
       maintenant: () => MAINTENANT,
     });
-    const serie = await service.serie('EGP', '1M', { bce, marche });
+    const serie = await service.serie('EUR', 'EGP', '1M', { bce, marche });
     // 16 dates de la grille, dont la dernière est le taux du jour, déjà connu.
     expect(serie.points).toHaveLength(15);
     expect(serie.complete).toBe(false);
     const appels = recuperer.mock.calls.length;
-    await service.serie('EGP', '1M', { bce, marche });
+    await service.serie('EUR', 'EGP', '1M', { bce, marche });
     // Seule la date manquante est redemandée (deux sources).
     expect(recuperer.mock.calls.length - appels).toBe(2);
+  });
+
+  it('une paire de la BCE : une requête pour les deux codes, gardés chacun sous sa clé', async () => {
+    const cache = cacheEnMemoire();
+    const recuperer = vi.fn<Recuperer>(async (url: string) => {
+      expect(new URL(url).searchParams.get('symbols')).toBe('CHF,USD');
+      return {
+        base: 'EUR',
+        start_date: '2025-10-01',
+        end_date: '2026-10-01',
+        rates: {
+          '2025-10-01': { CHF: 0.94, USD: 1.17 },
+          '2026-02-02': { CHF: 0.93 },
+          '2026-10-01': { CHF: 0.9381, USD: 1.0812 },
+        },
+      };
+    });
+    const service = createServiceTaux({
+      cache,
+      recuperer,
+      maintenant: () => MAINTENANT,
+    });
+    const serie = await service.serie('CHF', 'USD', '1A', { bce, marche });
+    expect(serie.source).toBe('bce');
+    // Le 2026-02-02 n'a que le franc : la date est sautée, rien n'est inventé.
+    expect(serie.points.map(p => p.date)).toEqual(['2025-10-01', '2026-10-01']);
+    expect(serie.points[0]?.taux).toBeCloseTo(1.17 / 0.94, 12);
+    expect([...cache.valeurs.keys()].sort()).toEqual([
+      'serie:bce:CHF:2025-10-01:2026-10-01',
+      'serie:bce:USD:2025-10-01:2026-10-01',
+    ]);
+
+    // L'autre sens de la paire, et l'euro face au dollar : déjà gardés.
+    await service.serie('USD', 'CHF', '1A', { bce, marche });
+    await service.serie('EUR', 'USD', '1A', { bce, marche });
+    expect(recuperer).toHaveBeenCalledTimes(1);
+  });
+
+  it('une paire de marché : le taux croisé de chaque date', async () => {
+    const cache = cacheEnMemoire();
+    const recuperer = vi.fn<Recuperer>(async (url: string) => {
+      const date = /@(\d{4}-\d{2}-\d{2})\//.exec(url)?.[1];
+      if (!date) throw new Error('absent');
+      return { date, eur: { egp: 58, chf: 0.94 } };
+    });
+    const service = createServiceTaux({
+      cache,
+      recuperer,
+      maintenant: () => MAINTENANT,
+    });
+    const serie = await service.serie('CHF', 'EGP', '1M', { bce, marche });
+    expect(serie.source).toBe('marche');
+    expect(serie.complete).toBe(true);
+    expect(serie.points).toHaveLength(16);
+    expect(serie.points[0]?.taux).toBeCloseTo(58 / 0.94, 12);
+    // Le dernier point est le taux du jour, croisé lui aussi.
+    expect(serie.points.at(-1)?.taux).toBeCloseTo(58.83 / 0.9384, 12);
   });
 });
