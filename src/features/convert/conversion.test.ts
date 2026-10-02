@@ -80,6 +80,31 @@ describe('deriver : un champ saisi, l’autre calculé', () => {
     expect(lisible(d.texteReference)).toBe('1 624');
   });
 
+  it('une marge libre de 1,5 % réduit le montant reçu', () => {
+    const d = deriver(
+      { champ: 'devise', texte: '200' },
+      'EGP',
+      'EUR',
+      50,
+      'fr',
+      1.5
+    );
+    expect(d.montantReference).toBeCloseTo(3.94, 5);
+  });
+
+  it('le nombre de chiffres choisi remplace ceux de la devise', () => {
+    const d = deriver(
+      { champ: 'devise', texte: '200' },
+      'EGP',
+      'EUR',
+      58.83,
+      'fr',
+      0,
+      4
+    );
+    expect(lisible(d.texteReference)).toBe('3,3996');
+  });
+
   it('une marge de 2 % réduit le montant reçu, pas le montant saisi', () => {
     const d = deriver(
       { champ: 'devise', texte: '200' },

@@ -1,4 +1,5 @@
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
+import { formatNumber } from '@mister-guiiug/dev-pwa-config/format';
 import { useI18n } from '../../i18n/index.ts';
 import {
   formaterCoupure,
@@ -68,7 +69,9 @@ export function RateLine({
       </p>
       {marge > 0 && (
         <p className="m-0" style={{ color: 'var(--dwc-text-soft)' }}>
-          {t('convert.marge', { marge })}
+          {t('convert.marge', {
+            marge: formatNumber(marge, locale, { maximumFractionDigits: 2 }),
+          })}
         </p>
       )}
       {jour.fraicheur === 'ancien' && (

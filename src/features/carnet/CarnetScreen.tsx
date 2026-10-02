@@ -99,12 +99,18 @@ function Ligne({
   const poserPaire = usePreferences(s => s.poserPaire);
   const reprendreSaisie = useConversion(s => s.reprendre);
   const etat = useTaux(s => s.etat);
+  const decimales = usePreferences(s => s.decimales);
   const code = deviseEtrangere(c);
   // Refaite au taux du jour de SA paire : sa référence, pas celle du moment.
   const jour = tauxDuJour(c.reference, code, etat, new Date());
   const refaite = jour ? auTauxDuJour(c, jour.taux) : undefined;
   const montant = (m: { code: string; montant: number }) =>
-    formaterMontant(m.montant, m.code, locale);
+    formaterMontant(
+      m.montant,
+      m.code,
+      locale,
+      decimales === null ? {} : { decimales }
+    );
 
   function supprimer() {
     remove(c.id);
@@ -130,7 +136,7 @@ function Ligne({
                 champ: ligne.champ,
                 texte: formatNumber(ligne.montant, locale, {
                   useGrouping: false,
-                  maximumFractionDigits: decimalesDe(c.de.code),
+                  maximumFractionDigits: decimales ?? decimalesDe(c.de.code),
                 }),
               });
               navigate('/');
@@ -184,7 +190,12 @@ function Ligne({
         {refaite && (
           <p className="m-0 text-sm">
             {t('carnet.aujourdhui', {
-              montant: formaterMontant(refaite.montant, c.vers.code, locale),
+              montant: formaterMontant(
+                refaite.montant,
+                c.vers.code,
+                locale,
+                decimales === null ? {} : { decimales }
+              ),
               ecart: formaterPourcentage(refaite.ecart, locale),
             })}
           </p>
@@ -204,6 +215,8 @@ function Totaux({
   conversions: readonly ConversionEnregistree[];
 }) {
   const { t, locale } = useI18n();
+  const decimales = usePreferences(s => s.decimales);
+  const options = decimales === null ? {} : { decimales };
   const totaux = totauxParPaire(conversions).filter(total => total.nombre > 1);
   if (totaux.length === 0) return null;
   return (
@@ -215,11 +228,17 @@ function Totaux({
         {totaux.map(total => (
           <li key={`${total.code}/${total.reference}`}>
             {t('carnet.total', {
-              montant: formaterMontant(total.devise, total.code, locale),
+              montant: formaterMontant(
+                total.devise,
+                total.code,
+                locale,
+                options
+              ),
               reference: formaterMontant(
                 total.montantReference,
                 total.reference,
-                locale
+                locale,
+                options
               ),
             })}
           </li>

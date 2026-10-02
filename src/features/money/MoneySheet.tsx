@@ -85,6 +85,7 @@ export function MoneySheet({
   const avisLu = usePreferences(s => s.avisPhotos);
   const choisirImages = usePreferences(s => s.choisirImages);
   const accepterPhotos = usePreferences(s => s.accepterPhotos);
+  const decimales = usePreferences(s => s.decimales);
   const [coupures, setCoupures] = useState<Coupures>();
   const [echec, setEchec] = useState(false);
   const [photos, setPhotos] = useState<Photos>();
@@ -179,7 +180,7 @@ export function MoneySheet({
           saisir(
             sens,
             formatNumber(total, locale, {
-              maximumFractionDigits: decimalesDe(code),
+              maximumFractionDigits: decimales ?? decimalesDe(code),
               useGrouping: false,
             })
           );
@@ -285,6 +286,7 @@ function Contenu({
   onUtiliser,
 }: PropsContenu) {
   const { t, m, fmt, locale } = useI18n();
+  const choixDecimales = usePreferences(s => s.decimales);
   const photoDe = (genre: 'billet' | 'piece', valeur: number) =>
     modePhotos
       ? (genre === 'billet' ? photos?.billets : photos?.pieces)?.find(
@@ -308,12 +310,14 @@ function Contenu({
       taux,
       versReference ? 'versReference' : 'versDevise'
     );
-    const decimales = decimalesDe(autre);
+    const decimales = choixDecimales ?? decimalesDe(autre);
     if (arrondir(montantAutre, decimales) === 0) {
-      const plusPetit = formaterMontant(10 ** -decimales, autre, locale);
+      const plusPetit = formaterMontant(10 ** -decimales, autre, locale, {
+        decimales,
+      });
       return { lu: t('money.moinsDe', { montant: plusPetit }), vu: '' };
     }
-    const lu = formaterMontant(montantAutre, autre, locale);
+    const lu = formaterMontant(montantAutre, autre, locale, { decimales });
     return { lu, vu: t('money.contre', { montant: lu }) };
   };
 
