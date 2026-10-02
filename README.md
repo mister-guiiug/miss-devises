@@ -75,8 +75,8 @@ la politique devise par devise et les doutes sont dans
   `cdn.jsdelivr.net` et `*.currency-api.pages.dev`. Elles voient l'adresse IP
   de l'appareil, les dates demandées et, pour un historique de la BCE, le
   code de la devise ; jamais un montant ni un libellé.
-- **Photos (désactivées par défaut).** Si vous choisissez « Photos » dans le
-  volet des billets et des pièces, votre navigateur télécharge leurs images
+- **Photos (désactivées par défaut).** Si vous activez « Vraies photos » dans
+  le volet des billets et des pièces, votre navigateur télécharge leurs images
   directement depuis Wikimedia Commons (`thumb.wikimedia.org` et
   `upload.wikimedia.org`, Wikimedia Foundation, États-Unis). Wikimedia reçoit
   alors l'adresse IP de l'appareil, le navigateur utilisé, l'heure et

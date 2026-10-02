@@ -126,6 +126,16 @@ devise par devise, la couverture et les doutes sont dans
   Banque d'Israël l'exige de ses pièces, la règle tient pour toutes.
 - **Rien avant l'accord** : en mode dessins, aucune requête vers Wikimedia ;
   avant la première photo, un avis dit ce que Wikimedia voit.
+- **Un interrupteur, pas une seconde bascule** : sous la bascule du sens, une
+  seconde bascule à deux segments, de même allure, se confondait avec elle, et
+  ne disait pas s'il y avait des photos à voir. La rangée « Vraies photos »
+  porte un `role="switch"` et dit d'avance « 13 sur 15 coupures » : le jeu
+  des photos se charge à l'ouverture du volet, c'est un morceau servi par
+  l'application, rien ne part chez Wikimedia. L'avis s'ouvre dans la rangée,
+  le focus va à « Afficher les photos » et revient à l'interrupteur si l'on
+  garde les dessins. Sans aucune photo pour la devise, l'interrupteur est
+  `aria-disabled` et dit pourquoi ; déjà en mode photos, il reste actif pour
+  qu'on puisse en sortir.
 
 **Écarté** :
 

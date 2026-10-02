@@ -3,6 +3,9 @@ import { simulerPhotos, simulerTaux } from './taux.ts';
 
 /** Les photos du volet : une image par coupure photographiée. */
 const photos = (volet: Locator) => volet.locator('img[data-photo]');
+/** L'interrupteur de la rangée « Vraies photos ». */
+const interrupteur = (volet: Locator) =>
+  volet.getByRole('switch', { name: 'Vraies photos' });
 
 async function ouvrirVolet(page: Page) {
   await page.getByLabel('Montant en livres égyptiennes').fill('200');
@@ -22,8 +25,11 @@ test.describe('@critical 002, récit 3 : les photos de Wikimedia Commons', () =>
     const journal = await simulerPhotos(page);
     await page.goto('/');
     const volet = await ouvrirVolet(page);
+    // Le compte vient du jeu servi par l'application, pas de Wikimedia.
+    await expect(interrupteur(volet)).toHaveAttribute('aria-checked', 'false');
+    await expect(volet.getByText('3 sur 12 coupures')).toBeVisible();
     await volet.getByRole('tab', { name: 'En EUR' }).click();
-    await expect(volet.getByRole('region', { name: 'Billets' })).toBeVisible();
+    await expect(volet.getByText('13 sur 15 coupures')).toBeVisible();
     expect(journal).toEqual([]);
     await expect(photos(volet)).toHaveCount(0);
   });
@@ -36,17 +42,22 @@ test.describe('@critical 002, récit 3 : les photos de Wikimedia Commons', () =>
     await page.goto('/');
     const volet = await ouvrirVolet(page);
 
-    await volet.getByRole('tab', { name: 'Photos' }).click();
+    await interrupteur(volet).click();
     const avis = volet.getByRole('region', {
       name: 'Les photos viennent de Wikimedia Commons',
     });
     await expect(avis).toContainText('adresse IP');
+    const afficher = avis.getByRole('button', { name: 'Afficher les photos' });
+    await expect(afficher).toBeFocused();
     expect(journal).toEqual([]);
 
-    await avis.getByRole('button', { name: 'Afficher les photos' }).click();
-    // Les pièces égyptiennes ont leur photo ; les billets, que le Code pénal
-    // égyptien réserve, gardent leur dessin. L'euro les a tous.
+    await afficher.click();
+    await expect(interrupteur(volet)).toHaveAttribute('aria-checked', 'true');
+    // Les pièces égyptiennes ont leur photo ; les neuf billets, que le Code
+    // pénal égyptien réserve, gardent leur dessin et le disent. L'euro les a
+    // presque tous.
     await expect(photos(volet).first()).toBeVisible();
+    await expect(volet.getByText('Dessin', { exact: true })).toHaveCount(9);
     await volet.getByRole('tab', { name: 'En EUR' }).click();
     await expect.poll(() => photos(volet).count()).toBeGreaterThan(5);
     // Chaque photo part sans référent ni cookie.
@@ -90,7 +101,7 @@ test.describe('@critical 002, récit 3 : les photos de Wikimedia Commons', () =>
     await simulerPhotos(page);
     await page.goto('/');
     const volet = await ouvrirVolet(page);
-    await volet.getByRole('tab', { name: 'Photos' }).click();
+    await interrupteur(volet).click();
     await volet.getByRole('button', { name: 'Afficher les photos' }).click();
     await expect(photos(volet).first()).toBeVisible();
     await page.keyboard.press('Escape');
@@ -102,8 +113,16 @@ test.describe('@critical 002, récit 3 : les photos de Wikimedia Commons', () =>
     await page.getByRole('button', { name: 'Billets et pièces' }).click();
     const marocain = page.getByRole('dialog', { name: 'Billets et pièces' });
     await expect(
-      marocain.getByText(/Aucune photo libre pour cette devise/)
+      marocain.getByText('Aucune photo libre pour cette devise.')
     ).toBeVisible();
     await expect(photos(marocain)).toHaveCount(0);
+    // Déjà en mode photos, l'interrupteur reste actif : on doit pouvoir en
+    // sortir. En dessins, il est grisé.
+    await expect(interrupteur(marocain)).not.toHaveAttribute('aria-disabled');
+    await interrupteur(marocain).click();
+    await expect(interrupteur(marocain)).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    );
   });
 });

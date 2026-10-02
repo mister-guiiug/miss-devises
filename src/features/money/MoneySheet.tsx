@@ -35,6 +35,7 @@ import { Drapeau } from '../../ui/Drapeau.tsx';
 import { Banknote } from './Banknote.tsx';
 import { Coin } from './Coin.tsx';
 import { PhotoCoupure } from './PhotoCoupure.tsx';
+import { BasculePhotos } from './BasculePhotos.tsx';
 
 interface Props {
   open: boolean;
@@ -89,10 +90,12 @@ export function MoneySheet({
   const [avis, setAvis] = useState(false);
   const modePhotos = images === 'photos';
 
-  // Le jeu des photos ne se charge qu'en mode photos : un morceau à part,
-  // servi par l'application. Les vignettes, elles, partent de Commons.
+  // Le jeu des photos se charge à l'ouverture du volet : un morceau à part,
+  // servi par l'application, qui dit d'avance combien de coupures ont une
+  // photo. Rien ne part encore chez Wikimedia : seules les vignettes, en mode
+  // photos, y sont demandées.
   useEffect(() => {
-    if (!open || !modePhotos || photos) return undefined;
+    if (!open || photos) return undefined;
     let actif = true;
     chargerPhotos()
       .then(lues => {
@@ -104,7 +107,7 @@ export function MoneySheet({
     return () => {
       actif = false;
     };
-  }, [open, modePhotos, photos]);
+  }, [open, photos]);
 
   useEffect(() => {
     if (!open || coupures) return undefined;
@@ -123,6 +126,9 @@ export function MoneySheet({
 
   const code = sens === 'devise' ? devise : reference;
   const systeme = coupures?.devises[code];
+  const photosDuCode = photos?.devises[code];
+  const avecPhoto =
+    (photosDuCode?.billets.length ?? 0) + (photosDuCode?.pieces.length ?? 0);
 
   let contenu: ReactNode;
   if (!coupures) {
@@ -146,7 +152,7 @@ export function MoneySheet({
         montant={sens === 'devise' ? montantDevise : montantReference}
         releveLe={coupures.releveLe}
         modePhotos={modePhotos}
-        photos={photos?.devises[code]}
+        photos={photosDuCode}
         onUtiliser={total => {
           // Le total devient la saisie de Convertir, dans son champ : sans
           // séparateur de milliers, aux décimales de la devise.
@@ -192,24 +198,17 @@ export function MoneySheet({
           ariaLabel={t('money.sens')}
           fullWidth
         />
-        <SegmentedControl
-          size="sm"
-          value={avis ? 'photos' : images}
-          onChange={valeur => {
-            if (valeur === 'photos' && !avisLu) setAvis(true);
-            else {
-              setAvis(false);
-              choisirImages(valeur === 'photos' ? 'photos' : 'dessins');
-            }
-          }}
-          options={[
-            { value: 'dessins', label: t('money.dessins') },
-            { value: 'photos', label: t('money.photos') },
-          ]}
-          ariaLabel={t('money.images')}
-        />
-        {avis && (
-          <AvisPhotos
+        {systeme && photos && (
+          <BasculePhotos
+            compte={avecPhoto}
+            total={systeme.billets.length + systeme.pieces.length}
+            actif={modePhotos}
+            avisOuvert={avis}
+            onBasculer={() => {
+              if (modePhotos) choisirImages('dessins');
+              else if (avisLu) choisirImages('photos');
+              else setAvis(ouvert => !ouvert);
+            }}
             onAccepter={() => {
               accepterPhotos();
               setAvis(false);
@@ -220,44 +219,6 @@ export function MoneySheet({
         {contenu}
       </div>
     </Sheet>
-  );
-}
-
-/**
- * L'avis avant la première photo (EF-010) : ce qui part chez Wikimedia, dit
- * une fois, avant toute requête. Une région du volet, pas une boîte modale.
- */
-function AvisPhotos({
-  onAccepter,
-  onRefuser,
-}: {
-  onAccepter: () => void;
-  onRefuser: () => void;
-}) {
-  const { t } = useI18n();
-  const id = useId();
-  return (
-    <section
-      aria-labelledby={id}
-      className="flex flex-col gap-2 rounded-xl border p-3 text-sm"
-      style={{
-        borderColor: 'var(--dwc-border)',
-        background: 'var(--dwc-surface-2)',
-      }}
-    >
-      <h3 id={id} className="m-0 text-sm font-semibold">
-        {t('money.avisTitre')}
-      </h3>
-      <p className="m-0">{t('money.avis')}</p>
-      <div className="flex flex-wrap gap-2">
-        <Button size="sm" onClick={onAccepter}>
-          {t('money.avisAfficher')}
-        </Button>
-        <Button size="sm" variant="ghost" onClick={onRefuser}>
-          {t('money.avisGarder')}
-        </Button>
-      </div>
-    </section>
   );
 }
 
@@ -442,7 +403,6 @@ function Contenu({
     const photo = photoDe(genre, valeur);
     return photo ? [{ genre, valeur, photo }] : [];
   });
-  const sansPhoto = coupures.length - montrees.length;
 
   const composition =
     montant !== null && montant > 0 ? decomposer(montant, systeme) : undefined;
@@ -516,6 +476,11 @@ function Contenu({
             </span>
           )}
         </button>
+        {modePhotos && !photo && (
+          <span className="text-xs" style={{ color: 'var(--dwc-text-soft)' }}>
+            {t('money.dessin')}
+          </span>
+        )}
         {photo && (
           <a
             href={pageCommons(photo.fichier)}
@@ -631,13 +596,8 @@ function Contenu({
         </section>
       )}
 
-      {modePhotos && (
-        <Credits
-          montrees={montrees}
-          sansPhoto={sansPhoto}
-          total={coupures.length}
-          libelleCourt={libelleCourt}
-        />
+      {modePhotos && montrees.length > 0 && (
+        <Credits montrees={montrees} libelleCourt={libelleCourt} />
       )}
 
       {/* La région vit toujours : un lecteur d'écran annonce le total dès la
@@ -692,9 +652,10 @@ function Contenu({
 }
 
 /**
- * Ce que montre le mode photos (EF-009, EF-011) : combien de coupures
- * gardent leur dessin, et le crédit de chaque photo, à un geste. Chaque
- * coupure a aussi son lien « Crédit » vers sa page Commons.
+ * Le crédit de chaque photo montrée (EF-009), à un geste. Chaque coupure a
+ * aussi son lien « Crédit » vers sa page Commons ; combien en ont une, la
+ * rangée « Vraies photos » le dit, et chaque coupure restée en dessin porte
+ * l'étiquette « Dessin » (EF-011).
  *
  * Une ligne par photo : la coupure, le TITRE du fichier (les licences CC 2.0
  * à 3.0 l'exigent), son auteur, sa licence liée à son texte quand elle en a
@@ -702,70 +663,50 @@ function Contenu({
  */
 function Credits({
   montrees,
-  sansPhoto,
-  total,
   libelleCourt,
 }: {
   montrees: { genre: 'billet' | 'piece'; valeur: number; photo: Photo }[];
-  sansPhoto: number;
-  total: number;
   libelleCourt: (genre: 'billet' | 'piece', valeur: number) => string;
 }) {
-  const { t, m, fmt } = useI18n();
+  const { t } = useI18n();
   return (
-    <div className="flex flex-col gap-2 text-sm">
-      {montrees.length === 0 ? (
-        <p className="m-0">{t('money.aucunePhoto')}</p>
-      ) : (
-        sansPhoto > 0 && (
-          <p className="m-0">
-            {fmt.plural(sansPhoto, m.money.sansPhoto, {
-              count: sansPhoto,
-              total,
-            })}
-          </p>
-        )
-      )}
-      {montrees.length > 0 && (
-        <details>
-          <summary className="cursor-pointer font-semibold">
-            {t('money.credits')}
-          </summary>
-          <ul className="m-0 mt-2 flex list-none flex-col gap-1 p-0 text-xs">
-            {montrees.map(({ genre, valeur, photo }) => (
-              <li key={`${genre}-${valeur}`}>
-                {libelleCourt(genre, valeur)}
-                {' : « '}
-                {photo.fichier}
-                {' », '}
-                {photo.auteur}
-                {' · '}
-                {photo.licenceUrl ? (
-                  <a
-                    href={photo.licenceUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline"
-                  >
-                    {photo.licence}
-                  </a>
-                ) : (
-                  photo.licence
-                )}
-                {' · '}
-                <a
-                  href={pageCommons(photo.fichier)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline"
-                >
-                  Wikimedia Commons
-                </a>
-              </li>
-            ))}
-          </ul>
-        </details>
-      )}
-    </div>
+    <details className="text-sm">
+      <summary className="cursor-pointer font-semibold">
+        {t('money.credits')}
+      </summary>
+      <ul className="m-0 mt-2 flex list-none flex-col gap-1 p-0 text-xs">
+        {montrees.map(({ genre, valeur, photo }) => (
+          <li key={`${genre}-${valeur}`}>
+            {libelleCourt(genre, valeur)}
+            {' : « '}
+            {photo.fichier}
+            {' », '}
+            {photo.auteur}
+            {' · '}
+            {photo.licenceUrl ? (
+              <a
+                href={photo.licenceUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                {photo.licence}
+              </a>
+            ) : (
+              photo.licence
+            )}
+            {' · '}
+            <a
+              href={pageCommons(photo.fichier)}
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              Wikimedia Commons
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
   );
 }

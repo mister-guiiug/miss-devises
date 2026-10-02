@@ -110,8 +110,10 @@ choisis.
 3. **Étant donné** une photo affichée, **alors** son crédit (auteur, licence,
    lien vers la page du fichier) se lit dans le volet.
 4. **Étant donné** une coupure sans photo libre, ou une photo qui ne se charge
-   pas, **alors** son dessin reste, et le volet dit combien de coupures n'ont
-   pas de photo.
+   pas, **alors** son dessin reste. Le volet dit d'avance, avant le choix,
+   combien de coupures de la devise ont une photo ; en mode photos, chaque
+   coupure restée en dessin le dit. Une devise sans aucune photo ne propose
+   pas le choix, et dit pourquoi.
 5. **Étant donné** le choix des photos, **quand** je rouvre l'application,
    **alors** il est gardé ; un geste suffit pour revenir aux dessins.
 6. **Étant donné** des photos déjà vues, **quand** je suis hors ligne, **alors**
@@ -277,6 +279,16 @@ curseur au clavier et lire la date et le taux annoncés.
   réseau aux taux (principe II) ? → R : elle est amendée (version 2.0.0) : une
   photo libre, réduite, d'une seule face et créditée devient permise, à la
   demande de l'utilisateur.
+
+### Séance du 02/10/2026, après la mise en ligne
+
+- Q : la bascule « Dessins · Photos » ressemble à celle du sens, juste au-dessus
+  : on les confond, et rien ne dit s'il y a des photos avant d'avoir basculé.
+  Quelle forme ? → R : une rangée « Vraies photos » et son interrupteur, qui
+  dit d'avance combien de coupures ont une photo ; l'avis s'ouvre dans la
+  rangée ; sans photo pour la devise, l'interrupteur est grisé et dit
+  pourquoi ; en mode photos, une coupure restée en dessin porte l'étiquette
+  « Dessin » (proposition retenue).
 
 ## Hypothèses
 

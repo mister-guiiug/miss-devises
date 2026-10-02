@@ -68,7 +68,7 @@ src/
 ├── rates/               # séries d'une paire, ménage du cache
 ├── features/
 │   ├── convert/         # champs de la référence, drapeau du bouton
-│   ├── money/           # bascule dessins / photos, crédits
+│   ├── money/           # rangée « Vraies photos », crédits
 │   ├── history/         # choix de devise, axes, curseur
 │   ├── carnet/          # référence de chaque ligne
 │   ├── settings/        # choix de la référence

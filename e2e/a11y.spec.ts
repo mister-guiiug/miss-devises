@@ -45,10 +45,10 @@ const ECRANS: Ecran[] = [
       await saisir200(page);
       await page.getByRole('button', { name: 'Billets et pièces' }).click();
       const volet = page.getByRole('dialog', { name: 'Billets et pièces' });
-      await volet.getByRole('tab', { name: 'Photos' }).click();
+      await volet.getByRole('switch', { name: 'Vraies photos' }).click();
       await expect(
         volet.getByRole('button', { name: 'Afficher les photos' })
-      ).toBeVisible();
+      ).toBeFocused();
     },
   },
   {
@@ -57,7 +57,7 @@ const ECRANS: Ecran[] = [
       await saisir200(page);
       await page.getByRole('button', { name: 'Billets et pièces' }).click();
       const volet = page.getByRole('dialog', { name: 'Billets et pièces' });
-      await volet.getByRole('tab', { name: 'Photos' }).click();
+      await volet.getByRole('switch', { name: 'Vraies photos' }).click();
       await volet.getByRole('button', { name: 'Afficher les photos' }).click();
       await expect(volet.locator('img[data-photo]').first()).toBeVisible();
       // Les crédits ouverts : axe juge aussi leurs liens.

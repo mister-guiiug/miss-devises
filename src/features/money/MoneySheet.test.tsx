@@ -244,34 +244,52 @@ describe('composer un montant au toucher (récit 5)', () => {
 describe('les photos de Wikimedia Commons (spécification 002, récit 3)', () => {
   /** Les photos montrées : une image par coupure photographiée. */
   const photos = () => document.querySelectorAll('img[data-photo]');
+  /** L'interrupteur « Vraies photos ». */
+  const interrupteur = () =>
+    screen.getByRole('switch', { name: 'Vraies photos' });
+  const AVIS = 'Les photos viennent de Wikimedia Commons';
 
   it('montre les dessins par défaut, sans aucune photo', async () => {
     monter();
     await screen.findByRole('region', { name: 'Billets' });
+    expect(interrupteur()).toHaveAttribute('aria-checked', 'false');
     expect(photos()).toHaveLength(0);
   });
 
-  it('dit ce que Wikimedia voit avant la première photo, puis les montre', async () => {
+  it('dit d’avance combien de coupures ont une photo, côté devise et côté référence', async () => {
     const user = userEvent.setup();
     monter();
     await screen.findByRole('region', { name: 'Billets' });
-    await user.click(screen.getByRole('tab', { name: 'Photos' }));
-    const avis = screen.getByRole('region', {
-      name: 'Les photos viennent de Wikimedia Commons',
-    });
-    // Rien n'est demandé tant que l'avis n'est pas accepté.
+    // La livre : ses trois pièces ; ses billets, que le Code pénal égyptien
+    // réserve, restent dessinés.
+    expect(await screen.findByText('3 sur 12 coupures')).toBeInTheDocument();
+    expect(interrupteur()).toHaveAccessibleDescription('3 sur 12 coupures');
+    await user.click(screen.getByRole('tab', { name: 'En EUR' }));
+    expect(await screen.findByText('13 sur 15 coupures')).toBeInTheDocument();
+  });
+
+  it('ouvre l’avis dans sa rangée avant la première photo, puis les montre', async () => {
+    const user = userEvent.setup();
+    monter();
+    await screen.findByText('3 sur 12 coupures');
+    await user.click(interrupteur());
+    const avis = screen.getByRole('region', { name: AVIS });
+    // Rien n'est demandé tant que l'avis n'est pas accepté, et le bouton
+    // qui l'accepte reçoit le focus.
     expect(photos()).toHaveLength(0);
-    await user.click(
-      within(avis).getByRole('button', { name: 'Afficher les photos' })
-    );
+    expect(interrupteur()).toHaveAttribute('aria-checked', 'false');
+    const afficher = within(avis).getByRole('button', {
+      name: 'Afficher les photos',
+    });
+    expect(afficher).toHaveFocus();
+    await user.click(afficher);
     await waitFor(() => expect(photos().length).toBeGreaterThan(0));
+    expect(interrupteur()).toHaveAttribute('aria-checked', 'true');
     expect(usePreferences.getState().images).toBe('photos');
     // Chaque photo a son crédit, et le volet les liste.
     expect(
       screen.getAllByRole('link', { name: /^Crédit de la photo : / }).length
     ).toBe(photos().length);
-    expect(screen.getByText('Crédits des photos')).toBeInTheDocument();
-    // Le titre du fichier, et la licence liée à son texte.
     const credits = screen.getByText('Crédits des photos').closest('details')!;
     expect(credits.textContent).toMatch(/« [^»]+\.(jpe?g|png|gif) »/i);
     expect(
@@ -284,25 +302,33 @@ describe('les photos de Wikimedia Commons (spécification 002, récit 3)', () =>
       expect.stringMatching(/^https:\/\/creativecommons\.org\//)
     );
     // L'avis ne revient pas.
-    await user.click(screen.getByRole('tab', { name: 'Dessins' }));
-    await user.click(screen.getByRole('tab', { name: 'Photos' }));
-    expect(
-      screen.queryByRole('region', {
-        name: 'Les photos viennent de Wikimedia Commons',
-      })
-    ).toBeNull();
+    await user.click(interrupteur());
+    expect(interrupteur()).toHaveAttribute('aria-checked', 'false');
+    await user.click(interrupteur());
+    expect(screen.queryByRole('region', { name: AVIS })).toBeNull();
+    expect(interrupteur()).toHaveAttribute('aria-checked', 'true');
   });
 
-  it('garder les dessins ne change rien', async () => {
+  it('garder les dessins referme l’avis et rend le focus à l’interrupteur', async () => {
     const user = userEvent.setup();
     monter();
-    await screen.findByRole('region', { name: 'Billets' });
-    await user.click(screen.getByRole('tab', { name: 'Photos' }));
+    await screen.findByText('3 sur 12 coupures');
+    await user.click(interrupteur());
     await user.click(
       screen.getByRole('button', { name: 'Garder les dessins' })
     );
+    expect(screen.queryByRole('region', { name: AVIS })).toBeNull();
+    expect(interrupteur()).toHaveFocus();
     expect(usePreferences.getState().images).toBe('dessins');
     expect(photos()).toHaveLength(0);
+  });
+
+  it('en mode photos, une coupure sans photo dit qu’elle reste dessinée', async () => {
+    usePreferences.setState({ images: 'photos', avisPhotos: true });
+    monter();
+    await waitFor(() => expect(photos()).toHaveLength(3));
+    // Les neuf billets égyptiens, et eux seuls.
+    expect(screen.getAllByText('Dessin')).toHaveLength(9);
   });
 
   it('une photo qui ne se charge pas rend son dessin', async () => {
@@ -328,12 +354,26 @@ describe('les photos de Wikimedia Commons (spécification 002, récit 3)', () =>
     expect(container.querySelectorAll('svg').length).toBe(dessins + 1);
   });
 
-  it('une devise sans photo libre le dit, et garde ses dessins', async () => {
+  it('sans photo libre pour la devise, l’interrupteur est grisé et dit pourquoi', async () => {
+    const user = userEvent.setup();
+    monter({ devise: 'GBP', taux: 0.85 });
+    expect(
+      await screen.findByText('Aucune photo libre pour cette devise.')
+    ).toBeInTheDocument();
+    expect(interrupteur()).toHaveAttribute('aria-disabled', 'true');
+    await user.click(interrupteur());
+    expect(screen.queryByRole('region', { name: AVIS })).toBeNull();
+    expect(usePreferences.getState().images).toBe('dessins');
+  });
+
+  it('en mode photos, une devise sans photo garde ses dessins, l’interrupteur reste actif', async () => {
     usePreferences.setState({ images: 'photos', avisPhotos: true });
     monter({ devise: 'GBP', taux: 0.85 });
     expect(
-      await screen.findByText(/Aucune photo libre pour cette devise/)
+      await screen.findByText('Aucune photo libre pour cette devise.')
     ).toBeInTheDocument();
+    expect(interrupteur()).toHaveAttribute('aria-checked', 'true');
+    expect(interrupteur()).not.toHaveAttribute('aria-disabled');
     expect(photos()).toHaveLength(0);
   });
 });
