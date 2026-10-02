@@ -46,10 +46,6 @@ const ECRANS: Ecran[] = [
       await page.getByRole('link', { name: 'Historique' }).click();
       await expect(page.getByText('Plus haut', { exact: true })).toBeVisible();
     },
-    // EXCEPTION TEMPORAIRE, UNE RÈGLE : le `Stat` du socle 6.21 rend un
-    // `<dl>` invalide (un `<div>` autour du seul `<dt>`). Corrigé en amont
-    // par dev-pwa-config#415 ; retirer à la montée qui l'embarque.
-    regles: ['definition-list'],
   },
   {
     nom: 'carnet vide',

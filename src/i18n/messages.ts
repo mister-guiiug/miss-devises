@@ -114,6 +114,8 @@ const fr = {
     description:
       '{nombre} points du {debut} au {fin} : de {premier} à {dernier}, plus bas {min}, plus haut {max}.',
     sourceDates: '{source}, du {debut} au {fin}',
+    curseur: 'Lire la courbe',
+    point: 'Le {date} : {un} = {taux}',
   },
   carnet: {
     title: 'Carnet',
@@ -300,6 +302,8 @@ const en: typeof fr = {
     description:
       '{nombre} points from {debut} to {fin}: from {premier} to {dernier}, low {min}, high {max}.',
     sourceDates: '{source}, from {debut} to {fin}',
+    curseur: 'Read the curve',
+    point: '{date}: {un} = {taux}',
   },
   carnet: {
     title: 'Log',

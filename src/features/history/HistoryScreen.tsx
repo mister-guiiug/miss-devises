@@ -1,9 +1,10 @@
+import { useMemo } from 'react';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
 import { SegmentedControl } from '@mister-guiiug/dev-pwa-config/react/segmented-control';
 import { Stat } from '@mister-guiiug/dev-pwa-config/react/stat';
 import { useI18n } from '../../i18n/index.ts';
 import { useTaux } from '../../rates/store.ts';
-import { tauxDuJour, type Periode } from '../../rates/service.ts';
+import { codesConnus, tauxDuJour, type Periode } from '../../rates/service.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import {
   formaterCoupure,
@@ -18,6 +19,7 @@ import {
   type Statistiques,
 } from '../../domain/history.ts';
 import { deriver, useConversion } from '../convert/conversion.ts';
+import { CurrencyPicker } from '../convert/CurrencyPicker.tsx';
 import { Courbe } from './Courbe.tsx';
 import { useSerie } from './use-serie.ts';
 
@@ -30,21 +32,32 @@ const estPeriode = (valeur: string): valeur is Periode =>
 /**
  * L'historique (récit 3) : la courbe du taux sur la période, ses extrêmes,
  * sa variation, et le montant saisi dans Convertir comparé au début de la
- * période (EF-008, EF-009).
+ * période (EF-008, EF-009). La devise se change ici même, sans repasser par
+ * Convertir, et c'est la même que là-bas (spécification 002, récit 5).
  */
 export function HistoryScreen() {
   const { t, locale } = useI18n();
   const reference = usePreferences(s => s.reference);
   const devise = usePreferences(s => s.devise);
+  const recentes = usePreferences(s => s.recentes);
+  const choisirDevise = usePreferences(s => s.choisirDevise);
   const periode = usePreferences(s => s.periode);
   const choisirPeriode = usePreferences(s => s.choisirPeriode);
   const etat = useTaux(s => s.etat);
+  const codes = useMemo(() => codesConnus(etat), [etat]);
   const jour = tauxDuJour(reference, devise, etat, new Date());
 
   const nomPeriode = (p: Periode) => t(`history.periodes.${p}`);
 
   return (
     <div className="flex flex-col gap-3">
+      <CurrencyPicker
+        code={devise}
+        codes={codes}
+        recentes={recentes}
+        onChoisir={choisirDevise}
+        exclure={reference}
+      />
       <h2 className="m-0 text-base font-semibold">
         {t('history.courbe', {
           un: formaterCoupure(1, reference, locale),
@@ -98,8 +111,13 @@ function Contenu({ reference, devise }: { reference: string; devise: string }) {
   return (
     <>
       <Card className="flex flex-col gap-2">
+        {/* `key` : une autre paire ou une autre période repart du dernier
+            point, celui d'aujourd'hui. */}
         <Courbe
-          valeurs={serie.points.map(p => p.taux)}
+          key={`${reference}:${devise}:${periode}`}
+          points={serie.points}
+          reference={reference}
+          devise={devise}
           description={t('history.description', {
             nombre: serie.points.length,
             debut: date(stats.debut.date),
