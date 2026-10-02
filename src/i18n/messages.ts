@@ -189,6 +189,10 @@ const fr = {
     tiers:
       'Pour lire un taux, l’application interroge ces trois adresses. Elles voient l’adresse IP de l’appareil, les dates demandées et, pour un historique de la BCE, le code de la devise ; jamais un montant ni un libellé.',
     sansMesure: 'Ni mesure d’audience, ni cookie, ni publicité.',
+    credits: 'Crédits',
+    credit: {
+      drapeaux: 'les drapeaux, sous licence MIT.',
+    },
   },
 };
 
@@ -367,6 +371,10 @@ const en: typeof fr = {
     tiers:
       'To read a rate, the app queries these three addresses. They see the device’s IP address, the requested dates and, for an ECB history, the currency code; never an amount or a label.',
     sansMesure: 'No audience measurement, no cookie, no advertising.',
+    credits: 'Credits',
+    credit: {
+      drapeaux: 'the flags, under the MIT licence.',
+    },
   },
 };
 

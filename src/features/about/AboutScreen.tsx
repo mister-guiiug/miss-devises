@@ -23,6 +23,15 @@ const SOURCES = [
   },
 ] as const;
 
+/** Ce que l'application doit à d'autres, avec leur licence. */
+const CREDITS = [
+  {
+    nom: 'country-flag-icons',
+    url: 'https://gitlab.com/catamphetamine/country-flag-icons',
+    cle: 'drapeaux',
+  },
+] as const;
+
 /** Les origines que l'application interroge : celles de `connect-src`. */
 const ORIGINES = [
   'api.frankfurter.dev',
@@ -142,6 +151,21 @@ export function AboutScreen() {
           </ul>
           {sansMesure && <p className="m-0">{t('about.sansMesure')}</p>}
         </div>
+      </Card>
+
+      <Card>
+        <CardHeader title={t('about.credits')} />
+        <ul className="m-0 flex list-none flex-col gap-2 p-0">
+          {CREDITS.map(credit => (
+            <li key={credit.cle}>
+              <a href={credit.url} target="_blank" rel="noreferrer">
+                {credit.nom}
+              </a>
+              {' : '}
+              {t(`about.credit.${credit.cle}`)}
+            </li>
+          ))}
+        </ul>
       </Card>
     </FamilyAbout>
   );

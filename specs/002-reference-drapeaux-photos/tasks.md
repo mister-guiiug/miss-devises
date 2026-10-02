@@ -29,12 +29,12 @@ une pull request par phase.
 
 ## Phase 3 : récit 2, les drapeaux (P1)
 
-- [ ] T006 [P] [R2] Tests puis `src/domain/drapeaux.ts` (recherche R4) :
+- [x] T006 [P] [R2] Tests puis `src/domain/drapeaux.ts` (recherche R4) :
       l'euro, les codes en X, ANG, et toute devise de la liste servie par un
       drapeau ou un signe neutre (CR-003).
-- [ ] T007 [R2] Tests puis `src/ui/Drapeau.tsx` : image décorative, liseré,
+- [x] T007 [R2] Tests puis `src/ui/Drapeau.tsx` : image décorative, liseré,
       signe neutre ; fichiers émis par Vite hors du JavaScript, précachés.
-- [ ] T008 [R2] Les drapeaux dans le bouton et la liste des devises, la bascule
+- [x] T008 [R2] Les drapeaux dans le bouton et la liste des devises, la bascule
       du volet et les lignes du carnet ; e2e et axe.
 
 ## Phase 4 : récit 1, la monnaie de référence (P1)

@@ -78,8 +78,10 @@ ISO 3166), avec trois règles :
   drapeau de l'Abkhazie ;
 - le florin antillais (ANG), d'un pays dissous (AN), signe neutre.
 
-151 drapeaux pour les devises de la liste : 92 ko bruts, 25 ko gzip s'ils
-étaient réunis.
+170 drapeaux : ceux des devises actuelles, et ceux des anciennes monnaies que
+la source de marché cote encore (franc, mark, lire…), que la liste montre
+aussi. 100 ko bruts, 27 ko gzip s'ils étaient réunis. Un test vérifie que la
+liste les couvre toutes, et ne livre rien de plus.
 
 **Écarté** :
 
@@ -87,7 +89,7 @@ ISO 3166), avec trois règles :
   mesuré au canevas : aucun pixel coloré) ;
 - `flag-icons` (MIT aussi) : armoiries détaillées, 1 Mo brut pour les mêmes
   pays, 352 ko gzip ;
-- les drapeaux en chaînes SVG dans le JavaScript : 25 ko gzip, plus que toute
+- les drapeaux en chaînes SVG dans le JavaScript : 27 ko gzip, plus que toute
   la marge du budget (23 ko) ;
 - un sprite unique : il faudrait renommer les identifiants internes de chaque
   drapeau et une étape de build de plus.
