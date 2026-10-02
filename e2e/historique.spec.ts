@@ -34,7 +34,7 @@ test.describe('@critical récit 3 : comparer avec l’historique', () => {
     await page.goto('/');
     await page.getByRole('button', { name: /Changer de devise/ }).click();
     await page.getByLabel('Rechercher une devise').fill('dollar des');
-    await page.getByRole('button', { name: /USD/ }).click();
+    await page.getByRole('button', { name: /^USD/ }).click();
     await page.getByRole('link', { name: 'Historique' }).click();
 
     // « du … au … » : la ligne de l'historique, pas celle de Convertir, qui

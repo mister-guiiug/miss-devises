@@ -76,6 +76,11 @@
     "zod": "^4.6.5",
     "zustand": "^5.0.15"
   },
+  "pwaDoctor": {
+    "refus": {
+      "nav-attente": "Le seul lazy() est le volet des billets, ouvert par un bouton dans Convertir : aucune navigation de routeur ne l'enveloppe, et son repli de Suspense paraît."
+    }
+  },
   "overrides": {
     "eslint-plugin-jsx-a11y": {
       "eslint": "$eslint"
