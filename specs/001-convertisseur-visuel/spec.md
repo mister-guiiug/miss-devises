@@ -234,6 +234,8 @@ récit 2.
   propriétaire).
 - Q : paires sans l'euro (dollar vers yen) ? → R : hors périmètre de cette
   version ; l'euro est toujours l'une des deux devises (« monnaies d'euros »).
+  _Levée par la [spécification 002](../002-reference-drapeaux-photos/spec.md) :
+  la monnaie de référence se choisit, l'euro par défaut._
 - Q : quelles devises pour les billets et pièces ? → R : 41 devises de voyage
   depuis la France (liste dans le jeu de données), extensible ; les autres se
   convertissent sans volet.
@@ -241,7 +243,9 @@ récit 2.
   avec export et import, comme le reste de la famille.
 - Q : images des billets ? → R : formes stylisées uniquement (exigence EF-006) :
   la reproduction des billets est encadrée, voire interdite, selon les banques
-  centrales.
+  centrales. _Assouplie par la
+  [spécification 002](../002-reference-drapeaux-photos/spec.md) et la
+  constitution 2.0.0 : des photos libres, à la demande._
 
 ## Hypothèses
 
