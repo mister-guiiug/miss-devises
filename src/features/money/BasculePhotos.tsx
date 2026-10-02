@@ -1,5 +1,9 @@
 import { useEffect, useId, useRef } from 'react';
-import { Image as IconePhoto, ImageOff as IconeSansPhoto } from 'lucide-react';
+import {
+  ExternalLink,
+  Image as IconePhoto,
+  ImageOff as IconeSansPhoto,
+} from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { useI18n } from '../../i18n/index.ts';
 
@@ -12,6 +16,8 @@ interface Props {
   actif: boolean;
   /** L'avis sur Wikimedia est ouvert, en attente de réponse. */
   avisOuvert: boolean;
+  /** L'article Wikipédia (en anglais) de la devise montrée, s'il est relevé. */
+  wikipedia?: string | undefined;
   /** Un geste sur l'interrupteur. */
   onBasculer: () => void;
   onAccepter: () => void;
@@ -32,12 +38,19 @@ interface Props {
  * L'AVIS S'OUVRE DANS LA RANGÉE, au premier passage : ce que Wikimedia voit,
  * avant toute requête (EF-010). Le focus va au bouton qui l'accepte, et
  * revient à l'interrupteur si on garde les dessins.
+ *
+ * LES COUPURES RESTÉES DESSINÉES ONT LEUR LIEN, vers l'article Wikipédia de la
+ * devise : les billets égyptiens, que le Code pénal égyptien interdit de
+ * publier en image sans licence, s'y voient sans que l'application en publie
+ * une. L'article est en anglais (l'édition qui admet les images non libres),
+ * et le lien le dit.
  */
 export function BasculePhotos({
   compte,
   total,
   actif,
   avisOuvert,
+  wikipedia,
   onBasculer,
   onAccepter,
   onRefuser,
@@ -84,6 +97,25 @@ export function BasculePhotos({
               ? t('money.aucunePhoto')
               : t('money.photosDisponibles', { count: compte, total })}
           </span>
+          {wikipedia && compte < total && (
+            <a
+              href={wikipedia}
+              target="_blank"
+              rel="noreferrer"
+              hrefLang="en"
+              className="self-start py-1 text-xs underline"
+              style={{ color: 'var(--dwc-text-soft)' }}
+            >
+              {t('money.wikipedia')}
+              {/* Dans le fil du texte, pas en élément de grille : replié, le
+                  texte garderait l'icône au bout de sa dernière ligne. */}
+              <ExternalLink
+                aria-hidden="true"
+                className="ms-1 inline-block size-3 align-[-1px]"
+              />
+              <span className="sr-only">{t('money.nouvelOnglet')}</span>
+            </a>
+          )}
         </div>
         <button
           ref={interrupteur}

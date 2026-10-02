@@ -377,3 +377,52 @@ describe('les photos de Wikimedia Commons (spécification 002, récit 3)', () =>
     expect(photos()).toHaveLength(0);
   });
 });
+
+describe('le lien vers Wikipédia, pour les coupures restées dessinées', () => {
+  /** Le lien de la rangée « Vraies photos ». */
+  const lien = () =>
+    screen.findByRole('link', { name: /^Les vraies, sur Wikipédia/ });
+
+  it('mène à l’article de la devise montrée, dans un nouvel onglet, sans référent', async () => {
+    const user = userEvent.setup();
+    monter();
+    // Les billets égyptiens restent dessinés : la loi égyptienne en interdit
+    // l'image ; un lien n'en publie aucune.
+    const egp = await lien();
+    expect(egp).toHaveAttribute(
+      'href',
+      'https://en.wikipedia.org/wiki/Egyptian_pound'
+    );
+    expect(egp).toHaveAttribute('target', '_blank');
+    expect(egp).toHaveAttribute('rel', expect.stringContaining('noreferrer'));
+    // L'article est en anglais, et le lien le dit, à l'œil comme à l'oreille.
+    expect(egp).toHaveAttribute('hreflang', 'en');
+    expect(egp).toHaveTextContent('Wikipédia en anglais');
+    expect(egp).toHaveAccessibleName(/nouvel onglet$/);
+    // Il suit le côté montré.
+    await user.click(screen.getByRole('tab', { name: 'En EUR' }));
+    await waitFor(async () =>
+      expect(await lien()).toHaveAttribute(
+        'href',
+        'https://en.wikipedia.org/wiki/Euro'
+      )
+    );
+  });
+
+  it('existe aussi pour une devise sans aucune photo, et en mode dessins', async () => {
+    monter({ devise: 'GBP', taux: 0.85 });
+    expect(await lien()).toHaveAttribute(
+      'href',
+      'https://en.wikipedia.org/wiki/Pound_sterling'
+    );
+    expect(usePreferences.getState().images).toBe('dessins');
+  });
+
+  it('manque quand toutes les coupures ont leur photo', async () => {
+    monter({ devise: 'RON', taux: 4.97 });
+    expect(await screen.findByText('12 sur 12 coupures')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: /^Les vraies, sur Wikipédia/ })
+    ).toBeNull();
+  });
+});

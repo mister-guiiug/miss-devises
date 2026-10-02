@@ -84,7 +84,9 @@ la politique devise par devise et les doutes sont dans
   cookie ne sont envoyés. Selon sa
   [politique de confidentialité](https://foundation.wikimedia.org/wiki/Policy:Privacy_policy),
   ces données sont supprimées, agrégées ou désidentifiées au plus tard après
-  90 jours. L'application le dit avant la première photo.
+  90 jours. L'application le dit avant la première photo. Le lien « sur
+  Wikipédia », pour les coupures restées dessinées, ouvre l'article dans un
+  nouvel onglet, sans référent ; rien n'est demandé à Wikimedia avant ce clic.
 - **Mesure** : Sentry ne se charge que si `VITE_SENTRY_DSN` est posée au build,
   et PostHog (nuage européen) ne mesure qu'après accord dans un bandeau, si
   `VITE_POSTHOG_KEY` est posée. **Au 01/10/2026, aucune des deux n'est posée** :
