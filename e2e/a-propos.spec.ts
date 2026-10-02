@@ -62,4 +62,16 @@ test.describe('@critical 002, récit 4 : À propos se lit d’un coup d’œil',
     );
     expect(deborde).toBe(false);
   });
+
+  test('« M’offrir un café » une seule fois : dans le pied de page', async ({
+    page,
+  }) => {
+    const cafe = page.getByRole('link', { name: /offrir un café/ });
+    await expect(cafe).toHaveCount(1);
+    await expect(
+      page.locator('[data-dwc="app-footer"]').getByRole('link', {
+        name: /offrir un café/,
+      })
+    ).toBeVisible();
+  });
 });

@@ -131,3 +131,29 @@ body {
     flex-shrink: 1;
   }
 }
+
+/*
+ * L'ANNEAU DE FOCUS NE SE COUPE PLUS DANS UNE FEUILLE. Le corps d'une feuille
+ * du socle défile (`overflow-y: auto`, donc `overflow-x` aussi) : ce qui
+ * dépasse de sa boîte est coupé. Un champ pleine largeur y touchait les deux
+ * bords, et son anneau de focus (2 px, à 2 px du champ) perdait ses côtés.
+ * Une marge intérieure de 4 px, rendue par une marge négative, lui laisse la
+ * place sans rien déplacer. Signalé au socle : retirer à la montée qui la
+ * corrigera.
+ */
+[data-dwc='sheet-body'] {
+  padding: 4px;
+  margin: -4px;
+}
+
+/*
+ * « M'OFFRIR UN CAFÉ » UNE SEULE FOIS SUR À PROPOS. `FamilyAbout` passe
+ * `showSource={false}` à la grille de la famille pour ne pas doubler le pied
+ * de page, mais pas `showSponsor={false}` : le lien du café paraissait
+ * au-dessus de la grille ET dans le pied de page. Avec la source retirée, ce
+ * groupe de liens ne contient que lui. Signalé au socle : retirer à la montée
+ * qui le corrigera.
+ */
+[data-dwc='family-about'] [data-dwc='family-links'] {
+  display: none;
+}

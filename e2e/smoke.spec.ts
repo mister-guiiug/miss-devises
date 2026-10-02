@@ -70,4 +70,44 @@ test.describe('@critical récit 1 : convertir dans les deux sens', () => {
     );
     await expect(page.getByLabel('Montant en euros')).toHaveValue('3,40');
   });
+
+  test('l’en-tête porte le logo de l’application', async ({ page }) => {
+    await page.goto('/');
+    const logo = page.locator(
+      '[data-dwc="app-header"] img[src$="favicon.svg"]'
+    );
+    await expect(logo).toBeVisible();
+    // Décoratif : le titre, juste après, dit déjà le nom.
+    await expect(logo).toHaveAttribute('alt', '');
+    await page.getByRole('link', { name: 'Historique' }).click();
+    await expect(logo).toBeVisible();
+  });
+
+  test('dans une feuille, l’anneau de focus d’un champ n’est pas coupé', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: /Changer de devise/ }).click();
+    const champ = page.getByLabel('Rechercher une devise');
+    await champ.focus();
+    // Le corps d'une feuille défile : ce qui dépasse de sa boîte est coupé.
+    // L'anneau (épaisseur + écart) doit tenir dedans, de chaque côté.
+    const marges = await champ.evaluate(input => {
+      const corps = input.closest('[data-dwc="sheet-body"]');
+      if (!corps) throw new Error('pas de corps de feuille');
+      const style = getComputedStyle(input);
+      const anneau =
+        parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
+      const c = corps.getBoundingClientRect();
+      const i = input.getBoundingClientRect();
+      return {
+        gauche: i.left - c.left - anneau,
+        droite: c.right - i.right - anneau,
+        haut: i.top - c.top - anneau,
+      };
+    });
+    expect(marges.gauche).toBeGreaterThanOrEqual(0);
+    expect(marges.droite).toBeGreaterThanOrEqual(0);
+    expect(marges.haut).toBeGreaterThanOrEqual(0);
+  });
 });
