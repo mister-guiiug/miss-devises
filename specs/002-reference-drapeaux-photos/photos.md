@@ -5,8 +5,13 @@ des coupures (`coupures.json`), au plus une photo hébergée sur Wikimedia
 Commons. Ce document dit comment il a été fait, ce qu'il couvre, ce qu'il
 écarte et pourquoi.
 
-**Couverture** : 136 coupures sur 465 (79 billets sur 237, 57 pièces sur 228),
-dans 16 devises sur 41. Un test compare ce chiffre au jeu.
+**Couverture** : 110 coupures sur 465 (63 billets sur 237, 47 pièces sur 228),
+dans 14 devises sur 41. Un test compare ce chiffre au jeu.
+
+**Revue juridique du 02/10/2026**, après la mise en ligne : la roupie
+indonésienne, les billets égyptiens, les pièces brésiliennes et le quarter
+américain repassent en dessins, et les crédits gagnent le titre du fichier et
+le lien vers le texte de la licence (voir « Les crédits » et « Les doutes »).
 
 ## La méthode
 
@@ -33,20 +38,18 @@ dans 16 devises sur 41. Un test compare ce chiffre au jeu.
 | Devise | Billets | Pièces | Condition tenue                                                                   |
 | ------ | ------- | ------ | --------------------------------------------------------------------------------- |
 | EUR    | oui     | oui    | billets marqués SPECIMEN (images de la BCE) ; pièces : la face commune            |
-| USD    | oui     | oui    | une face, bien moins de 75 % de la taille réelle                                  |
+| USD    | oui     | oui    | une face, bien moins de 75 % de la taille réelle ; pièces de 1, 10 et 50 c        |
 | CHF    | oui     | oui    | billets de la BNS marqués SPECIMEN ; exclus du droit d'auteur en Suisse           |
 | JPY    | oui     | non    | billets marqués 見本 ; Commons ne traite pas les pièces                           |
 | CZK    | non     | oui    | billets : le SPECIMEN qu'exige la CNB manque aux fichiers                         |
 | HUF    | oui     | non    | billets marqués MINTA ; pièces : statut au cas par cas sur Commons                |
 | RON    | oui     | oui    | la loi roumaine exclut les moyens de paiement du droit d'auteur                   |
 | TRY    | oui     | non    | billets marqués SPECIMEN ; pièces : 72 dpi impossibles à 120 px                   |
-| ILS    | oui     | oui    | crédit à la Banque d'Israël, ajouté à chaque photo                                |
-| EGP    | oui     | oui    | aucune restriction relevée                                                        |
+| ILS    | oui     | oui    | « droits réservés à la Banque d'Israël » au crédit ; 70 % de la taille au plus    |
+| EGP    | non     | oui    | billets : licence du ministre de l'Intérieur exigée (Code pénal, art. 204 bis A)  |
 | JOD    | oui     | non    | permission de la Banque centrale ; pièces : seulement des montages                |
 | KRW    | oui     | oui    | billets de la Banque de Corée marqués 보기 (spécimen)                             |
 | INR    | oui     | oui    | GODL-India : le crédit nomme l'auteur, la licence et la source                    |
-| IDR    | oui     | oui    | billets de Bank Indonesia marqués SPESIMEN                                        |
-| BRL    | non     | oui    | billets : le « SEM VALOR » qu'exige la Banque centrale manque                     |
 | PHP    | non     | oui    | billets : autorisation de la BSP ; pièces : seule la copie en métal est interdite |
 
 **Écartées** :
@@ -56,11 +59,27 @@ dans 16 devises sur 41. Un test compare ce chiffre au jeu.
   sur Commons, sous la licence de leur photographe, mais le dessin reste
   protégé ; un test garde ces devises hors du jeu ;
 - **incertaines sur Commons** : ISK, MAD, TND, MUR, XOF, XPF ;
+- **écartées par prudence** :
+  - IDR : la loi indonésienne 7/2011 (art. 24) ne permet une imitation de la
+    rupiah, image comprise, qu'avec la mention « spesimen », que les pièces
+    n'ont pas, et la fiche du groupe des banques centrales contre la
+    contrefaçon (CBCDG) exige pour les billets une permission préalable de
+    Bank Indonesia ;
+  - BRL : la loi 4.511/1964 (art. 13) et la politique de la Banque centrale
+    du Brésil soumettent toute diffusion d'images de billets ou de pièces au
+    Departamento do Meio Circulante, au préalable ; les billets n'avaient
+    déjà pas leur « SEM VALOR » ;
+  - billets EGP : le Code pénal égyptien (art. 204 bis A) soumet toute image
+    d'un billet circulant en Égypte à une licence du ministre de
+    l'Intérieur. Rien de tel pour les pièces, qui restent ;
 - **sans fichier** : XAF (aucune image de la série en circulation) ;
 - **montages recto-verso**, quand aucune face seule n'existe : 10 c et 50 c
   suisses, 2 et 10 shekels, 10 piastres et ½ dinar jordaniens ;
 - **anciens dessins** : 5 cents et 1 dollar américains (les avers courants ne
   sont pas libres) ;
+- **droits incertains** : 25 cents américains. Commons tient l'avers de 2022
+  pour « présumé » libre, et certains dessins de pièces sont sous des droits
+  cédés à la Monnaie des États-Unis, dont la liste n'a pas pu être lue ;
 - **provenance douteuse** : 2 centimes d'euro (rendu officiel présenté comme
   travail personnel), 1 euro (image Pixabay invérifiable).
 
@@ -72,11 +91,39 @@ le même sur toutes les pièces : c'est la face de la valeur qui est montrée.
 la taille réelle pour tout billet de plus de 116 mm, ce que la BCE, la CNB et
 la TCMB exigent d'une image en ligne), 120 px pour un billet debout (9e série
 suisse) et pour une pièce. Un original plus étroit (1 centime d'euro, 50 et
-100 wons) est servi tel quel.
+100 wons) est servi tel quel. Jamais de variante 2x : à 500 px, un billet
+dépasserait 72 dpi. À l'écran, chaque coupure fait au plus 70 % de sa taille
+réelle au pixel de référence, ce que la Banque d'Israël exige ; un test le
+vérifie pour chaque photo.
+
+**L'image telle quelle** : ni filtre, ni recadrage, rien posé dessus ; le lien
+« Crédit » se tient à côté. Un billet debout tourne d'un quart pour prendre la
+place d'un billet couché.
+
+## Les crédits
+
+Pour chaque photo, un lien « Crédit » vers sa page Commons, et une ligne dans
+la liste « Crédits des photos » du volet : la coupure, le **titre du fichier**
+(que les licences CC 2.0 à 3.0 exigent), son auteur, sa **licence liée à son
+texte** quand elle en a un (les CC veulent le lien, pas seulement le nom), et
+la page Commons. S'y ajoutent « droits réservés à la Banque d'Israël »
+(exigé), « © BCE » et « face commune © Union européenne » (par courtoisie).
 
 ## Les doutes
 
-- **USD 25 c** : avers de 2022, « présumé » dans le domaine public par Commons.
+- **EGP, pièces** : Commons admet les dessins en les tenant pour des
+  « documents officiels » exclus du droit d'auteur, lecture que la loi
+  égyptienne ne dit pas en propres termes ; le Code pénal ne vise que les
+  billets. Gardées, à confirmer.
+- **JOD** : la seule règle trouvée est celle que rapporte Commons (au plus les
+  2/3 de la taille, une face) ; la Banque centrale de Jordanie n'en publie
+  aucune.
+- **INR** : Commons range les images de la RBI sous GODL-India, licence qui
+  exclut pourtant les symboles officiels (l'emblème figure sur les billets et
+  les pièces).
+- **EUR, billets** : le « specimen » des images de la BCE est en lettres
+  détourées, quand la décision demande un mot opaque ; ce sont les images de
+  la BCE elle-même.
 - **EUR 1 c** : l'image officielle de la BCE ne fait que 105 px ; sa base
   légale est la permission de la Commission (`{{Euro coin common face}}`),
   l'API ne rend aucune licence.

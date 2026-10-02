@@ -17,7 +17,7 @@ demande à Wikimedia.
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/…/330px-…png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 588,
           "hauteur": 322,
-          "auteur": "Robert Kalina, redesign by Reinhold Gerstetter",
+          "auteur": "Robert Kalina, redesign by Reinhold Gerstetter ; © BCE",
           "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
         }
       ],
@@ -27,11 +27,16 @@ demande à Wikimedia.
 }
 ```
 
+`licenceUrl`, facultatif, est le texte de la licence (`LicenseUrl` de l'API),
+présent pour les licences Creative Commons et GODL-India.
+
 Validé par `photosSchema` (`src/data/photos.ts`) au chargement. Les tests
 vérifient en plus : chaque photo désigne une coupure du jeu des coupures, une
 fois ; aucune devise que Commons refuse ; une largeur de palier ; 72 dpi au
-plus pour un billet à sa taille réelle ; un auteur et une licence ; la
-couverture publiée dans [photos.md](../photos.md).
+plus pour un billet à sa taille réelle ; 70 % de la taille réelle au plus à
+l'écran ; un auteur et une licence, liée à son texte pour une licence Creative
+Commons ; le crédit de la Banque d'Israël ; aucune devise refusée par Commons
+ni écartée par prudence ; la couverture publiée dans [photos.md](../photos.md).
 
 ## Les requêtes
 
@@ -49,4 +54,5 @@ l'adresse IP, le navigateur, l'heure et l'adresse de l'image.
 
 Pour chaque photo montrée : un lien « Crédit » vers sa page Commons
 (`https://commons.wikimedia.org/wiki/File:<nom>`), et une ligne de la liste
-« Crédits des photos » : la coupure, l'auteur, la licence, le lien.
+« Crédits des photos » : la coupure, le titre du fichier, l'auteur, la licence
+(liée à `licenceUrl` quand il existe), le lien vers la page Commons.

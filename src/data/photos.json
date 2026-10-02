@@ -1,56 +1,6 @@
 {
   "releveLe": "2026-10-02",
   "devises": {
-    "BRL": {
-      "billets": [],
-      "pieces": [
-        {
-          "valeur": 0.05,
-          "fichier": "5-centavos-2019-A.png",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/5-centavos-2019-A.png/120px-5-centavos-2019-A.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1034,
-          "hauteur": 1034,
-          "auteur": "Design: Central Bank of Brazil",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 0.1,
-          "fichier": "10 Centavos (2018) - Vorderseite.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/10_Centavos_%282018%29_-_Vorderseite.jpg/120px-10_Centavos_%282018%29_-_Vorderseite.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1707,
-          "hauteur": 1682,
-          "auteur": "Cerdded41",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 0.25,
-          "fichier": "25 Centavos (2021) - Vorderseite.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/25_Centavos_%282021%29_-_Vorderseite.jpg/120px-25_Centavos_%282021%29_-_Vorderseite.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1857,
-          "hauteur": 1883,
-          "auteur": "Cerdded41",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 0.5,
-          "fichier": "50-centavos-2019-A.png",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/50-centavos-2019-A.png/120px-50-centavos-2019-A.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1087,
-          "hauteur": 1087,
-          "auteur": "Design: Central Bank of Brazil",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 1,
-          "fichier": "1 Real (2017) - Vorderseite.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/1_Real_%282017%29_-_Vorderseite.jpg/120px-1_Real_%282017%29_-_Vorderseite.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 2166,
-          "hauteur": 2129,
-          "auteur": "Cerdded41",
-          "licence": "CC BY-SA 4.0"
-        }
-      ]
-    },
     "CHF": {
       "billets": [
         {
@@ -175,7 +125,8 @@
           "largeur": 744,
           "hauteur": 760,
           "auteur": "Ilya Rudomilov",
-          "licence": "CC BY-SA 3.0"
+          "licence": "CC BY-SA 3.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0"
         },
         {
           "valeur": 5,
@@ -184,7 +135,8 @@
           "largeur": 814,
           "hauteur": 777,
           "auteur": "Ilya Rudomilov",
-          "licence": "CC BY-SA 3.0"
+          "licence": "CC BY-SA 3.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0"
         },
         {
           "valeur": 10,
@@ -193,7 +145,8 @@
           "largeur": 837,
           "hauteur": 824,
           "auteur": "Ilya Rudomilov",
-          "licence": "CC BY-SA 3.0"
+          "licence": "CC BY-SA 3.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0"
         },
         {
           "valeur": 20,
@@ -202,7 +155,8 @@
           "largeur": 901,
           "hauteur": 897,
           "auteur": "Ilya Rudomilov",
-          "licence": "CC BY-SA 3.0"
+          "licence": "CC BY-SA 3.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0"
         },
         {
           "valeur": 50,
@@ -211,94 +165,13 @@
           "largeur": 948,
           "hauteur": 939,
           "auteur": "Ilya Rudomilov",
-          "licence": "CC BY-SA 3.0"
+          "licence": "CC BY-SA 3.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0"
         }
       ]
     },
     "EGP": {
-      "billets": [
-        {
-          "valeur": 0.25,
-          "fichier": "EGP 25 Piastres 2008 (Front).png",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/EGP_25_Piastres_2008_%28Front%29.png/330px-EGP_25_Piastres_2008_%28Front%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 984,
-          "hauteur": 539,
-          "auteur": "البنك المركزي المصري Central Bank of Egypt",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 0.5,
-          "fichier": "0.50 EGP obverse 2017-1-8.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/0.50_EGP_obverse_2017-1-8.jpg/330px-0.50_EGP_obverse_2017-1-8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1577,
-          "hauteur": 821,
-          "auteur": "Central Bank of Egypt",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 1,
-          "fichier": "1EGP-2001(5).png",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/1EGP-2001%285%29.png/330px-1EGP-2001%285%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1600,
-          "hauteur": 777,
-          "auteur": "Central Bank Of Egypt",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 5,
-          "fichier": "5EGP-2012.png",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/5EGP-2012.png/330px-5EGP-2012.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1136,
-          "hauteur": 550,
-          "auteur": "Central Bank Of Egypt البنك المركزي المصري",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 10,
-          "fichier": "10 EGP 2022 Polymer - front.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/10_EGP_2022_Polymer_-_front.jpg/330px-10_EGP_2022_Polymer_-_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 600,
-          "hauteur": 312,
-          "auteur": "Central Bank of Egypt",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 20,
-          "fichier": "20 EGP 2022 Polymer - front 01.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/20_EGP_2022_Polymer_-_front_01.jpg/330px-20_EGP_2022_Polymer_-_front_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 600,
-          "hauteur": 301,
-          "auteur": "Central Bank of Egypt",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 50,
-          "fichier": "EGP 50 Pounds Dec 2001 (Front).jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/EGP_50_Pounds_Dec_2001_%28Front%29.jpg/330px-EGP_50_Pounds_Dec_2001_%28Front%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 703,
-          "hauteur": 308,
-          "auteur": "Szajci",
-          "licence": "CC BY-SA 3.0"
-        },
-        {
-          "valeur": 100,
-          "fichier": "EGP 100 Pounds 2015 (Front).jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/EGP_100_Pounds_2015_%28Front%29.jpg/330px-EGP_100_Pounds_2015_%28Front%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 650,
-          "hauteur": 276,
-          "auteur": "البنك المركزي المصري",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 200,
-          "fichier": "EGP 200 Pounds Apr 2007 (Front).jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/EGP_200_Pounds_Apr_2007_%28Front%29.jpg/330px-EGP_200_Pounds_Apr_2007_%28Front%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 700,
-          "hauteur": 316,
-          "auteur": "Szajci",
-          "licence": "CC BY-SA 3.0"
-        }
-      ],
+      "billets": [],
       "pieces": [
         {
           "valeur": 0.25,
@@ -307,7 +180,8 @@
           "largeur": 300,
           "hauteur": 300,
           "auteur": "بافلي مجدي",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 0.5,
@@ -316,7 +190,8 @@
           "largeur": 800,
           "hauteur": 799,
           "auteur": "Aleksasfi",
-          "licence": "CC BY-SA 3.0"
+          "licence": "CC BY-SA 3.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0"
         },
         {
           "valeur": 1,
@@ -337,7 +212,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/EUR_5_obverse_%282013_issue%29.png/330px-EUR_5_obverse_%282013_issue%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 709,
           "hauteur": 364,
-          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "auteur": "Robert Kalina, redesign by Reinhold Gerstetter ; © BCE",
           "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
         },
         {
@@ -346,7 +221,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/EUR_10_obverse_%282014_issue%29.png/330px-EUR_10_obverse_%282014_issue%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 596,
           "hauteur": 310,
-          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "auteur": "Robert Kalina, redesign by Reinhold Gerstetter ; © BCE",
           "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
         },
         {
@@ -355,7 +230,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/The_Europa_series_20_%E2%82%AC_obverse_side.jpg/330px-The_Europa_series_20_%E2%82%AC_obverse_side.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 596,
           "hauteur": 320,
-          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "auteur": "Robert Kalina, redesign by Reinhold Gerstetter ; © BCE",
           "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
         },
         {
@@ -364,7 +239,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/The_Europa_series_50_%E2%82%AC_obverse_side.png/330px-The_Europa_series_50_%E2%82%AC_obverse_side.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 588,
           "hauteur": 322,
-          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "auteur": "Robert Kalina, redesign by Reinhold Gerstetter ; © BCE",
           "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
         },
         {
@@ -373,7 +248,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/The_Europa_series_100_%E2%82%AC_obverse_side.jpg/330px-The_Europa_series_100_%E2%82%AC_obverse_side.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 1240,
           "hauteur": 644,
-          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "auteur": "Robert Kalina, redesign by Reinhold Gerstetter ; © BCE",
           "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
         },
         {
@@ -382,7 +257,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/The_Europa_series_200_%E2%82%AC_obverse_side.jpg/330px-The_Europa_series_200_%E2%82%AC_obverse_side.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 1198,
           "hauteur": 596,
-          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "auteur": "Robert Kalina, redesign by Reinhold Gerstetter ; © BCE",
           "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
         },
         {
@@ -391,7 +266,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/EUR_500_obverse_%282002_issue%29.jpg/330px-EUR_500_obverse_%282002_issue%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 944,
           "hauteur": 484,
-          "auteur": "Robert Kalina",
+          "auteur": "Robert Kalina ; © BCE",
           "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
         }
       ],
@@ -402,7 +277,7 @@
           "vignette": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Euro_1_cent.gif?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
           "largeur": 105,
           "hauteur": 107,
-          "auteur": "European Commission",
+          "auteur": "European Commission ; face commune © Union européenne",
           "licence": "Euro coin common face (Commission européenne)"
         },
         {
@@ -411,8 +286,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Euro_5_cent_%28Common_face%29_%285131629928%29.jpg/120px-Euro_5_cent_%28Common_face%29_%285131629928%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 2475,
           "hauteur": 2475,
-          "auteur": "Mark Morgan from Trinidad",
-          "licence": "CC BY 2.0"
+          "auteur": "Mark Morgan from Trinidad ; face commune © Union européenne",
+          "licence": "CC BY 2.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by/2.0"
         },
         {
           "valeur": 0.1,
@@ -420,8 +296,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/10_Euro_Common_%28New_Design%29_%285115768947%29.jpg/120px-10_Euro_Common_%28New_Design%29_%285115768947%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 1711,
           "hauteur": 1716,
-          "auteur": "Mark Morgan from Trinidad",
-          "licence": "CC BY 2.0"
+          "auteur": "Mark Morgan from Trinidad ; face commune © Union européenne",
+          "licence": "CC BY 2.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by/2.0"
         },
         {
           "valeur": 0.2,
@@ -429,8 +306,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Euro_20_cents_%28New_Design%29_%285106285918%29.jpg/120px-Euro_20_cents_%28New_Design%29_%285106285918%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 2091,
           "hauteur": 2087,
-          "auteur": "Mark Morgan from Trinidad",
-          "licence": "CC BY 2.0"
+          "auteur": "Mark Morgan from Trinidad ; face commune © Union européenne",
+          "licence": "CC BY 2.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by/2.0"
         },
         {
           "valeur": 0.5,
@@ -438,8 +316,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Euro_50_cent_common_face_%28New_Design%29_%285128333845%29.jpg/120px-Euro_50_cent_common_face_%28New_Design%29_%285128333845%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 2780,
           "hauteur": 2796,
-          "auteur": "Mark Morgan from Trinidad",
-          "licence": "CC BY 2.0"
+          "auteur": "Mark Morgan from Trinidad ; face commune © Union européenne",
+          "licence": "CC BY 2.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by/2.0"
         },
         {
           "valeur": 2,
@@ -447,8 +326,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Piece_Comm-2Euro_%28pile%29.jpg/120px-Piece_Comm-2Euro_%28pile%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 800,
           "hauteur": 793,
-          "auteur": "Basilio",
-          "licence": "CC BY-SA 3.0"
+          "auteur": "Basilio ; face commune © Union européenne",
+          "licence": "CC BY-SA 3.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0"
         }
       ]
     },
@@ -461,7 +341,8 @@
           "largeur": 546,
           "hauteur": 249,
           "auteur": "Bandibandita",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 1000,
@@ -511,111 +392,6 @@
       ],
       "pieces": []
     },
-    "IDR": {
-      "billets": [
-        {
-          "valeur": 1000,
-          "fichier": "TE-2022-1000-depan.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/TE-2022-1000-depan.jpg/330px-TE-2022-1000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1328,
-          "hauteur": 714,
-          "auteur": "Bank Indonesia",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 2000,
-          "fichier": "TE-2022-2000-depan.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/TE-2022-2000-depan.jpg/330px-TE-2022-2000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1381,
-          "hauteur": 712,
-          "auteur": "Bank Indonesia",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 5000,
-          "fichier": "TE-2022-5000-depan.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/TE-2022-5000-depan.jpg/330px-TE-2022-5000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1436,
-          "hauteur": 713,
-          "auteur": "Bank Indonesia",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 10000,
-          "fichier": "TE-2022-10000-depan.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/TE-2022-10000-depan.jpg/330px-TE-2022-10000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1491,
-          "hauteur": 713,
-          "auteur": "Bank Indonesia",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 20000,
-          "fichier": "TE-2022-20000-depan.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/TE-2022-20000-depan.jpg/330px-TE-2022-20000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1545,
-          "hauteur": 713,
-          "auteur": "Bank Indonesia",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 50000,
-          "fichier": "TE-2022-50000-depan.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/TE-2022-50000-depan.jpg/330px-TE-2022-50000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1601,
-          "hauteur": 713,
-          "auteur": "Bank Indonesia",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 100000,
-          "fichier": "TE-2022-100000-depan.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/TE-2022-100000-depan.jpg/330px-TE-2022-100000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 1609,
-          "hauteur": 693,
-          "auteur": "Bank Indonesia",
-          "licence": "Public domain"
-        }
-      ],
-      "pieces": [
-        {
-          "valeur": 100,
-          "fichier": "IDR 100 coin 2016 series reverse.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/IDR_100_coin_2016_series_reverse.jpg/120px-IDR_100_coin_2016_series_reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 376,
-          "hauteur": 384,
-          "auteur": "Jauhsekali",
-          "licence": "CC BY-SA 3.0"
-        },
-        {
-          "valeur": 200,
-          "fichier": "IDR 200 coin 2016 series reverse.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/IDR_200_coin_2016_series_reverse.jpg/120px-IDR_200_coin_2016_series_reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 376,
-          "hauteur": 377,
-          "auteur": "Jauhsekali",
-          "licence": "CC BY-SA 3.0"
-        },
-        {
-          "valeur": 500,
-          "fichier": "IDR 500 coin 2016 series reverse.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/IDR_500_coin_2016_series_reverse.jpg/120px-IDR_500_coin_2016_series_reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 432,
-          "hauteur": 430,
-          "auteur": "Jauhsekali",
-          "licence": "CC BY-SA 3.0"
-        },
-        {
-          "valeur": 1000,
-          "fichier": "IDR 1000 coin 2016 series reverse.jpg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/IDR_1000_coin_2016_series_reverse.jpg/120px-IDR_1000_coin_2016_series_reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 425,
-          "hauteur": 428,
-          "auteur": "Jauhsekali",
-          "licence": "CC BY-SA 3.0"
-        }
-      ]
-    },
     "ILS": {
       "billets": [
         {
@@ -624,8 +400,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/20_Israeli_new_shekel_in_2017_Obverse.jpg/330px-20_Israeli_new_shekel_in_2017_Obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 600,
           "hauteur": 329,
-          "auteur": "Adambps1900 ; dessin © Banque d’Israël",
-          "licence": "CC BY-SA 4.0"
+          "auteur": "Adambps1900 ; droits réservés à la Banque d’Israël",
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 50,
@@ -633,8 +410,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/50_Israeli_new_shekel_in_2013_Obverse.jpg/330px-50_Israeli_new_shekel_in_2013_Obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 600,
           "hauteur": 301,
-          "auteur": "Adambps1900 ; dessin © Banque d’Israël",
-          "licence": "CC BY-SA 4.0"
+          "auteur": "Adambps1900 ; droits réservés à la Banque d’Israël",
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 100,
@@ -642,8 +420,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/100_Israeli_new_shekel_in_2017_Obverse.jpg/330px-100_Israeli_new_shekel_in_2017_Obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 600,
           "hauteur": 300,
-          "auteur": "Adambps1900 ; dessin © Banque d’Israël",
-          "licence": "CC BY-SA 4.0"
+          "auteur": "Adambps1900 ; droits réservés à la Banque d’Israël",
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 200,
@@ -651,8 +430,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/200_Israeli_new_shekel_in_2015_Obverse.jpg/330px-200_Israeli_new_shekel_in_2015_Obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 600,
           "hauteur": 285,
-          "auteur": "Adambps1900 ; dessin © Banque d’Israël",
-          "licence": "CC BY-SA 4.0"
+          "auteur": "Adambps1900 ; droits réservés à la Banque d’Israël",
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         }
       ],
       "pieces": [
@@ -662,7 +442,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/10_Agorot_coin_%28cropped%29.jpg/120px-10_Agorot_coin_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 272,
           "hauteur": 282,
-          "auteur": "Yonidebest ; dessin © Banque d’Israël",
+          "auteur": "Yonidebest ; droits réservés à la Banque d’Israël",
           "licence": "Use permitted by the BOI, Currency Department"
         },
         {
@@ -671,7 +451,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Israel_Half_Sheqel2.png/120px-Israel_Half_Sheqel2.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 1240,
           "hauteur": 1240,
-          "auteur": "Moataz1997 ; dessin © Banque d’Israël",
+          "auteur": "Moataz1997 ; droits réservés à la Banque d’Israël",
           "licence": "Public domain"
         },
         {
@@ -680,8 +460,9 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/1_new_sheqel_1993_obverse.JPG/120px-1_new_sheqel_1993_obverse.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 568,
           "hauteur": 561,
-          "auteur": "Дмитрий Никонов ; dessin © Banque d’Israël",
-          "licence": "CC BY-SA 3.0"
+          "auteur": "Дмитрий Никонов ; droits réservés à la Banque d’Israël",
+          "licence": "CC BY-SA 3.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0"
         },
         {
           "valeur": 5,
@@ -689,7 +470,7 @@
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/5_NIS_coin_%28cropped%29.jpg/120px-5_NIS_coin_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 306,
           "hauteur": 307,
-          "auteur": "Yonidebest ; dessin © Banque d’Israël",
+          "auteur": "Yonidebest ; droits réservés à la Banque d’Israël",
           "licence": "Use permitted by the BOI, Currency Department"
         }
       ]
@@ -703,7 +484,8 @@
           "largeur": 1164,
           "hauteur": 500,
           "auteur": "Reserve Bank of India",
-          "licence": "GODL-India"
+          "licence": "GODL-India",
+          "licenceUrl": "https://data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf"
         },
         {
           "valeur": 20,
@@ -712,7 +494,8 @@
           "largeur": 547,
           "hauteur": 274,
           "auteur": "Reserve Bank of India",
-          "licence": "GODL-India"
+          "licence": "GODL-India",
+          "licenceUrl": "https://data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf"
         },
         {
           "valeur": 50,
@@ -721,7 +504,8 @@
           "largeur": 1167,
           "hauteur": 495,
           "auteur": "Reserve Bank of India",
-          "licence": "GODL-India"
+          "licence": "GODL-India",
+          "licenceUrl": "https://data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf"
         },
         {
           "valeur": 100,
@@ -730,7 +514,8 @@
           "largeur": 1449,
           "hauteur": 618,
           "auteur": "Reserve Bank of India",
-          "licence": "GODL-India"
+          "licence": "GODL-India",
+          "licenceUrl": "https://data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf"
         },
         {
           "valeur": 200,
@@ -739,7 +524,8 @@
           "largeur": 1166,
           "hauteur": 497,
           "auteur": "Reserve Bank of India",
-          "licence": "GODL-India"
+          "licence": "GODL-India",
+          "licenceUrl": "https://data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf"
         },
         {
           "valeur": 500,
@@ -748,7 +534,8 @@
           "largeur": 1162,
           "hauteur": 487,
           "auteur": "Reserve Bank of India",
-          "licence": "GODL-India"
+          "licence": "GODL-India",
+          "licenceUrl": "https://data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf"
         }
       ],
       "pieces": [
@@ -759,7 +546,8 @@
           "largeur": 4096,
           "hauteur": 4096,
           "auteur": "FlagKBwiki",
-          "licence": "CC0"
+          "licence": "CC0",
+          "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en"
         },
         {
           "valeur": 2,
@@ -768,7 +556,8 @@
           "largeur": 1860,
           "hauteur": 1869,
           "auteur": "Rasalghul1711",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 5,
@@ -777,7 +566,8 @@
           "largeur": 655,
           "hauteur": 650,
           "auteur": "Rasalghul1711",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 10,
@@ -786,7 +576,8 @@
           "largeur": 1161,
           "hauteur": 1199,
           "auteur": "Rasalghul1711",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 20,
@@ -795,7 +586,8 @@
           "largeur": 554,
           "hauteur": 564,
           "auteur": "Rasalghul1711",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         }
       ]
     },
@@ -858,7 +650,8 @@
           "largeur": 536,
           "hauteur": 272,
           "auteur": "国立印刷局 (National Printing Bureau)",
-          "licence": "CC BY 4.0"
+          "licence": "CC BY 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by/4.0"
         },
         {
           "valeur": 2000,
@@ -876,7 +669,8 @@
           "largeur": 558,
           "hauteur": 272,
           "auteur": "国立印刷局",
-          "licence": "CC BY 4.0"
+          "licence": "CC BY 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by/4.0"
         },
         {
           "valeur": 10000,
@@ -885,7 +679,8 @@
           "largeur": 572,
           "hauteur": 272,
           "auteur": "国立印刷局",
-          "licence": "CC BY 4.0"
+          "licence": "CC BY 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by/4.0"
         }
       ],
       "pieces": []
@@ -964,7 +759,8 @@
           "largeur": 3118,
           "hauteur": 2551,
           "auteur": "Lê Huỳnh Bộ",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         }
       ]
     },
@@ -978,7 +774,8 @@
           "largeur": 1442,
           "hauteur": 1420,
           "auteur": "John Alan Elson",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 0.05,
@@ -987,7 +784,8 @@
           "largeur": 1502,
           "hauteur": 1516,
           "auteur": "John Alan Elson",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 0.25,
@@ -996,7 +794,8 @@
           "largeur": 1872,
           "hauteur": 1895,
           "auteur": "John Alan Elson",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 1,
@@ -1005,7 +804,8 @@
           "largeur": 2155,
           "hauteur": 2119,
           "auteur": "John Alan Elson",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 5,
@@ -1014,7 +814,8 @@
           "largeur": 683,
           "hauteur": 657,
           "auteur": "BSP1946",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 10,
@@ -1023,7 +824,8 @@
           "largeur": 2600,
           "hauteur": 2565,
           "auteur": "John Alan Elson",
-          "licence": "CC BY-SA 4.0"
+          "licence": "CC BY-SA 4.0",
+          "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0"
         },
         {
           "valeur": 20,
@@ -1289,15 +1091,6 @@
           "valeur": 0.1,
           "fichier": "Dime Obverse 13.png",
           "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Dime_Obverse_13.png/120px-Dime_Obverse_13.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-          "largeur": 2000,
-          "hauteur": 2000,
-          "auteur": "United States Mint",
-          "licence": "Public domain"
-        },
-        {
-          "valeur": 0.25,
-          "fichier": "2022 Washington quarter obverse.jpeg",
-          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/2022_Washington_quarter_obverse.jpeg/120px-2022_Washington_quarter_obverse.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "largeur": 2000,
           "hauteur": 2000,
           "auteur": "United States Mint",

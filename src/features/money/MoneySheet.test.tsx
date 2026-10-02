@@ -271,6 +271,18 @@ describe('les photos de Wikimedia Commons (spécification 002, récit 3)', () =>
       screen.getAllByRole('link', { name: /^Crédit de la photo : / }).length
     ).toBe(photos().length);
     expect(screen.getByText('Crédits des photos')).toBeInTheDocument();
+    // Le titre du fichier, et la licence liée à son texte.
+    const credits = screen.getByText('Crédits des photos').closest('details')!;
+    expect(credits.textContent).toMatch(/« [^»]+\.(jpe?g|png|gif) »/i);
+    expect(
+      within(credits as HTMLElement).getAllByRole('link', {
+        hidden: true,
+        name: /^CC BY/,
+      })[0]
+    ).toHaveAttribute(
+      'href',
+      expect.stringMatching(/^https:\/\/creativecommons\.org\//)
+    );
     // L'avis ne revient pas.
     await user.click(screen.getByRole('tab', { name: 'Dessins' }));
     await user.click(screen.getByRole('tab', { name: 'Photos' }));

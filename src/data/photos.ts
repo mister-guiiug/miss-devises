@@ -29,6 +29,11 @@ const photoSchema = z.object({
   auteur: z.string().min(1),
   /** Le nom court de la licence ou de la permission (« CC BY-SA 4.0 »). */
   licence: z.string().min(1),
+  /**
+   * Le texte de la licence, quand elle en a un : les licences Creative
+   * Commons veulent un lien vers lui, pas seulement son nom.
+   */
+  licenceUrl: z.url().startsWith('https://').optional(),
 });
 
 const devisePhotosSchema = z.object({

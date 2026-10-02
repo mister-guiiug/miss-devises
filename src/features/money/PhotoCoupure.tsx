@@ -27,6 +27,11 @@ interface Props {
  *
  * Un fichier retiré de Commons, renommé ou injoignable rend son dessin, sans
  * message : la coupure reste lisible.
+ *
+ * PAS DE `srcset`, PAS DE VARIANTE 2x : à 500 px, un billet dépasserait les
+ * 72 dpi que la BCE, la BNS et la TCMB fixent à une image en ligne. Rien n'est
+ * posé sur l'image, ni filtre ni recadrage : la Banque d'Israël l'interdit,
+ * et le lien « Crédit » se tient à côté.
  */
 export function PhotoCoupure({ photo, forme, largeur, repli }: Props) {
   const [echec, setEchec] = useState(false);

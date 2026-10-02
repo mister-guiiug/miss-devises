@@ -87,6 +87,18 @@ une pull request par phase.
 - [x] T027 Captures et image de partage (`npm run screenshots`) si l'écran
       principal a changé.
 
+## Phase 8 : revue juridique des photos
+
+- [x] T028 [R3] Après la mise en ligne, la revue juridique a relevé des
+      écarts : la roupie indonésienne (loi 7/2011, art. 24), les billets
+      égyptiens (Code pénal, art. 204 bis A), les pièces brésiliennes (loi
+      4.511/1964, art. 13) et le quarter américain (droits de la Monnaie des
+      États-Unis) repassent en dessins ;
+      les crédits gagnent le titre du fichier et le lien vers la licence ; la
+      taille des pièces israéliennes (70 % au plus) est vérifiée par un test ;
+      les doutes sur les pièces EGP, le JOD, l'INR et le « specimen » de la BCE
+      sont écrits dans `photos.md`.
+
 ## Dépendances et ordre
 
 - Phase 1 → À propos → drapeaux → référence → historique → photos. Les

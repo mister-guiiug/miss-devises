@@ -4,6 +4,10 @@ import photosJson from './photos.json';
 import documentation from '../../specs/002-reference-drapeaux-photos/photos.md?raw';
 import { coupuresSchema } from './coupures.ts';
 import {
+  DIAMETRE_PIECE,
+  LARGEUR_BILLET,
+} from '../features/money/MoneySheet.tsx';
+import {
   largeurDeVignette,
   pageCommons,
   PALIERS,
@@ -21,6 +25,17 @@ const REFUSEES = [
   'GBP', 'CAD', 'AUD', 'NZD', 'SEK', 'NOK', 'DKK', 'PLN', 'AED', 'ZAR',
   'CNY', 'HKD', 'MYR', 'SGD', 'THB', 'VND', 'MXN', 'ARS',
 ]; // prettier-ignore
+
+/**
+ * Écartées par prudence, bien que Commons les admette (revue juridique du
+ * 02/10/2026, `photos.md`) : la roupie indonésienne (loi 7/2011, art. 24 :
+ * « spesimen » exigé) et le réal (loi 4.511/1964, art. 13 : diffusion soumise
+ * à la Banque centrale). Les billets égyptiens aussi, plus bas.
+ */
+const ECARTEES = ['IDR', 'BRL'];
+
+/** Un pixel CSS, au pixel de référence (96 par pouce), en millimètres. */
+const MM_PAR_PX = 25.4 / 96;
 
 /** Chaque photo du jeu, avec sa devise et son genre. */
 const toutes = Object.entries(photos.devises).flatMap(([code, d]) => [
@@ -44,9 +59,43 @@ describe('le jeu des photos (spécification 002, récit 3)', () => {
     }
   });
 
-  it('ne prend rien d’une devise que Commons refuse', () => {
-    for (const code of REFUSEES) {
+  it('ne prend rien d’une devise que Commons refuse, ni de celles écartées', () => {
+    for (const code of [...REFUSEES, ...ECARTEES]) {
       expect(photos.devises[code], code).toBeUndefined();
+    }
+  });
+
+  it('ne montre aucun billet égyptien : une licence du ministre de l’Intérieur l’exige', () => {
+    // Code pénal égyptien, art. 204 bis (A) ; les pièces n'y sont pas visées.
+    expect(photos.devises.EGP?.billets ?? []).toEqual([]);
+  });
+
+  it('montre chaque coupure à 70 % de sa taille réelle au plus', () => {
+    // La Banque d'Israël veut ses pièces réduites d'au moins 30 % ; la règle
+    // est tenue partout. Le volet donne au plus grand billet de la devise
+    // LARGEUR_BILLET pixels, et à sa plus grande pièce DIAMETRE_PIECE.
+    for (const { code, genre, photo } of toutes) {
+      const devise = coupures.devises[code]!;
+      if (genre === 'piece') {
+        const piece = devise.pieces.find(p => p.valeur === photo.valeur);
+        const max = Math.max(...devise.pieces.map(p => p.diametreMm ?? 0));
+        if (!piece?.diametreMm || !max) continue;
+        const px = Math.max(
+          DIAMETRE_PIECE * 0.55,
+          (DIAMETRE_PIECE * piece.diametreMm) / max
+        );
+        expect(px * MM_PAR_PX, `${code} ${photo.valeur}`).toBeLessThanOrEqual(
+          0.7 * piece.diametreMm
+        );
+      } else {
+        const billet = devise.billets.find(b => b.valeur === photo.valeur);
+        const max = Math.max(...devise.billets.map(b => b.largeurMm ?? 0));
+        if (!billet?.largeurMm || !max) continue;
+        const px = (LARGEUR_BILLET * billet.largeurMm) / max;
+        expect(px * MM_PAR_PX, `${code} ${photo.valeur}`).toBeLessThanOrEqual(
+          0.7 * billet.largeurMm
+        );
+      }
     }
   });
 
@@ -86,6 +135,22 @@ describe('le jeu des photos (spécification 002, récit 3)', () => {
     for (const { photo } of toutes) {
       expect(photo.auteur.trim()).not.toBe('');
       expect(photo.licence.trim()).not.toBe('');
+    }
+  });
+
+  it('lie chaque licence Creative Commons à son texte', () => {
+    for (const { code, photo } of toutes) {
+      if (!/^CC/.test(photo.licence)) continue;
+      expect(photo.licenceUrl, `${code} ${photo.fichier}`).toMatch(
+        /^https:\/\/creativecommons\.org\//
+      );
+    }
+  });
+
+  it('crédite la Banque d’Israël comme elle le demande', () => {
+    for (const { code, photo } of toutes) {
+      if (code !== 'ILS') continue;
+      expect(photo.auteur).toContain('droits réservés à la Banque d’Israël');
     }
   });
 
