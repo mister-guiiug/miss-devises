@@ -34,6 +34,13 @@ et bâtie sur
 - **Reconnaître chaque devise à son drapeau**, celui du pays qui l'émet ; le
   drapeau européen pour l'euro, un globe pour une devise de plusieurs pays
   (franc CFA, franc CFP). Les drapeaux sont livrés avec l'application.
+- **Se régler en quatre sections** : la conversion (référence, marge d'un
+  bureau avec son effet chiffré, décimales avec un aperçu), l'affichage
+  (thème et langue, nommés), le carnet (son compte, l'export, l'import et
+  l'effacement à part), et l'application : sa version, « Recharger
+  l'application », qui applique une nouvelle version quand elle attend, et
+  « Forcer la mise à jour », qui vide son cache sans toucher au carnet ni aux
+  réglages. Installée, l'application n'a pas d'autre bouton de rechargement.
 
 Elle fonctionne hors ligne avec les derniers taux connus, en français et en
 anglais, au clavier et au lecteur d'écran.

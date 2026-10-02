@@ -13,6 +13,7 @@ import { ConnectionBanner } from '@mister-guiiug/dev-pwa-config/react/connection
 import { ConsentBanner } from '@mister-guiiug/dev-pwa-config/react/consent-banner';
 import { usePageViews } from '@mister-guiiug/dev-pwa-config/react/use-page-views';
 import { AppUpdates } from '@mister-guiiug/dev-pwa-config/react/app-updates';
+import { ThemeProvider } from '@mister-guiiug/dev-pwa-config/react/theme-provider';
 import { registerSW } from 'virtual:pwa-register';
 import { useI18n } from './i18n/index.ts';
 import { HomeScreen } from './features/home/HomeScreen.tsx';
@@ -207,9 +208,17 @@ export function App() {
           découvrir une version à une PWA installée restée ouverte plusieurs
           jours, qui autrement ne verrait rien avant un démarrage à froid. */}
       <AppUpdates registerSW={registerSW} checkEvery="1h">
-        <BrowserRouter basename={import.meta.env.BASE_URL}>
-          <Shell />
-        </BrowserRouter>
+        {/* UN SEUL ÉTAT DU THÈME pour la bascule de l'en-tête et le choix des
+            réglages. Chacune montait son propre `useTheme`, sans se voir :
+            choisir « Sombre » dans les réglages laissait l'en-tête sur
+            l'ancien thème, et son clic suivant repartait de là. Sans `appId`
+            ni palette, le fournisseur ne repeint rien : il partage l'état,
+            sous la même clé (`dwc_theme`) que la préférence déjà enregistrée. */}
+        <ThemeProvider>
+          <BrowserRouter basename={import.meta.env.BASE_URL}>
+            <Shell />
+          </BrowserRouter>
+        </ThemeProvider>
       </AppUpdates>
     </ObservabilityBoundary>
   );
