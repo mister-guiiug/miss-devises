@@ -39,7 +39,7 @@ test.describe('@critical récit 1 : convertir dans les deux sens', () => {
     await page.goto('/');
     await page.getByRole('button', { name: /Changer de devise/ }).click();
     await page.getByLabel('Rechercher une devise').fill('yen');
-    await page.getByRole('button', { name: /JPY/ }).click();
+    await page.getByRole('button', { name: /^JPY/ }).click();
     await expect(page.getByText(/taux de référence de la BCE/)).toBeVisible();
   });
 

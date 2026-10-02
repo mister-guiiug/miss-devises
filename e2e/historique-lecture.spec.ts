@@ -17,7 +17,7 @@ test.describe('@critical 002, récit 5 : explorer l’historique', () => {
   }) => {
     await page.getByRole('button', { name: /Changer de devise/ }).click();
     await page.getByLabel('Rechercher une devise').fill('dirham');
-    await page.getByRole('button', { name: /MAD/ }).click();
+    await page.getByRole('button', { name: /^MAD/ }).click();
     await expect(
       page.getByRole('heading', {
         name: /^Évolution de 1\s€ en MAD sur 1 an$/,
