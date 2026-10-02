@@ -19,6 +19,27 @@ export function nomDevise(code: string, langue: Langue): string {
   }
 }
 
+/**
+ * Le nom d'une devise au pluriel, tel qu'`Intl` l'écrit après un nombre :
+ * « livres égyptiennes », « euros », « Egyptian pounds ». C'est celui de
+ * « Montant en … » : un montant se compte au pluriel, dans les deux langues.
+ */
+export function nomAuPluriel(code: string, langue: Langue): string {
+  try {
+    return (
+      new Intl.NumberFormat(langue, {
+        style: 'currency',
+        currency: code,
+        currencyDisplay: 'name',
+      })
+        .formatToParts(2)
+        .find(partie => partie.type === 'currency')?.value ?? code
+    );
+  } catch {
+    return code;
+  }
+}
+
 export interface DeviseListee {
   code: string;
   nom: string;
@@ -26,16 +47,18 @@ export interface DeviseListee {
 }
 
 /**
- * Les devises proposées : sans l'euro (il est toujours l'autre côté), les
- * récentes en tête dans leur ordre, puis les autres par nom dans la langue.
+ * Les devises proposées : sans `exclure` (la monnaie de référence, qui est
+ * toujours l'autre côté), les récentes en tête dans leur ordre, puis les
+ * autres par nom dans la langue.
  */
 export function listerDevises(
   codes: Iterable<string>,
   langue: Langue,
-  recentes: readonly string[] = []
+  recentes: readonly string[] = [],
+  exclure?: string
 ): DeviseListee[] {
   const disponibles = new Set(codes);
-  disponibles.delete('EUR');
+  if (exclure) disponibles.delete(exclure);
   const enTete = recentes
     .filter(code => disponibles.has(code))
     .map(code => ({ code, nom: nomDevise(code, langue), recente: true }));

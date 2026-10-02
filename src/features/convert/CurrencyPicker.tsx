@@ -8,25 +8,42 @@ import {
   listerDevises,
   nomDevise,
 } from '../../domain/currencies.ts';
+import { Drapeau } from '../../ui/Drapeau.tsx';
 
 interface Props {
   code: string;
   codes: readonly string[];
   recentes: readonly string[];
   onChoisir: (code: string) => void;
+  /** La devise à ne pas proposer : la monnaie de référence. */
+  exclure?: string;
+  /** Ce que le bouton dit avant le code : « Changer de devise ». */
+  etiquette?: string;
+  /** Le titre de la feuille : « Devise ». */
+  titre?: string;
 }
 
 /**
- * Le choix de la devise : un bouton qui la nomme, une feuille du socle qui
- * cherche par code ou par nom (EF-002), les récentes en tête (EF-016).
+ * Le choix d'une devise : un bouton qui la nomme, une feuille du socle qui
+ * cherche par code ou par nom (EF-002), les récentes en tête (EF-016). Il
+ * sert à la devise de l'écran Convertir, qui ne propose jamais la référence,
+ * et à la monnaie de référence des réglages (spécification 002).
  */
-export function CurrencyPicker({ code, codes, recentes, onChoisir }: Props) {
+export function CurrencyPicker({
+  code,
+  codes,
+  recentes,
+  onChoisir,
+  exclure,
+  etiquette,
+  titre,
+}: Props) {
   const { t, locale } = useI18n();
   const [ouvert, setOuvert] = useState(false);
   const [requete, setRequete] = useState('');
   const liste = useMemo(
-    () => listerDevises(codes, locale, recentes),
-    [codes, locale, recentes]
+    () => listerDevises(codes, locale, recentes, exclure),
+    [codes, locale, recentes, exclure]
   );
   const trouvees = chercherDevises(liste, requete);
   const nom = nomDevise(code, locale);
@@ -41,19 +58,24 @@ export function CurrencyPicker({ code, codes, recentes, onChoisir }: Props) {
       <button
         type="button"
         onClick={() => setOuvert(true)}
-        aria-label={`${t('convert.choisir')} : ${code}, ${nom}`}
+        aria-label={`${etiquette ?? t('convert.choisir')} : ${code}, ${nom}`}
         className="flex min-h-11 w-full items-center gap-3 rounded-xl border px-4 py-2 text-left"
         style={{
           borderColor: 'var(--dwc-border)',
           background: 'var(--dwc-surface)',
         }}
       >
+        <Drapeau code={code} hauteur={20} />
         <span className="text-fluid-lg font-bold">{code}</span>
         <span className="min-w-0 flex-1 truncate">{nom}</span>
         <ChevronDown aria-hidden="true" className="size-5 shrink-0" />
       </button>
 
-      <Sheet open={ouvert} title={t('convert.devise')} onClose={fermer}>
+      <Sheet
+        open={ouvert}
+        title={titre ?? t('convert.devise')}
+        onClose={fermer}
+      >
         <TextField
           label={t('convert.recherche')}
           type="search"
@@ -95,6 +117,7 @@ export function CurrencyPicker({ code, codes, recentes, onChoisir }: Props) {
                       : undefined
                   }
                 >
+                  <Drapeau code={devise.code} />
                   <span className="w-12 font-semibold">{devise.code}</span>
                   <span className="min-w-0 flex-1 truncate">{devise.nom}</span>
                 </button>

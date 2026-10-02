@@ -4,7 +4,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { expectNoA11yViolations } from '@mister-guiiug/dev-pwa-config/playwright-a11y';
-import { simulerTaux } from './taux.ts';
+import { simulerPhotos, simulerTaux } from './taux.ts';
 
 interface Ecran {
   nom: string;
@@ -16,7 +16,7 @@ interface Ecran {
 
 async function saisir200(page: Page) {
   await page.goto('/');
-  await page.getByLabel('Montant en livre égyptienne').fill('200');
+  await page.getByLabel('Montant en livres égyptiennes').fill('200');
   await expect(page.getByLabel('Montant en euros')).toHaveValue('3,40');
 }
 
@@ -40,16 +40,35 @@ const ECRANS: Ecran[] = [
     },
   },
   {
+    nom: 'volet des billets, avis avant les photos',
+    aller: async page => {
+      await saisir200(page);
+      await page.getByRole('button', { name: 'Billets et pièces' }).click();
+      const volet = page.getByRole('dialog', { name: 'Billets et pièces' });
+      await volet.getByRole('tab', { name: 'Photos' }).click();
+      await expect(
+        volet.getByRole('button', { name: 'Afficher les photos' })
+      ).toBeVisible();
+    },
+  },
+  {
+    nom: 'volet des billets, en photos',
+    aller: async page => {
+      await saisir200(page);
+      await page.getByRole('button', { name: 'Billets et pièces' }).click();
+      const volet = page.getByRole('dialog', { name: 'Billets et pièces' });
+      await volet.getByRole('tab', { name: 'Photos' }).click();
+      await volet.getByRole('button', { name: 'Afficher les photos' }).click();
+      await expect(volet.locator('img[data-photo]').first()).toBeVisible();
+    },
+  },
+  {
     nom: 'historique, courbe chargée',
     aller: async page => {
       await saisir200(page);
       await page.getByRole('link', { name: 'Historique' }).click();
       await expect(page.getByText('Plus haut', { exact: true })).toBeVisible();
     },
-    // EXCEPTION TEMPORAIRE, UNE RÈGLE : le `Stat` du socle 6.21 rend un
-    // `<dl>` invalide (un `<div>` autour du seul `<dt>`). Corrigé en amont
-    // par dev-pwa-config#415 ; retirer à la montée qui l'embarque.
-    regles: ['definition-list'],
   },
   {
     nom: 'carnet vide',
@@ -101,6 +120,7 @@ for (const theme of ['light', 'dark'] as const) {
     // l'écran d'attente.
     test.beforeEach(async ({ page }) => {
       await simulerTaux(page);
+      await simulerPhotos(page);
     });
 
     for (const ecran of ECRANS) {

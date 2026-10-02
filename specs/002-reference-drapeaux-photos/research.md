@@ -78,8 +78,10 @@ ISO 3166), avec trois règles :
   drapeau de l'Abkhazie ;
 - le florin antillais (ANG), d'un pays dissous (AN), signe neutre.
 
-151 drapeaux pour les devises de la liste : 92 ko bruts, 25 ko gzip s'ils
-étaient réunis.
+170 drapeaux : ceux des devises actuelles, et ceux des anciennes monnaies que
+la source de marché cote encore (franc, mark, lire…), que la liste montre
+aussi. 100 ko bruts, 27 ko gzip s'ils étaient réunis. Un test vérifie que la
+liste les couvre toutes, et ne livre rien de plus.
 
 **Écarté** :
 
@@ -87,14 +89,52 @@ ISO 3166), avec trois règles :
   mesuré au canevas : aucun pixel coloré) ;
 - `flag-icons` (MIT aussi) : armoiries détaillées, 1 Mo brut pour les mêmes
   pays, 352 ko gzip ;
-- les drapeaux en chaînes SVG dans le JavaScript : 25 ko gzip, plus que toute
+- les drapeaux en chaînes SVG dans le JavaScript : 27 ko gzip, plus que toute
   la marge du budget (23 ko) ;
 - un sprite unique : il faudrait renommer les identifiants internes de chaque
   drapeau et une étape de build de plus.
 
 ## R5. Les photos
 
-Rédigée avec le relevé : voir la tâche du récit 3 dans [tasks.md](./tasks.md).
+**Décision** : un jeu relevé, vérifié et versionné, `src/data/photos.json` :
+pour chaque coupure, au plus un fichier hébergé sur Wikimedia Commons, admis
+par Commons et par son émetteur, d'une seule face. La méthode, la politique
+devise par devise, la couverture et les doutes sont dans
+[photos.md](./photos.md) ; le format, dans
+[contracts/photos-commons.md](./contracts/photos-commons.md).
+
+- **Le navigateur charge la vignette chez Wikimedia** (le « hotlinking », que
+  Commons permet sans le recommander) : l'application n'héberge aucune image
+  de billet. Hôte `thumb.wikimedia.org`, où l'API rend désormais les
+  vignettes ; `upload.wikimedia.org` pour un original plus étroit que le
+  palier. La CSP n'ouvre `img-src` qu'à ces deux hôtes.
+- **Une largeur de palier** (120, 250 ou 330 px : Commons refuse toute autre)
+  et **72 dpi au plus** à la taille réelle d'un billet, ce que la BCE, la
+  Banque nationale tchèque et la Banque centrale de Turquie exigent d'une
+  image en ligne : 330 px pour un billet couché, 120 px pour un billet debout.
+- **Ni référent ni cookie** : `referrerpolicy="no-referrer"` et
+  `crossorigin="anonymous"`. Commons répond `Access-Control-Allow-Origin: *` :
+  la réponse n'est pas opaque, le service worker la garde (90 jours, 200
+  vignettes) sans la gonfler dans le quota du navigateur.
+- **Le crédit à un geste** : chaque photo a son lien « Crédit » vers sa page
+  Commons (titre, auteur, licence, source), et le volet liste les crédits
+  (auteur, licence, lien) de toutes les photos montrées. Creative Commons
+  admet un crédit à un geste ; la Banque d'Israël veut être nommée : elle
+  l'est.
+- **Rien avant l'accord** : en mode dessins, aucune requête vers Wikimedia ;
+  avant la première photo, un avis dit ce que Wikimedia voit.
+
+**Écarté** :
+
+- interroger Commons à l'exécution : un appel d'API de plus, des résultats qui
+  changent sans relecture, et la devise envoyée à un tiers ;
+- copier les images dans le dépôt : l'application hébergerait des images de
+  billets, ce que la constitution exclut, et chaque fichier garderait sa
+  licence à porter ;
+- les images non libres des Wikipédia (usage loyal) : leur usage n'est permis
+  que sur Wikipédia ;
+- recadrer un montage recto-verso en CSS : l'image téléchargée garderait ses
+  deux faces.
 
 ## R6. La page À propos
 
@@ -116,11 +156,14 @@ paragraphe sous « Billets et pièces ».
 ## R7. Une courbe qui se lit
 
 **Décision** : sous la courbe, un curseur natif (`<input type="range">`) qui
-parcourt les points : clavier, doigt et lecteur d'écran sans code de plus. La
-date et le taux du point choisi s'écrivent au-dessus, dans une région
-`status` ; la courbe marque le point. Le pointeur sur la courbe déplace le même
-curseur. Les axes sont du texte : plus haut et plus bas à gauche, première et
-dernière date dessous.
+parcourt les points : clavier, doigt et lecteur d'écran sans code de plus. Son
+`aria-valuetext` dit la date et le taux du point, et un lecteur d'écran
+l'annonce à chaque pas. La même lecture s'écrit au-dessus de la courbe, pour
+l'œil, cachée au lecteur d'écran qui l'entend déjà ; la courbe marque le
+point. Le pointeur sur la courbe déplace le même curseur. Les axes sont du
+texte : plus haut au-dessus de la courbe, plus bas au-dessous, contre leurs
+repères (posés dessus, ils en cachaient un morceau), première et dernière date
+dessous.
 
 **Écarté** : une bibliothèque de graphiques (001, R7) ; un SVG interactif seul,
 qu'aucun lecteur d'écran ne parcourt.

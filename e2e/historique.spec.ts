@@ -11,11 +11,11 @@ test.describe('@critical récit 3 : comparer avec l’historique', () => {
     page,
   }) => {
     await page.goto('/');
-    await page.getByLabel('Montant en livre égyptienne').fill('200');
+    await page.getByLabel('Montant en livres égyptiennes').fill('200');
     await page.getByRole('link', { name: 'Historique' }).click();
 
     await expect(
-      page.getByRole('heading', { name: 'Évolution de 1 € en EGP sur 1 an' })
+      page.getByRole('heading', { name: /^Évolution de 1\s€ en EGP sur 1 an$/ })
     ).toBeVisible();
     await expect(page.getByText('Plus haut', { exact: true })).toBeVisible();
     await expect(
@@ -53,7 +53,9 @@ test.describe('@critical récit 3 : comparer avec l’historique', () => {
     await page.goto('/historique');
     await page.getByRole('tab', { name: '1 mois' }).click();
     await expect(
-      page.getByRole('heading', { name: 'Évolution de 1 € en EGP sur 1 mois' })
+      page.getByRole('heading', {
+        name: /^Évolution de 1\s€ en EGP sur 1 mois$/,
+      })
     ).toBeVisible();
     await expect(page.getByText('Variation', { exact: true })).toBeVisible();
   });

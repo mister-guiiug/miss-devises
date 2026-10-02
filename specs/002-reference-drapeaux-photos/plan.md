@@ -85,11 +85,12 @@ Une pull request par étape, dans cet ordre, chacune verte et déployable seule 
 2. récit 4, À propos ;
 3. récit 2, les drapeaux ;
 4. récit 1, la monnaie de référence ;
-5. récit 3, les photos ;
-6. récit 5, l'historique.
+5. récit 5, l'historique ;
+6. récit 3, les photos.
 
 Les drapeaux passent avant la référence : le choix de la référence, dans les
-réglages, se fait déjà avec eux.
+réglages, se fait déjà avec eux. Les photos passent en dernier : leur relevé
+sur Commons, devise par devise, est le plus long.
 
 ## Phases
 
@@ -103,6 +104,6 @@ réglages, se fait déjà avec eux.
 | Choix                                   | Pourquoi                                                                                                 | Plus simple, écarté parce que                                                                                                                                   |
 | --------------------------------------- | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | amender la constitution                 | le principe III interdisait toute image ; la demande en veut, libres                                     | une exception écrite dans ce plan : un principe qui cède à chaque demande ne protège plus rien, et le suivant lirait encore « aucune reproduction »             |
-| des drapeaux en fichiers SVG émis       | 151 drapeaux, 92 ko bruts : en fichiers, ils ne pèsent ni sur le JavaScript ni sur le premier rendu      | les emoji de drapeaux : Windows ne les dessine pas (lettres seules, mesuré) ; les drapeaux en chaînes dans le JS : 25 ko gzip, plus que la marge du budget (23) |
+| des drapeaux en fichiers SVG émis       | 170 drapeaux, 100 ko bruts : en fichiers, ils ne pèsent ni sur le JavaScript ni sur le premier rendu     | les emoji de drapeaux : Windows ne les dessine pas (lettres seules, mesuré) ; les drapeaux en chaînes dans le JS : 27 ko gzip, plus que la marge du budget (23) |
 | un jeu de photos relevé et vérifié      | le nom exact du fichier, sa licence et son auteur sont connus avant la pull request et relus             | interroger Commons à l'exécution : un appel d'API de plus par coupure, des résultats qui changent sans relecture, et la devise envoyée à un tiers               |
 | migrations des préférences et du carnet | `sensVolet: 'euro'` et un carnet sans référence existent sur les appareils ; les fichiers exportés aussi | des champs facultatifs sans migration : chaque lecture devrait deviner ce qu'une absence veut dire, et l'import d'un ancien fichier resterait flou              |

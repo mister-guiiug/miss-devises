@@ -4,7 +4,7 @@ import { simulerTaux } from './taux.ts';
 
 async function enregistrer(page: Page, montant: string, libelle: string) {
   await page.goto('/');
-  await page.getByLabel('Montant en livre égyptienne').fill(montant);
+  await page.getByLabel('Montant en livres égyptiennes').fill(montant);
   await page.getByLabel('Libellé').fill(libelle);
   await page.getByRole('button', { name: 'Enregistrer' }).click();
   await expect(page.getByText('Enregistré dans le carnet.')).toBeVisible();

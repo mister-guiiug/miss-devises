@@ -1,0 +1,1318 @@
+{
+  "releveLe": "2026-10-02",
+  "devises": {
+    "BRL": {
+      "billets": [],
+      "pieces": [
+        {
+          "valeur": 0.05,
+          "fichier": "5-centavos-2019-A.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/5-centavos-2019-A.png/120px-5-centavos-2019-A.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1034,
+          "hauteur": 1034,
+          "auteur": "Design: Central Bank of Brazil",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.1,
+          "fichier": "10 Centavos (2018) - Vorderseite.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/10_Centavos_%282018%29_-_Vorderseite.jpg/120px-10_Centavos_%282018%29_-_Vorderseite.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1707,
+          "hauteur": 1682,
+          "auteur": "Cerdded41",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.25,
+          "fichier": "25 Centavos (2021) - Vorderseite.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/25_Centavos_%282021%29_-_Vorderseite.jpg/120px-25_Centavos_%282021%29_-_Vorderseite.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1857,
+          "hauteur": 1883,
+          "auteur": "Cerdded41",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.5,
+          "fichier": "50-centavos-2019-A.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/50-centavos-2019-A.png/120px-50-centavos-2019-A.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1087,
+          "hauteur": 1087,
+          "auteur": "Design: Central Bank of Brazil",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 1,
+          "fichier": "1 Real (2017) - Vorderseite.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/1_Real_%282017%29_-_Vorderseite.jpg/120px-1_Real_%282017%29_-_Vorderseite.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 2166,
+          "hauteur": 2129,
+          "auteur": "Cerdded41",
+          "licence": "CC BY-SA 4.0"
+        }
+      ]
+    },
+    "CHF": {
+      "billets": [
+        {
+          "valeur": 10,
+          "fichier": "CHF 10 9 front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/CHF_10_9_front.jpg/120px-CHF_10_9_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 345,
+          "hauteur": 607,
+          "auteur": "Swiss National Bank (SNB)",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 20,
+          "fichier": "CHF 20 9 front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/CHF_20_9_front.jpg/120px-CHF_20_9_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 345,
+          "hauteur": 642,
+          "auteur": "Swiss National Bank (SNB) / Manuela Pfrunder",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 50,
+          "fichier": "CHF 50 9 front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/CHF_50_9_front.jpg/120px-CHF_50_9_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 345,
+          "hauteur": 678,
+          "auteur": "Swiss National Bank (SNB) / Manuela Pfrunder",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 100,
+          "fichier": "CHF 100 9 front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/CHF_100_9_front.jpg/120px-CHF_100_9_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 690,
+          "hauteur": 1419,
+          "auteur": "Swiss National Bank (SNB)",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 200,
+          "fichier": "CHF 200 9 front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/CHF_200_9_front.jpg/120px-CHF_200_9_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 345,
+          "hauteur": 746,
+          "auteur": "Swiss National Bank (SNB)",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 1000,
+          "fichier": "CHF 1000 9 front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/CHF_1000_9_front.jpg/120px-CHF_1000_9_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 345,
+          "hauteur": 778,
+          "auteur": "Swiss National Bank (SNB) / Manuela Pfrunder",
+          "licence": "Public domain"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.05,
+          "fichier": "005CHFr.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/005CHFr.jpg/120px-005CHFr.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 588,
+          "hauteur": 599,
+          "auteur": "auteur non renseigné sur Commons",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.2,
+          "fichier": "20 Centesimi di Franco Svizzero 02.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/20_Centesimi_di_Franco_Svizzero_02.jpg/120px-20_Centesimi_di_Franco_Svizzero_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 459,
+          "hauteur": 459,
+          "auteur": "Nicholas Gemini",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 1,
+          "fichier": "1 Franc suisse 1968 03.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/1_Franc_suisse_1968_03.png/120px-1_Franc_suisse_1968_03.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 433,
+          "hauteur": 433,
+          "auteur": "Nicholas Gemini",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 2,
+          "fichier": "2 CHF 1987 h.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/2_CHF_1987_h.png/120px-2_CHF_1987_h.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 824,
+          "hauteur": 803,
+          "auteur": "Swiss government",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 5,
+          "fichier": "Fünffranken (cropped).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/F%C3%BCnffranken_%28cropped%29.jpg/120px-F%C3%BCnffranken_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 300,
+          "hauteur": 301,
+          "auteur": "Swissmint",
+          "licence": "Public domain"
+        }
+      ]
+    },
+    "CZK": {
+      "billets": [],
+      "pieces": [
+        {
+          "valeur": 1,
+          "fichier": "Coin-1-Kc-reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/Coin-1-Kc-reverse.jpg/120px-Coin-1-Kc-reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 711,
+          "hauteur": 690,
+          "auteur": "Ilya Rudomilov",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 2,
+          "fichier": "Coin-2-Kc-reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/Coin-2-Kc-reverse.jpg/120px-Coin-2-Kc-reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 744,
+          "hauteur": 760,
+          "auteur": "Ilya Rudomilov",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 5,
+          "fichier": "Coin-5-Kc-reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Coin-5-Kc-reverse.jpg/120px-Coin-5-Kc-reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 814,
+          "hauteur": 777,
+          "auteur": "Ilya Rudomilov",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 10,
+          "fichier": "Coin-10-Kc-reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Coin-10-Kc-reverse.jpg/120px-Coin-10-Kc-reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 837,
+          "hauteur": 824,
+          "auteur": "Ilya Rudomilov",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 20,
+          "fichier": "Coin-20-Kc-reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Coin-20-Kc-reverse.jpg/120px-Coin-20-Kc-reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 901,
+          "hauteur": 897,
+          "auteur": "Ilya Rudomilov",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 50,
+          "fichier": "Coin-50-Kc-reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Coin-50-Kc-reverse.jpg/120px-Coin-50-Kc-reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 948,
+          "hauteur": 939,
+          "auteur": "Ilya Rudomilov",
+          "licence": "CC BY-SA 3.0"
+        }
+      ]
+    },
+    "EGP": {
+      "billets": [
+        {
+          "valeur": 0.25,
+          "fichier": "EGP 25 Piastres 2008 (Front).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/EGP_25_Piastres_2008_%28Front%29.png/330px-EGP_25_Piastres_2008_%28Front%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 984,
+          "hauteur": 539,
+          "auteur": "البنك المركزي المصري Central Bank of Egypt",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.5,
+          "fichier": "0.50 EGP obverse 2017-1-8.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/0.50_EGP_obverse_2017-1-8.jpg/330px-0.50_EGP_obverse_2017-1-8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1577,
+          "hauteur": 821,
+          "auteur": "Central Bank of Egypt",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 1,
+          "fichier": "1EGP-2001(5).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/1EGP-2001%285%29.png/330px-1EGP-2001%285%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1600,
+          "hauteur": 777,
+          "auteur": "Central Bank Of Egypt",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 5,
+          "fichier": "5EGP-2012.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/5EGP-2012.png/330px-5EGP-2012.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1136,
+          "hauteur": 550,
+          "auteur": "Central Bank Of Egypt البنك المركزي المصري",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 10,
+          "fichier": "10 EGP 2022 Polymer - front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/10_EGP_2022_Polymer_-_front.jpg/330px-10_EGP_2022_Polymer_-_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 600,
+          "hauteur": 312,
+          "auteur": "Central Bank of Egypt",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 20,
+          "fichier": "20 EGP 2022 Polymer - front 01.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/20_EGP_2022_Polymer_-_front_01.jpg/330px-20_EGP_2022_Polymer_-_front_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 600,
+          "hauteur": 301,
+          "auteur": "Central Bank of Egypt",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 50,
+          "fichier": "EGP 50 Pounds Dec 2001 (Front).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/EGP_50_Pounds_Dec_2001_%28Front%29.jpg/330px-EGP_50_Pounds_Dec_2001_%28Front%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 703,
+          "hauteur": 308,
+          "auteur": "Szajci",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 100,
+          "fichier": "EGP 100 Pounds 2015 (Front).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/EGP_100_Pounds_2015_%28Front%29.jpg/330px-EGP_100_Pounds_2015_%28Front%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 650,
+          "hauteur": 276,
+          "auteur": "البنك المركزي المصري",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 200,
+          "fichier": "EGP 200 Pounds Apr 2007 (Front).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/EGP_200_Pounds_Apr_2007_%28Front%29.jpg/330px-EGP_200_Pounds_Apr_2007_%28Front%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 700,
+          "hauteur": 316,
+          "auteur": "Szajci",
+          "licence": "CC BY-SA 3.0"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.25,
+          "fichier": "Egypt-25-piastres-2011.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Egypt-25-piastres-2011.jpg/120px-Egypt-25-piastres-2011.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 300,
+          "hauteur": 300,
+          "auteur": "بافلي مجدي",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 0.5,
+          "fichier": "50 Egyptian piastres obverse.JPG",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/50_Egyptian_piastres_obverse.JPG/120px-50_Egyptian_piastres_obverse.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 800,
+          "hauteur": 799,
+          "auteur": "Aleksasfi",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 1,
+          "fichier": "100 EPT obverse.JPG",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/100_EPT_obverse.JPG/120px-100_EPT_obverse.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 290,
+          "hauteur": 291,
+          "auteur": "User:Mabuhelwa (photo)",
+          "licence": "Public domain"
+        }
+      ]
+    },
+    "EUR": {
+      "billets": [
+        {
+          "valeur": 5,
+          "fichier": "EUR 5 obverse (2013 issue).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/EUR_5_obverse_%282013_issue%29.png/330px-EUR_5_obverse_%282013_issue%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 709,
+          "hauteur": 364,
+          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
+        },
+        {
+          "valeur": 10,
+          "fichier": "EUR 10 obverse (2014 issue).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/EUR_10_obverse_%282014_issue%29.png/330px-EUR_10_obverse_%282014_issue%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 596,
+          "hauteur": 310,
+          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
+        },
+        {
+          "valeur": 20,
+          "fichier": "The Europa series 20 € obverse side.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/The_Europa_series_20_%E2%82%AC_obverse_side.jpg/330px-The_Europa_series_20_%E2%82%AC_obverse_side.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 596,
+          "hauteur": 320,
+          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
+        },
+        {
+          "valeur": 50,
+          "fichier": "The Europa series 50 € obverse side.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/The_Europa_series_50_%E2%82%AC_obverse_side.png/330px-The_Europa_series_50_%E2%82%AC_obverse_side.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 588,
+          "hauteur": 322,
+          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
+        },
+        {
+          "valeur": 100,
+          "fichier": "The Europa series 100 € obverse side.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/The_Europa_series_100_%E2%82%AC_obverse_side.jpg/330px-The_Europa_series_100_%E2%82%AC_obverse_side.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1240,
+          "hauteur": 644,
+          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
+        },
+        {
+          "valeur": 200,
+          "fichier": "The Europa series 200 € obverse side.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/The_Europa_series_200_%E2%82%AC_obverse_side.jpg/330px-The_Europa_series_200_%E2%82%AC_obverse_side.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1198,
+          "hauteur": 596,
+          "auteur": "Robert Kalina , redesign by Reinhold Gerstetter",
+          "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
+        },
+        {
+          "valeur": 500,
+          "fichier": "EUR 500 obverse (2002 issue).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/EUR_500_obverse_%282002_issue%29.jpg/330px-EUR_500_obverse_%282002_issue%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 944,
+          "hauteur": 484,
+          "auteur": "Robert Kalina",
+          "licence": "ECB decisions ECB/2003/4 and ECB/2003/5"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "fichier": "Euro 1 cent.gif",
+          "vignette": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Euro_1_cent.gif?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "largeur": 105,
+          "hauteur": 107,
+          "auteur": "European Commission",
+          "licence": "Euro coin common face (Commission européenne)"
+        },
+        {
+          "valeur": 0.05,
+          "fichier": "Euro 5 cent (Common face) (5131629928).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Euro_5_cent_%28Common_face%29_%285131629928%29.jpg/120px-Euro_5_cent_%28Common_face%29_%285131629928%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 2475,
+          "hauteur": 2475,
+          "auteur": "Mark Morgan from Trinidad",
+          "licence": "CC BY 2.0"
+        },
+        {
+          "valeur": 0.1,
+          "fichier": "10 Euro Common (New Design) (5115768947).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/10_Euro_Common_%28New_Design%29_%285115768947%29.jpg/120px-10_Euro_Common_%28New_Design%29_%285115768947%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1711,
+          "hauteur": 1716,
+          "auteur": "Mark Morgan from Trinidad",
+          "licence": "CC BY 2.0"
+        },
+        {
+          "valeur": 0.2,
+          "fichier": "Euro 20 cents (New Design) (5106285918).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Euro_20_cents_%28New_Design%29_%285106285918%29.jpg/120px-Euro_20_cents_%28New_Design%29_%285106285918%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 2091,
+          "hauteur": 2087,
+          "auteur": "Mark Morgan from Trinidad",
+          "licence": "CC BY 2.0"
+        },
+        {
+          "valeur": 0.5,
+          "fichier": "Euro 50 cent common face (New Design) (5128333845).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Euro_50_cent_common_face_%28New_Design%29_%285128333845%29.jpg/120px-Euro_50_cent_common_face_%28New_Design%29_%285128333845%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 2780,
+          "hauteur": 2796,
+          "auteur": "Mark Morgan from Trinidad",
+          "licence": "CC BY 2.0"
+        },
+        {
+          "valeur": 2,
+          "fichier": "Piece Comm-2Euro (pile).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Piece_Comm-2Euro_%28pile%29.jpg/120px-Piece_Comm-2Euro_%28pile%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 800,
+          "hauteur": 793,
+          "auteur": "Basilio",
+          "licence": "CC BY-SA 3.0"
+        }
+      ]
+    },
+    "HUF": {
+      "billets": [
+        {
+          "valeur": 500,
+          "fichier": "500 forint elolap.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/500_forint_elolap.png/330px-500_forint_elolap.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 546,
+          "hauteur": 249,
+          "auteur": "Bandibandita",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 1000,
+          "fichier": "HUF 1000 2018 obverse.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/HUF_1000_2018_obverse.png/330px-HUF_1000_2018_obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 798,
+          "hauteur": 358,
+          "auteur": "Hermannmarcell",
+          "licence": "Hungarian banknote"
+        },
+        {
+          "valeur": 2000,
+          "fichier": "2000 HUF 2017 ob.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/2000_HUF_2017_ob.jpg/330px-2000_HUF_2017_ob.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 409,
+          "hauteur": 186,
+          "auteur": "Magyar Nemzeti Bank (Hungarian National Bank)",
+          "licence": "Hungarian banknote"
+        },
+        {
+          "valeur": 5000,
+          "fichier": "5000 HUF 2017 ob.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/5000_HUF_2017_ob.jpg/330px-5000_HUF_2017_ob.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 409,
+          "hauteur": 185,
+          "auteur": "Magyar Nemzeti Bank (Hungarian National Bank)",
+          "licence": "Hungarian banknote"
+        },
+        {
+          "valeur": 10000,
+          "fichier": "10000 HUF 2014 ob.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/10000_HUF_2014_ob.jpg/330px-10000_HUF_2014_ob.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 410,
+          "hauteur": 187,
+          "auteur": "Magyar Nemzeti Bank (Hungarian National Bank)",
+          "licence": "Hungarian banknote"
+        },
+        {
+          "valeur": 20000,
+          "fichier": "20000 HUF 2015 ob.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/20000_HUF_2015_ob.png/330px-20000_HUF_2015_ob.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 868,
+          "hauteur": 394,
+          "auteur": "Magyar Nemzeti Bank (Hungarian National Bank)",
+          "licence": "Hungarian banknote"
+        }
+      ],
+      "pieces": []
+    },
+    "IDR": {
+      "billets": [
+        {
+          "valeur": 1000,
+          "fichier": "TE-2022-1000-depan.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/TE-2022-1000-depan.jpg/330px-TE-2022-1000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1328,
+          "hauteur": 714,
+          "auteur": "Bank Indonesia",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 2000,
+          "fichier": "TE-2022-2000-depan.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/TE-2022-2000-depan.jpg/330px-TE-2022-2000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1381,
+          "hauteur": 712,
+          "auteur": "Bank Indonesia",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 5000,
+          "fichier": "TE-2022-5000-depan.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/TE-2022-5000-depan.jpg/330px-TE-2022-5000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1436,
+          "hauteur": 713,
+          "auteur": "Bank Indonesia",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 10000,
+          "fichier": "TE-2022-10000-depan.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/TE-2022-10000-depan.jpg/330px-TE-2022-10000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1491,
+          "hauteur": 713,
+          "auteur": "Bank Indonesia",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 20000,
+          "fichier": "TE-2022-20000-depan.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/TE-2022-20000-depan.jpg/330px-TE-2022-20000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1545,
+          "hauteur": 713,
+          "auteur": "Bank Indonesia",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 50000,
+          "fichier": "TE-2022-50000-depan.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/TE-2022-50000-depan.jpg/330px-TE-2022-50000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1601,
+          "hauteur": 713,
+          "auteur": "Bank Indonesia",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 100000,
+          "fichier": "TE-2022-100000-depan.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/TE-2022-100000-depan.jpg/330px-TE-2022-100000-depan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1609,
+          "hauteur": 693,
+          "auteur": "Bank Indonesia",
+          "licence": "Public domain"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 100,
+          "fichier": "IDR 100 coin 2016 series reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/IDR_100_coin_2016_series_reverse.jpg/120px-IDR_100_coin_2016_series_reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 376,
+          "hauteur": 384,
+          "auteur": "Jauhsekali",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 200,
+          "fichier": "IDR 200 coin 2016 series reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/IDR_200_coin_2016_series_reverse.jpg/120px-IDR_200_coin_2016_series_reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 376,
+          "hauteur": 377,
+          "auteur": "Jauhsekali",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 500,
+          "fichier": "IDR 500 coin 2016 series reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/IDR_500_coin_2016_series_reverse.jpg/120px-IDR_500_coin_2016_series_reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 432,
+          "hauteur": 430,
+          "auteur": "Jauhsekali",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 1000,
+          "fichier": "IDR 1000 coin 2016 series reverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/IDR_1000_coin_2016_series_reverse.jpg/120px-IDR_1000_coin_2016_series_reverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 425,
+          "hauteur": 428,
+          "auteur": "Jauhsekali",
+          "licence": "CC BY-SA 3.0"
+        }
+      ]
+    },
+    "ILS": {
+      "billets": [
+        {
+          "valeur": 20,
+          "fichier": "20 Israeli new shekel in 2017 Obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/20_Israeli_new_shekel_in_2017_Obverse.jpg/330px-20_Israeli_new_shekel_in_2017_Obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 600,
+          "hauteur": 329,
+          "auteur": "Adambps1900 ; dessin © Banque d’Israël",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 50,
+          "fichier": "50 Israeli new shekel in 2013 Obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/50_Israeli_new_shekel_in_2013_Obverse.jpg/330px-50_Israeli_new_shekel_in_2013_Obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 600,
+          "hauteur": 301,
+          "auteur": "Adambps1900 ; dessin © Banque d’Israël",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 100,
+          "fichier": "100 Israeli new shekel in 2017 Obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/100_Israeli_new_shekel_in_2017_Obverse.jpg/330px-100_Israeli_new_shekel_in_2017_Obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 600,
+          "hauteur": 300,
+          "auteur": "Adambps1900 ; dessin © Banque d’Israël",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 200,
+          "fichier": "200 Israeli new shekel in 2015 Obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/200_Israeli_new_shekel_in_2015_Obverse.jpg/330px-200_Israeli_new_shekel_in_2015_Obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 600,
+          "hauteur": 285,
+          "auteur": "Adambps1900 ; dessin © Banque d’Israël",
+          "licence": "CC BY-SA 4.0"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.1,
+          "fichier": "10 Agorot coin (cropped).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/10_Agorot_coin_%28cropped%29.jpg/120px-10_Agorot_coin_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 272,
+          "hauteur": 282,
+          "auteur": "Yonidebest ; dessin © Banque d’Israël",
+          "licence": "Use permitted by the BOI, Currency Department"
+        },
+        {
+          "valeur": 0.5,
+          "fichier": "Israel Half Sheqel2.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Israel_Half_Sheqel2.png/120px-Israel_Half_Sheqel2.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1240,
+          "hauteur": 1240,
+          "auteur": "Moataz1997 ; dessin © Banque d’Israël",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 1,
+          "fichier": "1 new sheqel 1993 obverse.JPG",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/1_new_sheqel_1993_obverse.JPG/120px-1_new_sheqel_1993_obverse.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 568,
+          "hauteur": 561,
+          "auteur": "Дмитрий Никонов ; dessin © Banque d’Israël",
+          "licence": "CC BY-SA 3.0"
+        },
+        {
+          "valeur": 5,
+          "fichier": "5 NIS coin (cropped).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/5_NIS_coin_%28cropped%29.jpg/120px-5_NIS_coin_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 306,
+          "hauteur": 307,
+          "auteur": "Yonidebest ; dessin © Banque d’Israël",
+          "licence": "Use permitted by the BOI, Currency Department"
+        }
+      ]
+    },
+    "INR": {
+      "billets": [
+        {
+          "valeur": 10,
+          "fichier": "India new 10 INR, MG series, 2018, obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/India_new_10_INR%2C_MG_series%2C_2018%2C_obverse.jpg/330px-India_new_10_INR%2C_MG_series%2C_2018%2C_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1164,
+          "hauteur": 500,
+          "auteur": "Reserve Bank of India",
+          "licence": "GODL-India"
+        },
+        {
+          "valeur": 20,
+          "fichier": "India new 20 INR, MG series, 2019, obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/India_new_20_INR%2C_MG_series%2C_2019%2C_obverse.jpg/330px-India_new_20_INR%2C_MG_series%2C_2019%2C_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 547,
+          "hauteur": 274,
+          "auteur": "Reserve Bank of India",
+          "licence": "GODL-India"
+        },
+        {
+          "valeur": 50,
+          "fichier": "India new 50 INR, MG series, 2018, obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/India_new_50_INR%2C_MG_series%2C_2018%2C_obverse.jpg/330px-India_new_50_INR%2C_MG_series%2C_2018%2C_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1167,
+          "hauteur": 495,
+          "auteur": "Reserve Bank of India",
+          "licence": "GODL-India"
+        },
+        {
+          "valeur": 100,
+          "fichier": "India new 100 INR, Mahatma Gandhi New Series, 2018, obverse.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/India_new_100_INR%2C_Mahatma_Gandhi_New_Series%2C_2018%2C_obverse.png/330px-India_new_100_INR%2C_Mahatma_Gandhi_New_Series%2C_2018%2C_obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1449,
+          "hauteur": 618,
+          "auteur": "Reserve Bank of India",
+          "licence": "GODL-India"
+        },
+        {
+          "valeur": 200,
+          "fichier": "India, 200 INR, 2018, obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/India%2C_200_INR%2C_2018%2C_obverse.jpg/330px-India%2C_200_INR%2C_2018%2C_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1166,
+          "hauteur": 497,
+          "auteur": "Reserve Bank of India",
+          "licence": "GODL-India"
+        },
+        {
+          "valeur": 500,
+          "fichier": "India new 500 INR, MG series, 2016, obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/India_new_500_INR%2C_MG_series%2C_2016%2C_obverse.jpg/330px-India_new_500_INR%2C_MG_series%2C_2016%2C_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1162,
+          "hauteur": 487,
+          "auteur": "Reserve Bank of India",
+          "licence": "GODL-India"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 1,
+          "fichier": "Indian 1 rupee coin (observe).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Indian_1_rupee_coin_%28observe%29.png/120px-Indian_1_rupee_coin_%28observe%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 4096,
+          "hauteur": 4096,
+          "auteur": "FlagKBwiki",
+          "licence": "CC0"
+        },
+        {
+          "valeur": 2,
+          "fichier": "Rupees 2 Grain Series coin observe.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Rupees_2_Grain_Series_coin_observe.png/120px-Rupees_2_Grain_Series_coin_observe.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1860,
+          "hauteur": 1869,
+          "auteur": "Rasalghul1711",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 5,
+          "fichier": "Rupees 5 Grain Series coin observe.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Rupees_5_Grain_Series_coin_observe.png/120px-Rupees_5_Grain_Series_coin_observe.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 655,
+          "hauteur": 650,
+          "auteur": "Rasalghul1711",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 10,
+          "fichier": "Rupees 10 Grain Series coin reverse released in 2019.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Rupees_10_Grain_Series_coin_reverse_released_in_2019.png/120px-Rupees_10_Grain_Series_coin_reverse_released_in_2019.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1161,
+          "hauteur": 1199,
+          "auteur": "Rasalghul1711",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 20,
+          "fichier": "Rupees 10 Grain Series coin .png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Rupees_10_Grain_Series_coin_.png/120px-Rupees_10_Grain_Series_coin_.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 554,
+          "hauteur": 564,
+          "auteur": "Rasalghul1711",
+          "licence": "CC BY-SA 4.0"
+        }
+      ]
+    },
+    "JOD": {
+      "billets": [
+        {
+          "valeur": 1,
+          "fichier": "1 One Dinar Front (2022).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/1_One_Dinar_Front_%282022%29.png/330px-1_One_Dinar_Front_%282022%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 400,
+          "hauteur": 222,
+          "auteur": "Mrkhmd",
+          "licence": "Use permitted by the Central Bank of Jordan"
+        },
+        {
+          "valeur": 5,
+          "fichier": "5 Five Dinars Front (2022).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/5_Five_Dinars_Front_%282022%29.png/330px-5_Five_Dinars_Front_%282022%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 400,
+          "hauteur": 216,
+          "auteur": "Mrkhmd",
+          "licence": "Use permitted by the Central Bank of Jordan"
+        },
+        {
+          "valeur": 10,
+          "fichier": "10 Ten Dinars Front (2022).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/10_Ten_Dinars_Front_%282022%29.png/330px-10_Ten_Dinars_Front_%282022%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 400,
+          "hauteur": 210,
+          "auteur": "Mrkhmd",
+          "licence": "Use permitted by the Central Bank of Jordan"
+        },
+        {
+          "valeur": 20,
+          "fichier": "20 Twenty Dinars Front (2022).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/20_Twenty_Dinars_Front_%282022%29.png/330px-20_Twenty_Dinars_Front_%282022%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 400,
+          "hauteur": 204,
+          "auteur": "Mrkhmd",
+          "licence": "Use permitted by the Central Bank of Jordan"
+        },
+        {
+          "valeur": 50,
+          "fichier": "50 Fifty Dinars Front (2022).png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/50_Fifty_Dinars_Front_%282022%29.png/330px-50_Fifty_Dinars_Front_%282022%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 400,
+          "hauteur": 198,
+          "auteur": "Mrkhmd",
+          "licence": "Use permitted by the Central Bank of Jordan"
+        }
+      ],
+      "pieces": []
+    },
+    "JPY": {
+      "billets": [
+        {
+          "valeur": 1000,
+          "fichier": "New 1000 yen banknote obverse.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/New_1000_yen_banknote_obverse.png/330px-New_1000_yen_banknote_obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 536,
+          "hauteur": 272,
+          "auteur": "国立印刷局 (National Printing Bureau)",
+          "licence": "CC BY 4.0"
+        },
+        {
+          "valeur": 2000,
+          "fichier": "Series D 2K Yen Bank of Japan note - front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Series_D_2K_Yen_Bank_of_Japan_note_-_front.jpg/330px-Series_D_2K_Yen_Bank_of_Japan_note_-_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 370,
+          "hauteur": 182,
+          "auteur": "Eclipse2009",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 5000,
+          "fichier": "New 5000 yen banknote obverse.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/New_5000_yen_banknote_obverse.png/330px-New_5000_yen_banknote_obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 558,
+          "hauteur": 272,
+          "auteur": "国立印刷局",
+          "licence": "CC BY 4.0"
+        },
+        {
+          "valeur": 10000,
+          "fichier": "New 10000 yen banknote obverse.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/New_10000_yen_banknote_obverse.png/330px-New_10000_yen_banknote_obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 572,
+          "hauteur": 272,
+          "auteur": "国立印刷局",
+          "licence": "CC BY 4.0"
+        }
+      ],
+      "pieces": []
+    },
+    "KRW": {
+      "billets": [
+        {
+          "valeur": 1000,
+          "fichier": "1000 won serieIII obverse.jpeg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/1000_won_serieIII_obverse.jpeg/330px-1000_won_serieIII_obverse.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 792,
+          "hauteur": 399,
+          "auteur": "The Bank of Korea 한국은행",
+          "licence": "South Korean currency"
+        },
+        {
+          "valeur": 5000,
+          "fichier": "5000 won serieV obverse.jpeg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/5000_won_serieV_obverse.jpeg/330px-5000_won_serieV_obverse.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 840,
+          "hauteur": 403,
+          "auteur": "The Bank of Korea 한국은행",
+          "licence": "South Korean currency"
+        },
+        {
+          "valeur": 10000,
+          "fichier": "10000 won serieVI obverse.jpeg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/10000_won_serieVI_obverse.jpeg/330px-10000_won_serieVI_obverse.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 866,
+          "hauteur": 397,
+          "auteur": "The Bank of Korea 한국은행",
+          "licence": "South Korean currency"
+        },
+        {
+          "valeur": 50000,
+          "fichier": "50000 KRW 2009 ob.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/50000_KRW_2009_ob.jpg/330px-50000_KRW_2009_ob.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 877,
+          "hauteur": 397,
+          "auteur": "The Bank of Korea 한국은행",
+          "licence": "South Korean currency"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 10,
+          "fichier": "10 won 2006 obverse.jpeg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/10_won_2006_obverse.jpeg/120px-10_won_2006_obverse.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 172,
+          "hauteur": 172,
+          "auteur": "The Bank of Korea",
+          "licence": "South Korean currency"
+        },
+        {
+          "valeur": 50,
+          "fichier": "50 won 1983 obverse.jpeg",
+          "vignette": "https://upload.wikimedia.org/wikipedia/commons/8/82/50_won_1983_obverse.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "largeur": 71,
+          "hauteur": 71,
+          "auteur": "The Bank of Korea",
+          "licence": "South Korean currency"
+        },
+        {
+          "valeur": 100,
+          "fichier": "100 won 1983 obverse.jpeg",
+          "vignette": "https://upload.wikimedia.org/wikipedia/commons/9/91/100_won_1983_obverse.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "largeur": 87,
+          "hauteur": 87,
+          "auteur": "The Bank of Korea",
+          "licence": "South Korean currency"
+        },
+        {
+          "valeur": 500,
+          "fichier": "Tiền Xu 500 won Hàn Quốc (47595).jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Ti%E1%BB%81n_Xu_500_won_H%C3%A0n_Qu%E1%BB%91c_%2847595%29.jpg/120px-Ti%E1%BB%81n_Xu_500_won_H%C3%A0n_Qu%E1%BB%91c_%2847595%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 3118,
+          "hauteur": 2551,
+          "auteur": "Lê Huỳnh Bộ",
+          "licence": "CC BY-SA 4.0"
+        }
+      ]
+    },
+    "PHP": {
+      "billets": [],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "fichier": "Philngc1sentobv.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Philngc1sentobv.jpg/120px-Philngc1sentobv.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1442,
+          "hauteur": 1420,
+          "auteur": "John Alan Elson",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 0.05,
+          "fichier": "Philngc5sentob.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Philngc5sentob.jpg/120px-Philngc5sentob.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1502,
+          "hauteur": 1516,
+          "auteur": "John Alan Elson",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 0.25,
+          "fichier": "Philngc25sentobv.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Philngc25sentobv.jpg/120px-Philngc25sentobv.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1872,
+          "hauteur": 1895,
+          "auteur": "John Alan Elson",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 1,
+          "fichier": "Philngc1pisoobv.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Philngc1pisoobv.jpg/120px-Philngc1pisoobv.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 2155,
+          "hauteur": 2119,
+          "auteur": "John Alan Elson",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 5,
+          "fichier": "5 Peso Coin (Nontagon Shape) Philippines Font.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/5_Peso_Coin_%28Nontagon_Shape%29_Philippines_Font.png/120px-5_Peso_Coin_%28Nontagon_Shape%29_Philippines_Font.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 683,
+          "hauteur": 657,
+          "auteur": "BSP1946",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 10,
+          "fichier": "Philngc10pisoobv.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Philngc10pisoobv.jpg/120px-Philngc10pisoobv.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 2600,
+          "hauteur": 2565,
+          "auteur": "John Alan Elson",
+          "licence": "CC BY-SA 4.0"
+        },
+        {
+          "valeur": 20,
+          "fichier": "Font 20 peso Coin Philippines.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Font_20_peso_Coin_Philippines.png/120px-Font_20_peso_Coin_Philippines.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 478,
+          "hauteur": 478,
+          "auteur": "BSP1946",
+          "licence": "Public domain"
+        }
+      ]
+    },
+    "RON": {
+      "billets": [
+        {
+          "valeur": 1,
+          "fichier": "1 Leu.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/1_Leu.jpg/330px-1_Leu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 3041,
+          "hauteur": 1579,
+          "auteur": "Geoprofi Lars",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 5,
+          "fichier": "5 Lei.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/5_Lei.jpg/330px-5_Lei.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 4086,
+          "hauteur": 2145,
+          "auteur": "Geoprofi Lars",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 10,
+          "fichier": "10 lei. Romania, 2008 a.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/10_lei._Romania%2C_2008_a.jpg/330px-10_lei._Romania%2C_2008_a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1568,
+          "hauteur": 838,
+          "auteur": "en:User:ES Vic",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 20,
+          "fichier": "20 lei. Romania, 2021 a.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/20_lei._Romania%2C_2021_a.jpg/330px-20_lei._Romania%2C_2021_a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 585,
+          "hauteur": 329,
+          "auteur": "National Bank of Romania",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 50,
+          "fichier": "50 lei. Romania, 2005 a.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/50_lei._Romania%2C_2005_a.jpg/330px-50_lei._Romania%2C_2005_a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 800,
+          "hauteur": 433,
+          "auteur": "en:User:ES Vic",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 100,
+          "fichier": "100 lei. Romania, 2005 a.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/100_lei._Romania%2C_2005_a.jpg/330px-100_lei._Romania%2C_2005_a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 800,
+          "hauteur": 438,
+          "auteur": "The original uploader was ES Vic at English Wikipedia .",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 200,
+          "fichier": "200 lei. Romania, 2006 a.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/200_lei._Romania%2C_2006_a.jpg/330px-200_lei._Romania%2C_2006_a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 700,
+          "hauteur": 381,
+          "auteur": "en:User:ES Vic",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 500,
+          "fichier": "500 lei. Romania, 2005 a.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/500_lei._Romania%2C_2005_a.jpg/330px-500_lei._Romania%2C_2005_a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 800,
+          "hauteur": 422,
+          "auteur": "en:User:ES Vic",
+          "licence": "Public domain"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "fichier": "Romanian 1 ban 2005 obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/Romanian_1_ban_2005_obverse.jpg/120px-Romanian_1_ban_2005_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 640,
+          "hauteur": 640,
+          "auteur": "Turbojet",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.05,
+          "fichier": "Romanian 5 bani 2005 obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/Romanian_5_bani_2005_obverse.jpg/120px-Romanian_5_bani_2005_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 640,
+          "hauteur": 641,
+          "auteur": "Turbojet",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.1,
+          "fichier": "Romanian 10 bani 2005 obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Romanian_10_bani_2005_obverse.jpg/120px-Romanian_10_bani_2005_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 640,
+          "hauteur": 640,
+          "auteur": "Turbojet",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.5,
+          "fichier": "Romanian 50 bani 2005 obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Romanian_50_bani_2005_obverse.jpg/120px-Romanian_50_bani_2005_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 640,
+          "hauteur": 640,
+          "auteur": "Turbojet",
+          "licence": "Public domain"
+        }
+      ]
+    },
+    "TRY": {
+      "billets": [
+        {
+          "valeur": 5,
+          "fichier": "5-II Türk Lirası front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/5-II_T%C3%BCrk_Liras%C4%B1_front.jpg/330px-5-II_T%C3%BCrk_Liras%C4%B1_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1533,
+          "hauteur": 754,
+          "auteur": "tcmb",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 10,
+          "fichier": "10 Türk Lirası front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/10_T%C3%BCrk_Liras%C4%B1_front.jpg/330px-10_T%C3%BCrk_Liras%C4%B1_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1606,
+          "hauteur": 756,
+          "auteur": "Central Bank of the Republic of Turkey",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 20,
+          "fichier": "20 Türk Lirası front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/20_T%C3%BCrk_Liras%C4%B1_front.jpg/330px-20_T%C3%BCrk_Liras%C4%B1_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1677,
+          "hauteur": 803,
+          "auteur": "Central Bank of the Republic of Turkey",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 50,
+          "fichier": "50 Türk Lirası front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/50_T%C3%BCrk_Liras%C4%B1_front.jpg/330px-50_T%C3%BCrk_Liras%C4%B1_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 3277,
+          "hauteur": 1506,
+          "auteur": "Central Bank of the Republic of Turkey",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 100,
+          "fichier": "100 Türk Lirası front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/100_T%C3%BCrk_Liras%C4%B1_front.jpg/330px-100_T%C3%BCrk_Liras%C4%B1_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1820,
+          "hauteur": 850,
+          "auteur": "Central Bank of the Republic of Turkey",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 200,
+          "fichier": "200 Türk Lirası front.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/200_T%C3%BCrk_Liras%C4%B1_front.jpg/330px-200_T%C3%BCrk_Liras%C4%B1_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1890,
+          "hauteur": 851,
+          "auteur": "Central Bank of the Republic of Turkey",
+          "licence": "Public domain"
+        }
+      ],
+      "pieces": []
+    },
+    "USD": {
+      "billets": [
+        {
+          "valeur": 1,
+          "fichier": "Obverse of the series 2021 $1 Federal Reserve Note.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Obverse_of_the_series_2021_%241_Federal_Reserve_Note.jpg/330px-Obverse_of_the_series_2021_%241_Federal_Reserve_Note.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1843,
+          "hauteur": 774,
+          "auteur": "Aisrotkev8000",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 2,
+          "fichier": "2 USD 2013 obverse B.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/2_USD_2013_obverse_B.jpg/330px-2_USD_2013_obverse_B.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1838,
+          "hauteur": 780,
+          "auteur": "Federal Reserve System",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 5,
+          "fichier": "Obverse of the series 2021 $5 Federal Reserve Note.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Obverse_of_the_series_2021_%245_Federal_Reserve_Note.jpg/330px-Obverse_of_the_series_2021_%245_Federal_Reserve_Note.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 3686,
+          "hauteur": 1560,
+          "auteur": "Aisrotkev8000",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 10,
+          "fichier": "10 USD 2017 obverse.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/10_USD_2017_obverse.jpg/330px-10_USD_2017_obverse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1829,
+          "hauteur": 781,
+          "auteur": "Federal Reserve System",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 20,
+          "fichier": "Obverse of the series 2017A $20 Federal Reserve Note.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/Obverse_of_the_series_2017A_%2420_Federal_Reserve_Note.jpg/330px-Obverse_of_the_series_2017A_%2420_Federal_Reserve_Note.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 3686,
+          "hauteur": 1568,
+          "auteur": "Aisrotkev8000",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 50,
+          "fichier": "Obverse of the $50 Federal Reserve Note.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Obverse_of_the_%2450_Federal_Reserve_Note.jpg/330px-Obverse_of_the_%2450_Federal_Reserve_Note.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1815,
+          "hauteur": 773,
+          "auteur": "Aisrotkev8000",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 100,
+          "fichier": "Obverse of the series 2013 $100 Federal Reserve Note.jpg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Obverse_of_the_series_2013_%24100_Federal_Reserve_Note.jpg/330px-Obverse_of_the_series_2013_%24100_Federal_Reserve_Note.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1200,
+          "hauteur": 511,
+          "auteur": "Sysman",
+          "licence": "Public domain"
+        }
+      ],
+      "pieces": [
+        {
+          "valeur": 0.01,
+          "fichier": "US One Cent Obv.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/US_One_Cent_Obv.png/120px-US_One_Cent_Obv.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 2000,
+          "hauteur": 2000,
+          "auteur": "United States Mint",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.1,
+          "fichier": "Dime Obverse 13.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Dime_Obverse_13.png/120px-Dime_Obverse_13.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 2000,
+          "hauteur": 2000,
+          "auteur": "United States Mint",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.25,
+          "fichier": "2022 Washington quarter obverse.jpeg",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/2022_Washington_quarter_obverse.jpeg/120px-2022_Washington_quarter_obverse.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 2000,
+          "hauteur": 2000,
+          "auteur": "United States Mint",
+          "licence": "Public domain"
+        },
+        {
+          "valeur": 0.5,
+          "fichier": "US Half Dollar Obverse 2015.png",
+          "vignette": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/US_Half_Dollar_Obverse_2015.png/120px-US_Half_Dollar_Obverse_2015.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "largeur": 1984,
+          "hauteur": 1960,
+          "auteur": "United States Mint",
+          "licence": "Public domain"
+        }
+      ]
+    }
+  }
+}

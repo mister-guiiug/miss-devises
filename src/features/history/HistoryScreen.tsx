@@ -1,11 +1,13 @@
+import { useMemo } from 'react';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
 import { SegmentedControl } from '@mister-guiiug/dev-pwa-config/react/segmented-control';
 import { Stat } from '@mister-guiiug/dev-pwa-config/react/stat';
 import { useI18n } from '../../i18n/index.ts';
 import { useTaux } from '../../rates/store.ts';
-import { tauxDuJour, type Periode } from '../../rates/service.ts';
+import { codesConnus, tauxDuJour, type Periode } from '../../rates/service.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import {
+  formaterCoupure,
   formaterDate,
   formaterMontant,
   formaterPourcentage,
@@ -17,6 +19,7 @@ import {
   type Statistiques,
 } from '../../domain/history.ts';
 import { deriver, useConversion } from '../convert/conversion.ts';
+import { CurrencyPicker } from '../convert/CurrencyPicker.tsx';
 import { Courbe } from './Courbe.tsx';
 import { useSerie } from './use-serie.ts';
 
@@ -29,22 +32,38 @@ const estPeriode = (valeur: string): valeur is Periode =>
 /**
  * L'historique (récit 3) : la courbe du taux sur la période, ses extrêmes,
  * sa variation, et le montant saisi dans Convertir comparé au début de la
- * période (EF-008, EF-009).
+ * période (EF-008, EF-009). La devise se change ici même, sans repasser par
+ * Convertir, et c'est la même que là-bas (spécification 002, récit 5).
  */
 export function HistoryScreen() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const reference = usePreferences(s => s.reference);
   const devise = usePreferences(s => s.devise);
+  const recentes = usePreferences(s => s.recentes);
+  const choisirDevise = usePreferences(s => s.choisirDevise);
   const periode = usePreferences(s => s.periode);
   const choisirPeriode = usePreferences(s => s.choisirPeriode);
   const etat = useTaux(s => s.etat);
-  const jour = tauxDuJour(devise, etat, new Date());
+  const codes = useMemo(() => codesConnus(etat), [etat]);
+  const jour = tauxDuJour(reference, devise, etat, new Date());
 
   const nomPeriode = (p: Periode) => t(`history.periodes.${p}`);
 
   return (
     <div className="flex flex-col gap-3">
+      <CurrencyPicker
+        code={devise}
+        codes={codes}
+        recentes={recentes}
+        onChoisir={choisirDevise}
+        exclure={reference}
+      />
       <h2 className="m-0 text-base font-semibold">
-        {t('history.courbe', { code: devise, periode: nomPeriode(periode) })}
+        {t('history.courbe', {
+          un: formaterCoupure(1, reference, locale),
+          code: devise,
+          periode: nomPeriode(periode),
+        })}
       </h2>
       <SegmentedControl
         value={periode}
@@ -56,7 +75,7 @@ export function HistoryScreen() {
         fullWidth
       />
       {jour ? (
-        <Contenu devise={devise} />
+        <Contenu reference={reference} devise={devise} />
       ) : (
         <p className="m-0 text-sm">{t('convert.absent')}</p>
       )}
@@ -65,10 +84,10 @@ export function HistoryScreen() {
 }
 
 /** La période lue : rien n'est demandé pour une devise sans taux. */
-function Contenu({ devise }: { devise: string }) {
+function Contenu({ reference, devise }: { reference: string; devise: string }) {
   const { t, locale } = useI18n();
   const periode = usePreferences(s => s.periode);
-  const lecture = useSerie(devise, periode);
+  const lecture = useSerie(reference, devise, periode);
 
   if (lecture.statut === 'chargement') {
     return (
@@ -92,8 +111,13 @@ function Contenu({ devise }: { devise: string }) {
   return (
     <>
       <Card className="flex flex-col gap-2">
+        {/* `key` : une autre paire ou une autre période repart du dernier
+            point, celui d'aujourd'hui. */}
         <Courbe
-          valeurs={serie.points.map(p => p.taux)}
+          key={`${reference}:${devise}:${periode}`}
+          points={serie.points}
+          reference={reference}
+          devise={devise}
           description={t('history.description', {
             nombre: serie.points.length,
             debut: date(stats.debut.date),
@@ -139,34 +163,36 @@ function Contenu({ devise }: { devise: string }) {
           }
         />
       </div>
-      <Comparaison devise={devise} stats={stats} />
+      <Comparaison reference={reference} devise={devise} stats={stats} />
     </>
   );
 }
 
 /** Le montant saisi dans Convertir, au début de la période et aujourd'hui. */
 function Comparaison({
+  reference,
   devise,
   stats,
 }: {
+  reference: string;
   devise: string;
   stats: Statistiques;
 }) {
   const { t, locale } = useI18n();
   const saisie = useConversion(s => s.saisie);
-  const d = deriver(saisie, devise, stats.fin.taux, locale);
+  const d = deriver(saisie, devise, reference, stats.fin.taux, locale);
   const enDevise = saisie.champ === 'devise';
-  const montant = enDevise ? d.montantDevise : d.montantEuro;
+  const montant = enDevise ? d.montantDevise : d.montantReference;
 
   if (montant === null || montant <= 0) {
     return <p className="m-0 text-sm">{t('history.sansMontant')}</p>;
   }
 
-  const codeSaisi = enDevise ? devise : 'EUR';
-  const codeContre = enDevise ? 'EUR' : devise;
+  const codeSaisi = enDevise ? devise : reference;
+  const codeContre = enDevise ? reference : devise;
   const c = comparer(
     montant,
-    enDevise ? 'versEuro' : 'versDevise',
+    enDevise ? 'versReference' : 'versDevise',
     stats.debut.taux,
     stats.fin.taux
   );

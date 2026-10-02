@@ -19,74 +19,77 @@ une pull request par phase.
 
 ## Phase 2 : récit 4, À propos (P2)
 
-- [ ] T003 [R4] e2e de la page : nom, version, fonctions, sources liées,
+- [x] T003 [R4] e2e de la page : nom, version, fonctions, sources liées,
       section de confidentialité titrée, crédits, aucune phrase répétée ; axe
       dans les deux thèmes. Rouge d'abord.
-- [ ] T004 [R4] `src/features/about/AboutScreen.tsx` recomposée (recherche
+- [x] T004 [R4] `src/features/about/AboutScreen.tsx` recomposée (recherche
       R6), messages fr et en.
-- [ ] T005 [R4] Vérification dans le navigateur : 320 px, 390 × 664, thèmes
+- [x] T005 [R4] Vérification dans le navigateur : 320 px, 390 × 664, thèmes
       clair et sombre.
 
 ## Phase 3 : récit 2, les drapeaux (P1)
 
-- [ ] T006 [P] [R2] Tests puis `src/domain/drapeaux.ts` (recherche R4) :
+- [x] T006 [P] [R2] Tests puis `src/domain/drapeaux.ts` (recherche R4) :
       l'euro, les codes en X, ANG, et toute devise de la liste servie par un
       drapeau ou un signe neutre (CR-003).
-- [ ] T007 [R2] Tests puis `src/ui/Drapeau.tsx` : image décorative, liseré,
+- [x] T007 [R2] Tests puis `src/ui/Drapeau.tsx` : image décorative, liseré,
       signe neutre ; fichiers émis par Vite hors du JavaScript, précachés.
-- [ ] T008 [R2] Les drapeaux dans le bouton et la liste des devises, la bascule
+- [x] T008 [R2] Les drapeaux dans le bouton et la liste des devises, la bascule
       du volet et les lignes du carnet ; e2e et axe.
 
 ## Phase 4 : récit 1, la monnaie de référence (P1)
 
-- [ ] T009 [P] [R1] Tests puis `src/domain/reference.ts` : source d'une paire,
+- [x] T009 [P] [R1] Tests puis `src/domain/reference.ts` : source d'une paire,
       taux croisé (recherche R1).
-- [ ] T010 [R1] Tests puis `src/rates/` : taux du jour et série d'une paire
+- [x] T010 [R1] Tests puis `src/rates/` : taux du jour et série d'une paire
       (recherche R2), une requête pour un an de BCE.
-- [ ] T011 [P] [R1] Tests puis les préférences en version 2 (migration,
+- [x] T011 [P] [R1] Tests puis les préférences en version 2 (migration,
       échange quand la référence devient la devise affichée).
-- [ ] T012 [P] [R1] Tests puis le carnet en version 2 : schéma, migration,
+- [x] T012 [P] [R1] Tests puis le carnet en version 2 : schéma, migration,
       import d'un fichier de version 1, totaux par paire.
-- [ ] T013 [R1] Les écrans : Convertir, ligne de taux, enregistrement, volet,
+- [x] T013 [R1] Les écrans : Convertir, ligne de taux, enregistrement, volet,
       historique, carnet ; la référence dans les réglages.
-- [ ] T014 [R1] e2e `@critical` : référence CHF, conversion dans les deux
+- [x] T014 [R1] e2e `@critical` : référence CHF, conversion dans les deux
       sens, rechargement ; les parcours de la 001 à l'identique avec l'euro
       (CR-001).
-- [ ] T015 [R1] Messages fr et en ; README (fonctionnalités).
+- [x] T015 [R1] Messages fr et en ; README (fonctionnalités).
 
 ## Phase 5 : récit 3, les photos (P2)
 
-- [ ] T016 [R3] Relevé des photos sur Wikimedia Commons, vérifié par l'API
+- [x] T016 [R3] Relevé des photos sur Wikimedia Commons, vérifié par l'API
       (licence, auteur, dimensions) : `src/data/photos.json`, `photos.md`,
       recherche R5, contrat `photos-commons.md`.
-- [ ] T017 [P] [R3] Tests puis `src/data/photos.ts` : schéma, adresse d'une
+- [x] T017 [P] [R3] Tests puis `src/data/photos.ts` : schéma, adresse d'une
       vignette, couverture (CR-005).
-- [ ] T018 [R3] CSP (`img-src`) et cache des vignettes par le service worker.
-- [ ] T019 [R3] Le volet : bascule dessins / photos, avis avant la première
+- [x] T018 [R3] CSP (`img-src`) et cache des vignettes par le service worker.
+- [x] T019 [R3] Le volet : bascule dessins / photos, avis avant la première
       photo, repli sur le dessin, crédits ; préférence `images`.
-- [ ] T020 [R3] e2e : aucune requête vers Wikimedia en mode dessins (CR-004) ;
+- [x] T020 [R3] e2e : aucune requête vers Wikimedia en mode dessins (CR-004) ;
       en mode photos, vignettes et crédits ; axe.
-- [ ] T021 [R3] README (« Confidentialité ») et crédits de la page À propos.
+- [x] T021 [R3] README (« Confidentialité ») et crédits de la page À propos.
 
 ## Phase 6 : récit 5, l'historique (P3)
 
-- [ ] T022 [R5] Le choix de la devise sur l'écran d'historique.
-- [ ] T023 [R5] Tests puis la courbe : axes, curseur, région `status`
+- [x] T022 [R5] Le choix de la devise sur l'écran d'historique.
+- [x] T023 [R5] Tests puis la courbe : axes, curseur et sa lecture
       (recherche R7).
-- [ ] T024 [P] [R5] Tests puis le ménage du cache au démarrage (recherche R8).
-- [ ] T025 [R5] e2e : changer de devise sur place, lire un point au clavier ;
-      axe.
+- [x] T024 [P] [R5] Tests puis le ménage du cache au démarrage (recherche R8).
+- [x] T025 [R5] e2e : changer de devise sur place, lire un point au clavier ;
+      axe. L'exception `definition-list` du contrôle axe de l'historique est
+      retirée : le socle 6.22.0 rend un `<dl>` valide.
 
 ## Phase 7 : finitions
 
 - [ ] T026 Poids relevé en CI à chaque phase ; budget reposé si la mesure le
       demande, avec sa raison dans `package.json`.
-- [ ] T027 Captures et image de partage (`npm run screenshots`) si l'écran
+- [x] T027 Captures et image de partage (`npm run screenshots`) si l'écran
       principal a changé.
 
 ## Dépendances et ordre
 
-- Phase 1 → À propos → drapeaux → référence → photos → historique.
+- Phase 1 → À propos → drapeaux → référence → historique → photos. Les
+  photos, prévues avant l'historique, passent après lui : leur relevé sur
+  Commons est le plus long.
 - Les drapeaux avant la référence : le choix de la référence s'en sert.
 - Les photos après la référence : le volet bascule déjà entre la devise et la
   référence.

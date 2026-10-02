@@ -12,6 +12,13 @@ import {
   type DeviseCoupures,
   type Piece,
 } from '../../data/coupures.ts';
+import {
+  chargerPhotos,
+  pageCommons,
+  type DevisePhotos,
+  type Photo,
+  type Photos,
+} from '../../data/photos.ts';
 import { convertir } from '../../domain/convert.ts';
 import { decomposer, sommer } from '../../domain/decompose.ts';
 import {
@@ -24,18 +31,22 @@ import {
   nommerMontant,
 } from '../../domain/money.ts';
 import { useConversion } from '../convert/conversion.ts';
+import { Drapeau } from '../../ui/Drapeau.tsx';
 import { Banknote } from './Banknote.tsx';
 import { Coin } from './Coin.tsx';
+import { PhotoCoupure } from './PhotoCoupure.tsx';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   /** La devise étrangère de l'écran Convertir. */
   devise: string;
-  /** Unités de la devise pour un euro ; sans lui, pas de contre-valeur. */
+  /** La monnaie de référence : l'euro par défaut (spécification 002). */
+  reference: string;
+  /** Unités de la devise pour une unité de la référence ; sans lui, pas de contre-valeur. */
   taux: number | undefined;
   montantDevise: number | null;
-  montantEuro: number | null;
+  montantReference: number | null;
 }
 
 /** Largeur du plus grand billet d'une devise, et diamètre de la plus grande pièce. */
@@ -45,22 +56,50 @@ const DIAMETRE_PIECE = 56;
 /**
  * Le volet des billets et des pièces (récit 2) : chaque coupure dessinée, du
  * plus petit au plus grand, avec sa contre-valeur ; la bascule vers les
- * coupures de l'euro ; la composition du montant saisi (EF-005, EF-007).
+ * coupures de la référence ; la composition du montant saisi (EF-005,
+ * EF-007). À la demande, des photos libres de Wikimedia Commons remplacent
+ * les dessins (spécification 002, récit 3) : jamais avant que l'utilisateur
+ * les ait choisies, et après lui avoir dit ce que Wikimedia voit.
  */
 export function MoneySheet({
   open,
   onClose,
   devise,
+  reference,
   taux,
   montantDevise,
-  montantEuro,
+  montantReference,
 }: Props) {
   const { t, locale } = useI18n();
   const saisir = useConversion(s => s.saisir);
   const sens = usePreferences(s => s.sensVolet);
   const basculer = usePreferences(s => s.basculerVolet);
+  const images = usePreferences(s => s.images);
+  const avisLu = usePreferences(s => s.avisPhotos);
+  const choisirImages = usePreferences(s => s.choisirImages);
+  const accepterPhotos = usePreferences(s => s.accepterPhotos);
   const [coupures, setCoupures] = useState<Coupures>();
   const [echec, setEchec] = useState(false);
+  const [photos, setPhotos] = useState<Photos>();
+  const [avis, setAvis] = useState(false);
+  const modePhotos = images === 'photos';
+
+  // Le jeu des photos ne se charge qu'en mode photos : un morceau à part,
+  // servi par l'application. Les vignettes, elles, partent de Commons.
+  useEffect(() => {
+    if (!open || !modePhotos || photos) return undefined;
+    let actif = true;
+    chargerPhotos()
+      .then(lues => {
+        if (actif) setPhotos(lues);
+      })
+      .catch(() => {
+        // Sans jeu de photos, les dessins restent : rien à dire de plus.
+      });
+    return () => {
+      actif = false;
+    };
+  }, [open, modePhotos, photos]);
 
   useEffect(() => {
     if (!open || coupures) return undefined;
@@ -77,7 +116,7 @@ export function MoneySheet({
     };
   }, [open, coupures]);
 
-  const code = sens === 'devise' ? devise : 'EUR';
+  const code = sens === 'devise' ? devise : reference;
   const systeme = coupures?.devises[code];
 
   let contenu: ReactNode;
@@ -95,17 +134,19 @@ export function MoneySheet({
       <Contenu
         key={code}
         code={code}
-        autre={sens === 'devise' ? 'EUR' : devise}
+        autre={sens === 'devise' ? reference : devise}
         systeme={systeme}
         taux={taux}
-        versEuro={sens === 'devise'}
-        montant={sens === 'devise' ? montantDevise : montantEuro}
+        versReference={sens === 'devise'}
+        montant={sens === 'devise' ? montantDevise : montantReference}
         releveLe={coupures.releveLe}
+        modePhotos={modePhotos}
+        photos={photos?.devises[code]}
         onUtiliser={total => {
           // Le total devient la saisie de Convertir, dans son champ : sans
           // séparateur de milliers, aux décimales de la devise.
           saisir(
-            sens === 'devise' ? 'devise' : 'euro',
+            sens,
             formatNumber(total, locale, {
               maximumFractionDigits: decimalesDe(code),
               useGrouping: false,
@@ -126,15 +167,102 @@ export function MoneySheet({
             if (valeur !== sens) basculer();
           }}
           options={[
-            { value: 'devise', label: t('money.voirDevise', { code: devise }) },
-            { value: 'euro', label: t('money.voirEuro') },
+            {
+              value: 'devise',
+              label: (
+                <Segment code={devise}>
+                  {t('money.voirDevise', { code: devise })}
+                </Segment>
+              ),
+            },
+            {
+              value: 'reference',
+              label: (
+                <Segment code={reference}>
+                  {t('money.voirDevise', { code: reference })}
+                </Segment>
+              ),
+            },
           ]}
           ariaLabel={t('money.sens')}
           fullWidth
         />
+        <SegmentedControl
+          size="sm"
+          value={avis ? 'photos' : images}
+          onChange={valeur => {
+            if (valeur === 'photos' && !avisLu) setAvis(true);
+            else {
+              setAvis(false);
+              choisirImages(valeur === 'photos' ? 'photos' : 'dessins');
+            }
+          }}
+          options={[
+            { value: 'dessins', label: t('money.dessins') },
+            { value: 'photos', label: t('money.photos') },
+          ]}
+          ariaLabel={t('money.images')}
+        />
+        {avis && (
+          <AvisPhotos
+            onAccepter={() => {
+              accepterPhotos();
+              setAvis(false);
+            }}
+            onRefuser={() => setAvis(false)}
+          />
+        )}
         {contenu}
       </div>
     </Sheet>
+  );
+}
+
+/**
+ * L'avis avant la première photo (EF-010) : ce qui part chez Wikimedia, dit
+ * une fois, avant toute requête. Une région du volet, pas une boîte modale.
+ */
+function AvisPhotos({
+  onAccepter,
+  onRefuser,
+}: {
+  onAccepter: () => void;
+  onRefuser: () => void;
+}) {
+  const { t } = useI18n();
+  const id = useId();
+  return (
+    <section
+      aria-labelledby={id}
+      className="flex flex-col gap-2 rounded-xl border p-3 text-sm"
+      style={{
+        borderColor: 'var(--dwc-border)',
+        background: 'var(--dwc-surface-2)',
+      }}
+    >
+      <h3 id={id} className="m-0 text-sm font-semibold">
+        {t('money.avisTitre')}
+      </h3>
+      <p className="m-0">{t('money.avis')}</p>
+      <div className="flex flex-wrap gap-2">
+        <Button size="sm" onClick={onAccepter}>
+          {t('money.avisAfficher')}
+        </Button>
+        <Button size="sm" variant="ghost" onClick={onRefuser}>
+          {t('money.avisGarder')}
+        </Button>
+      </div>
+    </section>
+  );
+}
+
+/** Un côté de la bascule : le drapeau de la devise, puis son libellé. */
+function Segment({ code, children }: { code: string; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <Drapeau code={code} hauteur={12} />
+      {children}
+    </span>
   );
 }
 
@@ -145,10 +273,14 @@ interface PropsContenu {
   autre: string;
   systeme: DeviseCoupures;
   taux: number | undefined;
-  /** `true` : les coupures de la devise, valant des euros. */
-  versEuro: boolean;
+  /** `true` : les coupures de la devise, valant leur montant en référence. */
+  versReference: boolean;
   montant: number | null;
   releveLe: string;
+  /** Les photos sont choisies : celles de `photos` remplacent les dessins. */
+  modePhotos: boolean;
+  /** Les photos de la devise, si le jeu en a. */
+  photos: DevisePhotos | undefined;
   /** « Utiliser ce montant » : le total composé au toucher (récit 5). */
   onUtiliser: (total: number) => void;
 }
@@ -158,12 +290,20 @@ function Contenu({
   autre,
   systeme,
   taux,
-  versEuro,
+  versReference,
   montant,
   releveLe,
+  modePhotos,
+  photos,
   onUtiliser,
 }: PropsContenu) {
   const { t, m, fmt, locale } = useI18n();
+  const photoDe = (genre: 'billet' | 'piece', valeur: number) =>
+    modePhotos
+      ? (genre === 'billet' ? photos?.billets : photos?.pieces)?.find(
+          photo => photo.valeur === valeur
+        )
+      : undefined;
   // Combien de chaque coupure on a touchée : clé `billet-100`, `piece-0.5`.
   const [compte, setCompte] = useState<Record<string, number>>({});
   const idBillets = useId();
@@ -179,7 +319,7 @@ function Contenu({
     const montantAutre = convertir(
       valeur,
       taux,
-      versEuro ? 'versEuro' : 'versDevise'
+      versReference ? 'versReference' : 'versDevise'
     );
     const decimales = decimalesDe(autre);
     if (arrondir(montantAutre, decimales) === 0) {
@@ -189,6 +329,12 @@ function Contenu({
     const lu = formaterMontant(montantAutre, autre, locale);
     return { lu, vu: t('money.contre', { montant: lu }) };
   };
+
+  /** « Billet de 50 € » : la coupure seule, sans sa contre-valeur. */
+  const libelleCourt = (genre: 'billet' | 'piece', valeur: number) =>
+    t(genre === 'billet' ? 'money.billetSeul' : 'money.pieceSeule', {
+      valeur: formaterCoupure(valeur, code, locale),
+    });
 
   const libelle = (genre: 'billet' | 'piece', valeur: number) => {
     const nom = nommerMontant(valeur, code, locale);
@@ -231,26 +377,67 @@ function Contenu({
       : base * 0.8;
 
   // Les dessins sont muets : le bouton qui les porte, ou le texte de la
-  // composition, dit déjà la coupure.
-  const billet = (b: Billet, base?: number) => (
-    <Banknote
-      couleur={b.couleur}
-      texte={formaterValeur(b.valeur, code, locale)}
-      code={code}
-      largeurMm={b.largeurMm}
-      hauteurMm={b.hauteurMm}
-      largeur={largeurDe(b, base)}
-      plusEmis={b.plusEmis}
-    />
-  );
-  const piece = (p: Piece, base?: number) => (
-    <Coin
-      metal={p.metal}
-      texte={formaterValeur(p.valeur, code, locale)}
-      diametre={diametreDe(p, base)}
-      plusEmis={p.plusEmis}
-    />
-  );
+  // composition, dit déjà la coupure. Une photo, quand il y en a une et
+  // qu'elle est choisie, prend leur place et leur taille.
+  const billet = (b: Billet, base?: number) => {
+    const dessin = (
+      <Banknote
+        couleur={b.couleur}
+        texte={formaterValeur(b.valeur, code, locale)}
+        code={code}
+        largeurMm={b.largeurMm}
+        hauteurMm={b.hauteurMm}
+        largeur={largeurDe(b, base)}
+        plusEmis={b.plusEmis}
+      />
+    );
+    const photo = photoDe('billet', b.valeur);
+    return photo ? (
+      <PhotoCoupure
+        photo={photo}
+        forme="billet"
+        largeur={largeurDe(b, base)}
+        repli={dessin}
+      />
+    ) : (
+      dessin
+    );
+  };
+  const piece = (p: Piece, base?: number) => {
+    const dessin = (
+      <Coin
+        metal={p.metal}
+        texte={formaterValeur(p.valeur, code, locale)}
+        diametre={diametreDe(p, base)}
+        plusEmis={p.plusEmis}
+      />
+    );
+    const photo = photoDe('piece', p.valeur);
+    return photo ? (
+      <PhotoCoupure
+        photo={photo}
+        forme="piece"
+        largeur={diametreDe(p, base)}
+        repli={dessin}
+      />
+    ) : (
+      dessin
+    );
+  };
+
+  // Les photos montrées, et ce qui reste en dessin (EF-011).
+  const coupures = [
+    ...systeme.billets.map(b => ({
+      genre: 'billet' as const,
+      valeur: b.valeur,
+    })),
+    ...systeme.pieces.map(p => ({ genre: 'piece' as const, valeur: p.valeur })),
+  ];
+  const montrees = coupures.flatMap(({ genre, valeur }) => {
+    const photo = photoDe(genre, valeur);
+    return photo ? [{ genre, valeur, photo }] : [];
+  });
+  const sansPhoto = coupures.length - montrees.length;
 
   const composition =
     montant !== null && montant > 0 ? decomposer(montant, systeme) : undefined;
@@ -284,6 +471,7 @@ function Contenu({
     plusEmis = false
   ) => {
     const n = compte[cle] ?? 0;
+    const photo = photoDe(genre, valeur);
     const nom = [
       libelle(genre, valeur),
       plusEmis ? t('money.plusEmis') : '',
@@ -323,6 +511,20 @@ function Contenu({
             </span>
           )}
         </button>
+        {photo && (
+          <a
+            href={pageCommons(photo.fichier)}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t('money.creditDe', {
+              coupure: libelleCourt(genre, valeur),
+            })}
+            className="text-xs underline"
+            style={{ color: 'var(--dwc-text-soft)' }}
+          >
+            {t('money.credit')}
+          </a>
+        )}
         {n > 0 && (
           <button
             type="button"
@@ -424,6 +626,15 @@ function Contenu({
         </section>
       )}
 
+      {modePhotos && (
+        <Credits
+          montrees={montrees}
+          sansPhoto={sansPhoto}
+          total={coupures.length}
+          libelleCourt={libelleCourt}
+        />
+      )}
+
       {/* La région vit toujours : un lecteur d'écran annonce le total dès la
           première coupure touchée, pas seulement à la deuxième. */}
       <div
@@ -472,5 +683,66 @@ function Contenu({
         </p>
       </footer>
     </>
+  );
+}
+
+/**
+ * Ce que montre le mode photos (EF-009, EF-011) : combien de coupures
+ * gardent leur dessin, et le crédit de chaque photo, à un geste. Chaque
+ * coupure a aussi son lien « Crédit » vers sa page Commons.
+ */
+function Credits({
+  montrees,
+  sansPhoto,
+  total,
+  libelleCourt,
+}: {
+  montrees: { genre: 'billet' | 'piece'; valeur: number; photo: Photo }[];
+  sansPhoto: number;
+  total: number;
+  libelleCourt: (genre: 'billet' | 'piece', valeur: number) => string;
+}) {
+  const { t, m, fmt } = useI18n();
+  return (
+    <div className="flex flex-col gap-2 text-sm">
+      {montrees.length === 0 ? (
+        <p className="m-0">{t('money.aucunePhoto')}</p>
+      ) : (
+        sansPhoto > 0 && (
+          <p className="m-0">
+            {fmt.plural(sansPhoto, m.money.sansPhoto, {
+              count: sansPhoto,
+              total,
+            })}
+          </p>
+        )
+      )}
+      {montrees.length > 0 && (
+        <details>
+          <summary className="cursor-pointer font-semibold">
+            {t('money.credits')}
+          </summary>
+          <ul className="m-0 mt-2 flex list-none flex-col gap-1 p-0 text-xs">
+            {montrees.map(({ genre, valeur, photo }) => (
+              <li key={`${genre}-${valeur}`}>
+                {libelleCourt(genre, valeur)}
+                {' : '}
+                {photo.auteur}
+                {' · '}
+                {photo.licence}
+                {' · '}
+                <a
+                  href={pageCommons(photo.fichier)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Wikimedia Commons
+                </a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+    </div>
   );
 }

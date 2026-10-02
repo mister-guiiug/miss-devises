@@ -3,7 +3,7 @@ import {
   codeRetenu,
   lireBce,
   lireMarche,
-  lireSerieBce,
+  lireSeriesBce,
   type Recuperer,
 } from './sources.ts';
 
@@ -54,12 +54,12 @@ describe('lireBce : le dernier taux de la BCE', () => {
   });
 });
 
-describe('lireSerieBce : une série en une requête', () => {
+describe('lireSeriesBce : les séries de plusieurs devises en une requête', () => {
   it('trie les points et ignore les dates sans la devise', async () => {
     const url =
       'https://api.frankfurter.dev/v1/2025-10-01..2026-09-30?base=EUR&symbols=USD';
-    const points = await lireSerieBce(
-      'USD',
+    const series = await lireSeriesBce(
+      ['USD'],
       '2025-10-01',
       '2026-09-30',
       reseau({
@@ -75,10 +75,40 @@ describe('lireSerieBce : une série en une requête', () => {
         },
       })
     );
-    expect(points).toEqual([
-      { date: '2025-10-01', taux: 1.17 },
-      { date: '2026-09-30', taux: 1.08 },
-    ]);
+    expect(series).toEqual({
+      USD: [
+        { date: '2025-10-01', taux: 1.17 },
+        { date: '2026-09-30', taux: 1.08 },
+      ],
+    });
+  });
+
+  it('deux devises, une requête : chacune sa série', async () => {
+    const url =
+      'https://api.frankfurter.dev/v1/2025-10-01..2026-09-30?base=EUR&symbols=CHF,USD';
+    const series = await lireSeriesBce(
+      ['CHF', 'USD'],
+      '2025-10-01',
+      '2026-09-30',
+      reseau({
+        [url]: {
+          base: 'EUR',
+          start_date: '2025-10-01',
+          end_date: '2026-09-30',
+          rates: {
+            '2025-10-01': { CHF: 0.94, USD: 1.17 },
+            '2026-09-30': { CHF: 0.93 },
+          },
+        },
+      })
+    );
+    expect(series).toEqual({
+      CHF: [
+        { date: '2025-10-01', taux: 0.94 },
+        { date: '2026-09-30', taux: 0.93 },
+      ],
+      USD: [{ date: '2025-10-01', taux: 1.17 }],
+    });
   });
 });
 

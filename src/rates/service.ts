@@ -1,7 +1,8 @@
+import { sourceDePaire, tauxCroise } from '../domain/reference.ts';
 import {
   lireBce,
   lireMarche,
-  lireSerieBce,
+  lireSeriesBce,
   type Instantane,
   type PointSerie,
   type Recuperer,
@@ -12,8 +13,10 @@ export type Periode = '1M' | '6M' | '1A';
 export type Fraicheur = 'frais' | 'ancien';
 
 export interface TauxDuJour {
+  /** La monnaie de référence : l'euro par défaut. */
+  reference: string;
   code: string;
-  /** Unités de la devise pour un euro. */
+  /** Unités de la devise pour une unité de la référence. */
   taux: number;
   source: Source;
   date: string;
@@ -37,9 +40,15 @@ export interface Serie {
 export interface CacheTaux {
   get<T>(cle: string): Promise<T | undefined>;
   set(cle: string, valeur: unknown): Promise<boolean>;
+  keys(): Promise<string[]>;
+  remove(cle: string): Promise<boolean>;
 }
 
 const JOUR = 86_400_000;
+/** Au-delà, aucune grille du marché ne demande plus un relevé (001, R2). */
+const GARDE_JOURS = 400;
+const SERIE_BCE = /^serie:bce:[A-Z]{3}:\d{4}-\d{2}-\d{2}:(\d{4}-\d{2}-\d{2})$/;
+const RELEVE = /^jour:(\d{4}-\d{2}-\d{2})$/;
 const PARALLELES = 6;
 
 const iso = (date: Date) => date.toISOString().slice(0, 10);
@@ -49,12 +58,17 @@ const debutDuJour = (date: Date) =>
   );
 
 /**
- * Une source par devise, la même pour le jour et pour l'historique (R1) : la
- * BCE pour les devises qu'elle publie, le marché pour les autres. Tant que la
- * BCE n'est pas connue, le marché.
+ * Les devises que l'appareil sait convertir : celles des deux sources, et
+ * l'euro, que la BCE ne liste pas (c'est sa base) et que le marché peut taire.
  */
-export function sourceDe(code: string, bce: Instantane | undefined): Source {
-  return bce && code in bce.taux ? 'bce' : 'marche';
+export function codesConnus(etat: EtatTaux): string[] {
+  return [
+    ...new Set([
+      'EUR',
+      ...Object.keys(etat.bce?.taux ?? {}),
+      ...Object.keys(etat.marche?.taux ?? {}),
+    ]),
+  ];
 }
 
 /**
@@ -68,17 +82,24 @@ export function fraicheur(date: string, maintenant: Date): Fraicheur {
   return ecart > 3 ? 'ancien' : 'frais';
 }
 
-/** Le taux du jour d'une devise, ou rien : jamais un taux inventé. */
+/**
+ * Le taux du jour d'une paire, ou rien : jamais un taux inventé. Une source par
+ * paire, la même pour le jour et pour l'historique (spécification 002,
+ * recherche R1), et les deux devises lues dans son seul relevé.
+ */
 export function tauxDuJour(
+  reference: string,
   code: string,
   etat: EtatTaux,
   maintenant: Date
 ): TauxDuJour | undefined {
-  const source = sourceDe(code, etat.bce);
+  const source = sourceDePaire(reference, code, etat.bce?.taux);
   const instantane = source === 'bce' ? etat.bce : etat.marche;
-  const taux = instantane?.taux[code];
-  if (!instantane || taux === undefined) return undefined;
+  if (!instantane) return undefined;
+  const taux = tauxCroise(reference, code, instantane.taux);
+  if (taux === undefined) return undefined;
   return {
+    reference,
     code,
     taux,
     source,
@@ -134,14 +155,42 @@ export function bornesBce(
  */
 function raccorder(
   points: PointSerie[],
+  reference: string,
   code: string,
   instantane: Instantane | undefined
 ): PointSerie[] {
-  const taux = instantane?.taux[code];
+  const taux = instantane && tauxCroise(reference, code, instantane.taux);
   if (!instantane || taux === undefined) return points;
   const dernier = points.at(-1)?.date;
   if (dernier !== undefined && dernier >= instantane.date) return points;
   return [...points, { date: instantane.date, taux }];
+}
+
+/**
+ * Le taux croisé de chaque date où les séries de la paire ont toutes un
+ * point, l'euro valant 1. Une date où l'une manque est sautée : rien n'est
+ * inventé, et la courbe passe au-dessus.
+ */
+function croiser(
+  reference: string,
+  code: string,
+  series: Record<string, PointSerie[]>
+): PointSerie[] {
+  const parDate = new Map<string, Record<string, number>>();
+  for (const [c, points] of Object.entries(series)) {
+    for (const point of points) {
+      parDate.set(point.date, {
+        ...parDate.get(point.date),
+        [c]: point.taux,
+      });
+    }
+  }
+  return [...parDate.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .flatMap(([date, taux]) => {
+      const croise = tauxCroise(reference, code, taux);
+      return croise === undefined ? [] : [{ date, taux: croise }];
+    });
 }
 
 /** Exécute des tâches avec au plus `n` en cours. */
@@ -207,27 +256,68 @@ export function createServiceTaux({
       return etat;
     },
 
-    /** La série d'une devise sur une période, depuis le cache ou le réseau. */
+    /**
+     * LE MÉNAGE (spécification 002, recherche R8). La clé d'une série de la
+     * BCE finit à la date du jour : chaque jour de consultation en écrivait
+     * une nouvelle, jamais relue ensuite. Celles d'un autre jour partent, et
+     * les relevés du marché de plus de 400 jours aussi. Rend le nombre de
+     * clés effacées.
+     */
+    async menage(): Promise<number> {
+      const jour = debutDuJour(maintenant());
+      const aujourdhui = iso(jour);
+      const limite = iso(new Date(jour.getTime() - GARDE_JOURS * JOUR));
+      const perimees = (await cache.keys()).filter(cle => {
+        const fin = SERIE_BCE.exec(cle)?.[1];
+        if (fin !== undefined) return fin !== aujourdhui;
+        const date = RELEVE.exec(cle)?.[1];
+        return date !== undefined && date < limite;
+      });
+      await Promise.all(perimees.map(cle => cache.remove(cle)));
+      return perimees.length;
+    },
+
+    /**
+     * La série d'une paire sur une période, depuis le cache ou le réseau : le
+     * taux de `code` pour une unité de `reference`, date par date.
+     */
     async serie(
+      reference: string,
       code: string,
       periode: Periode,
       etat: EtatTaux,
       signal?: AbortSignal
     ): Promise<Serie> {
       const maintenantDate = maintenant();
-      if (sourceDe(code, etat.bce) === 'bce') {
+      if (sourceDePaire(reference, code, etat.bce?.taux) === 'bce') {
         const { debut, fin } = bornesBce(periode, maintenantDate);
-        const cle = `serie:bce:${code}:${debut}:${fin}`;
-        let points = await cache.get<PointSerie[]>(cle);
-        if (!points) {
-          points = await lireSerieBce(code, debut, fin, recuperer, signal);
-          await cache.set(cle, points);
-        }
+        // Chaque devise sous sa clé de la 001 (recherche R2) : une série lue
+        // pour une paire sert aux autres. Celles qui manquent se lisent en
+        // UNE requête. L'euro n'a pas de série : il vaut 1.
+        const codes = [reference, code].filter(c => c !== 'EUR').sort();
+        const cle = (c: string) => `serie:bce:${c}:${debut}:${fin}`;
+        const gardees = await Promise.all(
+          codes.map(c => cache.get<PointSerie[]>(cle(c)))
+        );
+        const manquants = codes.filter((_, i) => !gardees[i]);
+        const lues =
+          manquants.length > 0
+            ? await lireSeriesBce(manquants, debut, fin, recuperer, signal)
+            : {};
+        for (const c of manquants) await cache.set(cle(c), lues[c] ?? []);
+        const series = Object.fromEntries(
+          codes.map((c, i) => [c, gardees[i] ?? lues[c] ?? []])
+        );
         // Lue avant la publication de 16 h, la série gardée s'arrête à la
         // veille : le taux du jour la prolonge, sans toucher au cache.
         return {
           source: 'bce',
-          points: raccorder(points, code, etat.bce),
+          points: raccorder(
+            croiser(reference, code, series),
+            reference,
+            code,
+            etat.bce
+          ),
           complete: true,
         };
       }
@@ -250,13 +340,15 @@ export function createServiceTaux({
       });
       const points: PointSerie[] = [];
       for (const jour of jours) {
-        const taux = jour?.taux[code];
+        const taux = jour && tauxCroise(reference, code, jour.taux);
         if (jour && taux !== undefined) points.push({ date: jour.date, taux });
       }
+      const aujourdhui =
+        etat.marche && tauxCroise(reference, code, etat.marche.taux);
       return {
         source: 'marche',
-        points: raccorder(points, code, etat.marche),
-        complete: jours.every(Boolean) && etat.marche?.taux[code] !== undefined,
+        points: raccorder(points, reference, code, etat.marche),
+        complete: jours.every(Boolean) && aujourdhui !== undefined,
       };
     },
   };

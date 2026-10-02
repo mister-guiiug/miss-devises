@@ -1,9 +1,9 @@
 import type { ConversionEnregistree } from '../backend/ports.ts';
 import { convertir } from './convert.ts';
 
-/** L'autre côté de l'euro : l'une des deux devises l'est toujours. */
+/** L'autre côté de la référence : l'une des deux devises l'est toujours. */
 export function deviseEtrangere(c: ConversionEnregistree): string {
-  return c.de.code === 'EUR' ? c.vers.code : c.de.code;
+  return c.de.code === c.reference ? c.vers.code : c.de.code;
 }
 
 /**
@@ -18,38 +18,49 @@ export function auTauxDuJour(
   const montant = convertir(
     c.de.montant,
     tauxDuJour,
-    c.de.code === 'EUR' ? 'versDevise' : 'versEuro'
+    c.de.code === c.reference ? 'versDevise' : 'versReference'
   );
   return { montant, ecart: montant / c.vers.montant - 1 };
 }
 
 export interface Total {
+  /** La devise étrangère. */
   code: string;
+  reference: string;
   nombre: number;
   /** La somme des montants dans la devise étrangère. */
   devise: number;
-  /** La somme des montants en euros, tels qu'enregistrés. */
-  euros: number;
+  /** La somme des montants dans la référence, tels qu'enregistrés. */
+  montantReference: number;
 }
 
 /**
- * Les totaux du carnet par devise étrangère (récit 4, scénario 4), dans
- * l'ordre de première apparition. Chaque ligne apporte ses deux côtés tels
- * qu'enregistrés : un total ne se recalcule pas au taux du jour.
+ * Les totaux du carnet par paire, devise étrangère et référence (récit 4 de
+ * la 001, spécification 002), dans l'ordre de première apparition. Deux
+ * références ne se mêlent pas : la livre comptée en euros et la livre
+ * comptée en francs font deux totaux. Chaque ligne apporte ses deux côtés
+ * tels qu'enregistrés : un total ne se recalcule pas au taux du jour.
  */
-export function totauxParDevise(
+export function totauxParPaire(
   conversions: readonly ConversionEnregistree[]
 ): Total[] {
   const totaux = new Map<string, Total>();
   for (const c of conversions) {
     const code = deviseEtrangere(c);
-    const total = totaux.get(code) ?? { code, nombre: 0, devise: 0, euros: 0 };
-    const [euro, etranger] =
-      c.de.code === 'EUR' ? [c.de, c.vers] : [c.vers, c.de];
+    const cle = `${code}/${c.reference}`;
+    const total = totaux.get(cle) ?? {
+      code,
+      reference: c.reference,
+      nombre: 0,
+      devise: 0,
+      montantReference: 0,
+    };
+    const [reference, etranger] =
+      c.de.code === c.reference ? [c.de, c.vers] : [c.vers, c.de];
     total.nombre += 1;
     total.devise += etranger.montant;
-    total.euros += euro.montant;
-    totaux.set(code, total);
+    total.montantReference += reference.montant;
+    totaux.set(cle, total);
   }
   return [...totaux.values()];
 }

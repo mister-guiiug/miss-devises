@@ -8,7 +8,7 @@ export type EtatSerie =
   | { statut: 'indisponible' };
 
 /**
- * La série d'une devise sur une période, par le service : le cache d'abord,
+ * La série d'une paire sur une période, par le service : le cache d'abord,
  * le réseau ensuite. Une période jamais lue, hors ligne, est `indisponible`
  * (récit 3, scénario 4).
  *
@@ -17,19 +17,23 @@ export type EtatSerie =
  * un an d'historique coûterait 53 lectures au lieu d'une (CR-004), pour être
  * jeté dès que la BCE répond.
  */
-export function useSerie(code: string, periode: Periode): EtatSerie {
+export function useSerie(
+  reference: string,
+  code: string,
+  periode: Periode
+): EtatSerie {
   const etat = useTaux(s => s.etat);
   const pret = useTaux(s => s.pret);
   const chargement = useTaux(s => s.chargement);
   const sourceConnue = pret && (etat.bce !== undefined || !chargement);
-  const cle = `${code}:${periode}`;
+  const cle = `${reference}:${code}:${periode}`;
   const [lu, setLu] = useState<{ cle: string; etat: EtatSerie }>();
 
   useEffect(() => {
     if (!sourceConnue) return undefined;
     const controle = new AbortController();
     serviceTaux
-      .serie(code, periode, etat, controle.signal)
+      .serie(reference, code, periode, etat, controle.signal)
       .then(serie => {
         if (controle.signal.aborted) return;
         setLu({
@@ -45,7 +49,7 @@ export function useSerie(code: string, periode: Periode): EtatSerie {
           setLu({ cle, etat: { statut: 'indisponible' } });
       });
     return () => controle.abort();
-  }, [code, periode, etat, sourceConnue, cle]);
+  }, [reference, code, periode, etat, sourceConnue, cle]);
 
   return lu?.cle === cle ? lu.etat : { statut: 'chargement' };
 }

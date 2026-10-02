@@ -52,7 +52,11 @@ beforeEach(() => {
     chargement: false,
     echec: false,
   });
-  usePreferences.setState({ devise: 'EGP', periode: '1A' });
+  usePreferences.setState({
+    reference: 'EUR',
+    devise: 'EGP',
+    periode: '1A',
+  });
   useConversion.setState({ saisie: { champ: 'devise', texte: '' } });
 });
 
@@ -67,7 +71,7 @@ describe('l’historique (récit 3)', () => {
     monter();
     expect(
       await screen.findByRole('heading', {
-        name: 'Évolution de 1 € en EGP sur 1 an',
+        name: /^Évolution de 1\s€ en EGP sur 1 an$/,
       })
     ).toBeTruthy();
     expect(await screen.findByText('Plus haut')).toBeTruthy();
@@ -91,7 +95,7 @@ describe('l’historique (récit 3)', () => {
 
   it('compare aussi dans l’autre sens, en livres', async () => {
     vi.spyOn(serviceTaux, 'serie').mockResolvedValue(unAn);
-    useConversion.setState({ saisie: { champ: 'euro', texte: '20' } });
+    useConversion.setState({ saisie: { champ: 'reference', texte: '20' } });
     monter();
     expect(
       await screen.findByText(
@@ -115,6 +119,7 @@ describe('l’historique (récit 3)', () => {
     monter();
     await userEvent.click(screen.getByRole('tab', { name: '1 mois' }));
     expect(serie).toHaveBeenLastCalledWith(
+      'EUR',
       'EGP',
       '1M',
       expect.anything(),
@@ -123,7 +128,7 @@ describe('l’historique (récit 3)', () => {
     expect(usePreferences.getState().periode).toBe('1M');
     expect(
       await screen.findByRole('heading', {
-        name: 'Évolution de 1 € en EGP sur 1 mois',
+        name: /^Évolution de 1\s€ en EGP sur 1 mois$/,
       })
     ).toBeTruthy();
   });

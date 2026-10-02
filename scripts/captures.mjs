@@ -13,9 +13,9 @@ export default async function preparer(page, { name }) {
   const accueil = new URL('.', page.url()).href.replace(/historique\/?$/, '');
   if (name === 'wide') await page.goto(accueil);
 
-  await page.getByLabel('Montant en livre égyptienne').fill('200');
+  await page.getByLabel('Montant en livres égyptiennes').fill('200');
   await page
-    .getByText(/1 € = /)
+    .getByText(/1\s€ = /)
     .first()
     .waitFor();
 

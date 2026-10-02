@@ -30,10 +30,9 @@ const fr = {
     devise: 'Devise',
     choisir: 'Changer de devise',
     montant: 'Montant en {nom}',
-    montantEuro: 'Montant en euros',
     inverser: 'Inverser les deux devises',
     invalide: 'Montant illisible : chiffres, et une virgule ou un point.',
-    taux: '1 € = {taux}',
+    taux: '{un} = {taux}',
     tauxInverse: '1 {code} = {taux}',
     source: {
       bce: 'taux de référence de la BCE',
@@ -61,7 +60,6 @@ const fr = {
     billets: 'Billets',
     pieces: 'Pièces',
     voirDevise: 'En {code}',
-    voirEuro: 'En euros',
     composition: 'Composition de {montant}',
     reste: 'Reste {montant}, sous la plus petite pièce.',
     inconnues:
@@ -88,6 +86,23 @@ const fr = {
       one: '{count} ajouté',
       other: '{count} ajoutés',
     },
+    images: 'Dessins ou photos',
+    dessins: 'Dessins',
+    photos: 'Photos',
+    avisTitre: 'Les photos viennent de Wikimedia Commons',
+    avis: 'Pour les afficher, l’appareil les demande aux serveurs de la Wikimedia Foundation (États-Unis), qui voient son adresse IP, son navigateur, l’heure et les images demandées, donc les coupures affichées ; ni référent ni cookie ne leur est envoyé. Les dessins, eux, ne demandent rien à personne.',
+    avisAfficher: 'Afficher les photos',
+    avisGarder: 'Garder les dessins',
+    aucunePhoto:
+      'Aucune photo libre pour cette devise : ses billets et ses pièces restent dessinés.',
+    sansPhoto: {
+      one: '{count} coupure sur {total} n’a pas de photo libre : elle reste dessinée.',
+      other:
+        '{count} coupures sur {total} n’ont pas de photo libre : elles restent dessinées.',
+    },
+    credit: 'Crédit',
+    creditDe: 'Crédit de la photo : {coupure}, sur Wikimedia Commons',
+    credits: 'Crédits des photos',
   },
   history: {
     title: 'Historique',
@@ -107,7 +122,7 @@ const fr = {
     horsLigne:
       'Cette période n’a pas encore été consultée : elle sera disponible hors ligne une fois chargée.',
     incomplete: 'Quelques dates manquent : la courbe passe au-dessus.',
-    courbe: 'Évolution de 1 € en {code} sur {periode}',
+    courbe: 'Évolution de {un} en {code} sur {periode}',
     periode: 'Période',
     le: 'le {date}',
     hausse: 'en hausse',
@@ -116,6 +131,8 @@ const fr = {
     description:
       '{nombre} points du {debut} au {fin} : de {premier} à {dernier}, plus bas {min}, plus haut {max}.',
     sourceDates: '{source}, du {debut} au {fin}',
+    curseur: 'Lire la courbe',
+    point: 'Le {date} : {un} = {taux}',
   },
   carnet: {
     title: 'Carnet',
@@ -123,7 +140,7 @@ const fr = {
     videAide:
       'Depuis Convertir, donnez un libellé à une conversion et enregistrez-la.',
     aujourdhui: 'Aujourd’hui : {montant} ({ecart})',
-    taux: 'Taux du {date} : 1 € = {taux}',
+    taux: 'Taux du {date} : {un} = {taux}',
     renommer: 'Renommer',
     renommerTitre: 'Renommer la conversion',
     renommerLigne: 'Renommer « {libelle} »',
@@ -133,7 +150,7 @@ const fr = {
     supprime: 'Conversion supprimée.',
     annuler: 'Annuler',
     totaux: 'Totaux',
-    total: '{montant}, soit {euros}',
+    total: '{montant}, soit {reference}',
     count: {
       one: '{count} conversion',
       other: '{count} conversions',
@@ -141,6 +158,10 @@ const fr = {
   },
   settings: {
     title: 'Réglages',
+    reference: 'Monnaie de référence',
+    referenceAide:
+      'Convertir, l’historique et le carnet comptent dans cette devise. Les conversions déjà gardées restent dans la leur.',
+    referenceChoisir: 'Changer de monnaie de référence',
     appearance: 'Apparence',
     language: 'Langue',
     data: 'Carnet',
@@ -160,15 +181,43 @@ const fr = {
   },
   about: {
     title: 'À propos',
-    what: 'Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.',
+    accroche: 'Le convertisseur de devises qui montre l’argent.',
+    fonctions: 'Ce qu’elle fait',
+    fonction: {
+      convertir:
+        'Convertir dans les deux sens, à chaque chiffre, avec la source et la date du taux.',
+      billets:
+        'Voir les billets et les pièces de 41 devises, et composer un montant en les touchant.',
+      historique:
+        'Comparer un montant à ce qu’il valait il y a un mois, six mois ou un an.',
+      carnet:
+        'Garder ses conversions dans un carnet, chacune avec son libellé.',
+      horsLigne: 'Convertir hors ligne, avec les derniers taux connus.',
+    },
     sources: 'D’où viennent les taux',
-    sourcesBody:
-      'Les taux de référence de la Banque centrale européenne, via Frankfurter, pour les 29 devises qu’elle publie ; pour les autres, les taux de marché de fawazahmed0/currency-api. Ils sont indicatifs : un bureau de change applique ses propres taux et ses frais.',
+    source: {
+      bce: 'les taux de référence de la Banque centrale européenne, pour les 29 devises qu’elle publie.',
+      marche: 'les taux de marché, pour toutes les autres devises.',
+    },
+    indicatif:
+      'Ils sont indicatifs : un bureau de change applique ses propres taux et ses frais.',
     billets: 'Billets et pièces',
     billetsBody:
-      'Ils sont dessinés à leur couleur et à leurs proportions, jamais reproduits : la reproduction des billets est encadrée, voire interdite, par les banques centrales.',
-    vieprivee:
-      'Le carnet et les réglages restent sur cet appareil. Pour lire un taux, l’application interroge api.frankfurter.dev, cdn.jsdelivr.net et currency-api.pages.dev, qui voient l’adresse IP de l’appareil, les dates demandées et, pour un historique de la BCE, le code de la devise ; jamais un montant ni un libellé.',
+      'Ils sont dessinés à leur couleur et à leurs proportions. À la demande, le volet montre à la place des photos libres de Wikimedia Commons, réduites, d’une seule face et créditées ; les devises dont la banque centrale encadre ou interdit la reproduction gardent leurs dessins.',
+    confidentialite: 'Confidentialité',
+    surAppareil:
+      'Le carnet et les réglages restent sur cet appareil, sans compte. L’export en fichier est la seule façon de les en sortir.',
+    tiers:
+      'Pour lire un taux, l’application interroge ces trois adresses. Elles voient l’adresse IP de l’appareil, les dates demandées et, pour un historique de la BCE, le code de la devise ; jamais un montant ni un libellé.',
+    tiersPhotos:
+      'En mode photos seulement, le navigateur demande les images à thumb.wikimedia.org et upload.wikimedia.org (Wikimedia Foundation, États-Unis), qui voient l’adresse IP de l’appareil, son navigateur et les images demandées ; ni référent ni cookie ne leur est envoyé.',
+    sansMesure: 'Ni mesure d’audience, ni cookie, ni publicité.',
+    credits: 'Crédits',
+    credit: {
+      drapeaux: 'les drapeaux, sous licence MIT.',
+      photos:
+        'les photos des billets et des pièces, chacune sous sa licence et créditée dans le volet.',
+    },
   },
 };
 
@@ -190,10 +239,9 @@ const en: typeof fr = {
     devise: 'Currency',
     choisir: 'Change currency',
     montant: 'Amount in {nom}',
-    montantEuro: 'Amount in euros',
     inverser: 'Swap the two currencies',
     invalide: 'Unreadable amount: digits, and one comma or point.',
-    taux: '€1 = {taux}',
+    taux: '{un} = {taux}',
     tauxInverse: '1 {code} = {taux}',
     source: {
       bce: 'ECB reference rate',
@@ -221,7 +269,6 @@ const en: typeof fr = {
     billets: 'Banknotes',
     pieces: 'Coins',
     voirDevise: 'In {code}',
-    voirEuro: 'In euros',
     composition: 'Breakdown of {montant}',
     reste: '{montant} left, below the smallest coin.',
     inconnues:
@@ -248,6 +295,23 @@ const en: typeof fr = {
       one: '{count} added',
       other: '{count} added',
     },
+    images: 'Drawings or photos',
+    dessins: 'Drawings',
+    photos: 'Photos',
+    avisTitre: 'The photos come from Wikimedia Commons',
+    avis: 'To show them, the device requests them from the Wikimedia Foundation servers (United States), which see its IP address, its browser, the time and the requested images, hence the denominations shown; no referrer and no cookie is sent. The drawings ask nothing of anyone.',
+    avisAfficher: 'Show the photos',
+    avisGarder: 'Keep the drawings',
+    aucunePhoto:
+      'No free photo for this currency: its banknotes and coins stay drawn.',
+    sansPhoto: {
+      one: '{count} denomination out of {total} has no free photo: it stays drawn.',
+      other:
+        '{count} denominations out of {total} have no free photo: they stay drawn.',
+    },
+    credit: 'Credit',
+    creditDe: 'Photo credit: {coupure}, on Wikimedia Commons',
+    credits: 'Photo credits',
   },
   history: {
     title: 'History',
@@ -267,7 +331,7 @@ const en: typeof fr = {
     horsLigne:
       'This period has not been viewed yet: it will be available offline once loaded.',
     incomplete: 'A few dates are missing: the curve skips over them.',
-    courbe: '€1 in {code} over {periode}',
+    courbe: '{un} in {code} over {periode}',
     periode: 'Period',
     le: 'on {date}',
     hausse: 'rising',
@@ -276,13 +340,15 @@ const en: typeof fr = {
     description:
       '{nombre} points from {debut} to {fin}: from {premier} to {dernier}, low {min}, high {max}.',
     sourceDates: '{source}, from {debut} to {fin}',
+    curseur: 'Read the curve',
+    point: '{date}: {un} = {taux}',
   },
   carnet: {
     title: 'Log',
     vide: 'No saved conversions.',
     videAide: 'In Convert, give a conversion a label and save it.',
     aujourdhui: 'Today: {montant} ({ecart})',
-    taux: 'Rate of {date}: €1 = {taux}',
+    taux: 'Rate of {date}: {un} = {taux}',
     renommer: 'Rename',
     renommerTitre: 'Rename the conversion',
     renommerLigne: 'Rename “{libelle}”',
@@ -292,7 +358,7 @@ const en: typeof fr = {
     supprime: 'Conversion deleted.',
     annuler: 'Undo',
     totaux: 'Totals',
-    total: '{montant}, i.e. {euros}',
+    total: '{montant}, i.e. {reference}',
     count: {
       one: '{count} conversion',
       other: '{count} conversions',
@@ -300,6 +366,10 @@ const en: typeof fr = {
   },
   settings: {
     title: 'Settings',
+    reference: 'Reference currency',
+    referenceAide:
+      'Convert, the history and the log count in this currency. Conversions already saved keep their own.',
+    referenceChoisir: 'Change the reference currency',
     appearance: 'Appearance',
     language: 'Language',
     data: 'Log',
@@ -319,15 +389,42 @@ const en: typeof fr = {
   },
   about: {
     title: 'About',
-    what: 'A visual currency converter: banknotes and coins in plain sight, conversion both ways, rate history and labelled conversions.',
+    accroche: 'The currency converter that shows the money.',
+    fonctions: 'What it does',
+    fonction: {
+      convertir:
+        'Convert both ways, at every keystroke, with the source and date of the rate.',
+      billets:
+        'See the banknotes and coins of 41 currencies, and build an amount by tapping them.',
+      historique:
+        'Compare an amount with what it was worth a month, six months or a year ago.',
+      carnet: 'Keep your conversions in a log, each with its own label.',
+      horsLigne: 'Convert offline, with the last known rates.',
+    },
     sources: 'Where the rates come from',
-    sourcesBody:
-      'The European Central Bank reference rates, through Frankfurter, for the 29 currencies it publishes; for the others, the market rates of fawazahmed0/currency-api. They are indicative: an exchange office applies its own rates and fees.',
+    source: {
+      bce: 'the European Central Bank reference rates, for the 29 currencies it publishes.',
+      marche: 'market rates, for every other currency.',
+    },
+    indicatif:
+      'They are indicative: an exchange office applies its own rates and fees.',
     billets: 'Banknotes and coins',
     billetsBody:
-      'They are drawn in their colour and proportions, never reproduced: central banks restrict, or forbid, banknote reproduction.',
-    vieprivee:
-      'The log and the settings stay on this device. To read a rate, the app queries api.frankfurter.dev, cdn.jsdelivr.net and currency-api.pages.dev, which see the device’s IP address, the requested dates and, for an ECB history, the currency code; never an amount or a label.',
+      'They are drawn in their colour and proportions. On request, the sheet shows free photos from Wikimedia Commons instead, reduced, one side only and credited; currencies whose central bank restricts or forbids reproduction keep their drawings.',
+    confidentialite: 'Privacy',
+    surAppareil:
+      'The log and the settings stay on this device, without an account. Exporting a file is the only way to take them out.',
+    tiers:
+      'To read a rate, the app queries these three addresses. They see the device’s IP address, the requested dates and, for an ECB history, the currency code; never an amount or a label.',
+    tiersPhotos:
+      'In photo mode only, the browser requests the images from thumb.wikimedia.org and upload.wikimedia.org (Wikimedia Foundation, United States), which see the device’s IP address, its browser and the requested images; no referrer and no cookie is sent.',
+    sansMesure: 'No audience measurement, no cookie, no advertising.',
+    credits: 'Credits',
+    credit: {
+      drapeaux: 'the flags, under the MIT licence.',
+      photos:
+        'the photos of banknotes and coins, each under its own licence and credited in the sheet.',
+    },
   },
 };
 

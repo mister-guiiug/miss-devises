@@ -14,6 +14,7 @@ function faux(gardes: EtatTaux, lus: EtatTaux) {
     hydrater: vi.fn(async () => gardes),
     rafraichir: vi.fn(async () => lus),
     serie: vi.fn(),
+    menage: vi.fn(async () => 0),
   } as unknown as ServiceTaux & {
     hydrater: ReturnType<typeof vi.fn>;
     rafraichir: ReturnType<typeof vi.fn>;

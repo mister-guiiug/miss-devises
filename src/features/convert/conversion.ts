@@ -8,7 +8,8 @@ import {
   type Langue,
 } from '../../domain/money.ts';
 
-export type Champ = 'devise' | 'euro';
+/** Le champ de la devise choisie, ou celui de la monnaie de référence. */
+export type Champ = 'devise' | 'reference';
 
 /** Ce que l'utilisateur a tapé, et où. L'autre champ se calcule. */
 export interface Saisie {
@@ -18,9 +19,9 @@ export interface Saisie {
 
 export interface Derive {
   montantDevise: number | null;
-  montantEuro: number | null;
+  montantReference: number | null;
   texteDevise: string;
-  texteEuro: string;
+  texteReference: string;
   /** La saisie n'est pas vide, et n'est pas un montant. */
   invalide: boolean;
 }
@@ -38,10 +39,14 @@ function texteDe(montant: number, code: string, langue: Langue): string {
  * La conversion à afficher. Le champ saisi garde exactement ce qui a été
  * tapé ; l'autre affiche le résultat arrondi aux décimales de SA devise. Sans
  * taux, l'autre champ reste vide : jamais un taux inventé (principe I).
+ *
+ * `taux` : unités de `devise` pour une unité de `reference` (spécification
+ * 002 ; avec l'euro, le taux publié).
  */
 export function deriver(
   saisie: Saisie,
-  code: string,
+  devise: string,
+  reference: string,
   taux: number | undefined,
   langue: Langue
 ): Derive {
@@ -53,23 +58,24 @@ export function deriver(
       : convertir(
           valeur,
           taux,
-          saisie.champ === 'devise' ? 'versEuro' : 'versDevise'
+          saisie.champ === 'devise' ? 'versReference' : 'versDevise'
         );
 
   if (saisie.champ === 'devise') {
     return {
       montantDevise: valeur,
-      montantEuro: calcule,
+      montantReference: calcule,
       texteDevise: saisie.texte,
-      texteEuro: calcule === null ? '' : texteDe(calcule, 'EUR', langue),
+      texteReference:
+        calcule === null ? '' : texteDe(calcule, reference, langue),
       invalide,
     };
   }
   return {
     montantDevise: calcule,
-    montantEuro: valeur,
-    texteDevise: calcule === null ? '' : texteDe(calcule, code, langue),
-    texteEuro: saisie.texte,
+    montantReference: valeur,
+    texteDevise: calcule === null ? '' : texteDe(calcule, devise, langue),
+    texteReference: saisie.texte,
     invalide,
   };
 }
@@ -91,5 +97,5 @@ export const useConversion = create<EtatConversion>(set => ({
   haut: 'devise',
   saisir: (champ, texte) => set({ saisie: { champ, texte } }),
   inverser: () =>
-    set(etat => ({ haut: etat.haut === 'devise' ? 'euro' : 'devise' })),
+    set(etat => ({ haut: etat.haut === 'devise' ? 'reference' : 'devise' })),
 }));

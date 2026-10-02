@@ -40,6 +40,8 @@ export function creerStoreTaux(
     async demarrer() {
       const gardes = await service.hydrater();
       set(etat => ({ etat: { ...etat.etat, ...gardes }, pret: true }));
+      // Le ménage ne retarde rien : l'écran a déjà ses taux.
+      void service.menage();
       await get().rafraichir();
     },
 

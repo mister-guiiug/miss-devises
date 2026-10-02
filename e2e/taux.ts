@@ -8,8 +8,22 @@ const BCE = { USD: 1.0812, JPY: 162.4, GBP: 0.8512, CHF: 0.9381 };
 const BCE_AVANT = { USD: 1.17, JPY: 158.2, GBP: 0.8721, CHF: 0.9302 };
 
 /** Le marché aujourd'hui, et à toutes les dates passées. */
-const MARCHE = { egp: 58.83, usd: 1.0815, mad: 10.81, tnd: 3.312 };
-const MARCHE_AVANT = { egp: 56.18, usd: 1.17, mad: 10.62, tnd: 3.29 };
+const MARCHE = {
+  egp: 58.83,
+  usd: 1.0815,
+  mad: 10.81,
+  tnd: 3.312,
+  xof: 655.957,
+  chf: 0.9384,
+};
+const MARCHE_AVANT = {
+  egp: 56.18,
+  usd: 1.17,
+  mad: 10.62,
+  tnd: 3.29,
+  xof: 655.957,
+  chf: 0.95,
+};
 
 const DATE = /(\d{4}-\d{2}-\d{2})/;
 
@@ -41,13 +55,17 @@ export async function simulerTaux(
             json: { amount: 1, base: 'EUR', date: AUJOURDHUI, rates: BCE },
           });
         }
-        // Une série : `/v1/<début>..<fin>?symbols=<code>`, deux points.
+        // Une série : `/v1/<début>..<fin>?symbols=<codes>`, deux points.
+        // Une paire sans l'euro demande ses deux codes d'un coup (002, R2).
         const bornes = /\/v1\/(\d{4}-\d{2}-\d{2})\.\.(\d{4}-\d{2}-\d{2})/.exec(
           url
         );
-        const code = new URL(url).searchParams.get('symbols') ?? '';
-        if (bornes?.[1] && bornes[2] && code in BCE) {
-          const cle = code as keyof typeof BCE;
+        const codes = (new URL(url).searchParams.get('symbols') ?? '')
+          .split(',')
+          .filter((code): code is keyof typeof BCE => code in BCE);
+        if (bornes?.[1] && bornes[2] && codes.length > 0) {
+          const releve = (taux: typeof BCE) =>
+            Object.fromEntries(codes.map(code => [code, taux[code]]));
           return route.fulfill({
             json: {
               amount: 1,
@@ -55,8 +73,8 @@ export async function simulerTaux(
               start_date: bornes[1],
               end_date: bornes[2],
               rates: {
-                [bornes[1]]: { [code]: BCE_AVANT[cle] },
-                [bornes[2]]: { [code]: BCE[cle] },
+                [bornes[1]]: releve(BCE_AVANT),
+                [bornes[2]]: releve(BCE),
               },
             },
           });
@@ -76,5 +94,42 @@ export async function simulerTaux(
       return route.abort('failed');
     }
   );
+  return journal;
+}
+
+/** Une image PNG d'un pixel : ce que la simulation rend pour chaque photo. */
+const PIXEL = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
+  'base64'
+);
+
+export interface RequetePhoto {
+  url: string;
+  referent: string | undefined;
+  cookie: string | undefined;
+}
+
+/**
+ * LES PHOTOS DE WIKIMEDIA SONT SIMULÉES, elles aussi : un pixel par image,
+ * avec l'en-tête CORS que Commons envoie. Rend le JOURNAL des requêtes, avec
+ * ce qu'elles emportent (référent, cookie) : la spécification 002 veut
+ * qu'elles n'emportent ni l'un ni l'autre, et aucune en mode dessins.
+ */
+export async function simulerPhotos(page: Page): Promise<RequetePhoto[]> {
+  const journal: RequetePhoto[] = [];
+  await page.route(/^https:\/\/(thumb|upload)\.wikimedia\.org\//, route => {
+    const entetes = route.request().headers();
+    journal.push({
+      url: route.request().url(),
+      referent: entetes['referer'],
+      cookie: entetes['cookie'],
+    });
+    return route.fulfill({
+      status: 200,
+      contentType: 'image/png',
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: PIXEL,
+    });
+  });
   return journal;
 }
