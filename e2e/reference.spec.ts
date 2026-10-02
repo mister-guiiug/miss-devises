@@ -9,7 +9,7 @@ async function choisirReference(page: Page, recherche: string, code: string) {
     .click();
   const feuille = page.getByRole('dialog', { name: 'Monnaie de référence' });
   await feuille.getByLabel('Rechercher une devise').fill(recherche);
-  await feuille.getByRole('button', { name: new RegExp(code) }).click();
+  await feuille.getByRole('button', { name: new RegExp(`^${code}`) }).click();
   await page.getByRole('link', { name: 'Convertir' }).click();
 }
 
@@ -41,7 +41,7 @@ test.describe('@critical 002, récit 1 : choisir sa monnaie de référence', () 
 
     await page.getByRole('button', { name: /Changer de devise/ }).click();
     await page.getByLabel('Rechercher une devise').fill('dollar des');
-    await page.getByRole('button', { name: /USD/ }).click();
+    await page.getByRole('button', { name: /^USD/ }).click();
     await expect(page.getByText(/taux de référence de la BCE/)).toBeVisible();
 
     await page.getByRole('link', { name: 'Historique' }).click();

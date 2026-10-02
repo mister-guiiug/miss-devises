@@ -2,6 +2,7 @@ import { lazy, Suspense, useMemo, useState } from 'react';
 import { ArrowUpDown, Banknote as IconeBillets } from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
+import { useIdlePrefetch } from '@mister-guiiug/dev-pwa-config/react/use-prefetch';
 import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
 import { useI18n } from '../../i18n/index.ts';
 import { useTaux } from '../../rates/store.ts';
@@ -14,10 +15,15 @@ import { RateLine } from './RateLine.tsx';
 import { SaveForm } from './SaveForm.tsx';
 import { CompositionLigne } from './CompositionLigne.tsx';
 
+/**
+ * LE VOLET DES BILLETS, À PART (#19), ET PRÉCHARGÉ. Un morceau chargé au
+ * premier geste faisait attendre son ouverture le temps d'un aller-retour
+ * réseau ; il part désormais dès que le navigateur est libre. La même
+ * fonction sert `lazy()` et le préchargement : un seul morceau, jamais deux.
+ */
+const chargerVolet = () => import('../money/MoneySheet.tsx');
 const MoneySheet = lazy(() =>
-  import('../money/MoneySheet.tsx').then(module => ({
-    default: module.MoneySheet,
-  }))
+  chargerVolet().then(module => ({ default: module.MoneySheet }))
 );
 
 /**
@@ -28,6 +34,7 @@ const MoneySheet = lazy(() =>
  */
 export function ConvertScreen() {
   const { t, locale } = useI18n();
+  useIdlePrefetch(chargerVolet);
   const etat = useTaux(s => s.etat);
   const pret = useTaux(s => s.pret);
   const echec = useTaux(s => s.echec);
