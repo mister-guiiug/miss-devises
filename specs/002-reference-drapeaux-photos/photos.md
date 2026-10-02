@@ -71,7 +71,9 @@ le lien vers le texte de la licence (voir « Les crédits » et « Les doutes »
     déjà pas leur « SEM VALOR » ;
   - billets EGP : le Code pénal égyptien (art. 204 bis A) soumet toute image
     d'un billet circulant en Égypte à une licence du ministre de
-    l'Intérieur. Rien de tel pour les pièces, qui restent ;
+    l'Intérieur. Rien de tel pour les pièces, qui restent. Les billets se
+    voient sur l'article Wikipédia de la devise, auquel la rangée « Vraies
+    photos » mène : un lien n'en publie aucune image ;
 - **sans fichier** : XAF (aucune image de la série en circulation) ;
 - **montages recto-verso**, quand aucune face seule n'existe : 10 c et 50 c
   suisses, 2 et 10 shekels, 10 piastres et ½ dinar jordaniens ;

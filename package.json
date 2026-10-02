@@ -25,6 +25,7 @@
     "doctor": "pwa-doctor",
     "icons": "pwa-icons --source public/favicon.svg --out public/icons --maskable --bg 161,98,7",
     "photos:verifier": "node scripts/verifier-photos.mjs",
+    "wikipedia:verifier": "node scripts/wikipedia-devises.mjs",
     "prepare": "husky || true",
     "screenshots": "pwa-screenshots --wide-path historique --prepare scripts/captures.mjs --locale fr-FR"
   },

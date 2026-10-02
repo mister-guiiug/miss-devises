@@ -36,7 +36,9 @@ défaut, zéro dette, zéro info.
    ouvert dans la rangée, voir les vignettes et leurs crédits, et l'étiquette
    « Dessin » des coupures sans photo. Revenir aux dessins : plus aucune
    requête vers Wikimedia (onglet Réseau). Pour la livre sterling,
-   l'interrupteur est grisé et dit pourquoi.
+   l'interrupteur est grisé et dit pourquoi. Pour la livre égyptienne, la
+   rangée mène à « Egyptian pound » sur Wikipédia, dans un nouvel onglet ;
+   rien ne part avant le clic.
 6. **À propos** : à 320 px, nom, version, fonctions, sources liées,
    confidentialité, crédits ; rien ne déborde.
 7. **Historique** : changer de devise depuis l'écran ; promener le curseur au

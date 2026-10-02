@@ -19,6 +19,7 @@ import {
   type Photo,
   type Photos,
 } from '../../data/photos.ts';
+import { chargerWikipedia, type Wikipedia } from '../../data/wikipedia.ts';
 import { convertir } from '../../domain/convert.ts';
 import { decomposer, sommer } from '../../domain/decompose.ts';
 import {
@@ -87,6 +88,7 @@ export function MoneySheet({
   const [coupures, setCoupures] = useState<Coupures>();
   const [echec, setEchec] = useState(false);
   const [photos, setPhotos] = useState<Photos>();
+  const [wikipedia, setWikipedia] = useState<Wikipedia>();
   const [avis, setAvis] = useState(false);
   const modePhotos = images === 'photos';
 
@@ -108,6 +110,24 @@ export function MoneySheet({
       actif = false;
     };
   }, [open, photos]);
+
+  // L'article Wikipédia de chaque devise, chargé de même : un lien vers les
+  // vraies coupures quand certaines restent dessinées. Rien ne part chez
+  // Wikimedia avant le clic.
+  useEffect(() => {
+    if (!open || wikipedia) return undefined;
+    let actif = true;
+    chargerWikipedia()
+      .then(lus => {
+        if (actif) setWikipedia(lus);
+      })
+      .catch(() => {
+        // Sans le jeu des articles, la rangée n'a simplement pas de lien.
+      });
+    return () => {
+      actif = false;
+    };
+  }, [open, wikipedia]);
 
   useEffect(() => {
     if (!open || coupures) return undefined;
@@ -204,6 +224,7 @@ export function MoneySheet({
             total={systeme.billets.length + systeme.pieces.length}
             actif={modePhotos}
             avisOuvert={avis}
+            wikipedia={wikipedia?.devises[code]}
             onBasculer={() => {
               if (modePhotos) choisirImages('dessins');
               else if (avisLu) choisirImages('photos');

@@ -106,6 +106,13 @@ une pull request par phase.
       dans la rangée et focus, interrupteur grisé sans photo, étiquette
       « Dessin » ; e2e et axe suivent l'interrupteur.
 
+## Phase 10 : le lien vers Wikipédia
+
+- [x] T030 [R3] Relevé `src/data/wikipedia.json` sur Wikidata
+      (`scripts/wikipedia-devises.mjs`), puis tests et lien de la rangée
+      « Vraies photos » vers l'article de la devise quand des coupures restent
+      dessinées ; e2e : le lien, et rien vers Wikimedia avant le clic.
+
 ## Dépendances et ordre
 
 - Phase 1 → À propos → drapeaux → référence → historique → photos. Les

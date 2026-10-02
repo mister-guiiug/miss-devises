@@ -136,6 +136,19 @@ devise par devise, la couverture et les doutes sont dans
   garde les dessins. Sans aucune photo pour la devise, l'interrupteur est
   `aria-disabled` et dit pourquoi ; déjà en mode photos, il reste actif pour
   qu'on puisse en sortir.
+- **Un lien, pas une image, pour ce qui reste dessiné** : quand des coupures
+  de la devise n'ont pas de photo, la rangée mène à l'article Wikipédia de la
+  devise, dans un nouvel onglet et sans référent. L'application n'y publie
+  aucune image, et rien ne part chez Wikimedia avant le clic : c'est ce qui
+  permet de montrer les billets égyptiens sans enfreindre l'art. 204 bis A.
+  L'article est celui de l'édition anglaise, même pour l'interface française :
+  elle admet les images non libres, l'édition française non. Relevé du
+  03/10/2026 : 19 articles français sur 41 montrent moins de quatre images de
+  coupures, et « Livre égyptienne » aucune, contre quarante et une pour
+  « Egyptian pound ». Le jeu `src/data/wikipedia.json` est relevé sur
+  Wikidata par le code ISO 4217 (`scripts/wikipedia-devises.mjs`) ; deux
+  codes y sont portés par deux éléments (GBP, INR), le choix est écrit dans le
+  script.
 
 **Écarté** :
 

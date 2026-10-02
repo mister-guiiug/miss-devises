@@ -28,6 +28,11 @@ test.describe('@critical 002, récit 3 : les photos de Wikimedia Commons', () =>
     // Le compte vient du jeu servi par l'application, pas de Wikimedia.
     await expect(interrupteur(volet)).toHaveAttribute('aria-checked', 'false');
     await expect(volet.getByText('3 sur 12 coupures')).toBeVisible();
+    // Les billets égyptiens restent dessinés : un lien mène à leur article,
+    // sans rien demander à Wikimedia avant le clic.
+    await expect(
+      volet.getByRole('link', { name: /^Les vraies, sur Wikipédia/ })
+    ).toHaveAttribute('href', 'https://en.wikipedia.org/wiki/Egyptian_pound');
     await volet.getByRole('tab', { name: 'En EUR' }).click();
     await expect(volet.getByText('13 sur 15 coupures')).toBeVisible();
     expect(journal).toEqual([]);

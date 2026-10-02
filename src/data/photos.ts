@@ -69,8 +69,10 @@ export function pageCommons(fichier: string): string {
 let chargement: Promise<Photos> | undefined;
 
 /**
- * Le jeu des photos, chargé au premier passage en mode photos : un morceau à
- * part, qui ne pèse ni sur l'accueil ni sur le volet en mode dessins.
+ * Le jeu des photos, chargé à l'ouverture du volet : un morceau à part, servi
+ * par l'application, qui ne pèse pas sur l'accueil. La rangée « Vraies
+ * photos » y lit combien de coupures en ont une ; seules les vignettes, en
+ * mode photos, sont demandées à Wikimedia.
  */
 export function chargerPhotos(): Promise<Photos> {
   chargement ??= import('./photos.json').then(module =>

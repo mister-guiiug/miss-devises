@@ -290,6 +290,15 @@ curseur au clavier et lire la date et le taux annoncés.
   pourquoi ; en mode photos, une coupure restée en dessin porte l'étiquette
   « Dessin » (proposition retenue).
 
+### Séance du 03/10/2026
+
+- Q : les billets égyptiens restent dessinés (Code pénal égyptien, art. 204
+  bis A) ; peut-on au moins les voir ? → R : les dessins restent, et la rangée
+  « Vraies photos » mène à l'article Wikipédia de la devise : un lien ne
+  publie aucune image. L'article est en anglais, l'édition qui admet les
+  images non libres ; le lien le dit. Il vaut pour toute devise dont des
+  coupures restent dessinées.
+
 ## Hypothèses
 
 - Les deux sources de taux publient tout contre l'euro : une paire sans l'euro
