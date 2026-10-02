@@ -60,6 +60,11 @@ const ECRANS: Ecran[] = [
       await volet.getByRole('tab', { name: 'Photos' }).click();
       await volet.getByRole('button', { name: 'Afficher les photos' }).click();
       await expect(volet.locator('img[data-photo]').first()).toBeVisible();
+      // Les crédits ouverts : axe juge aussi leurs liens.
+      await volet.getByText('Crédits des photos').click();
+      await expect(
+        volet.getByRole('link', { name: 'Wikimedia Commons' }).first()
+      ).toBeVisible();
     },
   },
   {

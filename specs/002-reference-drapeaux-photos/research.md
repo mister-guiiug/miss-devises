@@ -117,10 +117,13 @@ devise par devise, la couverture et les doutes sont dans
   la réponse n'est pas opaque, le service worker la garde (90 jours, 200
   vignettes) sans la gonfler dans le quota du navigateur.
 - **Le crédit à un geste** : chaque photo a son lien « Crédit » vers sa page
-  Commons (titre, auteur, licence, source), et le volet liste les crédits
-  (auteur, licence, lien) de toutes les photos montrées. Creative Commons
-  admet un crédit à un geste ; la Banque d'Israël veut être nommée : elle
-  l'est.
+  Commons, et le volet liste les crédits de toutes les photos montrées : la
+  coupure, le titre du fichier, l'auteur, la licence liée à son texte, la
+  page Commons. Creative Commons admet un crédit à un geste, pourvu que le
+  titre et le lien vers la licence y soient ; la Banque d'Israël veut ses
+  « droits réservés » : ils y sont.
+- **70 % de la taille réelle au plus** à l'écran, au pixel de référence : la
+  Banque d'Israël l'exige de ses pièces, la règle tient pour toutes.
 - **Rien avant l'accord** : en mode dessins, aucune requête vers Wikimedia ;
   avant la première photo, un avis dit ce que Wikimedia voit.
 

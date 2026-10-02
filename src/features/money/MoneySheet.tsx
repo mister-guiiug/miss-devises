@@ -49,9 +49,14 @@ interface Props {
   montantReference: number | null;
 }
 
-/** Largeur du plus grand billet d'une devise, et diamètre de la plus grande pièce. */
-const LARGEUR_BILLET = 136;
-const DIAMETRE_PIECE = 56;
+/**
+ * Largeur du plus grand billet d'une devise, et diamètre de la plus grande
+ * pièce, en pixels CSS. Ce sont aussi les tailles maximales d'une photo : la
+ * Banque d'Israël veut ses pièces montrées à 70 % de leur taille réelle au
+ * plus, et un test le vérifie pour chaque pièce photographiée.
+ */
+export const LARGEUR_BILLET = 136;
+export const DIAMETRE_PIECE = 56;
 
 /**
  * Le volet des billets et des pièces (récit 2) : chaque coupure dessinée, du
@@ -690,6 +695,10 @@ function Contenu({
  * Ce que montre le mode photos (EF-009, EF-011) : combien de coupures
  * gardent leur dessin, et le crédit de chaque photo, à un geste. Chaque
  * coupure a aussi son lien « Crédit » vers sa page Commons.
+ *
+ * Une ligne par photo : la coupure, le TITRE du fichier (les licences CC 2.0
+ * à 3.0 l'exigent), son auteur, sa licence liée à son texte quand elle en a
+ * un (les CC veulent le lien, pas seulement le nom), et sa page Commons.
  */
 function Credits({
   montrees,
@@ -726,15 +735,29 @@ function Credits({
             {montrees.map(({ genre, valeur, photo }) => (
               <li key={`${genre}-${valeur}`}>
                 {libelleCourt(genre, valeur)}
-                {' : '}
+                {' : « '}
+                {photo.fichier}
+                {' », '}
                 {photo.auteur}
                 {' · '}
-                {photo.licence}
+                {photo.licenceUrl ? (
+                  <a
+                    href={photo.licenceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline"
+                  >
+                    {photo.licence}
+                  </a>
+                ) : (
+                  photo.licence
+                )}
                 {' · '}
                 <a
                   href={pageCommons(photo.fichier)}
                   target="_blank"
                   rel="noreferrer"
+                  className="underline"
                 >
                   Wikimedia Commons
                 </a>

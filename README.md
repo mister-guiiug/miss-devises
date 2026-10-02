@@ -61,7 +61,7 @@ incertitudes, devise par devise, sont dans
 [`specs/001-convertisseur-visuel/coupures.md`](./specs/001-convertisseur-visuel/coupures.md).
 Les billets et les pièces sont **dessinés**. À la demande, le volet montre à la
 place des **photos libres de Wikimedia Commons**, réduites, d'une seule face et
-créditées : 136 coupures sur 465, dans 16 devises. Les devises dont la banque
+créditées : 110 coupures sur 465, dans 14 devises. Les devises dont la banque
 centrale encadre ou interdit la reproduction gardent leurs dessins. La méthode,
 la politique devise par devise et les doutes sont dans
 [`specs/002-reference-drapeaux-photos/photos.md`](./specs/002-reference-drapeaux-photos/photos.md).

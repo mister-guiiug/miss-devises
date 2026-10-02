@@ -44,7 +44,10 @@ test.describe('@critical 002, récit 3 : les photos de Wikimedia Commons', () =>
     expect(journal).toEqual([]);
 
     await avis.getByRole('button', { name: 'Afficher les photos' }).click();
+    // Les pièces égyptiennes ont leur photo ; les billets, que le Code pénal
+    // égyptien réserve, gardent leur dessin. L'euro les a tous.
     await expect(photos(volet).first()).toBeVisible();
+    await volet.getByRole('tab', { name: 'En EUR' }).click();
     await expect.poll(() => photos(volet).count()).toBeGreaterThan(5);
     // Chaque photo part sans référent ni cookie.
     await expect.poll(() => journal.length).toBeGreaterThan(0);
