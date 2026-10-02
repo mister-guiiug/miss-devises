@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 import { ArrowUpDown, Banknote as IconeBillets } from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
@@ -12,7 +12,13 @@ import { deriver, useConversion, type Champ } from './conversion.ts';
 import { CurrencyPicker } from './CurrencyPicker.tsx';
 import { RateLine } from './RateLine.tsx';
 import { SaveForm } from './SaveForm.tsx';
-import { MoneySheet } from '../money/MoneySheet.tsx';
+import { CompositionLigne } from './CompositionLigne.tsx';
+
+const MoneySheet = lazy(() =>
+  import('../money/MoneySheet.tsx').then(module => ({
+    default: module.MoneySheet,
+  }))
+);
 
 /**
  * L'écran principal (récit 1) : deux champs liés, l'un saisi, l'autre
@@ -29,6 +35,9 @@ export function ConvertScreen() {
   const reference = usePreferences(s => s.reference);
   const devise = usePreferences(s => s.devise);
   const recentes = usePreferences(s => s.recentes);
+  const epinglees = usePreferences(s => s.epinglees);
+  const epingler = usePreferences(s => s.epingler);
+  const marge = usePreferences(s => s.marge);
   const choisirDevise = usePreferences(s => s.choisirDevise);
   const saisie = useConversion(s => s.saisie);
   const haut = useConversion(s => s.haut);
@@ -38,7 +47,9 @@ export function ConvertScreen() {
 
   const codes = useMemo(() => codesConnus(etat), [etat]);
   const jour = tauxDuJour(reference, devise, etat, new Date());
-  const d = deriver(saisie, devise, reference, jour?.taux, locale);
+  const d = deriver(saisie, devise, reference, jour?.taux, locale, marge);
+  const indicatif =
+    marge === 0 ? d : deriver(saisie, devise, reference, jour?.taux, locale);
 
   // « Montant en livres égyptiennes », « Montant en euros » : un montant se
   // compte au pluriel, dans les deux langues.
@@ -68,6 +79,8 @@ export function ConvertScreen() {
         code={devise}
         codes={codes}
         recentes={recentes}
+        epinglees={epinglees}
+        onEpingler={epingler}
         onChoisir={choisirDevise}
         exclure={reference}
       />
@@ -88,8 +101,10 @@ export function ConvertScreen() {
         jour={jour}
         pret={pret}
         horsLigne={echec}
+        marge={marge}
         onReessayer={() => void rafraichir({ force: true })}
       />
+      <CompositionLigne montant={d.montantDevise} devise={devise} />
       <Button variant="outline" block onClick={() => setVolet(true)}>
         <IconeBillets aria-hidden="true" className="size-5" />
         {t('convert.billets')}
@@ -98,18 +113,23 @@ export function ConvertScreen() {
         devise={devise}
         reference={reference}
         jour={jour}
-        derive={d}
+        derive={indicatif}
         champ={saisie.champ}
+        marge={marge}
       />
-      <MoneySheet
-        open={volet}
-        onClose={() => setVolet(false)}
-        devise={devise}
-        reference={reference}
-        taux={jour?.taux}
-        montantDevise={d.montantDevise}
-        montantReference={d.montantReference}
-      />
+      {volet && (
+        <Suspense fallback={null}>
+          <MoneySheet
+            open
+            onClose={() => setVolet(false)}
+            devise={devise}
+            reference={reference}
+            taux={jour?.taux}
+            montantDevise={d.montantDevise}
+            montantReference={d.montantReference}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

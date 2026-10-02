@@ -112,7 +112,7 @@ describe('l’écran Convertir (récit 1)', () => {
       within(feuille).getByLabelText('Rechercher une devise'),
       'yen'
     );
-    await user.click(within(feuille).getByRole('button', { name: /JPY/ }));
+    await user.click(within(feuille).getByRole('button', { name: /^JPY/ }));
     expect(usePreferences.getState().devise).toBe('JPY');
     expect(
       screen.getByLabelText('Montant en yens japonais')
@@ -145,9 +145,9 @@ describe('la monnaie de référence (spécification 002, récit 1)', () => {
     monter();
     await user.click(screen.getByRole('button', { name: /Changer de devise/ }));
     const feuille = screen.getByRole('dialog');
-    expect(within(feuille).queryByRole('button', { name: /CHF/ })).toBeNull();
+    expect(within(feuille).queryByRole('button', { name: /^CHF/ })).toBeNull();
     expect(
-      within(feuille).getByRole('button', { name: /EUR/ })
+      within(feuille).getByRole('button', { name: /^EUR/ })
     ).toBeInTheDocument();
   });
 });
@@ -210,7 +210,9 @@ describe('le volet des billets et des pièces (récit 2)', () => {
       '200'
     );
     await user.click(screen.getByRole('button', { name: 'Billets et pièces' }));
-    const volet = screen.getByRole('dialog', { name: 'Billets et pièces' });
+    const volet = await screen.findByRole('dialog', {
+      name: 'Billets et pièces',
+    });
     expect(
       await within(volet).findByRole('region', {
         name: /Composition de 200,00\sEGP/,

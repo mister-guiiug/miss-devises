@@ -40,6 +40,8 @@ export function HistoryScreen() {
   const reference = usePreferences(s => s.reference);
   const devise = usePreferences(s => s.devise);
   const recentes = usePreferences(s => s.recentes);
+  const epinglees = usePreferences(s => s.epinglees);
+  const epingler = usePreferences(s => s.epingler);
   const choisirDevise = usePreferences(s => s.choisirDevise);
   const periode = usePreferences(s => s.periode);
   const choisirPeriode = usePreferences(s => s.choisirPeriode);
@@ -55,6 +57,8 @@ export function HistoryScreen() {
         code={devise}
         codes={codes}
         recentes={recentes}
+        epinglees={epinglees}
+        onEpingler={epingler}
         onChoisir={choisirDevise}
         exclure={reference}
       />

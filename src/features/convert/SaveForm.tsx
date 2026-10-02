@@ -16,6 +16,8 @@ interface Props {
   derive: Derive;
   /** Le champ saisi : il devient le départ de la conversion gardée. */
   champ: Champ;
+  /** Au-dessus de zéro, le carnet ignore la marge : on le dit. */
+  marge?: number;
 }
 
 /**
@@ -25,7 +27,14 @@ interface Props {
  * tiennent lieu : « 200,00 EGP → EUR ». La conversion garde sa référence :
  * en changer plus tard ne la réécrit pas.
  */
-export function SaveForm({ devise, reference, jour, derive, champ }: Props) {
+export function SaveForm({
+  devise,
+  reference,
+  jour,
+  derive,
+  champ,
+  marge = 0,
+}: Props) {
   const { t, locale } = useI18n();
   const toast = useToast();
   const ajouter = useCarnet(s => s.add);
@@ -68,20 +77,27 @@ export function SaveForm({ devise, reference, jour, derive, champ }: Props) {
   }
 
   return (
-    <form onSubmit={enregistrer} className="flex items-end gap-2">
-      <TextField
-        className="min-w-0 flex-1"
-        label={t('convert.libelle')}
-        placeholder={t('convert.libelleExemple')}
-        value={libelle}
-        onChange={event => setLibelle(event.target.value)}
-        maxLength={120}
-        autoComplete="off"
-        enterKeyHint="done"
-      />
-      <Button type="submit" aria-disabled={!possible}>
-        {t('convert.enregistrer')}
-      </Button>
+    <form onSubmit={enregistrer} className="flex flex-col gap-2">
+      <div className="flex items-end gap-2">
+        <TextField
+          className="min-w-0 flex-1"
+          label={t('convert.libelle')}
+          placeholder={t('convert.libelleExemple')}
+          value={libelle}
+          onChange={event => setLibelle(event.target.value)}
+          maxLength={120}
+          autoComplete="off"
+          enterKeyHint="done"
+        />
+        <Button type="submit" aria-disabled={!possible}>
+          {t('convert.enregistrer')}
+        </Button>
+      </div>
+      {marge > 0 && (
+        <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+          {t('convert.carnetSansMarge')}
+        </p>
+      )}
     </form>
   );
 }

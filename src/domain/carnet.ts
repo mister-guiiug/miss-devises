@@ -7,6 +7,25 @@ export function deviseEtrangere(c: ConversionEnregistree): string {
 }
 
 /**
+ * Ce qu'il faut poser dans Convertir pour revoir la ligne : la référence,
+ * la devise, le champ qui était saisi, et son montant.
+ */
+export function reprise(c: ConversionEnregistree): {
+  reference: string;
+  devise: string;
+  champ: 'devise' | 'reference';
+  montant: number;
+} {
+  const devise = deviseEtrangere(c);
+  return {
+    reference: c.reference,
+    devise,
+    champ: c.de.code === devise ? 'devise' : 'reference',
+    montant: c.de.montant,
+  };
+}
+
+/**
  * La même conversion, refaite au taux du jour (récit 4, scénario 2) : le
  * montant de départ ne change pas, l'arrivée suit le taux. `ecart` rapporte
  * le nouveau montant d'arrivée à l'ancien, en fraction.

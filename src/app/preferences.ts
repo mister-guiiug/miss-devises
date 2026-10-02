@@ -18,6 +18,15 @@ const schema = z.object({
   images: z.enum(['dessins', 'photos']).default('dessins'),
   /** L'avis sur Wikimedia a été lu : il ne s'affiche qu'une fois. */
   avisPhotos: z.boolean().default(false),
+  /**
+   * Devises épinglées, au-dessus des récentes. Valeur par défaut : une
+   * préférence d'avant elles se lit sans épingle, sans relever la version.
+   */
+  epinglees: z.array(CODE).max(6).default([]),
+  /** Pour cent retranchés du montant reçu. 0 : le taux indicatif. */
+  marge: z
+    .union([z.literal(0), z.literal(2), z.literal(5), z.literal(10)])
+    .default(0),
 });
 
 export type Preferences = z.infer<typeof schema>;
@@ -38,6 +47,8 @@ export const DEFAUTS: Preferences = {
   periode: '1A',
   images: 'dessins',
   avisPhotos: false,
+  epinglees: [],
+  marge: 0,
 };
 
 /**
@@ -76,6 +87,10 @@ interface EtatPreferences extends Preferences {
   choisirImages: (images: Preferences['images']) => void;
   /** L'avis sur Wikimedia est lu, et les photos choisies. */
   accepterPhotos: () => void;
+  epingler: (code: string) => void;
+  choisirMarge: (marge: Preferences['marge']) => void;
+  /** Pose la référence et la devise d'un coup, pour rouvrir une ligne. */
+  poserPaire: (reference: string, devise: string) => void;
 }
 
 /** Une fabrique, pour qu'un test relise les préférences comme au rechargement. */
@@ -91,6 +106,8 @@ export function creerPreferences() {
         periode,
         images,
         avisPhotos,
+        epinglees,
+        marge,
       } = get();
       preferencesStore.save({
         reference,
@@ -100,6 +117,8 @@ export function creerPreferences() {
         periode,
         images,
         avisPhotos,
+        epinglees,
+        marge,
       });
     };
     return {
@@ -127,6 +146,26 @@ export function creerPreferences() {
       choisirPeriode: periode => sauver({ periode }),
       choisirImages: images => sauver({ images }),
       accepterPhotos: () => sauver({ images: 'photos', avisPhotos: true }),
+      epingler: code => {
+        const actuelles = get().epinglees;
+        sauver({
+          epinglees: actuelles.includes(code)
+            ? actuelles.filter(c => c !== code)
+            : [code, ...actuelles].slice(0, 6),
+        });
+      },
+      choisirMarge: marge => sauver({ marge }),
+      poserPaire: (reference, devise) => {
+        if (reference === devise) return;
+        sauver({
+          reference,
+          devise,
+          recentes: [devise, ...get().recentes.filter(c => c !== devise)].slice(
+            0,
+            6
+          ),
+        });
+      },
     };
   });
 }

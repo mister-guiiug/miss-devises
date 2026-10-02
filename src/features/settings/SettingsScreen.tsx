@@ -39,6 +39,8 @@ export function SettingsScreen() {
   const [confirming, setConfirming] = useState(false);
   const reference = usePreferences(state => state.reference);
   const choisirReference = usePreferences(state => state.choisirReference);
+  const marge = usePreferences(state => state.marge);
+  const choisirMarge = usePreferences(state => state.choisirMarge);
   const etat = useTaux(state => state.etat);
   const codes = useMemo(() => codesConnus(etat), [etat]);
 
@@ -102,6 +104,25 @@ export function SettingsScreen() {
           onChoisir={choisirReference}
           etiquette={t('settings.referenceChoisir')}
           titre={t('settings.reference')}
+        />
+      </Card>
+
+      <Card>
+        <CardHeader title={t('settings.marge')} />
+        <p
+          className="m-0 mb-3 text-sm"
+          style={{ color: 'var(--dwc-text-soft)' }}
+        >
+          {t('settings.margeAide')}
+        </p>
+        <SegmentedControl
+          value={String(marge)}
+          onChange={value => choisirMarge(Number(value) as typeof marge)}
+          ariaLabel={t('settings.marge')}
+          options={[0, 2, 5, 10].map(valeur => ({
+            value: String(valeur),
+            label: t('settings.margeOption', { marge: valeur }),
+          }))}
         />
       </Card>
 

@@ -53,6 +53,16 @@ describe('listerDevises', () => {
     expect(liste.map(d => d.code)).not.toContain('EUR');
   });
 
+  it('place les épingles avant les récentes, sans les répéter', () => {
+    const liste = listerDevises(codes, 'fr', ['MAD', 'JPY'], 'CHF', [
+      'JPY',
+      'USD',
+    ]);
+    expect(liste.map(d => d.code)).toEqual(['JPY', 'USD', 'MAD', 'EUR', 'EGP']);
+    expect(liste[0]?.epinglee).toBe(true);
+    expect(liste[2]?.recente).toBe(true);
+  });
+
   it('sans référence à écarter, toutes les devises', () => {
     const liste = listerDevises(codes, 'fr', ['MAD', 'JPY']);
     expect(liste.map(d => d.code)).toEqual([

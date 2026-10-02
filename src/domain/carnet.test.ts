@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import type { ConversionEnregistree } from '../backend/ports.ts';
-import { auTauxDuJour, deviseEtrangere, totauxParPaire } from './carnet.ts';
+import {
+  auTauxDuJour,
+  deviseEtrangere,
+  reprise,
+  totauxParPaire,
+} from './carnet.ts';
 
 const musee: ConversionEnregistree = {
   id: 'c1',
@@ -95,5 +100,25 @@ describe('totauxParPaire : par devise étrangère et par référence', () => {
 
   it('un carnet vide n’a pas de total', () => {
     expect(totauxParPaire([])).toEqual([]);
+  });
+});
+
+describe('reprendre une ligne', () => {
+  it('rouvre le montant saisi dans la devise, avec sa référence', () => {
+    expect(reprise(musee)).toEqual({
+      reference: 'EUR',
+      devise: 'EGP',
+      champ: 'devise',
+      montant: 200,
+    });
+  });
+
+  it('rouvre un montant saisi dans la référence', () => {
+    expect(reprise(taxi)).toEqual({
+      reference: 'EUR',
+      devise: 'EGP',
+      champ: 'reference',
+      montant: 20,
+    });
   });
 });

@@ -16,6 +16,8 @@ describe('les préférences', () => {
       periode,
       images,
       avisPhotos,
+      epinglees,
+      marge,
     } = creerPreferences().getState();
     expect({
       reference,
@@ -25,6 +27,8 @@ describe('les préférences', () => {
       periode,
       images,
       avisPhotos,
+      epinglees,
+      marge,
     }).toEqual(DEFAUTS);
     expect(DEFAUTS.reference).toBe('EUR');
   });
