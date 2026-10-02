@@ -56,8 +56,20 @@ Les fichiers des drapeaux viennent de `country-flag-icons/3x2/<PAYS>.svg`.
 
 ## Photo d'une coupure (récit 3)
 
-Décrite avec le relevé des photos, par la phase du récit 3 (tâche T016 de
-[tasks.md](./tasks.md)).
+| Champ      | Type            | Règle                                                          |
+| ---------- | --------------- | -------------------------------------------------------------- |
+| `valeur`   | nombre > 0      | une coupure de `coupures.json`, une photo au plus              |
+| `fichier`  | chaîne          | nom du fichier sur Commons, sans « File: »                     |
+| `vignette` | URL             | telle que l'API la rend, sur `thumb` ou `upload.wikimedia.org` |
+| `largeur`  | entier > 0      | de l'original : son sens et ses proportions                    |
+| `hauteur`  | entier > 0      | de l'original                                                  |
+| `auteur`   | chaîne non vide | le champ « Artist » de Commons, en texte                       |
+| `licence`  | chaîne non vide | le nom court de la licence ou de la permission                 |
+
+Source : `src/data/photos.json`, daté (`releveLe`), une entrée par devise
+photographiée, billets et pièces triés par valeur. Chargé au premier passage en
+mode photos, en morceau à part. Voir [photos.md](./photos.md) et
+[contracts/photos-commons.md](./contracts/photos-commons.md).
 
 ## Clés IndexedDB
 

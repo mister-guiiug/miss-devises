@@ -56,17 +56,17 @@ une pull request par phase.
 
 ## Phase 5 : récit 3, les photos (P2)
 
-- [ ] T016 [R3] Relevé des photos sur Wikimedia Commons, vérifié par l'API
+- [x] T016 [R3] Relevé des photos sur Wikimedia Commons, vérifié par l'API
       (licence, auteur, dimensions) : `src/data/photos.json`, `photos.md`,
       recherche R5, contrat `photos-commons.md`.
-- [ ] T017 [P] [R3] Tests puis `src/data/photos.ts` : schéma, adresse d'une
+- [x] T017 [P] [R3] Tests puis `src/data/photos.ts` : schéma, adresse d'une
       vignette, couverture (CR-005).
-- [ ] T018 [R3] CSP (`img-src`) et cache des vignettes par le service worker.
-- [ ] T019 [R3] Le volet : bascule dessins / photos, avis avant la première
+- [x] T018 [R3] CSP (`img-src`) et cache des vignettes par le service worker.
+- [x] T019 [R3] Le volet : bascule dessins / photos, avis avant la première
       photo, repli sur le dessin, crédits ; préférence `images`.
-- [ ] T020 [R3] e2e : aucune requête vers Wikimedia en mode dessins (CR-004) ;
+- [x] T020 [R3] e2e : aucune requête vers Wikimedia en mode dessins (CR-004) ;
       en mode photos, vignettes et crédits ; axe.
-- [ ] T021 [R3] README (« Confidentialité ») et crédits de la page À propos.
+- [x] T021 [R3] README (« Confidentialité ») et crédits de la page À propos.
 
 ## Phase 6 : récit 5, l'historique (P3)
 
@@ -82,7 +82,7 @@ une pull request par phase.
 
 - [ ] T026 Poids relevé en CI à chaque phase ; budget reposé si la mesure le
       demande, avec sa raison dans `package.json`.
-- [ ] T027 Captures et image de partage (`npm run screenshots`) si l'écran
+- [x] T027 Captures et image de partage (`npm run screenshots`) si l'écran
       principal a changé.
 
 ## Dépendances et ordre

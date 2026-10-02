@@ -8,11 +8,24 @@ describe('les préférences', () => {
   });
 
   it('partent des valeurs par défaut : l’euro pour référence', () => {
-    const { reference, devise, recentes, sensVolet, periode } =
-      creerPreferences().getState();
-    expect({ reference, devise, recentes, sensVolet, periode }).toEqual(
-      DEFAUTS
-    );
+    const {
+      reference,
+      devise,
+      recentes,
+      sensVolet,
+      periode,
+      images,
+      avisPhotos,
+    } = creerPreferences().getState();
+    expect({
+      reference,
+      devise,
+      recentes,
+      sensVolet,
+      periode,
+      images,
+      avisPhotos,
+    }).toEqual(DEFAUTS);
     expect(DEFAUTS.reference).toBe('EUR');
   });
 
@@ -60,6 +73,37 @@ describe('les préférences', () => {
     prefs.getState().choisirReference('EGP');
     expect(prefs.getState().reference).toBe('EGP');
     expect(prefs.getState().devise).toBe('EUR');
+  });
+
+  it('montrent les dessins par défaut, et gardent le choix des photos', () => {
+    const prefs = creerPreferences();
+    expect(prefs.getState().images).toBe('dessins');
+    expect(prefs.getState().avisPhotos).toBe(false);
+    prefs.getState().accepterPhotos();
+    const relues = creerPreferences().getState();
+    expect(relues.images).toBe('photos');
+    expect(relues.avisPhotos).toBe(true);
+    relues.choisirImages('dessins');
+    expect(creerPreferences().getState().images).toBe('dessins');
+    // L'avis a été lu une fois : il ne revient pas.
+    expect(creerPreferences().getState().avisPhotos).toBe(true);
+  });
+
+  it('lisent une version 2 d’avant les photos : dessins, avis à lire', () => {
+    preferencesStore.store.set('preferences', {
+      v: 2,
+      data: {
+        reference: 'CHF',
+        devise: 'MAD',
+        recentes: [],
+        sensVolet: 'devise',
+        periode: '1A',
+      },
+    });
+    const relues = creerPreferences().getState();
+    expect(relues.reference).toBe('CHF');
+    expect(relues.images).toBe('dessins');
+    expect(relues.avisPhotos).toBe(false);
   });
 
   it('lisent la version 1 : l’euro pour référence, le volet « euro » devient « référence »', () => {

@@ -1,5 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { cleanup, render, screen, within } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from '../../i18n/index.ts';
 import { usePreferences } from '../../app/preferences.ts';
@@ -58,6 +65,8 @@ beforeEach(() => {
     reference: 'EUR',
     devise: 'EGP',
     sensVolet: 'devise',
+    images: 'dessins',
+    avisPhotos: false,
   });
 });
 
@@ -229,5 +238,90 @@ describe('composer un montant au toucher (récit 5)', () => {
       texte: '101',
     });
     expect(ferme).toBe(true);
+  });
+});
+
+describe('les photos de Wikimedia Commons (spécification 002, récit 3)', () => {
+  /** Les photos montrées : une image par coupure photographiée. */
+  const photos = () => document.querySelectorAll('img[data-photo]');
+
+  it('montre les dessins par défaut, sans aucune photo', async () => {
+    monter();
+    await screen.findByRole('region', { name: 'Billets' });
+    expect(photos()).toHaveLength(0);
+  });
+
+  it('dit ce que Wikimedia voit avant la première photo, puis les montre', async () => {
+    const user = userEvent.setup();
+    monter();
+    await screen.findByRole('region', { name: 'Billets' });
+    await user.click(screen.getByRole('tab', { name: 'Photos' }));
+    const avis = screen.getByRole('region', {
+      name: 'Les photos viennent de Wikimedia Commons',
+    });
+    // Rien n'est demandé tant que l'avis n'est pas accepté.
+    expect(photos()).toHaveLength(0);
+    await user.click(
+      within(avis).getByRole('button', { name: 'Afficher les photos' })
+    );
+    await waitFor(() => expect(photos().length).toBeGreaterThan(0));
+    expect(usePreferences.getState().images).toBe('photos');
+    // Chaque photo a son crédit, et le volet les liste.
+    expect(
+      screen.getAllByRole('link', { name: /^Crédit de la photo : / }).length
+    ).toBe(photos().length);
+    expect(screen.getByText('Crédits des photos')).toBeInTheDocument();
+    // L'avis ne revient pas.
+    await user.click(screen.getByRole('tab', { name: 'Dessins' }));
+    await user.click(screen.getByRole('tab', { name: 'Photos' }));
+    expect(
+      screen.queryByRole('region', {
+        name: 'Les photos viennent de Wikimedia Commons',
+      })
+    ).toBeNull();
+  });
+
+  it('garder les dessins ne change rien', async () => {
+    const user = userEvent.setup();
+    monter();
+    await screen.findByRole('region', { name: 'Billets' });
+    await user.click(screen.getByRole('tab', { name: 'Photos' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Garder les dessins' })
+    );
+    expect(usePreferences.getState().images).toBe('dessins');
+    expect(photos()).toHaveLength(0);
+  });
+
+  it('une photo qui ne se charge pas rend son dessin', async () => {
+    usePreferences.setState({ images: 'photos', avisPhotos: true });
+    const { container } = render(
+      <I18nProvider>
+        <MoneySheet
+          open
+          onClose={() => {}}
+          devise="EGP"
+          reference="EUR"
+          taux={58.83}
+          montantDevise={null}
+          montantReference={null}
+        />
+      </I18nProvider>
+    );
+    await waitFor(() => expect(photos().length).toBeGreaterThan(0));
+    const avant = photos().length;
+    const dessins = container.querySelectorAll('svg').length;
+    fireEvent.error(photos()[0]!);
+    expect(photos()).toHaveLength(avant - 1);
+    expect(container.querySelectorAll('svg').length).toBe(dessins + 1);
+  });
+
+  it('une devise sans photo libre le dit, et garde ses dessins', async () => {
+    usePreferences.setState({ images: 'photos', avisPhotos: true });
+    monter({ devise: 'GBP', taux: 0.85 });
+    expect(
+      await screen.findByText(/Aucune photo libre pour cette devise/)
+    ).toBeInTheDocument();
+    expect(photos()).toHaveLength(0);
   });
 });
