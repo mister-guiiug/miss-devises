@@ -185,9 +185,9 @@ const fr = {
     fonctions: 'Ce qu’elle fait',
     fonction: {
       convertir:
-        'Convertir dans les deux sens, à chaque chiffre, avec la source et la date du taux.',
+        'Convertir dans les deux sens, à chaque chiffre, entre votre monnaie de référence et une devise, avec la source et la date du taux.',
       billets:
-        'Voir les billets et les pièces de 41 devises, et composer un montant en les touchant.',
+        'Voir les billets et les pièces de 41 devises, en dessins ou en photos, et composer un montant en les touchant.',
       historique:
         'Comparer un montant à ce qu’il valait il y a un mois, six mois ou un an.',
       carnet:
@@ -393,9 +393,9 @@ const en: typeof fr = {
     fonctions: 'What it does',
     fonction: {
       convertir:
-        'Convert both ways, at every keystroke, with the source and date of the rate.',
+        'Convert both ways, at every keystroke, between your reference currency and another, with the source and date of the rate.',
       billets:
-        'See the banknotes and coins of 41 currencies, and build an amount by tapping them.',
+        'See the banknotes and coins of 41 currencies, as drawings or photos, and build an amount by tapping them.',
       historique:
         'Compare an amount with what it was worth a month, six months or a year ago.',
       carnet: 'Keep your conversions in a log, each with its own label.',
