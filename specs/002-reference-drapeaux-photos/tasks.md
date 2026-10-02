@@ -19,12 +19,12 @@ une pull request par phase.
 
 ## Phase 2 : récit 4, À propos (P2)
 
-- [ ] T003 [R4] e2e de la page : nom, version, fonctions, sources liées,
+- [x] T003 [R4] e2e de la page : nom, version, fonctions, sources liées,
       section de confidentialité titrée, crédits, aucune phrase répétée ; axe
       dans les deux thèmes. Rouge d'abord.
-- [ ] T004 [R4] `src/features/about/AboutScreen.tsx` recomposée (recherche
+- [x] T004 [R4] `src/features/about/AboutScreen.tsx` recomposée (recherche
       R6), messages fr et en.
-- [ ] T005 [R4] Vérification dans le navigateur : 320 px, 390 × 664, thèmes
+- [x] T005 [R4] Vérification dans le navigateur : 320 px, 390 × 664, thèmes
       clair et sombre.
 
 ## Phase 3 : récit 2, les drapeaux (P1)
