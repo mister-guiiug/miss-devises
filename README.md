@@ -26,6 +26,9 @@ et bâtie sur
 - **Garder une conversion avec un libellé**, comme « Visite du musée » : le
   carnet garde le taux et sa date, refait chaque ligne au taux du jour, et
   totalise par devise. Il s'exporte et s'importe en fichier.
+- **Reconnaître chaque devise à son drapeau**, celui du pays qui l'émet ; le
+  drapeau européen pour l'euro, un globe pour une devise de plusieurs pays
+  (franc CFA, franc CFP). Les drapeaux sont livrés avec l'application.
 
 Elle fonctionne hors ligne avec les derniers taux connus, en français et en
 anglais, au clavier et au lecteur d'écran.
@@ -114,4 +117,6 @@ commits. Les décisions d'architecture sont dans
 
 ## Licence
 
-MIT, voir [LICENSE](./LICENSE).
+MIT, voir [LICENSE](./LICENSE). Les drapeaux viennent de
+[country-flag-icons](https://gitlab.com/catamphetamine/country-flag-icons),
+sous licence MIT.

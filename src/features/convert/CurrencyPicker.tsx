@@ -8,6 +8,7 @@ import {
   listerDevises,
   nomDevise,
 } from '../../domain/currencies.ts';
+import { Drapeau } from '../../ui/Drapeau.tsx';
 
 interface Props {
   code: string;
@@ -48,6 +49,7 @@ export function CurrencyPicker({ code, codes, recentes, onChoisir }: Props) {
           background: 'var(--dwc-surface)',
         }}
       >
+        <Drapeau code={code} hauteur={20} />
         <span className="text-fluid-lg font-bold">{code}</span>
         <span className="min-w-0 flex-1 truncate">{nom}</span>
         <ChevronDown aria-hidden="true" className="size-5 shrink-0" />
@@ -95,6 +97,7 @@ export function CurrencyPicker({ code, codes, recentes, onChoisir }: Props) {
                       : undefined
                   }
                 >
+                  <Drapeau code={devise.code} />
                   <span className="w-12 font-semibold">{devise.code}</span>
                   <span className="min-w-0 flex-1 truncate">{devise.nom}</span>
                 </button>

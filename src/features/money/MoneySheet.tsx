@@ -24,6 +24,7 @@ import {
   nommerMontant,
 } from '../../domain/money.ts';
 import { useConversion } from '../convert/conversion.ts';
+import { Drapeau } from '../../ui/Drapeau.tsx';
 import { Banknote } from './Banknote.tsx';
 import { Coin } from './Coin.tsx';
 
@@ -126,8 +127,18 @@ export function MoneySheet({
             if (valeur !== sens) basculer();
           }}
           options={[
-            { value: 'devise', label: t('money.voirDevise', { code: devise }) },
-            { value: 'euro', label: t('money.voirEuro') },
+            {
+              value: 'devise',
+              label: (
+                <Segment code={devise}>
+                  {t('money.voirDevise', { code: devise })}
+                </Segment>
+              ),
+            },
+            {
+              value: 'euro',
+              label: <Segment code="EUR">{t('money.voirEuro')}</Segment>,
+            },
           ]}
           ariaLabel={t('money.sens')}
           fullWidth
@@ -135,6 +146,16 @@ export function MoneySheet({
         {contenu}
       </div>
     </Sheet>
+  );
+}
+
+/** Un côté de la bascule : le drapeau de la devise, puis son libellé. */
+function Segment({ code, children }: { code: string; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <Drapeau code={code} hauteur={12} />
+      {children}
+    </span>
   );
 }
 
