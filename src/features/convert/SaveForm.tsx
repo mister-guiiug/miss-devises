@@ -79,7 +79,7 @@ export function SaveForm({
   }
 
   return (
-    <form onSubmit={enregistrer} className="flex flex-col gap-2">
+    <form onSubmit={enregistrer} className="flex flex-col gap-1.5">
       <div className="flex items-end gap-2">
         <TextField
           className="min-w-0 flex-1"
@@ -96,7 +96,7 @@ export function SaveForm({
         </Button>
       </div>
       {marge > 0 && (
-        <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+        <p className="m-0 text-xs" style={{ color: 'var(--dwc-text-soft)' }}>
           {t('convert.carnetSansMarge')}
         </p>
       )}

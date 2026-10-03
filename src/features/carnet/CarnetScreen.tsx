@@ -2,7 +2,6 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NotebookPen, Pencil, Trash2 } from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
-import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
 import { EmptyState } from '@mister-guiiug/dev-pwa-config/react/empty-state';
 import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
 import { Sheet } from '@mister-guiiug/dev-pwa-config/react/sheet';
@@ -32,9 +31,8 @@ import { Drapeau } from '../../ui/Drapeau.tsx';
 import { useCarnet } from './store.ts';
 
 /**
- * Le carnet (récit 4) : les conversions gardées, chacune refaite au taux du
- * jour, renommables, supprimables avec annulation, et leurs totaux par devise
- * (EF-010 à EF-012).
+ * Le carnet (récit 4) : liste de travail, pas mur de cartes. Totaux collés
+ * en bas. Suppression avec annulation (ADR 0008).
  */
 export function CarnetScreen() {
   const { t, m, fmt } = useI18n();
@@ -63,14 +61,17 @@ export function CarnetScreen() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 pb-2">
       <h2 className="sr-only">{t('carnet.title')}</h2>
       <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
         {fmt.plural(conversions.length, m.carnet.count, {
           count: conversions.length,
         })}
       </p>
-      <ul className="m-0 flex list-none flex-col gap-2 p-0">
+      <ul
+        className="m-0 flex list-none flex-col p-0"
+        style={{ borderTop: '1px solid var(--dwc-border)' }}
+      >
         {conversions.map(c => (
           <Ligne key={c.id} conversion={c} onRenommer={() => setARenommer(c)} />
         ))}
@@ -120,94 +121,93 @@ function Ligne({
   }
 
   return (
-    <li>
-      <Card className="flex flex-col gap-1">
-        <div className="flex items-start gap-2">
-          <h3 className="m-0 min-w-0 flex-1 text-base font-semibold break-words">
-            {c.libelle}
-          </h3>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              const ligne = reprise(c);
-              poserPaire(ligne.reference, ligne.devise);
-              reprendreSaisie({
-                champ: ligne.champ,
-                texte: formatNumber(ligne.montant, locale, {
-                  useGrouping: false,
-                  maximumFractionDigits: decimales ?? decimalesDe(c.de.code),
-                }),
-              });
-              navigate('/');
-            }}
-            aria-label={t('carnet.reprendreLigne', { libelle: c.libelle })}
-          >
-            {t('carnet.reprendre')}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onRenommer}
-            aria-label={t('carnet.renommerLigne', { libelle: c.libelle })}
-          >
-            <Pencil aria-hidden="true" className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={supprimer}
-            aria-label={t('carnet.supprimerLigne', { libelle: c.libelle })}
-          >
-            <Trash2 aria-hidden="true" className="size-4" />
-          </Button>
-        </div>
-        {/* Les drapeaux sont en ligne, dans le texte : celui-ci reste
-            « 200,00 EGP → 3,40 € », espaces compris. */}
-        <p className="m-0 font-semibold">
-          <Drapeau
-            code={c.de.code}
-            hauteur={12}
-            className="mr-1.5 inline-block align-[-1px]"
-          />
-          {montant(c.de)} →{' '}
-          <Drapeau
-            code={c.vers.code}
-            hauteur={12}
-            className="mr-1.5 inline-block align-[-1px]"
-          />
-          {montant(c.vers)}
-        </p>
-        <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
-          {t('carnet.taux', {
-            date: formaterDate(c.dateTaux, locale),
-            un: formaterCoupure(1, c.reference, locale),
-            taux: `${formaterTaux(c.taux, locale)} ${code}`,
+    <li
+      className="flex flex-col gap-1 py-3"
+      style={{ borderBottom: '1px solid var(--dwc-border)' }}
+    >
+      <div className="flex items-start gap-1">
+        <h3 className="m-0 min-w-0 flex-1 text-base font-semibold break-words">
+          {c.libelle}
+        </h3>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            const ligne = reprise(c);
+            poserPaire(ligne.reference, ligne.devise);
+            reprendreSaisie({
+              champ: ligne.champ,
+              texte: formatNumber(ligne.montant, locale, {
+                useGrouping: false,
+                maximumFractionDigits: decimales ?? decimalesDe(c.de.code),
+              }),
+            });
+            navigate('/');
+          }}
+          aria-label={t('carnet.reprendreLigne', { libelle: c.libelle })}
+        >
+          {t('carnet.reprendre')}
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onRenommer}
+          aria-label={t('carnet.renommerLigne', { libelle: c.libelle })}
+        >
+          <Pencil aria-hidden="true" className="size-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={supprimer}
+          aria-label={t('carnet.supprimerLigne', { libelle: c.libelle })}
+        >
+          <Trash2 aria-hidden="true" className="size-4" />
+        </Button>
+      </div>
+      <p className="m-0 font-semibold tabular-nums">
+        <Drapeau
+          code={c.de.code}
+          hauteur={12}
+          className="mr-1.5 inline-block align-[-1px]"
+        />
+        {montant(c.de)} →{' '}
+        <Drapeau
+          code={c.vers.code}
+          hauteur={12}
+          className="mr-1.5 inline-block align-[-1px]"
+        />
+        {montant(c.vers)}
+      </p>
+      <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+        {t('carnet.taux', {
+          date: formaterDate(c.dateTaux, locale),
+          un: formaterCoupure(1, c.reference, locale),
+          taux: `${formaterTaux(c.taux, locale)} ${code}`,
+        })}
+        {' · '}
+        {t(`convert.source.${c.source}`)}
+      </p>
+      {refaite && (
+        <p className="m-0 text-sm tabular-nums">
+          {t('carnet.aujourdhui', {
+            montant: formaterMontant(
+              refaite.montant,
+              c.vers.code,
+              locale,
+              decimales === null ? {} : { decimales }
+            ),
+            ecart: formaterPourcentage(refaite.ecart, locale),
           })}
-          {' · '}
-          {t(`convert.source.${c.source}`)}
         </p>
-        {refaite && (
-          <p className="m-0 text-sm">
-            {t('carnet.aujourdhui', {
-              montant: formaterMontant(
-                refaite.montant,
-                c.vers.code,
-                locale,
-                decimales === null ? {} : { decimales }
-              ),
-              ecart: formaterPourcentage(refaite.ecart, locale),
-            })}
-          </p>
-        )}
-      </Card>
+      )}
     </li>
   );
 }
 
 /**
  * Les totaux par paire (devise étrangère et référence), dès qu'une paire a
- * deux lignes.
+ * deux lignes. Collés en bas de la liste de travail.
  */
 function Totaux({
   conversions,
@@ -220,11 +220,18 @@ function Totaux({
   const totaux = totauxParPaire(conversions).filter(total => total.nombre > 1);
   if (totaux.length === 0) return null;
   return (
-    <section aria-labelledby="carnet-totaux" className="flex flex-col gap-1">
-      <h3 id="carnet-totaux" className="m-0 text-base font-semibold">
+    <section
+      aria-labelledby="carnet-totaux"
+      className="sticky bottom-0 flex flex-col gap-1 border-t pt-3"
+      style={{
+        borderColor: 'var(--dwc-border)',
+        background: 'var(--dwc-bg)',
+      }}
+    >
+      <h3 id="carnet-totaux" className="m-0 text-sm font-semibold">
         {t('carnet.totaux')}
       </h3>
-      <ul className="m-0 flex list-none flex-col gap-1 p-0 text-sm">
+      <ul className="m-0 flex list-none flex-col gap-1 p-0 text-sm tabular-nums">
         {totaux.map(total => (
           <li key={`${total.code}/${total.reference}`}>
             {t('carnet.total', {

@@ -30,10 +30,8 @@ const estPeriode = (valeur: string): valeur is Periode =>
   (PERIODES as string[]).includes(valeur);
 
 /**
- * L'historique (récit 3) : la courbe du taux sur la période, ses extrêmes,
- * sa variation, et le montant saisi dans Convertir comparé au début de la
- * période (EF-008, EF-009). La devise se change ici même, sans repasser par
- * Convertir, et c'est la même que là-bas (spécification 002, récit 5).
+ * L'historique (récit 3) : la courbe domine ; les stats et le delta du
+ * montant Convertir la suivent (EF-008, EF-009).
  */
 export function HistoryScreen() {
   const { t, locale } = useI18n();
@@ -62,22 +60,24 @@ export function HistoryScreen() {
         onChoisir={choisirDevise}
         exclure={reference}
       />
-      <h2 className="m-0 text-base font-semibold">
-        {t('history.courbe', {
-          un: formaterCoupure(1, reference, locale),
-          code: devise,
-          periode: nomPeriode(periode),
-        })}
-      </h2>
-      <SegmentedControl
-        value={periode}
-        onChange={valeur => {
-          if (estPeriode(valeur)) choisirPeriode(valeur);
-        }}
-        options={PERIODES.map(p => ({ value: p, label: nomPeriode(p) }))}
-        ariaLabel={t('history.periode')}
-        fullWidth
-      />
+      <div className="flex flex-col gap-2">
+        <h2 className="m-0 text-base font-semibold">
+          {t('history.courbe', {
+            un: formaterCoupure(1, reference, locale),
+            code: devise,
+            periode: nomPeriode(periode),
+          })}
+        </h2>
+        <SegmentedControl
+          value={periode}
+          onChange={valeur => {
+            if (estPeriode(valeur)) choisirPeriode(valeur);
+          }}
+          options={PERIODES.map(p => ({ value: p, label: nomPeriode(p) }))}
+          ariaLabel={t('history.periode')}
+          fullWidth
+        />
+      </div>
       {jour ? (
         <Contenu reference={reference} devise={devise} />
       ) : (
@@ -114,7 +114,7 @@ function Contenu({ reference, devise }: { reference: string; devise: string }) {
 
   return (
     <>
-      <Card className="flex flex-col gap-2">
+      <Card className="flex flex-col gap-3">
         {/* `key` : une autre paire ou une autre période repart du dernier
             point, celui d'aujourd'hui. */}
         <Courbe
@@ -132,6 +132,30 @@ function Contenu({ reference, devise }: { reference: string; devise: string }) {
             max: taux(stats.plusHaut.taux),
           })}
         />
+        <div className="grid grid-cols-3 gap-2 tabular-nums">
+          <Stat
+            label={t('history.plusHaut')}
+            value={taux(stats.plusHaut.taux)}
+            delta={t('history.le', { date: date(stats.plusHaut.date) })}
+          />
+          <Stat
+            label={t('history.plusBas')}
+            value={taux(stats.plusBas.taux)}
+            delta={t('history.le', { date: date(stats.plusBas.date) })}
+          />
+          <Stat
+            label={t('history.variation')}
+            value={formaterPourcentage(stats.variation, locale)}
+            trend={tendance}
+            delta={
+              tendance === 'up'
+                ? t('history.hausse')
+                : tendance === 'down'
+                  ? t('history.baisse')
+                  : t('history.stable')
+            }
+          />
+        </div>
         <p className="m-0 text-xs" style={{ color: 'var(--dwc-text-soft)' }}>
           {t('history.sourceDates', {
             source: t(`convert.source.${serie.source}`),
@@ -143,30 +167,6 @@ function Contenu({ reference, devise }: { reference: string; devise: string }) {
           <p className="m-0 text-xs">{t('history.incomplete')}</p>
         )}
       </Card>
-      <div className="grid grid-cols-3 gap-2">
-        <Stat
-          label={t('history.plusHaut')}
-          value={taux(stats.plusHaut.taux)}
-          delta={t('history.le', { date: date(stats.plusHaut.date) })}
-        />
-        <Stat
-          label={t('history.plusBas')}
-          value={taux(stats.plusBas.taux)}
-          delta={t('history.le', { date: date(stats.plusBas.date) })}
-        />
-        <Stat
-          label={t('history.variation')}
-          value={formaterPourcentage(stats.variation, locale)}
-          trend={tendance}
-          delta={
-            tendance === 'up'
-              ? t('history.hausse')
-              : tendance === 'down'
-                ? t('history.baisse')
-                : t('history.stable')
-          }
-        />
-      </div>
       <Comparaison reference={reference} devise={devise} stats={stats} />
     </>
   );
@@ -206,16 +206,13 @@ function Comparaison({
     formaterMontant(valeur, codeContre, locale, options);
 
   return (
-    <div className="flex flex-col gap-1 text-sm">
-      <p className="m-0">
-        {t('history.comparaison', {
+    <Card className="flex flex-col gap-1">
+      <p className="m-0 text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
+        {t('history.sur', {
           montant: formaterMontant(montant, codeSaisi, locale, options),
-          avant: montantDe(c.avant),
-          date: formaterDate(stats.debut.date, locale),
-          maintenant: montantDe(c.maintenant),
         })}
       </p>
-      <p className="m-0 font-semibold">
+      <p className="m-0 text-fluid-lg font-semibold tabular-nums">
         {t('history.ecart', {
           ecart: formaterMontant(c.ecart, codeContre, locale, {
             signe: true,
@@ -224,6 +221,14 @@ function Comparaison({
           pourcentage: formaterPourcentage(c.pourcentage, locale),
         })}
       </p>
-    </div>
+      <p className="m-0 text-sm">
+        {t('history.comparaison', {
+          montant: formaterMontant(montant, codeSaisi, locale, options),
+          avant: montantDe(c.avant),
+          date: formaterDate(stats.debut.date, locale),
+          maintenant: montantDe(c.maintenant),
+        })}
+      </p>
+    </Card>
   );
 }

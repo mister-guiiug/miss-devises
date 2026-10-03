@@ -123,7 +123,7 @@ function Shell() {
    * accepte un nœud, le logo y entre. `alt=""` : le titre le suit et le dit.
    */
   const titre = (
-    <span className="inline-flex items-center gap-2">
+    <span className="inline-flex min-w-0 items-center gap-2">
       <img
         src={`${import.meta.env.BASE_URL}favicon.svg`}
         alt=""
@@ -131,7 +131,19 @@ function Shell() {
         height={28}
         className="size-7 shrink-0"
       />
-      {titles[pathname] ?? t('app.name')}
+      {pathname === '/' ? (
+        <span className="flex min-w-0 flex-col leading-tight">
+          <span>{t('app.name')}</span>
+          <span
+            className="truncate text-xs font-normal"
+            style={{ color: 'var(--dwc-text-soft)' }}
+          >
+            {t('app.enTete')}
+          </span>
+        </span>
+      ) : (
+        (titles[pathname] ?? t('app.name'))
+      )}
     </span>
   );
 
