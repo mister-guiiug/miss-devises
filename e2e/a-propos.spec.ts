@@ -28,12 +28,13 @@ test.describe('@critical 002, récit 4 : À propos se lit d’un coup d’œil',
     expect(new Set(textes).size).toBe(textes.length);
   });
 
-  test('les fonctions, les sources liées, une section de confidentialité', async ({
-    page,
-  }) => {
+  test('les sources liées et ce qui quitte l’appareil', async ({ page }) => {
     await expect(
-      page.getByRole('list', { name: 'Ce qu’elle fait' }).getByRole('listitem')
-    ).toHaveCount(5);
+      page.getByRole('heading', { name: 'Ce qu’il faut savoir' })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('list', { name: 'Ce qu’elle fait' })
+    ).toHaveCount(0);
 
     await expect(
       page.getByRole('link', { name: 'Frankfurter' })
@@ -42,16 +43,14 @@ test.describe('@critical 002, récit 4 : À propos se lit d’un coup d’œil',
       page.getByRole('link', { name: 'fawazahmed0/currency-api' })
     ).toHaveAttribute('href', 'https://github.com/fawazahmed0/exchange-api');
 
-    const confidentialite = page.getByRole('region', {
-      name: 'Confidentialité',
-    });
-    await expect(confidentialite).toBeVisible();
+    const savoir = page.getByRole('region', { name: 'Ce qu’il faut savoir' });
+    await expect(savoir).toBeVisible();
     for (const origine of [
       'api.frankfurter.dev',
       'cdn.jsdelivr.net',
       'currency-api.pages.dev',
     ]) {
-      await expect(confidentialite).toContainText(origine);
+      await expect(savoir).toContainText(origine);
     }
   });
 
