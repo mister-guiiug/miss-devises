@@ -27,7 +27,11 @@ test.describe('@critical récit 1 : convertir dans les deux sens', () => {
     await expect(titre.getByText('Convertisseur indicatif')).toHaveCount(0);
     // Le bas du TEXTE du nom, pas celui de la boîte du `h1`, que le logo
     // grandit. L'accroche est remontée contre lui (`-mt-4`, voir `App.tsx`) :
-    // elle doit commencer dessous, et tout près.
+    // elle doit commencer dessous, et à moins d'une de ses lignes (1 rem).
+    // L'écart dépend des métriques de la police : 3 à 5 px sous Windows,
+    // 6,7 px en CI (`mobile-chrome`, 03/10/2026). Sans la remontée, il monte
+    // à 19 ou 21 px : la borne de 12 px garde ce qui compte, au-delà des
+    // écarts de police.
     const basDuNom = await titre.evaluate(h1 => {
       const marcheur = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT);
       let bas = -Infinity;
@@ -41,7 +45,7 @@ test.describe('@critical récit 1 : convertir dans les deux sens', () => {
     const boite = await accroche.boundingBox();
     if (!boite) throw new Error('accroche sans boîte');
     expect(boite.y).toBeGreaterThanOrEqual(basDuNom - 1);
-    expect(boite.y - basDuNom).toBeLessThanOrEqual(6);
+    expect(boite.y - basDuNom).toBeLessThanOrEqual(12);
   });
 
   test('200 EGP donnent 3,40 €, et 20 € donnent 1 176,60 EGP', async ({
