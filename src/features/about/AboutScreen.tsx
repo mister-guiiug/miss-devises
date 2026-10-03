@@ -1,11 +1,4 @@
 import type { ReactNode } from 'react';
-import {
-  ArrowUpDown,
-  Banknote,
-  ChartLine,
-  NotebookPen,
-  WifiOff,
-} from 'lucide-react';
 import { AppVersion } from '@mister-guiiug/dev-pwa-config/react/app-version';
 import { Card, CardHeader } from '@mister-guiiug/dev-pwa-config/react/card';
 import { FamilyAbout } from '@mister-guiiug/dev-pwa-config/react/family-about';
@@ -45,18 +38,14 @@ const ORIGINES = [
 ] as const;
 
 /**
- * L'écran « à propos » : qui elle est, ce qu'elle fait, d'où viennent ses
- * chiffres, ce qui quitte l'appareil ; puis l'installation, la grille de la
- * famille et le pied de page, que `FamilyAbout` du socle compose.
- *
- * UNE PHRASE NE S'Y LIT QU'UNE FOIS. La première version mettait la
- * description de l'application en sous-titre ET en corps de la même carte,
- * sous un titre qui répétait celui de la page ; la confidentialité n'était
- * qu'un paragraphe sous « Billets et pièces ». Chaque section a désormais son
- * titre, et la confidentialité la sienne.
+ * L'écran « à propos » : qui elle est, puis une seule lecture sur les taux,
+ * les billets et les données. Les fonctions ne sont pas relistées : la
+ * navigation les montre déjà. Le nom, la version, les sources liées, la
+ * confidentialité et les crédits restent (spécification 002, récit 4).
  *
  * LE PIED DE PAGE EST ICI ET SUR L'ACCUEIL, nulle part ailleurs — la règle
- * famille du 06/09/2026, que `pwa-doctor` vérifie.
+ * famille du 06/09/2026, que `pwa-doctor` vérifie. `FamilyAbout` le compose,
+ * avec la grille de la famille, après ces cartes.
  */
 export function AboutScreen() {
   const { t } = useI18n();
@@ -77,85 +66,48 @@ export function AboutScreen() {
         <div className="flex min-w-0 flex-col gap-1">
           <h2 className="m-0 text-fluid-lg font-bold">{t('app.name')}</h2>
           <p className="m-0">{t('about.accroche')}</p>
-          {/* `AppVersion` rend un paragraphe : son conteneur est un bloc. */}
           <div className="text-sm" style={{ color: 'var(--dwc-text-soft)' }}>
             <AppVersion className="m-0" />
           </div>
         </div>
       </Card>
 
-      <Card>
-        <CardHeader title={t('about.fonctions')} id="about-fonctions" />
-        <ul
-          aria-labelledby="about-fonctions"
-          className="m-0 flex list-none flex-col gap-3 p-0"
-        >
-          <Fonction icone={<ArrowUpDown />}>
-            {t('about.fonction.convertir')}
-          </Fonction>
-          <Fonction icone={<Banknote />}>
-            {t('about.fonction.billets')}
-          </Fonction>
-          <Fonction icone={<ChartLine />}>
-            {t('about.fonction.historique')}
-          </Fonction>
-          <Fonction icone={<NotebookPen />}>
-            {t('about.fonction.carnet')}
-          </Fonction>
-          <Fonction icone={<WifiOff />}>
-            {t('about.fonction.horsLigne')}
-          </Fonction>
-        </ul>
-      </Card>
-
-      {/* La provenance des taux, la raison des dessins et ce qui part chez un
-          tiers : les trois choses que la constitution demande de dire
-          (principes I et III, contrainte de confidentialité). */}
-      <Card>
-        <CardHeader title={t('about.sources')} />
-        <ul className="m-0 flex list-none flex-col gap-2 p-0">
-          {SOURCES.map(source => (
-            <li key={source.cle}>
-              <a href={source.url} target="_blank" rel="noreferrer">
-                {source.nom}
-              </a>
-              {' : '}
-              {t(`about.source.${source.cle}`)}
-            </li>
-          ))}
-        </ul>
-        <p className="m-0 mt-2" style={{ color: 'var(--dwc-text-soft)' }}>
-          {t('about.indicatif')}
-        </p>
-      </Card>
-
-      <Card>
-        <CardHeader title={t('about.billets')} />
-        <p className="m-0">{t('about.billetsBody')}</p>
-      </Card>
-
-      <Card as="section" aria-labelledby="about-confidentialite">
-        <CardHeader
-          title={t('about.confidentialite')}
-          id="about-confidentialite"
-        />
-        <div className="flex flex-col gap-2">
-          <p className="m-0">{t('about.surAppareil')}</p>
-          <p className="m-0">{t('about.tiers')}</p>
-          <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
-            {ORIGINES.map(origine => (
-              <li key={origine}>
-                <code
-                  className="rounded px-1.5 py-0.5 text-sm"
-                  style={{ background: 'var(--dwc-surface-2)' }}
-                >
-                  {origine}
-                </code>
-              </li>
-            ))}
-          </ul>
-          <p className="m-0">{t('about.tiersPhotos')}</p>
-          {sansMesure && <p className="m-0">{t('about.sansMesure')}</p>}
+      <Card as="section" aria-labelledby="about-savoir">
+        <CardHeader title={t('about.savoir')} id="about-savoir" />
+        <div className="flex flex-col gap-4">
+          <Bloc titre={t('about.taux')}>
+            <ul className="m-0 flex list-none flex-col gap-2 p-0">
+              {SOURCES.map(source => (
+                <li key={source.cle}>
+                  <a href={source.url} target="_blank" rel="noreferrer">
+                    {source.nom}
+                  </a>
+                  {' : '}
+                  {t(`about.source.${source.cle}`)}
+                </li>
+              ))}
+            </ul>
+            <p className="m-0" style={{ color: 'var(--dwc-text-soft)' }}>
+              {t('about.indicatif')}
+            </p>
+          </Bloc>
+          <Bloc titre={t('about.billets')}>
+            <p className="m-0">{t('about.billetsBody')}</p>
+          </Bloc>
+          <Bloc titre={t('about.donnees')}>
+            <p className="m-0">{t('about.surAppareil')}</p>
+            <details className="text-sm">
+              <summary style={{ color: 'var(--dwc-text-soft)' }}>
+                {t('about.adresses')}
+              </summary>
+              <div className="mt-2 flex flex-col gap-2">
+                <p className="m-0">{t('about.tiers')}</p>
+                <p className="m-0">{ORIGINES.join(', ')}</p>
+                <p className="m-0">{t('about.tiersPhotos')}</p>
+                {sansMesure && <p className="m-0">{t('about.sansMesure')}</p>}
+              </div>
+            </details>
+          </Bloc>
         </div>
       </Card>
 
@@ -177,27 +129,11 @@ export function AboutScreen() {
   );
 }
 
-/** Une fonction de l'application : son icône, sa phrase. */
-function Fonction({
-  icone,
-  children,
-}: {
-  icone: ReactNode;
-  children: ReactNode;
-}) {
+function Bloc({ titre, children }: { titre: string; children: ReactNode }) {
   return (
-    <li className="flex items-start gap-3">
-      <span
-        aria-hidden="true"
-        className="flex size-9 shrink-0 items-center justify-center rounded-full [&>svg]:size-5"
-        style={{
-          background: 'var(--dwc-surface-2)',
-          color: 'var(--dwc-primary)',
-        }}
-      >
-        {icone}
-      </span>
-      <span className="pt-1.5">{children}</span>
-    </li>
+    <div className="flex flex-col gap-1">
+      <h3 className="m-0 text-sm font-semibold">{titre}</h3>
+      {children}
+    </div>
   );
 }
