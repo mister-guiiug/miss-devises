@@ -15,6 +15,35 @@ test.describe('@critical récit 1 : convertir dans les deux sens', () => {
     );
   });
 
+  test("l'accroche suit le nom, hors du titre, sans le chevaucher", async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const titre = page.getByRole('heading', { level: 1 });
+    const accroche = page.getByText('Convertisseur indicatif', {
+      exact: true,
+    });
+    await expect(accroche).toBeVisible();
+    await expect(titre.getByText('Convertisseur indicatif')).toHaveCount(0);
+    // Le bas du TEXTE du nom, pas celui de la boîte du `h1`, que le logo
+    // grandit. L'accroche est remontée contre lui (`-mt-4`, voir `App.tsx`) :
+    // elle doit commencer dessous, et tout près.
+    const basDuNom = await titre.evaluate(h1 => {
+      const marcheur = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT);
+      let bas = -Infinity;
+      for (let n = marcheur.nextNode(); n; n = marcheur.nextNode()) {
+        const plage = document.createRange();
+        plage.selectNodeContents(n);
+        for (const r of plage.getClientRects()) bas = Math.max(bas, r.bottom);
+      }
+      return bas;
+    });
+    const boite = await accroche.boundingBox();
+    if (!boite) throw new Error('accroche sans boîte');
+    expect(boite.y).toBeGreaterThanOrEqual(basDuNom - 1);
+    expect(boite.y - basDuNom).toBeLessThanOrEqual(6);
+  });
+
   test('200 EGP donnent 3,40 €, et 20 € donnent 1 176,60 EGP', async ({
     page,
   }) => {
