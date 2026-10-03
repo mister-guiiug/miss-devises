@@ -39,8 +39,16 @@ import { useTaux } from './rates/store.ts';
  * sont agnostiques de routeur, et c'est ainsi qu'on leur donne celui de l'app.
  * Un `<BottomNav />` sans `items` rend une barre VIDE — c'est le piège que la
  * campagne d'adoption a rencontré, et il ne produit aucune erreur de type.
+ *
+ * `navCurrentPath={pathname}` : le chemin du ROUTEUR, relatif à la base. Sans
+ * lui, la barre lit `location.pathname`, qui vaut `/miss-devises/` une fois
+ * déployé quand l'entrée vaut `/` : aucun des cinq onglets n'était actif en
+ * ligne, jamais en développement ni en e2e, servis sous `/`. Relevé le
+ * 03/10/2026 ; la prop existe depuis le socle 6.23.0.
+ *
+ * Exporté pour `App.nav.test.tsx`, qui le monte sous un `basename`.
  */
-function Shell() {
+export function Shell() {
   const { t } = useI18n();
   const { pathname } = useLocation();
 
@@ -169,6 +177,7 @@ function Shell() {
       linkComponent={Link}
       hrefProp="to"
       navItems={nav}
+      navCurrentPath={pathname}
       beforeMain={<ConnectionBanner />}
       afterMain={
         /*
