@@ -137,36 +137,6 @@ body {
 }
 
 /*
- * LE PIED DE PAGE SUR UNE LIGNE, MÊME SUR UN TÉLÉPHONE. Le socle range ses
- * trois liens en `flex-wrap: wrap`, avec un texte de 13 px et 12 px d'écart :
- * il leur faut 374 px. L'accueil en offre 343 sur un écran de 375 px, 361 sur
- * un de 393 : « Signaler un problème » passait seul à la ligne, 56 px plus
- * bas. Resserrés (texte de 12 px, écarts de 8 et 4 px), ils en prennent 337.
- * Plus étroit encore, la rangée reste unique : seul ce dernier libellé se
- * replie, dans les 44 px de haut que le socle réserve au doigt.
- *
- * Au-delà de 28rem, rien ne change : la colonne offre assez de place au pied
- * de page du socle (544 px sur un écran de bureau). La règle vaut aussi pour
- * celui d'« À propos », que `FamilyAbout` pose avec les mêmes trois liens.
- */
-@media (max-width: 28rem) {
-  [data-dwc='app-footer'] {
-    flex-wrap: nowrap;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-  }
-
-  [data-dwc='app-footer'] > a {
-    flex-shrink: 0;
-    gap: 0.25rem;
-  }
-
-  [data-dwc='app-footer'] > [data-dwc='footer-issues'] {
-    flex-shrink: 1;
-  }
-}
-
-/*
  * L'ANNEAU DE FOCUS NE SE COUPE PLUS DANS UNE FEUILLE. Le corps d'une feuille
  * du socle défile (`overflow-y: auto`, donc `overflow-x` aussi) : ce qui
  * dépasse de sa boîte est coupé. Un champ pleine largeur y touchait les deux
