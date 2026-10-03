@@ -131,25 +131,40 @@ function Shell() {
         height={28}
         className="size-7 shrink-0"
       />
-      {pathname === '/' ? (
-        <span className="flex min-w-0 flex-col leading-tight">
-          <span>{t('app.name')}</span>
-          <span
-            className="truncate text-xs font-normal"
-            style={{ color: 'var(--dwc-text-soft)' }}
-          >
-            {t('app.enTete')}
-          </span>
-        </span>
-      ) : (
-        (titles[pathname] ?? t('app.name'))
-      )}
+      {titles[pathname] ?? t('app.name')}
     </span>
   );
+
+  /*
+   * L'ACCROCHE DE L'ACCUEIL, SOUS LE NOM ET HORS DU `h1`. Glissée dans le
+   * titre, elle s'ajoutait au texte du `h1` sans séparateur : « Miss
+   * DevisesConvertisseur indicatif », ce qu'annonçait un lecteur d'écran, et
+   * l'e2e de l'accueil le refusait (relevé le 03/10/2026, `main` rouge depuis
+   * la refonte « hiérarchie et densité »). L'en-tête du socle lui réserve une
+   * place : ses enfants, rendus sous la rangée du titre (`headerChildren`).
+   *
+   * `ps-9` l'aligne sous le nom : le logo (1,75 rem) et son écart (0,5 rem).
+   * `-mt-4` la remonte au bas du logo, contre le nom, comme le montrait la
+   * refonte : la marge basse de la rangée (0,5 rem) et le centrage du logo
+   * dans la bande de 2,75 rem du bouton de thème (0,5 rem). Un cran de plus
+   * entrait dans la boîte du texte du nom. Elle mord donc sur le bas de cette
+   * bande, où rien n'est à toucher hors du bouton : `pointer-events-none` le
+   * lui laisse. La garde est `e2e/smoke.spec.ts`.
+   */
+  const accroche =
+    pathname === '/' ? (
+      <p
+        className="pointer-events-none -mt-4 truncate ps-9 text-xs"
+        style={{ color: 'var(--dwc-text-soft)' }}
+      >
+        {t('app.enTete')}
+      </p>
+    ) : undefined;
 
   return (
     <AppShell
       title={titre}
+      headerChildren={accroche}
       backHref={pathname === '/' ? undefined : '/'}
       linkComponent={Link}
       hrefProp="to"
