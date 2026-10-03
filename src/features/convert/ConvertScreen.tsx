@@ -28,9 +28,8 @@ const MoneySheet = lazy(() =>
 
 /**
  * L'écran principal (récit 1) : deux champs liés, l'un saisi, l'autre
- * calculé, dans les deux sens et à chaque frappe (EF-001). L'un est en
- * monnaie de référence, l'euro par défaut (spécification 002), l'autre dans
- * la devise choisie. Tient sans défilement sur un téléphone (CR-005).
+ * calculé — le calculé porte la lecture. Tient sans défilement sur un
+ * téléphone (CR-005).
  */
 export function ConvertScreen() {
   const { t, locale } = useI18n();
@@ -69,11 +68,18 @@ export function ConvertScreen() {
       ? d
       : deriver(saisie, devise, reference, jour?.taux, locale, 0, decimales);
 
+  const bas: Champ = haut === 'devise' ? 'reference' : 'devise';
+
   // « Montant en livres égyptiennes », « Montant en euros » : un montant se
   // compte au pluriel, dans les deux langues.
-  const champ = (lequel: Champ) => (
+  const champ = (lequel: Champ, heros = false) => (
     <TextField
       key={lequel}
+      className={
+        heros
+          ? '[&_[data-dwc=field-control]]:text-fluid-xl [&_[data-dwc=field-control]]:font-bold [&_[data-dwc=field-control]]:tabular-nums'
+          : '[&_[data-dwc=field-control]]:tabular-nums'
+      }
       label={t('convert.montant', {
         nom: nomAuPluriel(lequel === 'devise' ? devise : reference, locale),
       })}
@@ -91,7 +97,7 @@ export function ConvertScreen() {
   );
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <h2 className="sr-only">{t('convert.title')}</h2>
       <CurrencyPicker
         code={devise}
@@ -108,12 +114,12 @@ export function ConvertScreen() {
           type="button"
           onClick={inverser}
           aria-label={t('convert.inverser')}
-          className="mx-auto flex size-11 items-center justify-center rounded-full border"
+          className="mx-auto flex size-10 items-center justify-center rounded-full border"
           style={{ borderColor: 'var(--dwc-border-strong)' }}
         >
           <ArrowUpDown aria-hidden="true" className="size-5" />
         </button>
-        {champ(haut === 'devise' ? 'reference' : 'devise')}
+        {champ(bas, true)}
       </Card>
       <RateLine
         jour={jour}
@@ -123,18 +129,20 @@ export function ConvertScreen() {
         onReessayer={() => void rafraichir({ force: true })}
       />
       <CompositionLigne montant={d.montantDevise} devise={devise} />
-      <Button variant="outline" block onClick={() => setVolet(true)}>
-        <IconeBillets aria-hidden="true" className="size-5" />
-        {t('convert.billets')}
-      </Button>
-      <SaveForm
-        devise={devise}
-        reference={reference}
-        jour={jour}
-        derive={indicatif}
-        champ={saisie.champ}
-        marge={marge}
-      />
+      <div className="flex flex-col gap-2">
+        <Button variant="outline" block onClick={() => setVolet(true)}>
+          <IconeBillets aria-hidden="true" className="size-5" />
+          {t('convert.billets')}
+        </Button>
+        <SaveForm
+          devise={devise}
+          reference={reference}
+          jour={jour}
+          derive={indicatif}
+          champ={saisie.champ}
+          marge={marge}
+        />
+      </div>
       {volet && (
         <Suspense fallback={null}>
           <MoneySheet

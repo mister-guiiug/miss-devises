@@ -17,6 +17,7 @@ const fr = {
     name: 'Miss Devises',
     tagline:
       'Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.',
+    enTete: 'Convertisseur indicatif',
   },
   nav: {
     convert: 'Convertir',
@@ -118,6 +119,7 @@ const fr = {
     plusHaut: 'Plus haut',
     plusBas: 'Plus bas',
     variation: 'Variation',
+    sur: 'Sur {montant}',
     comparaison:
       '{montant} valaient {avant} le {date}, et valent {maintenant} aujourd’hui.',
     ecart: 'Écart : {ecart} ({pourcentage}).',
@@ -262,6 +264,7 @@ const en: typeof fr = {
     name: 'Miss Devises',
     tagline:
       'A visual currency converter: banknotes and coins in plain sight, conversion both ways, rate history and labelled conversions.',
+    enTete: 'Indicative converter',
   },
   nav: {
     convert: 'Convert',
@@ -362,6 +365,7 @@ const en: typeof fr = {
     plusHaut: 'High',
     plusBas: 'Low',
     variation: 'Change',
+    sur: 'On {montant}',
     comparaison:
       '{montant} was worth {avant} on {date}, and is worth {maintenant} today.',
     ecart: 'Difference: {ecart} ({pourcentage}).',

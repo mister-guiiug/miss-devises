@@ -19,10 +19,9 @@ interface Props {
 }
 
 /**
- * La ligne de taux : le taux dans les deux sens, sa source, sa date, et ce
- * qui doit alerter (principe I, EF-003). Jamais un taux sans sa provenance.
- * « 1 € = 58,83 EGP », ou « 1 CHF = 62,692 EGP » : la référence se dit
- * comme `Intl` l'écrit, symbole compris (spécification 002).
+ * La ligne de taux : le taux, sa source et sa date — une lecture, pas un mur
+ * (principe I, EF-003). Jamais un taux sans sa provenance. « 1 € = 58,83 EGP »,
+ * ou « 1 CHF = 62,692 EGP » : la référence se dit comme `Intl` l'écrit.
  */
 export function RateLine({
   jour,
@@ -46,9 +45,25 @@ export function RateLine({
   }
 
   const date = formaterDate(jour.date, locale);
+  const meta = [
+    t('convert.date', {
+      source: t(`convert.source.${jour.source}`),
+      date,
+    }),
+    t('convert.indicatif'),
+    marge > 0
+      ? t('convert.marge', {
+          marge: formatNumber(marge, locale, { maximumFractionDigits: 2 }),
+        })
+      : null,
+    horsLigne ? t('convert.horsLigne') : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
   return (
     <div role="status" className="flex flex-col gap-0.5 text-sm">
-      <p className="m-0 font-semibold">
+      <p className="m-0 font-semibold tabular-nums">
         {t('convert.taux', {
           un: formaterCoupure(1, jour.reference, locale),
           taux: `${formaterTaux(jour.taux, locale)} ${jour.code}`,
@@ -60,31 +75,14 @@ export function RateLine({
         })}
       </p>
       <p className="m-0" style={{ color: 'var(--dwc-text-soft)' }}>
-        {t('convert.date', {
-          source: t(`convert.source.${jour.source}`),
-          date,
-        })}
-        {' · '}
-        {t('convert.indicatif')}
+        {meta}
       </p>
-      {marge > 0 && (
-        <p className="m-0" style={{ color: 'var(--dwc-text-soft)' }}>
-          {t('convert.marge', {
-            marge: formatNumber(marge, locale, { maximumFractionDigits: 2 }),
-          })}
-        </p>
-      )}
       {jour.fraicheur === 'ancien' && (
         <p
           className="m-0 font-semibold"
           style={{ color: 'var(--dwc-warning)' }}
         >
           {t('convert.ancien', { date })}
-        </p>
-      )}
-      {horsLigne && (
-        <p className="m-0" style={{ color: 'var(--dwc-text-soft)' }}>
-          {t('convert.horsLigne')}
         </p>
       )}
     </div>

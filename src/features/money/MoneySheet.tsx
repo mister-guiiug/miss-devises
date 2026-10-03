@@ -539,12 +539,50 @@ function Contenu({
 
   return (
     <>
+      {/* Total collé en tête : composer reste le geste, le chiffre suit. */}
+      <div
+        role="status"
+        className="sticky top-0 z-10 flex flex-col gap-2 empty:hidden"
+        style={{
+          background: 'var(--dwc-surface)',
+          borderBottom: total > 0 ? '1px solid var(--dwc-border)' : undefined,
+          marginInline: '-0.25rem',
+          paddingInline: '0.25rem',
+        }}
+      >
+        {total > 0 && (
+          <>
+            <p
+              data-testid="total-compose"
+              className="m-0 pt-1 text-fluid-lg font-bold tabular-nums"
+            >
+              {contreTotal
+                ? t('money.total', {
+                    montant: formaterMontant(total, code, locale),
+                    contre: contreTotal.lu,
+                  })
+                : t('money.totalSeul', {
+                    montant: formaterMontant(total, code, locale),
+                  })}
+            </p>
+            <div className="flex flex-wrap gap-2 pb-2">
+              <Button onClick={() => onUtiliser(total)}>
+                {t('money.utiliser')}
+              </Button>
+              <Button variant="ghost" onClick={() => setCompte({})}>
+                {t('money.remettre')}
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
+
       {composition && montant !== null && (
         <section
           aria-labelledby={idComposition}
           className="flex flex-col gap-2"
         >
-          <h3 id={idComposition} className="m-0 text-base font-semibold">
+          <h3 id={idComposition} className="m-0 text-sm font-semibold">
             {t('money.composition', {
               montant: formaterMontant(montant, code, locale),
             })}
@@ -624,37 +662,6 @@ function Contenu({
       {modePhotos && montrees.length > 0 && (
         <Credits montrees={montrees} libelleCourt={libelleCourt} />
       )}
-
-      {/* La région vit toujours : un lecteur d'écran annonce le total dès la
-          première coupure touchée, pas seulement à la deuxième. */}
-      <div
-        role="status"
-        className="sticky bottom-0 flex flex-col gap-2 empty:hidden"
-        style={{ background: 'var(--dwc-surface)' }}
-      >
-        {total > 0 && (
-          <>
-            <p data-testid="total-compose" className="m-0 pt-2 font-semibold">
-              {contreTotal
-                ? t('money.total', {
-                    montant: formaterMontant(total, code, locale),
-                    contre: contreTotal.lu,
-                  })
-                : t('money.totalSeul', {
-                    montant: formaterMontant(total, code, locale),
-                  })}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <Button onClick={() => onUtiliser(total)}>
-                {t('money.utiliser')}
-              </Button>
-              <Button variant="ghost" onClick={() => setCompte({})}>
-                {t('money.remettre')}
-              </Button>
-            </div>
-          </>
-        )}
-      </div>
 
       <footer
         className="flex flex-col gap-1 text-xs"
