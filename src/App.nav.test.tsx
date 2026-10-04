@@ -3,8 +3,16 @@ import { cleanup, render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ToastProvider } from '@mister-guiiug/dev-pwa-config/react/toast';
 import { I18nProvider } from './i18n/index.ts';
-import { useTaux } from './rates/store.ts';
 import { Shell } from './App.tsx';
+
+/*
+ * LA COQUILLE DÉMARRE LES TAUX VIA QUERY. Sans réseau ni IndexedDB ici : le
+ * bootstrap est remplacé, et la barre seule reste l'objet du test.
+ */
+vi.mock('./shared/queries/taux.ts', () => ({
+  useTauxBootstrap: () => {},
+  rafraichirTaux: vi.fn(),
+}));
 
 /*
  * L'ONGLET COURANT, SOUS LE CHEMIN DE GITHUB PAGES.
@@ -64,11 +72,6 @@ beforeEach(() => {
   localStorage.clear();
   // Sans locale stockée, jsdom rapporte `en-US` et la barre parle anglais.
   localStorage.setItem('dwc_locale', 'fr');
-  // `Shell` démarre les taux au montage : rien ne part sur le réseau.
-  useTaux.setState({
-    demarrer: vi.fn(async () => {}),
-    rafraichir: vi.fn(async () => {}),
-  });
 });
 
 afterEach(() => {
