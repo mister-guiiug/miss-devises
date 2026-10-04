@@ -6,7 +6,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { ChartLine, Coins, Info, NotebookPen, Settings } from 'lucide-react';
-import { useEffect } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { AppShell } from '@mister-guiiug/dev-pwa-config/react/app-shell';
 import { ObservabilityBoundary } from '@mister-guiiug/dev-pwa-config/react/error-boundary';
 import { ConnectionBanner } from '@mister-guiiug/dev-pwa-config/react/connection-banner';
@@ -21,7 +21,8 @@ import { HistoryScreen } from './features/history/HistoryScreen.tsx';
 import { CarnetScreen } from './features/carnet/CarnetScreen.tsx';
 import { SettingsScreen } from './features/settings/SettingsScreen.tsx';
 import { AboutScreen } from './features/about/AboutScreen.tsx';
-import { useTaux } from './rates/store.ts';
+import { getQueryClient } from './shared/queries/client.ts';
+import { useTauxBootstrap } from './shared/queries/taux.ts';
 
 /**
  * LE CADRE : `AppShell` du socle (en-tête, contenu borné, barre basse).
@@ -69,14 +70,10 @@ export function Shell() {
   /*
    * LES TAUX DÉMARRENT AVEC LA COQUILLE, PAS AVEC UN ÉCRAN : le cache d'abord,
    * le réseau ensuite (recherche R8), et une relecture au retour en ligne.
-   * Un écran qui les démarrerait les relancerait à chaque visite.
+   * Un écran qui les démarrerait les relancerait à chaque visite. Query porte
+   * le réseau ; le miroir Zustand (`useTaux`) alimente l'UI.
    */
-  useEffect(() => {
-    void useTaux.getState().demarrer();
-    const enLigne = () => void useTaux.getState().rafraichir({ force: true });
-    window.addEventListener('online', enLigne);
-    return () => window.removeEventListener('online', enLigne);
-  }, []);
+  useTauxBootstrap();
 
   const nav = [
     {
@@ -237,25 +234,27 @@ export function Shell() {
 
 export function App() {
   return (
-    <ObservabilityBoundary>
-      {/* `registerType: 'prompt'` : une nouvelle version ne recharge JAMAIS la
+    <QueryClientProvider client={getQueryClient()}>
+      <ObservabilityBoundary>
+        {/* `registerType: 'prompt'` : une nouvelle version ne recharge JAMAIS la
           page toute seule. Trois apps du parc étaient en `autoUpdate` et
           pouvaient recharger au milieu d'une saisie. `checkEvery` fait
           découvrir une version à une PWA installée restée ouverte plusieurs
           jours, qui autrement ne verrait rien avant un démarrage à froid. */}
-      <AppUpdates registerSW={registerSW} checkEvery="1h">
-        {/* UN SEUL ÉTAT DU THÈME pour la bascule de l'en-tête et le choix des
+        <AppUpdates registerSW={registerSW} checkEvery="1h">
+          {/* UN SEUL ÉTAT DU THÈME pour la bascule de l'en-tête et le choix des
             réglages. Chacune montait son propre `useTheme`, sans se voir :
             choisir « Sombre » dans les réglages laissait l'en-tête sur
             l'ancien thème, et son clic suivant repartait de là. Sans `appId`
             ni palette, le fournisseur ne repeint rien : il partage l'état,
             sous la même clé (`dwc_theme`) que la préférence déjà enregistrée. */}
-        <ThemeProvider>
-          <BrowserRouter basename={import.meta.env.BASE_URL}>
-            <Shell />
-          </BrowserRouter>
-        </ThemeProvider>
-      </AppUpdates>
-    </ObservabilityBoundary>
+          <ThemeProvider>
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
+              <Shell />
+            </BrowserRouter>
+          </ThemeProvider>
+        </AppUpdates>
+      </ObservabilityBoundary>
+    </QueryClientProvider>
   );
 }

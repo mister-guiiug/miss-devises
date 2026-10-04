@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { serviceTaux, useTaux } from '../../rates/store.ts';
 import type { Periode, Serie } from '../../rates/service.ts';
+import { queryKeys } from '../../shared/queries/keys.ts';
 
 export type EtatSerie =
   | { statut: 'chargement' }
@@ -8,7 +9,7 @@ export type EtatSerie =
   | { statut: 'indisponible' };
 
 /**
- * La série d'une paire sur une période, par le service : le cache d'abord,
+ * La série d'une paire sur une période, par Query : le cache d'abord,
  * le réseau ensuite. Une période jamais lue, hors ligne, est `indisponible`
  * (récit 3, scénario 4).
  *
@@ -22,34 +23,32 @@ export function useSerie(
   code: string,
   periode: Periode
 ): EtatSerie {
-  const etat = useTaux(s => s.etat);
   const pret = useTaux(s => s.pret);
   const chargement = useTaux(s => s.chargement);
   const sourceConnue = pret && !chargement;
-  const cle = `${reference}:${code}:${periode}`;
-  const [lu, setLu] = useState<{ cle: string; etat: EtatSerie }>();
 
-  useEffect(() => {
-    if (!sourceConnue) return undefined;
-    const controle = new AbortController();
-    serviceTaux
-      .serie(reference, code, periode, etat, controle.signal)
-      .then(serie => {
-        if (controle.signal.aborted) return;
-        setLu({
-          cle,
-          etat:
-            serie.points.length > 0
-              ? { statut: 'pret', serie }
-              : { statut: 'indisponible' },
-        });
-      })
-      .catch(() => {
-        if (!controle.signal.aborted)
-          setLu({ cle, etat: { statut: 'indisponible' } });
-      });
-    return () => controle.abort();
-  }, [reference, code, periode, etat, sourceConnue, cle]);
+  const query = useQuery({
+    queryKey: queryKeys.serie(reference, code, periode),
+    queryFn: ({ signal }) =>
+      serviceTaux.serie(
+        reference,
+        code,
+        periode,
+        useTaux.getState().etat,
+        signal
+      ),
+    enabled: sourceConnue,
+    // Une série manquante (hors ligne) se dit tout de suite — pas de seconde
+    // tentative qui retarderait le message « jamais consultée ».
+    retry: false,
+  });
 
-  return lu?.cle === cle ? lu.etat : { statut: 'chargement' };
+  // `isLoading` : en attente sans donnée encore (pas un refetch en arrière-plan).
+  if (!sourceConnue || query.isLoading) {
+    return { statut: 'chargement' };
+  }
+  if (query.isError || !query.data || query.data.points.length === 0) {
+    return { statut: 'indisponible' };
+  }
+  return { statut: 'pret', serie: query.data };
 }

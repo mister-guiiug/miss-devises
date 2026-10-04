@@ -23,9 +23,10 @@ interface EtatStoreTaux {
 }
 
 /**
- * Le dernier taux gardé s'affiche aussitôt, puis l'application le rafraîchit
- * en arrière-plan, au plus une fois par heure (recherche R8). Une source qui
- * répond remplace la sienne ; une source muette laisse la sienne en place.
+ * Factory de test (et de référence) : hydrate IndexedDB, puis le réseau, au
+ * plus une fois par heure via `CLE_LECTURE`. En production, le miroir
+ * `useTaux` est alimenté par TanStack Query (`shared/queries/taux.ts`) —
+ * même ordre R8, le throttle passant par `staleTime`.
  */
 export function creerStoreTaux(
   service: ServiceTaux,
@@ -73,4 +74,18 @@ export const serviceTaux = createServiceTaux({
   recuperer: recupererJson,
 });
 
-export const useTaux = creerStoreTaux(serviceTaux);
+/**
+ * Miroir UI des taux : `etat`, `pret`, `chargement`, `echec`. Le réseau et
+ * l'hydratation sont portés par `useTauxBootstrap` (TanStack Query).
+ */
+export const useTaux = create<{
+  etat: EtatTaux;
+  pret: boolean;
+  chargement: boolean;
+  echec: boolean;
+}>(() => ({
+  etat: {},
+  pret: false,
+  chargement: false,
+  echec: false,
+}));

@@ -7,6 +7,7 @@ import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
 import { useI18n } from '../../i18n/index.ts';
 import { useTaux } from '../../rates/store.ts';
 import { codesConnus, tauxDuJour } from '../../rates/service.ts';
+import { rafraichirTaux } from '../../shared/queries/taux.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import { nomAuPluriel } from '../../domain/currencies.ts';
 import { deriver, useConversion, type Champ } from './conversion.ts';
@@ -37,7 +38,6 @@ export function ConvertScreen() {
   const etat = useTaux(s => s.etat);
   const pret = useTaux(s => s.pret);
   const echec = useTaux(s => s.echec);
-  const rafraichir = useTaux(s => s.rafraichir);
   const reference = usePreferences(s => s.reference);
   const devise = usePreferences(s => s.devise);
   const recentes = usePreferences(s => s.recentes);
@@ -126,7 +126,7 @@ export function ConvertScreen() {
         pret={pret}
         horsLigne={echec}
         marge={marge}
-        onReessayer={() => void rafraichir({ force: true })}
+        onReessayer={() => void rafraichirTaux({ force: true })}
       />
       <CompositionLigne montant={d.montantDevise} devise={devise} />
       <div className="flex flex-col gap-2">
