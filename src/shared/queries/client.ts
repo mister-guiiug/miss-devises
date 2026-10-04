@@ -1,23 +1,15 @@
-import { QueryClient } from '@tanstack/react-query';
+import { getQueryClient as getFamilyQueryClient } from '@mister-guiiug/dev-pwa-config/react/query-client';
 import { UNE_HEURE } from '../../rates/store.ts';
 
-function createAppQueryClient(): QueryClient {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: UNE_HEURE,
-        gcTime: UNE_HEURE,
-        retry: 1,
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: true,
-      },
+/**
+ * Client Query de l'app — defaults famille + staleTime / gcTime d'une heure
+ * (recherche R8 : au plus une lecture réseau par heure).
+ */
+export function getQueryClient() {
+  return getFamilyQueryClient({
+    queries: {
+      staleTime: UNE_HEURE,
+      gcTime: UNE_HEURE,
     },
   });
-}
-
-let client: QueryClient | undefined;
-
-export function getQueryClient(): QueryClient {
-  client ??= createAppQueryClient();
-  return client;
 }
