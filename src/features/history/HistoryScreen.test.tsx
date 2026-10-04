@@ -1,12 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { QueryClientProvider } from '@tanstack/react-query';
+import {
+  wrapWithQueryClient,
+  clearQueryClient,
+} from '@mister-guiiug/dev-pwa-config/testing/query';
 import { I18nProvider } from '../../i18n/index.ts';
 import { serviceTaux, useTaux } from '../../rates/store.ts';
 import type { Serie } from '../../rates/service.ts';
 import { usePreferences } from '../../app/preferences.ts';
-import { getQueryClient } from '../../shared/queries/client.ts';
 import { useConversion } from '../convert/conversion.ts';
 import { HistoryScreen } from './HistoryScreen.tsx';
 
@@ -27,11 +29,11 @@ const unAn: Serie = {
 
 function monter() {
   render(
-    <QueryClientProvider client={getQueryClient()}>
+    wrapWithQueryClient(
       <I18nProvider>
         <HistoryScreen />
       </I18nProvider>
-    </QueryClientProvider>
+    )
   );
 }
 
@@ -48,7 +50,7 @@ function chiffre(intitule: string) {
 beforeEach(() => {
   localStorage.clear();
   localStorage.setItem('dwc_locale', 'fr');
-  getQueryClient().clear();
+  clearQueryClient();
   useTaux.setState({
     etat: {
       marche: { source: 'marche', date: AUJOURDHUI, taux: { EGP: 58.83 } },
