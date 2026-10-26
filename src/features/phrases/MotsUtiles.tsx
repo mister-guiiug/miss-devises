@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Square, Volume2 } from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Sheet } from '@mister-guiiug/dev-pwa-config/react/sheet';
 import { SegmentedControl } from '@mister-guiiug/dev-pwa-config/react/segmented-control';
 import { useI18n } from '../../i18n/index.ts';
 import brut from '../../data/phrases.json';
 import { GROUPES, type IdPhrase, type JeuPhrases } from '../../data/phrases.ts';
+import { arreter, choisirVoix, dire, useVoix } from './voix.ts';
 
 /** Vérifié par `phrases.test.ts` : la feuille ne paie pas Zod à l'exécution. */
 const JEU = brut as JeuPhrases;
@@ -24,6 +26,10 @@ interface Props {
  * Chaque phrase porte sa langue (`lang`) et son sens d'écriture (`dir`) : un
  * lecteur d'écran la prononce avec la bonne voix, et l'arabe s'écrit de droite
  * à gauche. Touchée, elle s'affiche en grand, pour être montrée (R4).
+ *
+ * « Écouter » la fait dire par la synthèse vocale de l'appareil, quand il a
+ * une voix pour la langue (spécification 005, récit 2) ; sinon, la feuille le
+ * dit, sans bouton qui ne ferait rien.
  */
 export function MotsUtiles({ open, onClose, langues }: Props) {
   const { t, locale } = useI18n();
@@ -32,10 +38,15 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
   const grande = useRef<HTMLDivElement>(null);
   const derniere = useRef<IdPhrase | null>(null);
   const liste = useRef<HTMLDivElement>(null);
+  const voixDeLAppareil = useVoix();
+  // La phrase en cours de lecture : son bouton dit « Arrêter ».
+  const [dite, setDite] = useState<IdPhrase | null>(null);
 
   // La langue choisie n'existe plus (autre devise) : la première revient.
   const code = langues.includes(choisie) ? choisie : (langues[0] ?? '');
   const langue = JEU.langues[code];
+  // `null` tant que la liste des voix n'est pas arrivée : ni bouton, ni avis.
+  const voix = voixDeLAppareil ? choisirVoix(code, voixDeLAppareil) : null;
   const nom = useMemo(() => {
     const noms = new Intl.DisplayNames([locale], { type: 'language' });
     return (c: string) => noms.of(c) ?? c;
@@ -55,6 +66,14 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
     }
   }, [montree]);
 
+  // Une autre langue, ou la feuille fermée : la lecture s'arrête.
+  useEffect(
+    () => () => {
+      if (typeof speechSynthesis !== 'undefined') arreter();
+    },
+    [code]
+  );
+
   const fermer = () => {
     setMontree(null);
     derniere.current = null;
@@ -63,6 +82,24 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
 
   if (!langue) return null;
   const phrase = montree ? langue.phrases[montree] : null;
+
+  const ecouter = (id: IdPhrase) => {
+    const texte = langue.phrases[id]?.texte;
+    if (!voix || !texte) return;
+    if (dite === id) {
+      arreter();
+      setDite(null);
+      return;
+    }
+    setDite(id);
+    dire(texte, code, voix, () => setDite(d => (d === id ? null : d)));
+  };
+  const icone = (id: IdPhrase) =>
+    dite === id ? (
+      <Square aria-hidden="true" className="size-4" />
+    ) : (
+      <Volume2 aria-hidden="true" className="size-5" />
+    );
 
   return (
     <Sheet open={open} title={t('phrases.titre')} onClose={fermer}>
@@ -82,6 +119,14 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
       ) : (
         <p className="m-0 font-semibold">
           {t('phrases.enLangue', { langue: nom(code) })}
+        </p>
+      )}
+      {voixDeLAppareil !== null && !voix && (
+        <p
+          className="m-0 mt-2 text-sm"
+          style={{ color: 'var(--dwc-text-soft)' }}
+        >
+          {t('phrases.sansVoix', { langue: nom(code) })}
         </p>
       )}
 
@@ -109,9 +154,17 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
             </p>
           )}
           <p className="m-0">{t(`phrases.sens.${montree}`)}</p>
-          <Button variant="outline" onClick={() => setMontree(null)}>
-            {t('phrases.retour')}
-          </Button>
+          <div className="flex flex-wrap justify-center gap-2">
+            {voix && (
+              <Button onClick={() => ecouter(montree)}>
+                {icone(montree)}
+                {dite === montree ? t('phrases.arreter') : t('phrases.ecouter')}
+              </Button>
+            )}
+            <Button variant="outline" onClick={() => setMontree(null)}>
+              {t('phrases.retour')}
+            </Button>
+          </div>
         </div>
       ) : (
         <div ref={liste}>
@@ -131,7 +184,7 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
                   const p = langue.phrases[id];
                   if (!p) return null;
                   return (
-                    <li key={id}>
+                    <li key={id} className="flex items-stretch gap-1">
                       <button
                         type="button"
                         data-phrase={id}
@@ -139,7 +192,7 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
                           derniere.current = id;
                           setMontree(id);
                         }}
-                        className="flex w-full flex-col items-start gap-0.5 rounded-lg border px-3 py-2 text-left"
+                        className="flex min-w-0 flex-1 flex-col items-start gap-0.5 rounded-lg border px-3 py-2 text-left"
                         style={{ borderColor: 'var(--dwc-border)' }}
                       >
                         <span
@@ -164,6 +217,22 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
                           {t(`phrases.sens.${id}`)}
                         </span>
                       </button>
+                      {voix && (
+                        <button
+                          type="button"
+                          onClick={() => ecouter(id)}
+                          aria-label={t(
+                            dite === id
+                              ? 'phrases.arreterPhrase'
+                              : 'phrases.ecouterPhrase',
+                            { sens: t(`phrases.sens.${id}`) }
+                          )}
+                          className="flex w-11 shrink-0 items-center justify-center rounded-lg border"
+                          style={{ borderColor: 'var(--dwc-border)' }}
+                        >
+                          {icone(id)}
+                        </button>
+                      )}
                     </li>
                   );
                 })}

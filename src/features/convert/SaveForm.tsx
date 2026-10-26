@@ -19,6 +19,8 @@ interface Props {
   champ: Champ;
   /** Au-dessus de zéro, le carnet ignore la marge : on le dit. */
   marge?: number;
+  /** Des frais sont appliqués : le carnet les ignore aussi, et le dit. */
+  avecFrais?: boolean;
 }
 
 /**
@@ -35,6 +37,7 @@ export function SaveForm({
   derive,
   champ,
   marge = 0,
+  avecFrais = false,
 }: Props) {
   const { t, locale } = useI18n();
   const toast = useToast();
@@ -98,6 +101,11 @@ export function SaveForm({
       {marge > 0 && (
         <p className="m-0 text-xs" style={{ color: 'var(--dwc-text-soft)' }}>
           {t('convert.carnetSansMarge')}
+        </p>
+      )}
+      {avecFrais && (
+        <p className="m-0 text-xs" style={{ color: 'var(--dwc-text-soft)' }}>
+          {t('convert.carnetSansFrais')}
         </p>
       )}
     </form>

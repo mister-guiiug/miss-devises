@@ -21,7 +21,9 @@ test.describe('@critical 004 : les mots utiles du pays', () => {
     await page.goto('/');
     await page.getByRole('button', { name: 'Mots utiles' }).click();
     const feuille = page.getByRole('dialog', { name: 'Mots utiles' });
-    await expect(feuille.getByText('En arabe (Égypte)')).toBeVisible();
+    await expect(
+      feuille.getByText('En arabe (Égypte)', { exact: true })
+    ).toBeVisible();
     await expect(feuille.getByRole('listitem')).toHaveCount(16);
     const phrase = feuille.getByText('بكام ده؟', { exact: true });
     await expect(phrase).toHaveAttribute('lang', 'ar-EG');

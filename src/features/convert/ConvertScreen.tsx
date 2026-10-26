@@ -26,6 +26,7 @@ import {
   type ChampSaisi,
 } from './conversion.ts';
 import { Pave } from './Pave.tsx';
+import { LigneFrais } from './LigneFrais.tsx';
 import { languesProposees } from '../../data/langues.ts';
 import { CurrencyPicker } from './CurrencyPicker.tsx';
 import { RateLine } from './RateLine.tsx';
@@ -81,6 +82,9 @@ export function ConvertScreen() {
   const choisirSeconde = usePreferences(s => s.choisirSeconde);
   const retirerSeconde = usePreferences(s => s.retirerSeconde);
   const calculatrice = usePreferences(s => s.calculatrice);
+  const frais = usePreferences(s => s.frais);
+  const fraisChoisis = usePreferences(s => s.fraisChoisis);
+  const choisirFrais = usePreferences(s => s.choisirFrais);
   const basculerCalculatrice = usePreferences(s => s.basculerCalculatrice);
   const saisie = useConversion(s => s.saisie);
   const haut = useConversion(s => s.haut);
@@ -346,6 +350,21 @@ export function ConvertScreen() {
           onEgal={egal}
         />
       )}
+      <LigneFrais
+        frais={frais}
+        choisis={fraisChoisis}
+        onChoisir={choisirFrais}
+        reference={reference}
+        montantReference={indicatif.montantReference}
+        tauxFixe={
+          tauxDuJour(
+            reference,
+            frais.find(f => f.id === fraisChoisis)?.deviseFixe ?? reference,
+            etat,
+            maintenant
+          )?.taux
+        }
+      />
       <RateLine
         jour={jour}
         pret={pret}
@@ -397,6 +416,7 @@ export function ConvertScreen() {
           }
           champ={enSeconde ? 'devise' : (saisie.champ as Champ)}
           marge={marge}
+          avecFrais={frais.some(f => f.id === fraisChoisis)}
         />
       </div>
       {mots && langues.length > 0 && (

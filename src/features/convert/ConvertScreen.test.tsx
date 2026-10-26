@@ -47,6 +47,8 @@ beforeEach(() => {
     seconde: null,
     marge: 0,
     calculatrice: false,
+    frais: [],
+    fraisChoisis: null,
   });
   useConversion.setState({
     saisie: { champ: 'devise', texte: '' },
@@ -474,5 +476,79 @@ describe('les mots utiles (spécification 004)', () => {
       'lang',
       'en'
     );
+  });
+});
+
+describe('les frais d’une conversion (spécification 005, récit 1)', () => {
+  const CARTE = {
+    id: 'carte',
+    libelle: 'Carte',
+    pourcentage: 2,
+    fixe: 0.5,
+    deviseFixe: 'EUR',
+  };
+
+  it('aucun frais enregistré : l’écran est inchangé (scénario 1)', () => {
+    monter();
+    expect(screen.queryByLabelText('Frais')).toBeNull();
+  });
+
+  it('« Carte » choisie, 200 EGP coûtent 3,97 €, dont 0,57 € de frais (scénario 2)', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ frais: [CARTE], fraisChoisis: null });
+    monter();
+    await user.selectOptions(screen.getByLabelText('Frais'), 'Carte');
+    expect(usePreferences.getState().fraisChoisis).toBe('carte');
+    await user.type(
+      screen.getByLabelText('Montant en livres égyptiennes'),
+      '200'
+    );
+    expect(
+      lisible(screen.getByText(/^Coût avec frais/).textContent ?? '')
+    ).toBe('Coût avec frais : 3,97 €');
+    expect(lisible(screen.getByText(/^dont/).textContent ?? '')).toBe(
+      'dont 0,57 € de frais (2 % + 0,50 €)'
+    );
+    expect(
+      screen.getByText(
+        'Le carnet enregistre le taux indicatif, sans les frais.'
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('les frais s’ajoutent au montant indicatif, pas à celui après marge (scénario 6)', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({
+      frais: [CARTE],
+      fraisChoisis: 'carte',
+      marge: 5,
+    });
+    monter();
+    await user.type(
+      screen.getByLabelText('Montant en livres égyptiennes'),
+      '200'
+    );
+    expect(
+      lisible(screen.getByText(/^Coût avec frais/).textContent ?? '')
+    ).toBe('Coût avec frais : 3,97 €');
+  });
+
+  it('un montant fixe sans taux : le coût n’est pas calculé (scénario 3)', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({
+      frais: [{ ...CARTE, fixe: 220, deviseFixe: 'THB' }],
+      fraisChoisis: 'carte',
+    });
+    monter();
+    await user.type(
+      screen.getByLabelText('Montant en livres égyptiennes'),
+      '200'
+    );
+    expect(
+      screen.getByText(
+        'Pas de taux pour THB : le coût avec frais n’est pas calculé.'
+      )
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/^Coût avec frais/)).toBeNull();
   });
 });

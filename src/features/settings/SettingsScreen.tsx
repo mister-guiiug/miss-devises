@@ -30,6 +30,7 @@ import { useTaux } from '../../rates/store.ts';
 import { codesConnus } from '../../rates/service.ts';
 import { useCarnet } from '../carnet/store.ts';
 import { CurrencyPicker } from '../convert/CurrencyPicker.tsx';
+import { ReglageFrais } from './ReglageFrais.tsx';
 import { arrondir, decimalesDe, lireMontant } from '../../domain/money.ts';
 
 /**
@@ -131,6 +132,9 @@ export function SettingsScreen() {
           </Reglage>
           <Reglage titre={t('settings.marge')} aide={t('settings.margeAide')}>
             <ChoixMarge reference={reference} />
+          </Reglage>
+          <Reglage titre={t('settings.frais')} aide={t('settings.fraisAide')}>
+            <ReglageFrais reference={reference} codes={codes} />
           </Reglage>
           <Reglage
             titre={t('settings.decimales')}
