@@ -4,10 +4,18 @@ import userEvent from '@testing-library/user-event';
 import { I18nProvider } from '../../i18n/index.ts';
 import { MotsUtiles } from './MotsUtiles.tsx';
 
-function monter(langues: string[]) {
+function monter(
+  langues: string[],
+  montants: { devise: string; montant: number | null }[] = []
+) {
   render(
     <I18nProvider>
-      <MotsUtiles open onClose={() => {}} langues={langues} />
+      <MotsUtiles
+        open
+        onClose={() => {}}
+        langues={langues}
+        montants={montants}
+      />
     </I18nProvider>
   );
   return screen.getByRole('dialog', { name: 'Mots utiles' });
@@ -172,6 +180,24 @@ describe('les phrases parlées (spécification 005, récit 2)', () => {
     expect((synthese.speak.mock.calls[0]![0] as Enonce).text).toBe('بكام ده؟');
   });
 
+  it('« Écouter le montant » dit le prix en arabe (spécification 006, scénario 2)', async () => {
+    const user = userEvent.setup();
+    const feuille = monter(['ar-EG'], [{ devise: 'EGP', montant: 150 }]);
+    await user.click(
+      within(feuille).getByRole('button', { name: 'Écouter le montant' })
+    );
+    const enonce = synthese.speak.mock.calls[0]![0] as Enonce;
+    expect(enonce.lang).toBe('ar-EG');
+    expect(enonce.text).toBe(
+      new Intl.NumberFormat('ar-EG', {
+        style: 'currency',
+        currency: 'EGP',
+        currencyDisplay: 'name',
+        maximumFractionDigits: 0,
+      }).format(150)
+    );
+  });
+
   it('sans voix pour la langue : pas de bouton, et la feuille le dit (scénario 4)', () => {
     synthese.voix = [voix('de-DE')];
     const feuille = monter(['th']);
@@ -195,5 +221,65 @@ describe('les phrases parlées (spécification 005, récit 2)', () => {
     expect((synthese.speak.mock.calls[0]![0] as Enonce).voice).toBe(
       synthese.voix[0]
     );
+  });
+});
+
+describe('dire le prix au vendeur (spécification 006, récit 1)', () => {
+  const enLangue = (langue: string, devise: string, montant: number) =>
+    new Intl.NumberFormat(langue, {
+      style: 'currency',
+      currency: devise,
+      currencyDisplay: 'name',
+      maximumFractionDigits: Number.isInteger(montant) ? 0 : 2,
+    }).format(montant);
+  const lisible = (texte: string | null) => (texte ?? '').replace(/\s/g, ' ');
+
+  it('écrit le montant dans la langue du vendeur, et en clair (scénarios 1, 6)', () => {
+    const feuille = monter(['ar-EG'], [{ devise: 'EGP', montant: 150 }]);
+    const rangee = within(feuille).getByRole('region', { name: 'Le montant' });
+    const texte = within(rangee).getByText(enLangue('ar-EG', 'EGP', 150));
+    expect(texte).toHaveAttribute('lang', 'ar-EG');
+    expect(texte).toHaveAttribute('dir', 'rtl');
+    expect(
+      within(rangee)
+        .getAllByText(/EGP/)
+        .some(n => lisible(n.textContent) === '150 EGP')
+    ).toBe(true);
+  });
+
+  it('« Montrer » l’affiche en grand (scénario 3)', async () => {
+    const user = userEvent.setup();
+    const feuille = monter(['ar-EG'], [{ devise: 'EGP', montant: 150 }]);
+    await user.click(
+      within(feuille).getByRole('button', { name: 'Montrer le montant' })
+    );
+    const grande = within(feuille).getByRole('region', {
+      name: 'Le montant',
+    });
+    expect(within(grande).getByText(enLangue('ar-EG', 'EGP', 150))).toHaveClass(
+      'text-5xl'
+    );
+  });
+
+  it('une langue de la seconde devise dit le montant de la seconde (scénario 4)', async () => {
+    const user = userEvent.setup();
+    const feuille = monter(
+      ['ar-EG', 'en'],
+      [
+        { devise: 'EGP', montant: 150 },
+        { devise: 'USD', montant: 4.07 },
+      ]
+    );
+    await user.click(within(feuille).getByRole('tab', { name: 'anglais' }));
+    expect(
+      within(feuille).getByText(enLangue('en', 'USD', 4.07))
+    ).toHaveAttribute('lang', 'en');
+  });
+
+  it('sans montant, pas de rangée (scénario 5)', () => {
+    const feuille = monter(['ar-EG'], [{ devise: 'EGP', montant: null }]);
+    expect(
+      within(feuille).queryByRole('region', { name: 'Le montant' })
+    ).toBeNull();
   });
 });

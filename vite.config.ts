@@ -129,6 +129,14 @@ export default defineConfig(({ command }) => {
           id: APP_ID,
           name: 'Miss Devises',
           shortName: 'Miss Devises',
+          // Un appui long sur l'icône installée (spécification 006, récit 3).
+          // URL relatives : `pwaBaseOptions` y pose la base de l'app. `?mots`
+          // ouvre les mots utiles depuis l'écran Convertir.
+          shortcuts: [
+            { name: 'Convertir', url: './' },
+            { name: 'Carnet', url: 'carnet' },
+            { name: 'Mots utiles', url: '?mots' },
+          ],
           description:
             'Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.',
           // Les photos déjà vues restent hors ligne. La règle d'images du

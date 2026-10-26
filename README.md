@@ -28,7 +28,8 @@ et bâtie sur
   d'un billet et demander l'addition, avec leur transcription et leur sens
   dans la langue de l'application. Touchée, une phrase s'affiche en grand,
   pour la montrer, ou se dit par la voix de l'appareil quand il en a une
-  pour la langue. 27 langues pour les 41 devises illustrées, livrées avec
+  pour la langue. Le montant en cours s'y écrit aussi dans la langue du
+  vendeur (« ١٥٠ جنيهًا مصريًا »), à dire ou à montrer. 27 langues pour les 41 devises illustrées, livrées avec
   l'application ; leur relecture est publiée dans
   `specs/004-mots-utiles/phrases.md`.
 - **Compter les frais** : une banque prend un pourcentage et un montant fixe
@@ -65,7 +66,9 @@ et bâtie sur
   réglages. Installée, l'application n'a pas d'autre bouton de rechargement.
 
 Elle fonctionne hors ligne avec les derniers taux connus, en français et en
-anglais, au clavier et au lecteur d'écran.
+anglais, au clavier et au lecteur d'écran, qui entend les montants calculés à
+la fin d'une saisie. Installée, un appui long sur son icône propose
+« Convertir », « Carnet » et « Mots utiles ».
 
 ## D'où viennent les taux
 

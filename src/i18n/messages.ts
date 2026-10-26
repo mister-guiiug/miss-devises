@@ -14,6 +14,7 @@
  */
 const fr = {
   app: {
+    chargement: 'Chargement…',
     name: 'Miss Devises',
     tagline:
       'Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.',
@@ -89,6 +90,7 @@ const fr = {
     negatif: 'Le calcul donne un montant négatif.',
     frais: 'Frais',
     fraisAucun: 'Aucun',
+    annonce: 'Soit {montants}.',
     coutAvecFrais: 'Coût avec frais : {total}',
     dontFrais: 'dont {frais} de frais ({detail})',
     fraisSansTaux:
@@ -106,6 +108,9 @@ const fr = {
     ecouterPhrase: 'Écouter : {sens}',
     arreter: 'Arrêter',
     arreterPhrase: 'Arrêter : {sens}',
+    montant: 'Le montant',
+    ecouterMontant: 'Écouter le montant',
+    montrerMontant: 'Montrer le montant',
     sansVoix:
       'Pas de voix en {langue} sur cet appareil : les phrases s’affichent sans être dites.',
     groupes: {
@@ -351,6 +356,7 @@ const fr = {
 
 const en: typeof fr = {
   app: {
+    chargement: 'Loading…',
     name: 'Miss Devises',
     tagline:
       'A visual currency converter: banknotes and coins in plain sight, conversion both ways, rate history and labelled conversions.',
@@ -425,6 +431,7 @@ const en: typeof fr = {
     negatif: 'The calculation gives a negative amount.',
     frais: 'Fees',
     fraisAucun: 'None',
+    annonce: 'That is {montants}.',
     coutAvecFrais: 'Cost with fees: {total}',
     dontFrais: 'including {frais} in fees ({detail})',
     fraisSansTaux: 'No rate for {code}: the cost with fees is not calculated.',
@@ -441,6 +448,9 @@ const en: typeof fr = {
     ecouterPhrase: 'Listen: {sens}',
     arreter: 'Stop',
     arreterPhrase: 'Stop: {sens}',
+    montant: 'The amount',
+    ecouterMontant: 'Listen to the amount',
+    montrerMontant: 'Show the amount',
     sansVoix:
       'No {langue} voice on this device: the phrases are shown, not spoken.',
     groupes: {
