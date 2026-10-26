@@ -26,14 +26,14 @@ commence par son test, vu rouge (constitution, principe V).
 
 ## Phase 3 : récit 2, la voix (P2)
 
-- [ ] T008 [P] [R2] Tests puis `src/features/phrases/voix.ts` : choix d'une
+- [x] T008 [P] [R2] Tests puis `src/features/phrases/voix.ts` : choix d'une
       voix (R3), lecture et arrêt, énoncé gardé (R4).
-- [ ] T009 [R2] Tests puis « Écouter » dans la liste et en grand, « Arrêter »
+- [x] T009 [R2] Tests puis « Écouter » dans la liste et en grand, « Arrêter »
       pendant la lecture, sans voix : la phrase le dit (`MotsUtiles.tsx`).
-- [ ] T010 [R2] e2e `@critical` avec une synthèse simulée ; axe.
-- [ ] T011 [R2] Messages fr et en.
+- [x] T010 [R2] e2e `@critical` avec une synthèse simulée ; axe.
+- [x] T011 [R2] Messages fr et en.
 
 ## Phase 4 : finitions
 
-- [ ] T012 Vérification dans le navigateur : 320 et 390 px, deux thèmes.
-- [ ] T013 README ; budget de poids et `pwa-doctor --strict`.
+- [x] T012 Vérification dans le navigateur : 320 et 390 px, deux thèmes.
+- [x] T013 README ; budget de poids et `pwa-doctor --strict`.

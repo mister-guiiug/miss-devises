@@ -27,9 +27,15 @@ et bâtie sur
   pays de la devise, seize phrases pour saluer, marchander, faire la monnaie
   d'un billet et demander l'addition, avec leur transcription et leur sens
   dans la langue de l'application. Touchée, une phrase s'affiche en grand,
-  pour la montrer. 27 langues pour les 41 devises illustrées, livrées avec
+  pour la montrer, ou se dit par la voix de l'appareil quand il en a une
+  pour la langue. 27 langues pour les 41 devises illustrées, livrées avec
   l'application ; leur relecture est publiée dans
   `specs/004-mots-utiles/phrases.md`.
+- **Compter les frais** : une banque prend un pourcentage et un montant fixe
+  par paiement, un distributeur ses frais de retrait, parfois en monnaie
+  locale. Les réglages enregistrent jusqu'à six frais nommés ; l'écran
+  Convertir en applique un et montre le coût frais compris (« Coût avec
+  frais : 3,97 €, dont 0,57 € de frais »), à part de la marge d'un bureau.
 - **Calculer dans la saisie** : un champ comprend « 12,5 + 7,5 » et convertit
   le résultat, affiché sous lui. Le bouton « Calculatrice » remplace le clavier
   du téléphone, qui n'a pas d'opérateurs, par un pavé (+ − × ÷, ⌫, C, =) qui

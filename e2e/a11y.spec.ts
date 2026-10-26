@@ -5,6 +5,7 @@ import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { expectNoA11yViolations } from '@mister-guiiug/dev-pwa-config/playwright-a11y';
 import { simulerPhotos, simulerTaux } from './taux.ts';
+import { simulerVoix } from './voix.ts';
 
 interface Ecran {
   nom: string;
@@ -78,6 +79,17 @@ const ECRANS: Ecran[] = [
       await page.getByRole('button', { name: 'Ajouter des frais' }).click();
       await expect(
         page.getByRole('dialog', { name: 'Nouveaux frais' })
+      ).toBeVisible();
+    },
+  },
+  {
+    nom: 'mots utiles, avec une voix (spécification 005)',
+    aller: async page => {
+      await simulerVoix(page, ['ar-EG']);
+      await saisir200(page);
+      await page.getByRole('button', { name: 'Mots utiles' }).click();
+      await expect(
+        page.getByRole('button', { name: 'Écouter : Combien ça coûte ?' })
       ).toBeVisible();
     },
   },
