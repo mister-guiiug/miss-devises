@@ -4,6 +4,21 @@ import { createVersionedStore } from '@mister-guiiug/dev-pwa-config/versioned-st
 
 const CODE = z.string().regex(/^[A-Z]{3}$/);
 
+/**
+ * Des frais de banque ou de distributeur (spécification 005) : un pourcentage
+ * et un montant fixe dans sa devise, au moins l'un des deux non nul.
+ */
+const FRAIS = z
+  .object({
+    id: z.string().min(1),
+    libelle: z.string().trim().min(1).max(40),
+    pourcentage: z.number().min(0).max(100),
+    fixe: z.number().min(0),
+    deviseFixe: CODE,
+  })
+  .refine(f => f.pourcentage > 0 || f.fixe > 0);
+const MAX_FRAIS = 6;
+
 const schema = z.object({
   reference: CODE,
   devise: CODE,
@@ -45,6 +60,9 @@ const schema = z.object({
    * des montants (spécification 003, récit 2). Éteint par défaut.
    */
   calculatrice: z.boolean().default(false),
+  /** Les frais enregistrés, et ceux que l'écran Convertir applique. */
+  frais: z.array(FRAIS).max(MAX_FRAIS).default([]),
+  fraisChoisis: z.string().nullable().default(null),
 });
 
 export type Preferences = z.infer<typeof schema>;
@@ -70,6 +88,8 @@ export const DEFAUTS: Preferences = {
   decimales: null,
   seconde: null,
   calculatrice: false,
+  frais: [],
+  fraisChoisis: null,
 };
 
 /**
@@ -122,7 +142,19 @@ interface EtatPreferences extends Preferences {
   choisirSeconde: (code: string) => void;
   retirerSeconde: () => void;
   basculerCalculatrice: () => void;
+  /** Refusés s'ils sont invalides (nuls, hors bornes) ou au-delà de six. */
+  ajouterFrais: (frais: Omit<FraisEnregistres, 'id'>) => void;
+  modifierFrais: (id: string, frais: Omit<FraisEnregistres, 'id'>) => void;
+  /** Supprimer les frais choisis revient à « aucun ». */
+  supprimerFrais: (id: string) => void;
+  choisirFrais: (id: string | null) => void;
 }
+
+export type FraisEnregistres = Preferences['frais'][number];
+
+/** Un identifiant court, sans dépendre de `crypto.randomUUID`. */
+const nouvelId = () =>
+  `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
 
 /** Une fabrique, pour qu'un test relise les préférences comme au rechargement. */
 export function creerPreferences() {
@@ -142,6 +174,8 @@ export function creerPreferences() {
         decimales,
         seconde,
         calculatrice,
+        frais,
+        fraisChoisis,
       } = get();
       preferencesStore.save({
         reference,
@@ -156,7 +190,13 @@ export function creerPreferences() {
         decimales,
         seconde,
         calculatrice,
+        frais,
+        fraisChoisis,
       });
+    };
+    const valides = (frais: Omit<FraisEnregistres, 'id'>, id: string) => {
+      const lu = FRAIS.safeParse({ ...frais, id });
+      return lu.success ? lu.data : null;
     };
     const enTeteDesRecentes = (code: string) =>
       [code, ...get().recentes.filter(c => c !== code)].slice(0, 6);
@@ -228,6 +268,28 @@ export function creerPreferences() {
       },
       retirerSeconde: () => sauver({ seconde: null }),
       basculerCalculatrice: () => sauver({ calculatrice: !get().calculatrice }),
+      ajouterFrais: frais => {
+        const actuels = get().frais;
+        if (actuels.length >= MAX_FRAIS) return;
+        const nouveaux = valides(frais, nouvelId());
+        if (nouveaux) sauver({ frais: [...actuels, nouveaux] });
+      },
+      modifierFrais: (id, frais) => {
+        const modifies = valides(frais, id);
+        if (!modifies) return;
+        sauver({
+          frais: get().frais.map(f => (f.id === id ? modifies : f)),
+        });
+      },
+      supprimerFrais: id =>
+        sauver({
+          frais: get().frais.filter(f => f.id !== id),
+          ...(get().fraisChoisis === id ? { fraisChoisis: null } : {}),
+        }),
+      choisirFrais: id => {
+        if (id !== null && !get().frais.some(f => f.id === id)) return;
+        sauver({ fraisChoisis: id });
+      },
     };
   });
 }

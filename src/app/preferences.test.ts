@@ -21,6 +21,8 @@ describe('les préférences', () => {
       decimales,
       seconde,
       calculatrice,
+      frais,
+      fraisChoisis,
     } = creerPreferences().getState();
     expect({
       reference,
@@ -35,6 +37,8 @@ describe('les préférences', () => {
       decimales,
       seconde,
       calculatrice,
+      frais,
+      fraisChoisis,
     }).toEqual(DEFAUTS);
     expect(DEFAUTS.reference).toBe('EUR');
   });
@@ -203,6 +207,76 @@ describe('les préférences', () => {
       expect(creerPreferences().getState().calculatrice).toBe(true);
       prefs.getState().basculerCalculatrice();
       expect(creerPreferences().getState().calculatrice).toBe(false);
+    });
+  });
+
+  describe('les frais (spécification 005, récit 1)', () => {
+    const CARTE = {
+      libelle: 'Carte',
+      pourcentage: 2,
+      fixe: 0.5,
+      deviseFixe: 'EUR',
+    };
+
+    it('aucun par défaut ; ajoutés, choisis, ils survivent à un rechargement', () => {
+      const prefs = creerPreferences();
+      expect(prefs.getState().frais).toEqual([]);
+      expect(prefs.getState().fraisChoisis).toBeNull();
+      prefs.getState().ajouterFrais(CARTE);
+      const [carte] = prefs.getState().frais;
+      expect(carte).toMatchObject(CARTE);
+      expect(carte?.id).toBeTruthy();
+      prefs.getState().choisirFrais(carte!.id);
+      const relues = creerPreferences().getState();
+      expect(relues.frais).toEqual([carte]);
+      expect(relues.fraisChoisis).toBe(carte!.id);
+    });
+
+    it('se modifient, et se suppriment : les frais choisis reviennent à « aucun » (scénario 5)', () => {
+      const prefs = creerPreferences();
+      prefs.getState().ajouterFrais(CARTE);
+      const id = prefs.getState().frais[0]!.id;
+      prefs.getState().choisirFrais(id);
+      prefs.getState().modifierFrais(id, { ...CARTE, pourcentage: 3 });
+      expect(prefs.getState().frais[0]?.pourcentage).toBe(3);
+      prefs.getState().supprimerFrais(id);
+      expect(prefs.getState().frais).toEqual([]);
+      expect(creerPreferences().getState().fraisChoisis).toBeNull();
+    });
+
+    it('refuse des frais nuls, hors bornes ou sans libellé, et plus de six', () => {
+      const prefs = creerPreferences();
+      prefs.getState().ajouterFrais({ ...CARTE, pourcentage: 0, fixe: 0 });
+      prefs.getState().ajouterFrais({ ...CARTE, pourcentage: 101 });
+      prefs.getState().ajouterFrais({ ...CARTE, fixe: -1 });
+      prefs.getState().ajouterFrais({ ...CARTE, libelle: '  ' });
+      expect(prefs.getState().frais).toHaveLength(0);
+      for (let i = 0; i < 8; i += 1) {
+        prefs.getState().ajouterFrais({ ...CARTE, libelle: `Frais ${i}` });
+      }
+      expect(prefs.getState().frais).toHaveLength(6);
+    });
+
+    it('ne choisit pas des frais qui n’existent pas', () => {
+      const prefs = creerPreferences();
+      prefs.getState().choisirFrais('inconnu');
+      expect(prefs.getState().fraisChoisis).toBeNull();
+    });
+
+    it('se lisent absents dans une préférence écrite avant eux', () => {
+      preferencesStore.store.set('preferences', {
+        v: 2,
+        data: {
+          reference: 'EUR',
+          devise: 'MAD',
+          recentes: [],
+          sensVolet: 'devise',
+          periode: '1A',
+        },
+      });
+      const relues = creerPreferences().getState();
+      expect(relues.frais).toEqual([]);
+      expect(relues.fraisChoisis).toBeNull();
     });
   });
 });

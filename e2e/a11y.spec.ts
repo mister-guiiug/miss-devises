@@ -56,6 +56,32 @@ const ECRANS: Ecran[] = [
     },
   },
   {
+    nom: 'accueil, frais choisis (spécification 005)',
+    aller: async page => {
+      await page.goto('/reglages');
+      await page.getByRole('button', { name: 'Ajouter des frais' }).click();
+      const feuille = page.getByRole('dialog', { name: 'Nouveaux frais' });
+      await feuille.getByLabel('Libellé').fill('Carte');
+      await feuille.getByLabel('Pourcentage').fill('2');
+      await feuille.getByLabel('Montant fixe par opération').fill('0,50');
+      await feuille.getByRole('button', { name: 'Enregistrer' }).click();
+      await page.getByRole('link', { name: 'Convertir' }).click();
+      await page.getByLabel('Frais').selectOption({ label: 'Carte' });
+      await page.getByLabel('Montant en livres égyptiennes').fill('200');
+      await expect(page.getByText(/^Coût avec frais/)).toBeVisible();
+    },
+  },
+  {
+    nom: 'réglages, nouveaux frais (spécification 005)',
+    aller: async page => {
+      await page.goto('/reglages');
+      await page.getByRole('button', { name: 'Ajouter des frais' }).click();
+      await expect(
+        page.getByRole('dialog', { name: 'Nouveaux frais' })
+      ).toBeVisible();
+    },
+  },
+  {
     nom: 'volet des billets ouvert',
     aller: async page => {
       await saisir200(page);

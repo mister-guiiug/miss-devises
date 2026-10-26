@@ -13,16 +13,16 @@ commence par son test, vu rouge (constitution, principe V).
 
 ## Phase 2 : récit 1, les frais (P1)
 
-- [ ] T002 [P] [R1] Tests puis `src/domain/frais.ts` : coût et frais, montant
+- [x] T002 [P] [R1] Tests puis `src/domain/frais.ts` : coût et frais, montant
       fixe converti, sans taux (R1).
-- [ ] T003 [P] [R1] Tests puis les préférences : `frais`, `fraisChoisis`, leurs
+- [x] T003 [P] [R1] Tests puis les préférences : `frais`, `fraisChoisis`, leurs
       gestes, lecture d'une préférence d'avant.
-- [ ] T004 [R1] Tests puis les réglages : liste, ajout, modification,
+- [x] T004 [R1] Tests puis les réglages : liste, ajout, modification,
       suppression, validation (`ReglageFrais.tsx`).
-- [ ] T005 [R1] Tests puis l'écran : choix des frais, coût et détail, sans
+- [x] T005 [R1] Tests puis l'écran : choix des frais, coût et détail, sans
       taux ; le carnet le dit (`LigneFrais.tsx`, `ConvertScreen.tsx`).
-- [ ] T006 [R1] e2e `@critical` : scénarios 2, 4, 5 ; axe, frais choisis.
-- [ ] T007 [R1] Messages fr et en.
+- [x] T006 [R1] e2e `@critical` : scénarios 2, 4, 5 ; axe, frais choisis.
+- [x] T007 [R1] Messages fr et en.
 
 ## Phase 3 : récit 2, la voix (P2)
 
