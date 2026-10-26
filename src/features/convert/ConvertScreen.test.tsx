@@ -40,7 +40,13 @@ beforeEach(() => {
     chargement: false,
     echec: false,
   });
-  usePreferences.setState({ reference: 'EUR', devise: 'EGP', recentes: [] });
+  usePreferences.setState({
+    reference: 'EUR',
+    devise: 'EGP',
+    recentes: [],
+    seconde: null,
+    marge: 0,
+  });
   useConversion.setState({
     saisie: { champ: 'devise', texte: '' },
     haut: 'devise',
@@ -218,5 +224,109 @@ describe('le volet des billets et des pièces (récit 2)', () => {
         name: /Composition de 200,00\sEGP/,
       })
     ).toBeInTheDocument();
+  });
+});
+
+describe('deux devises à la fois (spécification 003, récit 1)', () => {
+  async function ajouterUsd(user: ReturnType<typeof userEvent.setup>) {
+    await user.click(
+      screen.getByRole('button', { name: 'Ajouter une devise' })
+    );
+    const feuille = await screen.findByRole('dialog', {
+      name: 'Seconde devise',
+    });
+    await user.type(
+      within(feuille).getByLabelText('Rechercher une devise'),
+      'dollar'
+    );
+    await user.click(within(feuille).getByRole('button', { name: /^USD/ }));
+  }
+
+  it('aucune seconde devise par défaut : deux champs, comme avant', () => {
+    monter();
+    expect(screen.getAllByLabelText(/^Montant en/)).toHaveLength(2);
+    expect(
+      screen.getByRole('button', { name: 'Ajouter une devise' })
+    ).toBeInTheDocument();
+  });
+
+  it('20 € donnent les livres ET les dollars ; chaque devise dit son taux', async () => {
+    const user = userEvent.setup();
+    monter();
+    await ajouterUsd(user);
+    expect(usePreferences.getState().seconde).toBe('USD');
+    await user.type(screen.getByLabelText('Montant en euros'), '20');
+    expect(
+      lisible(
+        (
+          screen.getByLabelText(
+            'Montant en livres égyptiennes'
+          ) as HTMLInputElement
+        ).value
+      )
+    ).toBe('1 176,60');
+    expect(screen.getByLabelText(/^Montant en dollars/)).toHaveValue('21,63');
+    expect(screen.getByText(/1\s€ = 58,83 EGP/)).toBeInTheDocument();
+    expect(screen.getByText(/1\s€ = 1,0815 USD/)).toBeInTheDocument();
+  });
+
+  it('une saisie en dollars remplit les euros et les livres', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ seconde: 'USD' });
+    monter();
+    await user.type(screen.getByLabelText(/^Montant en dollars/), '10');
+    expect(screen.getByLabelText('Montant en euros')).toHaveValue('9,25');
+    expect(screen.getByLabelText('Montant en livres égyptiennes')).toHaveValue(
+      '543,97'
+    );
+  });
+
+  it('le choix de la seconde devise ne propose ni la référence ni la devise', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.click(
+      screen.getByRole('button', { name: 'Ajouter une devise' })
+    );
+    const feuille = await screen.findByRole('dialog', {
+      name: 'Seconde devise',
+    });
+    expect(
+      within(feuille).queryByRole('button', { name: /^EUR/ })
+    ).not.toBeInTheDocument();
+    expect(
+      within(feuille).queryByRole('button', { name: /^EGP/ })
+    ).not.toBeInTheDocument();
+    expect(
+      within(feuille).getByRole('button', { name: /^USD/ })
+    ).toBeInTheDocument();
+  });
+
+  it('retirée, elle rend son montant au champ des euros', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ seconde: 'USD' });
+    monter();
+    await user.type(screen.getByLabelText(/^Montant en dollars/), '10');
+    await user.click(screen.getByRole('button', { name: 'Retirer USD' }));
+    expect(usePreferences.getState().seconde).toBeNull();
+    expect(screen.queryByLabelText(/^Montant en dollars/)).toBeNull();
+    expect(screen.getByLabelText('Montant en euros')).toHaveValue('9,25');
+    // Les euros affichés deviennent la saisie : les livres en partent
+    // (recherche R5), 9,25 × 58,83.
+    expect(screen.getByLabelText('Montant en livres égyptiennes')).toHaveValue(
+      '544,18'
+    );
+  });
+
+  it('un montant saisi en dollars s’enregistre de USD vers EUR, à son taux', async () => {
+    const user = userEvent.setup();
+    useCarnet.setState({ conversions: [], pending: null, error: null });
+    usePreferences.setState({ seconde: 'USD' });
+    monter();
+    await user.type(screen.getByLabelText(/^Montant en dollars/), '10');
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }));
+    const gardee = useCarnet.getState().conversions[0];
+    expect(gardee?.de).toEqual({ code: 'USD', montant: 10 });
+    expect(gardee?.vers.code).toBe('EUR');
+    expect(gardee?.taux).toBe(1.0815);
   });
 });

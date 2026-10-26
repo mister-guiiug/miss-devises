@@ -63,6 +63,12 @@ const fr = {
     libelleExemple: 'Visite du musée',
     enregistrer: 'Enregistrer',
     enregistre: 'Enregistré dans le carnet.',
+    ajouterSeconde: 'Ajouter une devise',
+    seconde: 'Seconde devise',
+    choisirSeconde: 'Changer de seconde devise',
+    retirerSeconde: 'Retirer {code}',
+    absentSeconde:
+      'Aucun taux connu pour {code}. Il se chargera dès que l’appareil sera en ligne.',
   },
   money: {
     title: 'Billets et pièces',
@@ -309,6 +315,12 @@ const en: typeof fr = {
     libelleExemple: 'Museum visit',
     enregistrer: 'Save',
     enregistre: 'Saved to the log.',
+    ajouterSeconde: 'Add a currency',
+    seconde: 'Second currency',
+    choisirSeconde: 'Change second currency',
+    retirerSeconde: 'Remove {code}',
+    absentSeconde:
+      'No rate known for {code} yet. It will load as soon as the device is online.',
   },
   money: {
     title: 'Banknotes and coins',

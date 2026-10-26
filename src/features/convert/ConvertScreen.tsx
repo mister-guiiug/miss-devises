@@ -1,5 +1,5 @@
 import { lazy, Suspense, useMemo, useState } from 'react';
-import { ArrowUpDown, Banknote as IconeBillets } from 'lucide-react';
+import { ArrowUpDown, Banknote as IconeBillets, Plus, X } from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
 import { useIdlePrefetch } from '@mister-guiiug/dev-pwa-config/react/use-prefetch';
@@ -10,7 +10,12 @@ import { codesConnus, tauxDuJour } from '../../rates/service.ts';
 import { rafraichirTaux } from '../../shared/queries/taux.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import { nomAuPluriel } from '../../domain/currencies.ts';
-import { deriver, useConversion, type Champ } from './conversion.ts';
+import {
+  deriver,
+  useConversion,
+  type Champ,
+  type ChampSaisi,
+} from './conversion.ts';
 import { CurrencyPicker } from './CurrencyPicker.tsx';
 import { RateLine } from './RateLine.tsx';
 import { SaveForm } from './SaveForm.tsx';
@@ -31,6 +36,10 @@ const MoneySheet = lazy(() =>
  * L'écran principal (récit 1) : deux champs liés, l'un saisi, l'autre
  * calculé — le calculé porte la lecture. Tient sans défilement sur un
  * téléphone (CR-005).
+ *
+ * Une SECONDE DEVISE, facultative, ajoute un troisième champ sous la paire
+ * (spécification 003, récit 1) : les trois passent par la référence, et
+ * chaque devise a sa ligne de taux.
  */
 export function ConvertScreen() {
   const { t, locale } = useI18n();
@@ -46,6 +55,9 @@ export function ConvertScreen() {
   const marge = usePreferences(s => s.marge);
   const decimales = usePreferences(s => s.decimales);
   const choisirDevise = usePreferences(s => s.choisirDevise);
+  const seconde = usePreferences(s => s.seconde);
+  const choisirSeconde = usePreferences(s => s.choisirSeconde);
+  const retirerSeconde = usePreferences(s => s.retirerSeconde);
   const saisie = useConversion(s => s.saisie);
   const haut = useConversion(s => s.haut);
   const saisir = useConversion(s => s.saisir);
@@ -53,7 +65,14 @@ export function ConvertScreen() {
   const [volet, setVolet] = useState(false);
 
   const codes = useMemo(() => codesConnus(etat), [etat]);
-  const jour = tauxDuJour(reference, devise, etat, new Date());
+  const maintenant = new Date();
+  const jour = tauxDuJour(reference, devise, etat, maintenant);
+  const jourSeconde = seconde
+    ? tauxDuJour(reference, seconde, etat, maintenant)
+    : undefined;
+  const avecSeconde = seconde
+    ? { code: seconde, taux: jourSeconde?.taux }
+    : null;
   const d = deriver(
     saisie,
     devise,
@@ -61,18 +80,56 @@ export function ConvertScreen() {
     jour?.taux,
     locale,
     marge,
-    decimales
+    decimales,
+    avecSeconde
   );
   const indicatif =
     marge === 0
       ? d
-      : deriver(saisie, devise, reference, jour?.taux, locale, 0, decimales);
+      : deriver(
+          saisie,
+          devise,
+          reference,
+          jour?.taux,
+          locale,
+          0,
+          decimales,
+          avecSeconde
+        );
 
   const bas: Champ = haut === 'devise' ? 'reference' : 'devise';
+  const codeDe = (lequel: ChampSaisi) =>
+    lequel === 'devise'
+      ? devise
+      : lequel === 'reference'
+        ? reference
+        : (seconde ?? reference);
+  const texteDe = (lequel: ChampSaisi) =>
+    lequel === 'devise'
+      ? d.texteDevise
+      : lequel === 'reference'
+        ? d.texteReference
+        : d.texteSeconde;
+
+  /**
+   * Retirer la seconde devise ne perd pas un montant qui y était saisi : il
+   * passe dans le champ de la référence, sans la marge, que le calcul
+   * appliquera de nouveau.
+   */
+  const retirer = () => {
+    if (saisie.champ === 'seconde') {
+      saisir('reference', indicatif.texteReference);
+    }
+    retirerSeconde();
+  };
+
+  // Le carnet garde la paire du champ saisi : celle de la seconde devise
+  // quand c'est là qu'on a tapé (spécification 003, EF-005).
+  const enSeconde = saisie.champ === 'seconde' && seconde !== null;
 
   // « Montant en livres égyptiennes », « Montant en euros » : un montant se
   // compte au pluriel, dans les deux langues.
-  const champ = (lequel: Champ, heros = false) => (
+  const champ = (lequel: ChampSaisi, heros = false) => (
     <TextField
       key={lequel}
       className={
@@ -81,12 +138,12 @@ export function ConvertScreen() {
           : '[&_[data-dwc=field-control]]:tabular-nums'
       }
       label={t('convert.montant', {
-        nom: nomAuPluriel(lequel === 'devise' ? devise : reference, locale),
+        nom: nomAuPluriel(codeDe(lequel), locale),
       })}
       inputMode="decimal"
       autoComplete="off"
       enterKeyHint="done"
-      value={lequel === 'devise' ? d.texteDevise : d.texteReference}
+      value={texteDe(lequel)}
       onChange={event => saisir(lequel, event.target.value)}
       error={
         saisie.champ === lequel && d.invalide
@@ -108,6 +165,32 @@ export function ConvertScreen() {
         onChoisir={choisirDevise}
         exclure={reference}
       />
+      <CurrencyPicker
+        code={seconde}
+        codes={codes.filter(c => c !== devise)}
+        recentes={recentes}
+        epinglees={epinglees}
+        onEpingler={epingler}
+        onChoisir={choisirSeconde}
+        exclure={reference}
+        etiquette={t('convert.choisirSeconde')}
+        titre={t('convert.seconde')}
+        declencheur={
+          seconde
+            ? undefined
+            : ouvrir => (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="self-start"
+                  onClick={ouvrir}
+                >
+                  <Plus aria-hidden="true" className="size-4" />
+                  {t('convert.ajouterSeconde')}
+                </Button>
+              )
+        }
+      />
       <Card className="flex flex-col gap-2">
         {champ(haut)}
         <button
@@ -120,6 +203,19 @@ export function ConvertScreen() {
           <ArrowUpDown aria-hidden="true" className="size-5" />
         </button>
         {champ(bas, true)}
+        {seconde && (
+          <div className="flex items-end gap-2">
+            <div className="min-w-0 flex-1">{champ('seconde')}</div>
+            <button
+              type="button"
+              onClick={retirer}
+              aria-label={t('convert.retirerSeconde', { code: seconde })}
+              className="flex size-11 shrink-0 items-center justify-center rounded-lg"
+            >
+              <X aria-hidden="true" className="size-5" />
+            </button>
+          </div>
+        )}
       </Card>
       <RateLine
         jour={jour}
@@ -128,6 +224,15 @@ export function ConvertScreen() {
         marge={marge}
         onReessayer={() => void rafraichirTaux({ force: true })}
       />
+      {seconde && (
+        <RateLine
+          jour={jourSeconde}
+          pret={pret}
+          horsLigne={echec}
+          secondaire={{ code: seconde }}
+          onReessayer={() => void rafraichirTaux({ force: true })}
+        />
+      )}
       <CompositionLigne montant={d.montantDevise} devise={devise} />
       <div className="flex flex-col gap-2">
         <Button variant="outline" block onClick={() => setVolet(true)}>
@@ -135,11 +240,15 @@ export function ConvertScreen() {
           {t('convert.billets')}
         </Button>
         <SaveForm
-          devise={devise}
+          devise={enSeconde ? seconde : devise}
           reference={reference}
-          jour={jour}
-          derive={indicatif}
-          champ={saisie.champ}
+          jour={enSeconde ? jourSeconde : jour}
+          derive={
+            enSeconde
+              ? { ...indicatif, montantDevise: indicatif.montantSeconde }
+              : indicatif
+          }
+          champ={enSeconde ? 'devise' : (saisie.champ as Champ)}
           marge={marge}
         />
       </div>

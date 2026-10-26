@@ -82,5 +82,10 @@ de la devise du champ et écrit comme un montant calculé (« 20,00 »). Avant,
 le résultat sous le champ s'écrit arrondi à l'affichage seulement, et les
 conversions partent du résultat exact.
 
-**Pourquoi** : le principe I arrondit à l'affichage ; « = » est un geste de
-l'utilisateur, qui fait du résultat sa saisie.
+De même, retirer la seconde devise alors qu'on y avait saisi écrit le montant
+en référence tel qu'il s'affichait, sans la marge : il devient la saisie, et
+la devise se recalcule depuis lui.
+
+**Pourquoi** : le principe I arrondit à l'affichage ; « = » et le retrait sont
+des gestes de l'utilisateur, qui font d'un montant affiché sa saisie. Écrire le
+montant exact montrerait huit décimales dans un champ d'euros.

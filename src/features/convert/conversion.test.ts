@@ -130,3 +130,105 @@ describe('deriver : un champ saisi, l’autre calculé', () => {
     expect(d.texteReference).toBe('');
   });
 });
+
+describe('deriver à trois champs (spécification 003, récit 1)', () => {
+  const USD = { code: 'USD', taux: 1.0812 };
+
+  it('20 € donnent 1 176,60 EGP et 21,62 USD (scénario 2)', () => {
+    const d = deriver(
+      { champ: 'reference', texte: '20' },
+      'EGP',
+      'EUR',
+      58.83,
+      'fr',
+      0,
+      null,
+      USD
+    );
+    expect(lisible(d.texteDevise)).toBe('1 176,60');
+    expect(d.texteSeconde).toBe('21,62');
+    expect(d.montantSeconde).toBeCloseTo(21.624, 6);
+  });
+
+  it('200 EGP donnent 3,40 € et 3,68 USD, par la référence (scénario 3)', () => {
+    const d = deriver(
+      { champ: 'devise', texte: '200' },
+      'EGP',
+      'EUR',
+      58.83,
+      'fr',
+      0,
+      null,
+      USD
+    );
+    expect(d.texteReference).toBe('3,40');
+    expect(d.texteSeconde).toBe('3,68');
+  });
+
+  it('10 USD donnent 9,25 € et 544,12 EGP (scénario 4)', () => {
+    const d = deriver(
+      { champ: 'seconde', texte: '10' },
+      'EGP',
+      'EUR',
+      58.83,
+      'fr',
+      0,
+      null,
+      USD
+    );
+    expect(d.texteSeconde).toBe('10');
+    expect(d.montantSeconde).toBe(10);
+    expect(d.texteReference).toBe('9,25');
+    expect(d.texteDevise).toBe('544,12');
+    // Les trois champs se tiennent : la référence est leur pivot (R1).
+    expect(d.montantDevise! / 58.83).toBeCloseTo(d.montantReference!, 10);
+  });
+
+  it('la marge s’applique à chaque montant calculé, une fois (scénario 8)', () => {
+    const d = deriver(
+      { champ: 'seconde', texte: '10' },
+      'EGP',
+      'EUR',
+      58.83,
+      'fr',
+      5,
+      null,
+      USD
+    );
+    expect(d.montantReference).toBeCloseTo((10 / 1.0812) * 0.95, 10);
+    expect(d.montantDevise).toBeCloseTo((10 / 1.0812) * 58.83 * 0.95, 10);
+    expect(d.montantSeconde).toBe(10);
+  });
+
+  it('une seconde devise sans taux reste vide, la paire est intacte', () => {
+    const d = deriver(
+      { champ: 'devise', texte: '200' },
+      'EGP',
+      'EUR',
+      58.83,
+      'fr',
+      0,
+      null,
+      { code: 'XYZ', taux: undefined }
+    );
+    expect(d.texteReference).toBe('3,40');
+    expect(d.texteSeconde).toBe('');
+    expect(d.montantSeconde).toBeNull();
+  });
+
+  it('une saisie dans la seconde devise sans son taux ne remplit rien', () => {
+    const d = deriver(
+      { champ: 'seconde', texte: '10' },
+      'EGP',
+      'EUR',
+      58.83,
+      'fr',
+      0,
+      null,
+      { code: 'XYZ', taux: undefined }
+    );
+    expect(d.texteSeconde).toBe('10');
+    expect(d.texteReference).toBe('');
+    expect(d.texteDevise).toBe('');
+  });
+});

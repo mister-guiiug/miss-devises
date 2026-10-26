@@ -16,19 +16,19 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
 
 ## Phase 2 : récit 1, deux devises à la fois (P1)
 
-- [ ] T002 [P] [R1] Tests puis les préférences : `seconde` et ses gestes,
+- [x] T002 [P] [R1] Tests puis les préférences : `seconde` et ses gestes,
       échanges avec la devise et la référence, retrait en rouvrant une ligne
       du carnet, lecture d'une préférence d'avant (`src/app/preferences.ts`).
-- [ ] T003 [P] [R1] Tests puis `deriver` à trois champs, par la référence,
+- [x] T003 [P] [R1] Tests puis `deriver` à trois champs, par la référence,
       marge comprise (recherche R1 ; `src/features/convert/conversion.ts`).
-- [ ] T004 [R1] L'écran : « Ajouter une devise », son choix et son retrait, le
+- [x] T004 [R1] L'écran : « Ajouter une devise », son choix et son retrait, le
       troisième champ, la seconde ligne de taux, l'enregistrement de la paire
       saisie (`ConvertScreen.tsx`, `RateLine.tsx`) ; tests d'écran.
-- [ ] T005 [R1] L'historique compare un montant saisi dans la seconde devise
+- [x] T005 [R1] L'historique compare un montant saisi dans la seconde devise
       par son équivalent en référence (`HistoryScreen.tsx`).
-- [ ] T006 [R1] e2e `@critical` : scénarios 2 à 7 et 9, rechargement ; les
+- [x] T006 [R1] e2e `@critical` : scénarios 2 à 7 et 9, rechargement ; les
       parcours de la 001 et de la 002 inchangés (CR-001).
-- [ ] T007 [R1] Messages fr et en.
+- [x] T007 [R1] Messages fr et en.
 
 ## Phase 3 : récit 2, la mini-calculatrice (P2)
 
