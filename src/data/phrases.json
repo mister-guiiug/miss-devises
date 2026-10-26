@@ -1,0 +1,1563 @@
+{
+  "releveLe": "2026-10-26",
+  "categories": {
+    "bases": ["bonjour", "merci", "sVousPlait", "nonMerci"],
+    "marchander": ["combien", "tropCher", "baisser", "dernierPrix", "daccord"],
+    "monnaie": ["casser", "petiteMonnaie", "pasDeMonnaie"],
+    "addition": ["addition", "carte", "garderMonnaie", "erreur"]
+  },
+  "langues": {
+    "en": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Hello"
+        },
+        "merci": {
+          "texte": "Thank you"
+        },
+        "sVousPlait": {
+          "texte": "Please"
+        },
+        "nonMerci": {
+          "texte": "No, thank you"
+        },
+        "combien": {
+          "texte": "How much is it?"
+        },
+        "tropCher": {
+          "texte": "It’s too expensive."
+        },
+        "baisser": {
+          "texte": "Can you lower the price?"
+        },
+        "dernierPrix": {
+          "texte": "Is that your best price?"
+        },
+        "daccord": {
+          "texte": "OK, I’ll take it."
+        },
+        "casser": {
+          "texte": "Could you give me change for this note?"
+        },
+        "petiteMonnaie": {
+          "texte": "Do you have any small change?"
+        },
+        "pasDeMonnaie": {
+          "texte": "I don’t have any change."
+        },
+        "addition": {
+          "texte": "The bill, please."
+        },
+        "carte": {
+          "texte": "Can I pay by card?"
+        },
+        "garderMonnaie": {
+          "texte": "Keep the change."
+        },
+        "erreur": {
+          "texte": "I think there’s a mistake."
+        }
+      }
+    },
+    "fr": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Bonjour"
+        },
+        "merci": {
+          "texte": "Merci"
+        },
+        "sVousPlait": {
+          "texte": "S’il vous plaît"
+        },
+        "nonMerci": {
+          "texte": "Non, merci"
+        },
+        "combien": {
+          "texte": "C’est combien ?"
+        },
+        "tropCher": {
+          "texte": "C’est trop cher."
+        },
+        "baisser": {
+          "texte": "Vous pouvez baisser le prix ?"
+        },
+        "dernierPrix": {
+          "texte": "C’est votre dernier prix ?"
+        },
+        "daccord": {
+          "texte": "D’accord, je le prends."
+        },
+        "casser": {
+          "texte": "Vous pouvez me faire la monnaie sur ce billet ?"
+        },
+        "petiteMonnaie": {
+          "texte": "Vous avez de la petite monnaie ?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Je n’ai pas de monnaie."
+        },
+        "addition": {
+          "texte": "L’addition, s’il vous plaît."
+        },
+        "carte": {
+          "texte": "Je peux payer par carte ?"
+        },
+        "garderMonnaie": {
+          "texte": "Gardez la monnaie."
+        },
+        "erreur": {
+          "texte": "Je crois qu’il y a une erreur."
+        }
+      }
+    },
+    "es": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Hola"
+        },
+        "merci": {
+          "texte": "Gracias"
+        },
+        "sVousPlait": {
+          "texte": "Por favor"
+        },
+        "nonMerci": {
+          "texte": "No, gracias"
+        },
+        "combien": {
+          "texte": "¿Cuánto cuesta?"
+        },
+        "tropCher": {
+          "texte": "Es demasiado caro."
+        },
+        "baisser": {
+          "texte": "¿Puede bajar el precio?"
+        },
+        "dernierPrix": {
+          "texte": "¿Es su último precio?"
+        },
+        "daccord": {
+          "texte": "De acuerdo, me lo llevo."
+        },
+        "casser": {
+          "texte": "¿Me puede cambiar este billete?"
+        },
+        "petiteMonnaie": {
+          "texte": "¿Tiene cambio?"
+        },
+        "pasDeMonnaie": {
+          "texte": "No tengo cambio."
+        },
+        "addition": {
+          "texte": "La cuenta, por favor."
+        },
+        "carte": {
+          "texte": "¿Puedo pagar con tarjeta?"
+        },
+        "garderMonnaie": {
+          "texte": "Quédese con el cambio."
+        },
+        "erreur": {
+          "texte": "Creo que hay un error."
+        }
+      }
+    },
+    "pt": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Olá"
+        },
+        "merci": {
+          "texte": "Obrigado / Obrigada"
+        },
+        "sVousPlait": {
+          "texte": "Por favor"
+        },
+        "nonMerci": {
+          "texte": "Não, obrigado / obrigada"
+        },
+        "combien": {
+          "texte": "Quanto custa?"
+        },
+        "tropCher": {
+          "texte": "Está muito caro."
+        },
+        "baisser": {
+          "texte": "Pode fazer um desconto?"
+        },
+        "dernierPrix": {
+          "texte": "É o seu último preço?"
+        },
+        "daccord": {
+          "texte": "Está bem, vou levar."
+        },
+        "casser": {
+          "texte": "Pode trocar esta nota?"
+        },
+        "petiteMonnaie": {
+          "texte": "Tem troco?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Não tenho dinheiro trocado."
+        },
+        "addition": {
+          "texte": "A conta, por favor."
+        },
+        "carte": {
+          "texte": "Posso pagar com cartão?"
+        },
+        "garderMonnaie": {
+          "texte": "Pode ficar com o troco."
+        },
+        "erreur": {
+          "texte": "Acho que há um erro."
+        }
+      }
+    },
+    "de": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Guten Tag"
+        },
+        "merci": {
+          "texte": "Danke"
+        },
+        "sVousPlait": {
+          "texte": "Bitte"
+        },
+        "nonMerci": {
+          "texte": "Nein, danke"
+        },
+        "combien": {
+          "texte": "Wie viel kostet das?"
+        },
+        "tropCher": {
+          "texte": "Das ist zu teuer."
+        },
+        "baisser": {
+          "texte": "Geht es etwas günstiger?"
+        },
+        "dernierPrix": {
+          "texte": "Ist das Ihr letzter Preis?"
+        },
+        "daccord": {
+          "texte": "Einverstanden, ich nehme es."
+        },
+        "casser": {
+          "texte": "Können Sie diesen Schein wechseln?"
+        },
+        "petiteMonnaie": {
+          "texte": "Haben Sie Kleingeld?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Ich habe kein Kleingeld."
+        },
+        "addition": {
+          "texte": "Die Rechnung, bitte."
+        },
+        "carte": {
+          "texte": "Kann ich mit Karte zahlen?"
+        },
+        "garderMonnaie": {
+          "texte": "Stimmt so."
+        },
+        "erreur": {
+          "texte": "Ich glaube, da ist ein Fehler."
+        }
+      }
+    },
+    "it": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Buongiorno"
+        },
+        "merci": {
+          "texte": "Grazie"
+        },
+        "sVousPlait": {
+          "texte": "Per favore"
+        },
+        "nonMerci": {
+          "texte": "No, grazie"
+        },
+        "combien": {
+          "texte": "Quanto costa?"
+        },
+        "tropCher": {
+          "texte": "È troppo caro."
+        },
+        "baisser": {
+          "texte": "Può farmi uno sconto?"
+        },
+        "dernierPrix": {
+          "texte": "È il suo ultimo prezzo?"
+        },
+        "daccord": {
+          "texte": "Va bene, lo prendo."
+        },
+        "casser": {
+          "texte": "Può cambiarmi questa banconota?"
+        },
+        "petiteMonnaie": {
+          "texte": "Ha degli spiccioli?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Non ho spiccioli."
+        },
+        "addition": {
+          "texte": "Il conto, per favore."
+        },
+        "carte": {
+          "texte": "Posso pagare con la carta?"
+        },
+        "garderMonnaie": {
+          "texte": "Tenga il resto."
+        },
+        "erreur": {
+          "texte": "Credo che ci sia un errore."
+        }
+      }
+    },
+    "cs": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Dobrý den"
+        },
+        "merci": {
+          "texte": "Děkuji"
+        },
+        "sVousPlait": {
+          "texte": "Prosím"
+        },
+        "nonMerci": {
+          "texte": "Ne, děkuji"
+        },
+        "combien": {
+          "texte": "Kolik to stojí?"
+        },
+        "tropCher": {
+          "texte": "To je moc drahé."
+        },
+        "baisser": {
+          "texte": "Můžete mi dát slevu?"
+        },
+        "dernierPrix": {
+          "texte": "Je to vaše poslední cena?"
+        },
+        "daccord": {
+          "texte": "Dobře, vezmu si to."
+        },
+        "casser": {
+          "texte": "Můžete mi rozměnit tuto bankovku?"
+        },
+        "petiteMonnaie": {
+          "texte": "Máte drobné?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Nemám drobné."
+        },
+        "addition": {
+          "texte": "Zaplatím, prosím."
+        },
+        "carte": {
+          "texte": "Můžu platit kartou?"
+        },
+        "garderMonnaie": {
+          "texte": "Drobné si nechte."
+        },
+        "erreur": {
+          "texte": "Myslím, že je tu chyba."
+        }
+      }
+    },
+    "da": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Hej"
+        },
+        "merci": {
+          "texte": "Tak"
+        },
+        "sVousPlait": {
+          "texte": "Ja tak"
+        },
+        "nonMerci": {
+          "texte": "Nej tak"
+        },
+        "combien": {
+          "texte": "Hvor meget koster det?"
+        },
+        "tropCher": {
+          "texte": "Det er for dyrt."
+        },
+        "baisser": {
+          "texte": "Kan du gå lidt ned i pris?"
+        },
+        "dernierPrix": {
+          "texte": "Er det din laveste pris?"
+        },
+        "daccord": {
+          "texte": "Okay, jeg tager den."
+        },
+        "casser": {
+          "texte": "Kan du veksle denne seddel?"
+        },
+        "petiteMonnaie": {
+          "texte": "Har du småpenge?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Jeg har ingen småpenge."
+        },
+        "addition": {
+          "texte": "Må jeg bede om regningen?"
+        },
+        "carte": {
+          "texte": "Kan jeg betale med kort?"
+        },
+        "garderMonnaie": {
+          "texte": "Behold resten."
+        },
+        "erreur": {
+          "texte": "Jeg tror, der er en fejl."
+        }
+      }
+    },
+    "nb": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Hei"
+        },
+        "merci": {
+          "texte": "Takk"
+        },
+        "sVousPlait": {
+          "texte": "Ja takk"
+        },
+        "nonMerci": {
+          "texte": "Nei takk"
+        },
+        "combien": {
+          "texte": "Hva koster det?"
+        },
+        "tropCher": {
+          "texte": "Det er for dyrt."
+        },
+        "baisser": {
+          "texte": "Kan du gå litt ned i pris?"
+        },
+        "dernierPrix": {
+          "texte": "Er det den laveste prisen?"
+        },
+        "daccord": {
+          "texte": "Ok, jeg tar den."
+        },
+        "casser": {
+          "texte": "Kan du veksle denne seddelen?"
+        },
+        "petiteMonnaie": {
+          "texte": "Har du småpenger?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Jeg har ikke småpenger."
+        },
+        "addition": {
+          "texte": "Kan jeg få regningen?"
+        },
+        "carte": {
+          "texte": "Kan jeg betale med kort?"
+        },
+        "garderMonnaie": {
+          "texte": "Bare behold vekslepengene."
+        },
+        "erreur": {
+          "texte": "Jeg tror det er en feil."
+        }
+      }
+    },
+    "sv": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Hej"
+        },
+        "merci": {
+          "texte": "Tack"
+        },
+        "sVousPlait": {
+          "texte": "Ja tack"
+        },
+        "nonMerci": {
+          "texte": "Nej tack"
+        },
+        "combien": {
+          "texte": "Hur mycket kostar det?"
+        },
+        "tropCher": {
+          "texte": "Det är för dyrt."
+        },
+        "baisser": {
+          "texte": "Kan du sänka priset?"
+        },
+        "dernierPrix": {
+          "texte": "Är det ditt lägsta pris?"
+        },
+        "daccord": {
+          "texte": "Okej, jag tar den."
+        },
+        "casser": {
+          "texte": "Kan du växla den här sedeln?"
+        },
+        "petiteMonnaie": {
+          "texte": "Har du småpengar?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Jag har ingen växel."
+        },
+        "addition": {
+          "texte": "Kan jag få notan?"
+        },
+        "carte": {
+          "texte": "Kan jag betala med kort?"
+        },
+        "garderMonnaie": {
+          "texte": "Behåll växeln."
+        },
+        "erreur": {
+          "texte": "Jag tror att det har blivit fel."
+        }
+      }
+    },
+    "pl": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Dzień dobry"
+        },
+        "merci": {
+          "texte": "Dziękuję"
+        },
+        "sVousPlait": {
+          "texte": "Proszę"
+        },
+        "nonMerci": {
+          "texte": "Nie, dziękuję"
+        },
+        "combien": {
+          "texte": "Ile to kosztuje?"
+        },
+        "tropCher": {
+          "texte": "To za drogo."
+        },
+        "baisser": {
+          "texte": "Czy można obniżyć cenę?"
+        },
+        "dernierPrix": {
+          "texte": "Czy to ostateczna cena?"
+        },
+        "daccord": {
+          "texte": "Dobrze, biorę."
+        },
+        "casser": {
+          "texte": "Czy można rozmienić ten banknot?"
+        },
+        "petiteMonnaie": {
+          "texte": "Czy ma Pan/Pani drobne?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Nie mam drobnych."
+        },
+        "addition": {
+          "texte": "Poproszę rachunek."
+        },
+        "carte": {
+          "texte": "Czy mogę zapłacić kartą?"
+        },
+        "garderMonnaie": {
+          "texte": "Reszty nie trzeba."
+        },
+        "erreur": {
+          "texte": "Chyba jest błąd."
+        }
+      }
+    },
+    "ro": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Bună ziua"
+        },
+        "merci": {
+          "texte": "Mulțumesc"
+        },
+        "sVousPlait": {
+          "texte": "Vă rog"
+        },
+        "nonMerci": {
+          "texte": "Nu, mulțumesc"
+        },
+        "combien": {
+          "texte": "Cât costă?"
+        },
+        "tropCher": {
+          "texte": "Este prea scump."
+        },
+        "baisser": {
+          "texte": "Puteți să-mi faceți o reducere?"
+        },
+        "dernierPrix": {
+          "texte": "Este ultimul preț?"
+        },
+        "daccord": {
+          "texte": "Bine, îl iau."
+        },
+        "casser": {
+          "texte": "Puteți să-mi schimbați bancnota aceasta?"
+        },
+        "petiteMonnaie": {
+          "texte": "Aveți mărunțiș?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Nu am mărunțiș."
+        },
+        "addition": {
+          "texte": "Nota, vă rog."
+        },
+        "carte": {
+          "texte": "Pot plăti cu cardul?"
+        },
+        "garderMonnaie": {
+          "texte": "Păstrați restul."
+        },
+        "erreur": {
+          "texte": "Cred că este o greșeală."
+        }
+      }
+    },
+    "hu": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Jó napot"
+        },
+        "merci": {
+          "texte": "Köszönöm"
+        },
+        "sVousPlait": {
+          "texte": "Kérem"
+        },
+        "nonMerci": {
+          "texte": "Nem, köszönöm"
+        },
+        "combien": {
+          "texte": "Mennyibe kerül?"
+        },
+        "tropCher": {
+          "texte": "Ez túl drága."
+        },
+        "baisser": {
+          "texte": "Tudna engedni az árból?"
+        },
+        "dernierPrix": {
+          "texte": "Ez a legjobb ára?"
+        },
+        "daccord": {
+          "texte": "Rendben, megveszem."
+        },
+        "casser": {
+          "texte": "Fel tudná váltani ezt a bankjegyet?"
+        },
+        "petiteMonnaie": {
+          "texte": "Van aprója?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Nincs aprópénzem."
+        },
+        "addition": {
+          "texte": "Kérem a számlát."
+        },
+        "carte": {
+          "texte": "Fizethetek kártyával?"
+        },
+        "garderMonnaie": {
+          "texte": "Tartsa meg a visszajárót."
+        },
+        "erreur": {
+          "texte": "Azt hiszem, valami hiba van."
+        }
+      }
+    },
+    "tr": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Merhaba"
+        },
+        "merci": {
+          "texte": "Teşekkür ederim"
+        },
+        "sVousPlait": {
+          "texte": "Lütfen"
+        },
+        "nonMerci": {
+          "texte": "Hayır, teşekkürler"
+        },
+        "combien": {
+          "texte": "Bu ne kadar?"
+        },
+        "tropCher": {
+          "texte": "Çok pahalı."
+        },
+        "baisser": {
+          "texte": "İndirim yapabilir misiniz?"
+        },
+        "dernierPrix": {
+          "texte": "Son fiyatınız bu mu?"
+        },
+        "daccord": {
+          "texte": "Tamam, alıyorum."
+        },
+        "casser": {
+          "texte": "Bu parayı bozabilir misiniz?"
+        },
+        "petiteMonnaie": {
+          "texte": "Bozuk paranız var mı?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Bozuk param yok."
+        },
+        "addition": {
+          "texte": "Hesap, lütfen."
+        },
+        "carte": {
+          "texte": "Kartla ödeyebilir miyim?"
+        },
+        "garderMonnaie": {
+          "texte": "Üstü kalsın."
+        },
+        "erreur": {
+          "texte": "Sanırım bir yanlışlık var."
+        }
+      }
+    },
+    "id": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Halo"
+        },
+        "merci": {
+          "texte": "Terima kasih"
+        },
+        "sVousPlait": {
+          "texte": "Tolong"
+        },
+        "nonMerci": {
+          "texte": "Tidak, terima kasih"
+        },
+        "combien": {
+          "texte": "Berapa harganya?"
+        },
+        "tropCher": {
+          "texte": "Terlalu mahal."
+        },
+        "baisser": {
+          "texte": "Bisa kurang?"
+        },
+        "dernierPrix": {
+          "texte": "Harga pasnya berapa?"
+        },
+        "daccord": {
+          "texte": "Oke, saya ambil."
+        },
+        "casser": {
+          "texte": "Bisa tukar uang ini dengan uang kecil?"
+        },
+        "petiteMonnaie": {
+          "texte": "Ada uang kecil?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Saya tidak punya uang kecil."
+        },
+        "addition": {
+          "texte": "Minta bonnya."
+        },
+        "carte": {
+          "texte": "Bisa bayar pakai kartu?"
+        },
+        "garderMonnaie": {
+          "texte": "Kembaliannya ambil saja."
+        },
+        "erreur": {
+          "texte": "Sepertinya ada yang salah."
+        }
+      }
+    },
+    "ms": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Helo"
+        },
+        "merci": {
+          "texte": "Terima kasih"
+        },
+        "sVousPlait": {
+          "texte": "Tolong"
+        },
+        "nonMerci": {
+          "texte": "Tidak, terima kasih"
+        },
+        "combien": {
+          "texte": "Berapa harga ini?"
+        },
+        "tropCher": {
+          "texte": "Terlalu mahal."
+        },
+        "baisser": {
+          "texte": "Boleh kurang sikit?"
+        },
+        "dernierPrix": {
+          "texte": "Harga terakhir berapa?"
+        },
+        "daccord": {
+          "texte": "Okey, saya ambil."
+        },
+        "casser": {
+          "texte": "Boleh pecahkan duit ini?"
+        },
+        "petiteMonnaie": {
+          "texte": "Ada duit kecil?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Saya tiada duit kecil."
+        },
+        "addition": {
+          "texte": "Minta bil."
+        },
+        "carte": {
+          "texte": "Boleh bayar guna kad?"
+        },
+        "garderMonnaie": {
+          "texte": "Simpan saja bakinya."
+        },
+        "erreur": {
+          "texte": "Saya rasa ada kesilapan."
+        }
+      }
+    },
+    "fil": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Magandang araw po"
+        },
+        "merci": {
+          "texte": "Salamat po"
+        },
+        "sVousPlait": {
+          "texte": "Pakiusap"
+        },
+        "nonMerci": {
+          "texte": "Hindi na po, salamat"
+        },
+        "combien": {
+          "texte": "Magkano po ito?"
+        },
+        "tropCher": {
+          "texte": "Ang mahal naman."
+        },
+        "baisser": {
+          "texte": "Puwede pong tumawad?"
+        },
+        "dernierPrix": {
+          "texte": "Huling presyo na po ba?"
+        },
+        "daccord": {
+          "texte": "Sige po, kukunin ko."
+        },
+        "casser": {
+          "texte": "Puwede po bang pabarya nito?"
+        },
+        "petiteMonnaie": {
+          "texte": "May barya po ba kayo?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Wala po akong barya."
+        },
+        "addition": {
+          "texte": "Pahingi po ng bill."
+        },
+        "carte": {
+          "texte": "Puwede po bang magbayad gamit ang card?"
+        },
+        "garderMonnaie": {
+          "texte": "Sa inyo na po ang sukli."
+        },
+        "erreur": {
+          "texte": "Parang may mali po."
+        }
+      }
+    },
+    "vi": {
+      "phrases": {
+        "bonjour": {
+          "texte": "Xin chào"
+        },
+        "merci": {
+          "texte": "Cảm ơn"
+        },
+        "sVousPlait": {
+          "texte": "Làm ơn"
+        },
+        "nonMerci": {
+          "texte": "Không, cảm ơn"
+        },
+        "combien": {
+          "texte": "Cái này bao nhiêu tiền?"
+        },
+        "tropCher": {
+          "texte": "Đắt quá."
+        },
+        "baisser": {
+          "texte": "Bớt được không?"
+        },
+        "dernierPrix": {
+          "texte": "Giá chót là bao nhiêu?"
+        },
+        "daccord": {
+          "texte": "Được, tôi lấy cái này."
+        },
+        "casser": {
+          "texte": "Đổi giúp tôi tờ này ra tiền lẻ được không?"
+        },
+        "petiteMonnaie": {
+          "texte": "Có tiền lẻ không?"
+        },
+        "pasDeMonnaie": {
+          "texte": "Tôi không có tiền lẻ."
+        },
+        "addition": {
+          "texte": "Tính tiền giúp tôi."
+        },
+        "carte": {
+          "texte": "Tôi trả bằng thẻ được không?"
+        },
+        "garderMonnaie": {
+          "texte": "Không cần trả lại đâu."
+        },
+        "erreur": {
+          "texte": "Hình như có nhầm lẫn."
+        }
+      }
+    },
+    "th": {
+      "phrases": {
+        "bonjour": {
+          "texte": "สวัสดีครับ/ค่ะ",
+          "latin": "sawatdi khrap/kha"
+        },
+        "merci": {
+          "texte": "ขอบคุณครับ/ค่ะ",
+          "latin": "khop khun khrap/kha"
+        },
+        "sVousPlait": {
+          "texte": "กรุณา",
+          "latin": "karuna"
+        },
+        "nonMerci": {
+          "texte": "ไม่เอาครับ/ค่ะ ขอบคุณ",
+          "latin": "mai ao khrap/kha, khop khun"
+        },
+        "combien": {
+          "texte": "เท่าไหร่ครับ/คะ",
+          "latin": "thao rai khrap/kha"
+        },
+        "tropCher": {
+          "texte": "แพงไป",
+          "latin": "phaeng pai"
+        },
+        "baisser": {
+          "texte": "ลดได้ไหม",
+          "latin": "lot dai mai"
+        },
+        "dernierPrix": {
+          "texte": "ราคาสุดท้ายเท่าไหร่",
+          "latin": "rakha sut thai thao rai"
+        },
+        "daccord": {
+          "texte": "โอเค เอาอันนี้",
+          "latin": "o-khe, ao an ni"
+        },
+        "casser": {
+          "texte": "แตกแบงก์นี้ได้ไหม",
+          "latin": "taek baeng ni dai mai"
+        },
+        "petiteMonnaie": {
+          "texte": "มีเงินย่อยไหม",
+          "latin": "mi ngoen yoi mai"
+        },
+        "pasDeMonnaie": {
+          "texte": "ไม่มีเงินย่อย",
+          "latin": "mai mi ngoen yoi"
+        },
+        "addition": {
+          "texte": "เช็คบิลด้วย",
+          "latin": "chek bin duai"
+        },
+        "carte": {
+          "texte": "จ่ายบัตรได้ไหม",
+          "latin": "chai bat dai mai"
+        },
+        "garderMonnaie": {
+          "texte": "ไม่ต้องทอน",
+          "latin": "mai tong thon"
+        },
+        "erreur": {
+          "texte": "คิดเงินผิดหรือเปล่า",
+          "latin": "khit ngoen phit rue plao"
+        }
+      }
+    },
+    "ja": {
+      "phrases": {
+        "bonjour": {
+          "texte": "こんにちは",
+          "latin": "konnichiwa"
+        },
+        "merci": {
+          "texte": "ありがとうございます",
+          "latin": "arigatō gozaimasu"
+        },
+        "sVousPlait": {
+          "texte": "お願いします",
+          "latin": "onegai shimasu"
+        },
+        "nonMerci": {
+          "texte": "いいえ、結構です",
+          "latin": "iie, kekkō desu"
+        },
+        "combien": {
+          "texte": "いくらですか",
+          "latin": "ikura desu ka"
+        },
+        "tropCher": {
+          "texte": "高すぎます",
+          "latin": "takasugimasu"
+        },
+        "baisser": {
+          "texte": "少し安くなりませんか",
+          "latin": "sukoshi yasuku narimasen ka"
+        },
+        "dernierPrix": {
+          "texte": "これが一番安い値段ですか",
+          "latin": "kore ga ichiban yasui nedan desu ka"
+        },
+        "daccord": {
+          "texte": "じゃあ、これをください",
+          "latin": "jā, kore o kudasai"
+        },
+        "casser": {
+          "texte": "このお札を崩してもらえますか",
+          "latin": "kono osatsu o kuzushite moraemasu ka"
+        },
+        "petiteMonnaie": {
+          "texte": "小銭はありますか",
+          "latin": "kozeni wa arimasu ka"
+        },
+        "pasDeMonnaie": {
+          "texte": "小銭がありません",
+          "latin": "kozeni ga arimasen"
+        },
+        "addition": {
+          "texte": "お会計をお願いします",
+          "latin": "okaikei o onegai shimasu"
+        },
+        "carte": {
+          "texte": "カードで払えますか",
+          "latin": "kādo de haraemasu ka"
+        },
+        "garderMonnaie": {
+          "texte": "おつりは結構です",
+          "latin": "otsuri wa kekkō desu"
+        },
+        "erreur": {
+          "texte": "間違っていると思います",
+          "latin": "machigatte iru to omoimasu"
+        }
+      }
+    },
+    "ko": {
+      "phrases": {
+        "bonjour": {
+          "texte": "안녕하세요",
+          "latin": "annyeonghaseyo"
+        },
+        "merci": {
+          "texte": "감사합니다",
+          "latin": "gamsahamnida"
+        },
+        "sVousPlait": {
+          "texte": "부탁합니다",
+          "latin": "butakamnida"
+        },
+        "nonMerci": {
+          "texte": "아니요, 괜찮습니다",
+          "latin": "aniyo, gwaenchanseumnida"
+        },
+        "combien": {
+          "texte": "얼마예요?",
+          "latin": "eolmayeyo?"
+        },
+        "tropCher": {
+          "texte": "너무 비싸요",
+          "latin": "neomu bissayo"
+        },
+        "baisser": {
+          "texte": "좀 깎아 주세요",
+          "latin": "jom kkakka juseyo"
+        },
+        "dernierPrix": {
+          "texte": "이게 마지막 가격이에요?",
+          "latin": "ige majimak gagyeogieyo?"
+        },
+        "daccord": {
+          "texte": "좋아요, 이걸로 할게요",
+          "latin": "joayo, igeollo halgeyo"
+        },
+        "casser": {
+          "texte": "이 지폐 잔돈으로 좀 바꿔 주실 수 있어요?",
+          "latin": "i jipye jandoneuro jom bakkwo jusil su isseoyo?"
+        },
+        "petiteMonnaie": {
+          "texte": "잔돈 있으세요?",
+          "latin": "jandon isseuseyo?"
+        },
+        "pasDeMonnaie": {
+          "texte": "잔돈이 없어요",
+          "latin": "jandoni eopseoyo"
+        },
+        "addition": {
+          "texte": "계산서 주세요",
+          "latin": "gyesanseo juseyo"
+        },
+        "carte": {
+          "texte": "카드 돼요?",
+          "latin": "kadeu dwaeyo?"
+        },
+        "garderMonnaie": {
+          "texte": "잔돈은 괜찮아요",
+          "latin": "jandoneun gwaenchanayo"
+        },
+        "erreur": {
+          "texte": "계산이 잘못된 것 같아요",
+          "latin": "gyesani jalmotdoen geot gatayo"
+        }
+      }
+    },
+    "zh-Hans": {
+      "phrases": {
+        "bonjour": {
+          "texte": "你好",
+          "latin": "nǐ hǎo"
+        },
+        "merci": {
+          "texte": "谢谢",
+          "latin": "xièxie"
+        },
+        "sVousPlait": {
+          "texte": "请",
+          "latin": "qǐng"
+        },
+        "nonMerci": {
+          "texte": "不用了，谢谢",
+          "latin": "bú yòng le, xièxie"
+        },
+        "combien": {
+          "texte": "多少钱？",
+          "latin": "duōshao qián?"
+        },
+        "tropCher": {
+          "texte": "太贵了",
+          "latin": "tài guì le"
+        },
+        "baisser": {
+          "texte": "能便宜一点吗？",
+          "latin": "néng piányi yìdiǎn ma?"
+        },
+        "dernierPrix": {
+          "texte": "最低多少钱？",
+          "latin": "zuì dī duōshao qián?"
+        },
+        "daccord": {
+          "texte": "好的，我要了",
+          "latin": "hǎo de, wǒ yào le"
+        },
+        "casser": {
+          "texte": "能帮我换成零钱吗？",
+          "latin": "néng bāng wǒ huàn chéng língqián ma?"
+        },
+        "petiteMonnaie": {
+          "texte": "有零钱吗？",
+          "latin": "yǒu língqián ma?"
+        },
+        "pasDeMonnaie": {
+          "texte": "我没有零钱",
+          "latin": "wǒ méiyǒu língqián"
+        },
+        "addition": {
+          "texte": "买单，谢谢",
+          "latin": "mǎidān, xièxie"
+        },
+        "carte": {
+          "texte": "可以刷卡吗？",
+          "latin": "kěyǐ shuā kǎ ma?"
+        },
+        "garderMonnaie": {
+          "texte": "不用找了",
+          "latin": "bú yòng zhǎo le"
+        },
+        "erreur": {
+          "texte": "好像算错了",
+          "latin": "hǎoxiàng suàn cuò le"
+        }
+      }
+    },
+    "hi": {
+      "phrases": {
+        "bonjour": {
+          "texte": "नमस्ते",
+          "latin": "namaste"
+        },
+        "merci": {
+          "texte": "धन्यवाद",
+          "latin": "dhanyavaad"
+        },
+        "sVousPlait": {
+          "texte": "कृपया",
+          "latin": "kripya"
+        },
+        "nonMerci": {
+          "texte": "नहीं, धन्यवाद",
+          "latin": "nahin, dhanyavaad"
+        },
+        "combien": {
+          "texte": "यह कितने का है?",
+          "latin": "yah kitne ka hai?"
+        },
+        "tropCher": {
+          "texte": "यह बहुत महँगा है",
+          "latin": "yah bahut mahanga hai"
+        },
+        "baisser": {
+          "texte": "थोड़ा कम कीजिए",
+          "latin": "thoda kam kijiye"
+        },
+        "dernierPrix": {
+          "texte": "आख़िरी दाम क्या है?",
+          "latin": "aakhiri daam kya hai?"
+        },
+        "daccord": {
+          "texte": "ठीक है, मैं ले लूँगा/लूँगी",
+          "latin": "theek hai, main le loonga/loongi"
+        },
+        "casser": {
+          "texte": "क्या आप इस नोट के छुट्टे दे सकते हैं?",
+          "latin": "kya aap is note ke chhutte de sakte hain?"
+        },
+        "petiteMonnaie": {
+          "texte": "क्या आपके पास छुट्टे हैं?",
+          "latin": "kya aapke paas chhutte hain?"
+        },
+        "pasDeMonnaie": {
+          "texte": "मेरे पास छुट्टे नहीं हैं",
+          "latin": "mere paas chhutte nahin hain"
+        },
+        "addition": {
+          "texte": "बिल दीजिए",
+          "latin": "bill dijiye"
+        },
+        "carte": {
+          "texte": "क्या मैं कार्ड से पैसे दे सकता/सकती हूँ?",
+          "latin": "kya main card se paise de sakta/sakti hoon?"
+        },
+        "garderMonnaie": {
+          "texte": "बाक़ी पैसे रख लीजिए",
+          "latin": "baaki paise rakh lijiye"
+        },
+        "erreur": {
+          "texte": "लगता है कुछ ग़लती है",
+          "latin": "lagta hai kuchh galti hai"
+        }
+      }
+    },
+    "he": {
+      "direction": "rtl",
+      "phrases": {
+        "bonjour": {
+          "texte": "שלום",
+          "latin": "shalom"
+        },
+        "merci": {
+          "texte": "תודה",
+          "latin": "toda"
+        },
+        "sVousPlait": {
+          "texte": "בבקשה",
+          "latin": "bevakasha"
+        },
+        "nonMerci": {
+          "texte": "לא, תודה",
+          "latin": "lo, toda"
+        },
+        "combien": {
+          "texte": "כמה זה עולה?",
+          "latin": "kama ze ole?"
+        },
+        "tropCher": {
+          "texte": "זה יקר מדי",
+          "latin": "ze yakar midai"
+        },
+        "baisser": {
+          "texte": "אפשר הנחה?",
+          "latin": "efshar hanacha?"
+        },
+        "dernierPrix": {
+          "texte": "זה המחיר הכי טוב?",
+          "latin": "ze ha-mechir hachi tov?"
+        },
+        "daccord": {
+          "texte": "בסדר, אני לוקח/לוקחת",
+          "latin": "beseder, ani lokeach/lokachat"
+        },
+        "casser": {
+          "texte": "אפשר לפרוט את השטר הזה?",
+          "latin": "efshar lifrot et ha-shtar ha-ze?"
+        },
+        "petiteMonnaie": {
+          "texte": "יש לך כסף קטן?",
+          "latin": "yesh lecha kesef katan?"
+        },
+        "pasDeMonnaie": {
+          "texte": "אין לי כסף קטן",
+          "latin": "ein li kesef katan"
+        },
+        "addition": {
+          "texte": "חשבון, בבקשה",
+          "latin": "cheshbon, bevakasha"
+        },
+        "carte": {
+          "texte": "אפשר לשלם בכרטיס?",
+          "latin": "efshar leshalem be-kartis?"
+        },
+        "garderMonnaie": {
+          "texte": "תשאיר את העודף",
+          "latin": "tash’ir et ha-odef"
+        },
+        "erreur": {
+          "texte": "נראה לי שיש טעות",
+          "latin": "nir’e li she-yesh ta’ut"
+        }
+      }
+    },
+    "ar": {
+      "direction": "rtl",
+      "phrases": {
+        "bonjour": {
+          "texte": "مرحبا",
+          "latin": "marhaban"
+        },
+        "merci": {
+          "texte": "شكرا",
+          "latin": "shukran"
+        },
+        "sVousPlait": {
+          "texte": "من فضلك",
+          "latin": "min fadlak"
+        },
+        "nonMerci": {
+          "texte": "لا، شكرا",
+          "latin": "la, shukran"
+        },
+        "combien": {
+          "texte": "بكم هذا؟",
+          "latin": "bikam hadha?"
+        },
+        "tropCher": {
+          "texte": "هذا غالٍ جدا",
+          "latin": "hadha ghalin jiddan"
+        },
+        "baisser": {
+          "texte": "هل يمكن تخفيض السعر؟",
+          "latin": "hal yumkin takhfid as-si’r?"
+        },
+        "dernierPrix": {
+          "texte": "هل هذا آخر سعر؟",
+          "latin": "hal hadha akhir si’r?"
+        },
+        "daccord": {
+          "texte": "حسنا، سآخذه",
+          "latin": "hasanan, sa-akhudhuh"
+        },
+        "casser": {
+          "texte": "هل يمكنك صرف هذه الورقة؟",
+          "latin": "hal yumkinuka sarf hadhihi al-waraqa?"
+        },
+        "petiteMonnaie": {
+          "texte": "هل عندك فكة؟",
+          "latin": "hal ’indak fakka?"
+        },
+        "pasDeMonnaie": {
+          "texte": "ليس عندي فكة",
+          "latin": "laysa ’indi fakka"
+        },
+        "addition": {
+          "texte": "الحساب من فضلك",
+          "latin": "al-hisab min fadlak"
+        },
+        "carte": {
+          "texte": "هل يمكنني الدفع بالبطاقة؟",
+          "latin": "hal yumkinuni ad-daf’ bil-bitaqa?"
+        },
+        "garderMonnaie": {
+          "texte": "احتفظ بالباقي",
+          "latin": "ihtafiz bil-baqi"
+        },
+        "erreur": {
+          "texte": "أظن أن هناك خطأ",
+          "latin": "azunnu anna hunaka khata’"
+        }
+      }
+    },
+    "ar-EG": {
+      "direction": "rtl",
+      "phrases": {
+        "bonjour": {
+          "texte": "أهلا",
+          "latin": "ahlan"
+        },
+        "merci": {
+          "texte": "شكرا",
+          "latin": "shukran"
+        },
+        "sVousPlait": {
+          "texte": "لو سمحت",
+          "latin": "law samaht"
+        },
+        "nonMerci": {
+          "texte": "لا، شكرا",
+          "latin": "la’, shukran"
+        },
+        "combien": {
+          "texte": "بكام ده؟",
+          "latin": "bikam da?"
+        },
+        "tropCher": {
+          "texte": "ده غالي أوي",
+          "latin": "da ghali awi"
+        },
+        "baisser": {
+          "texte": "ممكن تنزل شوية؟",
+          "latin": "momken tenazzel shwayya?"
+        },
+        "dernierPrix": {
+          "texte": "ده آخر كلام؟",
+          "latin": "da akher kalam?"
+        },
+        "daccord": {
+          "texte": "ماشي، هاخده",
+          "latin": "mashi, hakhdo"
+        },
+        "casser": {
+          "texte": "ممكن تفك الورقة دي؟",
+          "latin": "momken tfokk el-wara’a di?"
+        },
+        "petiteMonnaie": {
+          "texte": "معاك فكة؟",
+          "latin": "ma’ak fakka?"
+        },
+        "pasDeMonnaie": {
+          "texte": "معيش فكة",
+          "latin": "ma’ish fakka"
+        },
+        "addition": {
+          "texte": "الحساب لو سمحت",
+          "latin": "el-hisab law samaht"
+        },
+        "carte": {
+          "texte": "ممكن أدفع بالكارت؟",
+          "latin": "momken adfa’ bel-kart?"
+        },
+        "garderMonnaie": {
+          "texte": "خلي الباقي",
+          "latin": "khalli el-ba’i"
+        },
+        "erreur": {
+          "texte": "أظن في غلطة",
+          "latin": "azonn fi ghalta"
+        }
+      }
+    },
+    "ar-MA": {
+      "direction": "rtl",
+      "phrases": {
+        "bonjour": {
+          "texte": "السلام عليكم",
+          "latin": "s-salamu ’alikum"
+        },
+        "merci": {
+          "texte": "شكرا",
+          "latin": "shukran"
+        },
+        "sVousPlait": {
+          "texte": "عافاك",
+          "latin": "’afak"
+        },
+        "nonMerci": {
+          "texte": "لا، شكرا",
+          "latin": "la, shukran"
+        },
+        "combien": {
+          "texte": "بشحال هادا؟",
+          "latin": "bshhal hada?"
+        },
+        "tropCher": {
+          "texte": "غالي بزاف",
+          "latin": "ghali bzzaf"
+        },
+        "baisser": {
+          "texte": "نقص شوية",
+          "latin": "nqqes shwiya"
+        },
+        "dernierPrix": {
+          "texte": "شحال آخر ثمن؟",
+          "latin": "shhal akhir taman?"
+        },
+        "daccord": {
+          "texte": "واخا، غادي ناخدو",
+          "latin": "wakha, ghadi nakhdu"
+        },
+        "casser": {
+          "texte": "واش تقدر تصرف ليا هاد الورقة؟",
+          "latin": "wash tqder tserref liya had l-werqa?"
+        },
+        "petiteMonnaie": {
+          "texte": "عندك الصرف؟",
+          "latin": "’andek s-serf?"
+        },
+        "pasDeMonnaie": {
+          "texte": "ما عنديش الصرف",
+          "latin": "ma ’andish s-serf"
+        },
+        "addition": {
+          "texte": "الحساب عافاك",
+          "latin": "l-hsab ’afak"
+        },
+        "carte": {
+          "texte": "واش نقدر نخلص بالكارطة؟",
+          "latin": "wash nqder nkhelles b l-karta?"
+        },
+        "garderMonnaie": {
+          "texte": "خلي الصرف",
+          "latin": "khalli s-serf"
+        },
+        "erreur": {
+          "texte": "كاين شي غلط",
+          "latin": "kayn shi ghalat"
+        }
+      }
+    }
+  }
+}

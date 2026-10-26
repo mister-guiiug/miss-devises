@@ -448,3 +448,31 @@ describe('la mini-calculatrice (spécification 003, récit 2)', () => {
     ).toBe('1 176,60');
   });
 });
+
+describe('les mots utiles (spécification 004)', () => {
+  it('« Mots utiles » ouvre les phrases du pays de la devise', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.click(screen.getByRole('button', { name: 'Mots utiles' }));
+    const feuille = await screen.findByRole('dialog', { name: 'Mots utiles' });
+    expect(within(feuille).getByText('بكام ده؟')).toBeInTheDocument();
+  });
+
+  it('pas de bouton quand le pays parle la langue de l’application (scénario 6)', () => {
+    usePreferences.setState({ devise: 'XOF' });
+    monter();
+    expect(screen.queryByRole('button', { name: 'Mots utiles' })).toBeNull();
+  });
+
+  it('les langues de la seconde devise s’ajoutent (scénario 4)', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ devise: 'XOF', seconde: 'USD' });
+    monter();
+    await user.click(screen.getByRole('button', { name: 'Mots utiles' }));
+    const feuille = await screen.findByRole('dialog', { name: 'Mots utiles' });
+    expect(within(feuille).getByText('How much is it?')).toHaveAttribute(
+      'lang',
+      'en'
+    );
+  });
+});

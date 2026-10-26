@@ -23,6 +23,13 @@ et bâtie sur
   livre égyptienne et le dollar. On tape dans n'importe lequel, les deux autres
   se remplissent en passant par la référence ; chaque devise garde sa ligne de
   taux, avec sa source et sa date.
+- **Dire les mots utiles du pays** : « Mots utiles » ouvre, dans la langue du
+  pays de la devise, seize phrases pour saluer, marchander, faire la monnaie
+  d'un billet et demander l'addition, avec leur transcription et leur sens
+  dans la langue de l'application. Touchée, une phrase s'affiche en grand,
+  pour la montrer. 27 langues pour les 41 devises illustrées, livrées avec
+  l'application ; leur relecture est publiée dans
+  `specs/004-mots-utiles/phrases.md`.
 - **Calculer dans la saisie** : un champ comprend « 12,5 + 7,5 » et convertit
   le résultat, affiché sous lui. Le bouton « Calculatrice » remplace le clavier
   du téléphone, qui n'a pas d'opérateurs, par un pavé (+ − × ÷, ⌫, C, =) qui

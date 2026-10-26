@@ -3,6 +3,7 @@ import {
   ArrowUpDown,
   Banknote as IconeBillets,
   Calculator,
+  Languages,
   Plus,
 } from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
@@ -25,6 +26,7 @@ import {
   type ChampSaisi,
 } from './conversion.ts';
 import { Pave } from './Pave.tsx';
+import { languesProposees } from '../../data/langues.ts';
 import { CurrencyPicker } from './CurrencyPicker.tsx';
 import { RateLine } from './RateLine.tsx';
 import { SaveForm } from './SaveForm.tsx';
@@ -42,6 +44,15 @@ const MoneySheet = lazy(() =>
 );
 
 /**
+ * LES MOTS UTILES, À PART AUSSI (spécification 004) : la feuille et son jeu de
+ * phrases (9,1 kB gzip) forment un morceau, préchargé au repos comme le volet.
+ */
+const chargerMots = () => import('../phrases/MotsUtiles.tsx');
+const MotsUtiles = lazy(() =>
+  chargerMots().then(module => ({ default: module.MotsUtiles }))
+);
+
+/**
  * L'écran principal (récit 1) : deux champs liés, l'un saisi, l'autre
  * calculé — le calculé porte la lecture. Tient sans défilement sur un
  * téléphone (CR-005).
@@ -54,6 +65,7 @@ const MoneySheet = lazy(() =>
 export function ConvertScreen() {
   const { t, locale } = useI18n();
   useIdlePrefetch(chargerVolet);
+  useIdlePrefetch(chargerMots);
   const etat = useTaux(s => s.etat);
   const pret = useTaux(s => s.pret);
   const echec = useTaux(s => s.echec);
@@ -75,6 +87,7 @@ export function ConvertScreen() {
   const saisir = useConversion(s => s.saisir);
   const inverser = useConversion(s => s.inverser);
   const [volet, setVolet] = useState(false);
+  const [mots, setMots] = useState(false);
   /** Le dernier champ qui a reçu le focus : celui où le pavé écrit (R4). */
   const [cible, setCible] = useState<ChampSaisi>(saisie.champ);
 
@@ -112,6 +125,9 @@ export function ConvertScreen() {
         );
 
   const bas: Champ = haut === 'devise' ? 'reference' : 'devise';
+  // Les langues du pays de la devise, puis de la seconde, sans celle de
+  // l'application : vide, pas de bouton (spécification 004, EF-001).
+  const langues = languesProposees([devise, seconde], locale);
   const codeDe = (lequel: ChampSaisi) =>
     lequel === 'devise'
       ? devise
@@ -348,10 +364,28 @@ export function ConvertScreen() {
       )}
       <CompositionLigne montant={d.montantDevise} devise={devise} />
       <div className="flex flex-col gap-2">
-        <Button variant="outline" block onClick={() => setVolet(true)}>
-          <IconeBillets aria-hidden="true" className="size-5" />
-          {t('convert.billets')}
-        </Button>
+        {/* Côte à côte dès que la place le permet, l'un sous l'autre sur un
+            petit écran : aucun libellé ne se coupe. */}
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            className="min-w-0 flex-1 basis-40"
+            onClick={() => setVolet(true)}
+          >
+            <IconeBillets aria-hidden="true" className="size-5" />
+            {t('convert.billets')}
+          </Button>
+          {langues.length > 0 && (
+            <Button
+              variant="outline"
+              className="min-w-0 flex-1 basis-40"
+              onClick={() => setMots(true)}
+            >
+              <Languages aria-hidden="true" className="size-5" />
+              {t('phrases.bouton')}
+            </Button>
+          )}
+        </div>
         <SaveForm
           devise={enSeconde ? seconde : devise}
           reference={reference}
@@ -365,6 +399,11 @@ export function ConvertScreen() {
           marge={marge}
         />
       </div>
+      {mots && langues.length > 0 && (
+        <Suspense fallback={null}>
+          <MotsUtiles open onClose={() => setMots(false)} langues={langues} />
+        </Suspense>
+      )}
       {volet && (
         <Suspense fallback={null}>
           <MoneySheet
