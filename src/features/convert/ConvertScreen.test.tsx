@@ -1,7 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { cleanup, render, screen, within } from '@testing-library/react';
+import {
+  cleanup,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 import { ToastProvider } from '@mister-guiiug/dev-pwa-config/react/toast';
 import { I18nProvider } from '../../i18n/index.ts';
 import { useTaux } from '../../rates/store.ts';
@@ -550,5 +556,93 @@ describe('les frais d’une conversion (spécification 005, récit 1)', () => {
       )
     ).toBeInTheDocument();
     expect(screen.queryByText(/^Coût avec frais/)).toBeNull();
+  });
+});
+
+describe('dire le prix (spécification 006, récit 1)', () => {
+  it('la feuille des mots utiles reprend le montant saisi', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.type(
+      screen.getByLabelText('Montant en livres égyptiennes'),
+      '150'
+    );
+    await user.click(screen.getByRole('button', { name: 'Mots utiles' }));
+    const feuille = await screen.findByRole('dialog', { name: 'Mots utiles' });
+    const rangee = within(feuille).getByRole('region', { name: 'Le montant' });
+    expect(lisible(rangee.textContent ?? '')).toContain('150 EGP');
+  });
+});
+
+describe('entendre le montant calculé (spécification 006, récit 2)', () => {
+  const annonce = () =>
+    lisible(document.querySelector('[data-annonce]')?.textContent ?? 'absente');
+
+  it('dit les montants calculés quand la saisie s’arrête, pas à chaque touche', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ seconde: 'USD' });
+    monter();
+    await user.type(
+      screen.getByLabelText('Montant en livres égyptiennes'),
+      '200'
+    );
+    // Juste après la dernière touche : rien encore.
+    expect(annonce()).toBe('');
+    await waitFor(
+      () =>
+        expect(annonce()).toBe(
+          'Soit 3,40 euros et 3,68 dollars des États-Unis.'
+        ),
+      { timeout: 2000 }
+    );
+    expect(document.querySelector('[data-annonce]')).toHaveAttribute(
+      'aria-live',
+      'polite'
+    );
+  });
+
+  it('une saisie illisible n’annonce rien : le champ dit déjà l’erreur', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.type(screen.getByLabelText('Montant en euros'), 'abc');
+    await new Promise(r => setTimeout(r, 1000));
+    expect(annonce()).toBe('');
+  });
+});
+
+describe('le raccourci « Mots utiles » (spécification 006, récit 3)', () => {
+  function Adresse() {
+    const { search } = useLocation();
+    return <output data-adresse="">{search}</output>;
+  }
+  const monterSur = (adresse: string) =>
+    render(
+      <I18nProvider>
+        <ToastProvider>
+          <MemoryRouter initialEntries={[adresse]}>
+            <ConvertScreen />
+            <Adresse />
+          </MemoryRouter>
+        </ToastProvider>
+      </I18nProvider>
+    );
+
+  it('?mots ouvre les mots utiles, puis retire le paramètre', async () => {
+    monterSur('/?mots');
+    expect(
+      await screen.findByRole('dialog', { name: 'Mots utiles' })
+    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(document.querySelector('[data-adresse]')?.textContent).toBe('')
+    );
+  });
+
+  it('?mots sans langue à proposer n’ouvre rien', async () => {
+    usePreferences.setState({ devise: 'XOF' });
+    monterSur('/?mots');
+    await waitFor(() =>
+      expect(document.querySelector('[data-adresse]')?.textContent).toBe('')
+    );
+    expect(screen.queryByRole('dialog', { name: 'Mots utiles' })).toBeNull();
   });
 });

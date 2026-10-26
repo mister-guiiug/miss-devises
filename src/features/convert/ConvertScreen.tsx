@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import {
   ArrowUpDown,
   Banknote as IconeBillets,
@@ -10,13 +10,14 @@ import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
 import { useIdlePrefetch } from '@mister-guiiug/dev-pwa-config/react/use-prefetch';
 import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useI18n } from '../../i18n/index.ts';
 import { useTaux } from '../../rates/store.ts';
 import { codesConnus, tauxDuJour } from '../../rates/service.ts';
 import { rafraichirTaux } from '../../shared/queries/taux.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import { nomAuPluriel } from '../../domain/currencies.ts';
-import { formaterMontant } from '../../domain/money.ts';
+import { formaterMontant, nommerMontant } from '../../domain/money.ts';
 import { appuyer, type Touche } from '../../domain/calcul.ts';
 import {
   deriver,
@@ -91,7 +92,18 @@ export function ConvertScreen() {
   const saisir = useConversion(s => s.saisir);
   const inverser = useConversion(s => s.inverser);
   const [volet, setVolet] = useState(false);
-  const [mots, setMots] = useState(false);
+  /**
+   * LE RACCOURCI « MOTS UTILES » (spécification 006, récit 3) : l'icône de
+   * l'application installée ouvre `?mots`. La feuille s'ouvre d'emblée s'il y
+   * a une langue à proposer — l'état initial lit l'adresse, une fois.
+   */
+  const { search } = useLocation();
+  const navigate = useNavigate();
+  const [mots, setMots] = useState(
+    () =>
+      new URLSearchParams(search).has('mots') &&
+      languesProposees([devise, seconde], locale).length > 0
+  );
   /** Le dernier champ qui a reçu le focus : celui où le pavé écrit (R4). */
   const [cible, setCible] = useState<ChampSaisi>(saisie.champ);
 
@@ -132,6 +144,15 @@ export function ConvertScreen() {
   // Les langues du pays de la devise, puis de la seconde, sans celle de
   // l'application : vide, pas de bouton (spécification 004, EF-001).
   const langues = languesProposees([devise, seconde], locale);
+
+  // Puis le paramètre s'en va : un rechargement ne rouvre pas la feuille.
+  useEffect(() => {
+    const parametres = new URLSearchParams(search);
+    if (!parametres.has('mots')) return;
+    parametres.delete('mots');
+    const reste = parametres.toString();
+    navigate({ search: reste ? `?${reste}` : '' }, { replace: true });
+  }, [search, navigate]);
   const codeDe = (lequel: ChampSaisi) =>
     lequel === 'devise'
       ? devise
@@ -191,6 +212,37 @@ export function ConvertScreen() {
           : d.calcul
             ? t('convert.calculIllisible')
             : t('convert.invalide');
+  /**
+   * L'ANNONCE DES MONTANTS CALCULÉS (spécification 006, récit 2). Le champ
+   * calculé changeait sans rien dire à un lecteur d'écran. La région se met à
+   * jour 800 ms après le dernier changement : la fin d'une saisie, pas chaque
+   * touche. Rien pour une saisie vide ou illisible : le champ dit déjà
+   * l'erreur.
+   */
+  const aAnnoncer = (() => {
+    if (saisie.texte.trim() === '' || d.erreur) return '';
+    const calcules = [haut, bas, ...(seconde ? (['seconde'] as const) : [])]
+      .filter(champ => champ !== saisie.champ)
+      .map(champ => {
+        const montant = montantDe(champ);
+        return montant === null
+          ? null
+          : nommerMontant(montant, codeDe(champ), locale);
+      })
+      .filter((texte): texte is string => texte !== null);
+    if (calcules.length === 0) return '';
+    return t('convert.annonce', {
+      montants: new Intl.ListFormat(locale, { type: 'conjunction' }).format(
+        calcules
+      ),
+    });
+  })();
+  const [annonce, setAnnonce] = useState('');
+  useEffect(() => {
+    const delai = window.setTimeout(() => setAnnonce(aAnnoncer), 800);
+    return () => window.clearTimeout(delai);
+  }, [aAnnoncer]);
+
   const resultat = (lequel: ChampSaisi) => {
     const montant = montantDe(lequel);
     return saisie.champ === lequel && d.calcul && montant !== null
@@ -245,6 +297,9 @@ export function ConvertScreen() {
   return (
     <div className="flex flex-col gap-2">
       <h2 className="sr-only">{t('convert.title')}</h2>
+      <p data-annonce="" aria-live="polite" className="sr-only">
+        {annonce}
+      </p>
       {/* LES DEUX DEVISES CÔTE À CÔTE, sans rangée de plus : l'écran tient
           sans défilement à 390 × 844 avec la seconde (CR-005). Sans elle,
           « + Devise » occupe la place, nommé en entier pour un lecteur
@@ -421,7 +476,17 @@ export function ConvertScreen() {
       </div>
       {mots && langues.length > 0 && (
         <Suspense fallback={null}>
-          <MotsUtiles open onClose={() => setMots(false)} langues={langues} />
+          <MotsUtiles
+            open
+            onClose={() => setMots(false)}
+            langues={langues}
+            montants={[
+              { devise, montant: d.montantDevise },
+              ...(seconde
+                ? [{ devise: seconde, montant: d.montantSeconde }]
+                : []),
+            ]}
+          />
         </Suspense>
       )}
       {volet && (

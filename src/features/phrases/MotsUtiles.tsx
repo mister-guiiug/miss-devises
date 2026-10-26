@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Square, Volume2 } from 'lucide-react';
+import { Maximize2, Square, Volume2 } from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Sheet } from '@mister-guiiug/dev-pwa-config/react/sheet';
 import { SegmentedControl } from '@mister-guiiug/dev-pwa-config/react/segmented-control';
@@ -7,6 +7,8 @@ import { useI18n } from '../../i18n/index.ts';
 import brut from '../../data/phrases.json';
 import { GROUPES, type IdPhrase, type JeuPhrases } from '../../data/phrases.ts';
 import { arreter, choisirVoix, dire, useVoix } from './voix.ts';
+import { LANGUES_DES_DEVISES } from '../../data/langues.ts';
+import { arrondir, decimalesDe, formaterCoupure } from '../../domain/money.ts';
 
 /** Vérifié par `phrases.test.ts` : la feuille ne paie pas Zod à l'exécution. */
 const JEU = brut as JeuPhrases;
@@ -16,6 +18,32 @@ interface Props {
   onClose: () => void;
   /** Les langues proposées, la première par défaut (`languesProposees`). */
   langues: readonly string[];
+  /**
+   * Les montants de l'écran, la devise d'abord, puis la seconde : celui de la
+   * devise dont la langue choisie est relevée se dit au vendeur
+   * (spécification 006, récit 1).
+   */
+  montants?: readonly { devise: string; montant: number | null }[];
+}
+
+/** Ce que la feuille montre en grand : une phrase, ou le montant. */
+type Montre = IdPhrase | 'montant';
+
+/**
+ * Le montant dans la langue du vendeur, avec le nom de la devise dans cette
+ * langue : « ١٥٠ جنيهًا مصريًا », « 150 บาทไทย ». Un prix rond se dit sans
+ * centimes ; sinon, aux décimales de la devise.
+ */
+function prixDans(langue: string, devise: string, montant: number): string {
+  const arrondi = arrondir(montant, decimalesDe(devise));
+  const decimales = Number.isInteger(arrondi) ? 0 : decimalesDe(devise);
+  return new Intl.NumberFormat(langue, {
+    style: 'currency',
+    currency: devise,
+    currencyDisplay: 'name',
+    minimumFractionDigits: decimales,
+    maximumFractionDigits: decimales,
+  }).format(arrondi);
 }
 
 /**
@@ -31,16 +59,16 @@ interface Props {
  * une voix pour la langue (spécification 005, récit 2) ; sinon, la feuille le
  * dit, sans bouton qui ne ferait rien.
  */
-export function MotsUtiles({ open, onClose, langues }: Props) {
+export function MotsUtiles({ open, onClose, langues, montants = [] }: Props) {
   const { t, locale } = useI18n();
   const [choisie, setChoisie] = useState(langues[0] ?? '');
-  const [montree, setMontree] = useState<IdPhrase | null>(null);
+  const [montree, setMontree] = useState<Montre | null>(null);
   const grande = useRef<HTMLDivElement>(null);
-  const derniere = useRef<IdPhrase | null>(null);
+  const derniere = useRef<Montre | null>(null);
   const liste = useRef<HTMLDivElement>(null);
   const voixDeLAppareil = useVoix();
   // La phrase en cours de lecture : son bouton dit « Arrêter ».
-  const [dite, setDite] = useState<IdPhrase | null>(null);
+  const [dite, setDite] = useState<Montre | null>(null);
 
   // La langue choisie n'existe plus (autre devise) : la première revient.
   const code = langues.includes(choisie) ? choisie : (langues[0] ?? '');
@@ -81,10 +109,44 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
   };
 
   if (!langue) return null;
-  const phrase = montree ? langue.phrases[montree] : null;
 
-  const ecouter = (id: IdPhrase) => {
-    const texte = langue.phrases[id]?.texte;
+  // Le montant de la devise dont cette langue est relevée, s'il y en a un.
+  const montantDeLaLangue = montants.find(
+    m =>
+      m.montant !== null &&
+      m.montant > 0 &&
+      LANGUES_DES_DEVISES[m.devise]?.includes(code)
+  );
+  const prix =
+    montantDeLaLangue && montantDeLaLangue.montant !== null
+      ? {
+          texte: prixDans(
+            code,
+            montantDeLaLangue.devise,
+            montantDeLaLangue.montant
+          ),
+          clair: formaterCoupure(
+            arrondir(
+              montantDeLaLangue.montant,
+              decimalesDe(montantDeLaLangue.devise)
+            ),
+            montantDeLaLangue.devise,
+            locale
+          ),
+        }
+      : null;
+
+  const phrase =
+    montree === 'montant'
+      ? prix && { texte: prix.texte, latin: prix.clair }
+      : montree
+        ? langue.phrases[montree]
+        : null;
+  const sensDe = (m: Montre) =>
+    m === 'montant' ? t('phrases.montant') : t(`phrases.sens.${m}`);
+
+  const ecouter = (id: Montre) => {
+    const texte = id === 'montant' ? prix?.texte : langue.phrases[id]?.texte;
     if (!voix || !texte) return;
     if (dite === id) {
       arreter();
@@ -94,7 +156,7 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
     setDite(id);
     dire(texte, code, voix, () => setDite(d => (d === id ? null : d)));
   };
-  const icone = (id: IdPhrase) =>
+  const icone = (id: Montre) =>
     dite === id ? (
       <Square aria-hidden="true" className="size-4" />
     ) : (
@@ -135,7 +197,7 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
           ref={grande}
           tabIndex={-1}
           role="region"
-          aria-label={t(`phrases.sens.${montree}`)}
+          aria-label={sensDe(montree)}
           className="mt-4 flex flex-col items-center gap-3 text-center outline-none"
         >
           <p
@@ -153,7 +215,7 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
               {phrase.latin}
             </p>
           )}
-          <p className="m-0">{t(`phrases.sens.${montree}`)}</p>
+          <p className="m-0">{sensDe(montree)}</p>
           <div className="flex flex-wrap justify-center gap-2">
             {voix && (
               <Button onClick={() => ecouter(montree)}>
@@ -168,6 +230,60 @@ export function MotsUtiles({ open, onClose, langues }: Props) {
         </div>
       ) : (
         <div ref={liste}>
+          {prix && (
+            <section
+              aria-label={t('phrases.montant')}
+              className="mt-3 flex items-center gap-1 rounded-lg border px-3 py-2"
+              style={{ borderColor: 'var(--dwc-border-strong)' }}
+            >
+              <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">
+                  {t('phrases.montant')}
+                </span>
+                <span
+                  lang={code}
+                  dir={langue.direction}
+                  className="text-lg font-semibold break-words"
+                >
+                  {prix.texte}
+                </span>
+                <span
+                  className="text-sm tabular-nums"
+                  style={{ color: 'var(--dwc-text-soft)' }}
+                >
+                  {prix.clair}
+                </span>
+              </div>
+              {voix && (
+                <button
+                  type="button"
+                  onClick={() => ecouter('montant')}
+                  aria-label={
+                    dite === 'montant'
+                      ? t('phrases.arreter')
+                      : t('phrases.ecouterMontant')
+                  }
+                  className="flex size-11 shrink-0 items-center justify-center rounded-lg border"
+                  style={{ borderColor: 'var(--dwc-border)' }}
+                >
+                  {icone('montant')}
+                </button>
+              )}
+              <button
+                type="button"
+                data-phrase="montant"
+                onClick={() => {
+                  derniere.current = 'montant';
+                  setMontree('montant');
+                }}
+                aria-label={t('phrases.montrerMontant')}
+                className="flex size-11 shrink-0 items-center justify-center rounded-lg border"
+                style={{ borderColor: 'var(--dwc-border)' }}
+              >
+                <Maximize2 aria-hidden="true" className="size-4" />
+              </button>
+            </section>
+          )}
           <p
             className="m-0 mt-2 text-sm"
             style={{ color: 'var(--dwc-text-soft)' }}

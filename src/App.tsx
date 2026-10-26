@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import {
   BrowserRouter,
   Link,
@@ -16,13 +17,32 @@ import { AppUpdates } from '@mister-guiiug/dev-pwa-config/react/app-updates';
 import { ThemeProvider } from '@mister-guiiug/dev-pwa-config/react/theme-provider';
 import { registerSW } from 'virtual:pwa-register';
 import { useI18n } from './i18n/index.ts';
+import { useIdlePrefetch } from '@mister-guiiug/dev-pwa-config/react/use-prefetch';
 import { HomeScreen } from './features/home/HomeScreen.tsx';
-import { HistoryScreen } from './features/history/HistoryScreen.tsx';
-import { CarnetScreen } from './features/carnet/CarnetScreen.tsx';
-import { SettingsScreen } from './features/settings/SettingsScreen.tsx';
-import { AboutScreen } from './features/about/AboutScreen.tsx';
 import { getQueryClient } from './shared/queries/client.ts';
 import { useTauxBootstrap } from './shared/queries/taux.ts';
+
+/**
+ * LES ÉCRANS AUTRES QUE CONVERTIR, À LA DEMANDE (spécification 006, récit 4).
+ * L'historique (sa courbe, ses séries), le carnet, les réglages et À propos
+ * pesaient dans le morceau principal, chargé avant le premier rendu, pour un
+ * écran qu'on ouvre ensuite. Ils forment UN morceau (`ecrans.ts`), préchargé
+ * au repos par `useIdlePrefetch` : la même fonction sert `lazy()` et le
+ * préchargement, un seul morceau, jamais deux.
+ */
+const chargerEcrans = () => import('./ecrans.ts');
+const HistoryScreen = lazy(() =>
+  chargerEcrans().then(m => ({ default: m.HistoryScreen }))
+);
+const CarnetScreen = lazy(() =>
+  chargerEcrans().then(m => ({ default: m.CarnetScreen }))
+);
+const SettingsScreen = lazy(() =>
+  chargerEcrans().then(m => ({ default: m.SettingsScreen }))
+);
+const AboutScreen = lazy(() =>
+  chargerEcrans().then(m => ({ default: m.AboutScreen }))
+);
 
 /**
  * LE CADRE : `AppShell` du socle (en-tête, contenu borné, barre basse).
@@ -74,6 +94,8 @@ export function Shell() {
    * le réseau ; le miroir Zustand (`useTaux`) alimente l'UI.
    */
   useTauxBootstrap();
+
+  useIdlePrefetch(chargerEcrans);
 
   const nav = [
     {
@@ -216,18 +238,30 @@ export function Shell() {
         />
       }
     >
-      <Routes>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/historique" element={<HistoryScreen />} />
-        <Route path="/carnet" element={<CarnetScreen />} />
-        <Route path="/reglages" element={<SettingsScreen />} />
-        <Route path="/a-propos" element={<AboutScreen />} />
-        {/* Le repli de route rend l'accueil ; le repli de SERVEUR est le
+      {/* UNE FRONTIÈRE PAR ROUTE (`key={pathname}`) : le routeur navigue dans
+          une transition, et sans elle le repli ne paraîtrait jamais au clic
+          vers un écran pas encore chargé (pwa-doctor, `nav-attente`). */}
+      <Suspense
+        key={pathname}
+        fallback={
+          <p role="status" className="m-0 p-4 text-sm">
+            {t('app.chargement')}
+          </p>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/historique" element={<HistoryScreen />} />
+          <Route path="/carnet" element={<CarnetScreen />} />
+          <Route path="/reglages" element={<SettingsScreen />} />
+          <Route path="/a-propos" element={<AboutScreen />} />
+          {/* Le repli de route rend l'accueil ; le repli de SERVEUR est le
             `404.html` posé par `spaFallbackPlugin`. Les deux sont
             nécessaires : sans le second, GitHub Pages sert sa propre page
             d'erreur avant que ce routeur n'existe. */}
-        <Route path="*" element={<HomeScreen />} />
-      </Routes>
+          <Route path="*" element={<HomeScreen />} />
+        </Routes>
+      </Suspense>
     </AppShell>
   );
 }
