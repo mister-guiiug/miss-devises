@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { formatNumber } from '@mister-guiiug/dev-pwa-config/format';
 import { convertir } from '../../domain/convert.ts';
+import { arrondir, decimalesDe, type Langue } from '../../domain/money.ts';
 import {
-  arrondir,
-  decimalesDe,
-  lireMontant,
-  type Langue,
-} from '../../domain/money.ts';
+  estUnCalcul,
+  evaluer,
+  type ErreurCalcul,
+} from '../../domain/calcul.ts';
 
 /** Le champ de la devise choisie, ou celui de la monnaie de référence. */
 export type Champ = 'devise' | 'reference';
@@ -35,8 +35,12 @@ export interface Derive {
   texteDevise: string;
   texteReference: string;
   texteSeconde: string;
-  /** La saisie n'est pas vide, et n'est pas un montant. */
+  /** La saisie n'est pas vide, et ne donne pas un montant. */
   invalide: boolean;
+  /** Le texte saisi est un calcul (spécification 003, récit 2). */
+  calcul: boolean;
+  /** Pourquoi la saisie ne donne pas de montant ; `null` sinon. */
+  erreur: ErreurCalcul | null;
 }
 
 /** Un montant à éditer : nombre seul. `choix` remplace les décimales de la devise. */
@@ -55,7 +59,7 @@ export function texteDe(
 
 /**
  * La conversion à afficher. Le champ saisi garde exactement ce qui a été
- * tapé ; les autres affichent le résultat arrondi aux décimales de LEUR
+ * tapé, calcul compris (« 12,5 + 7,5 ») ; les autres affichent le résultat arrondi aux décimales de LEUR
  * devise. Sans taux, un champ reste vide : jamais un taux inventé
  * (principe I).
  *
@@ -81,8 +85,11 @@ export function deriver(
   decimales: number | null = null,
   seconde: Seconde | null = null
 ): Derive {
-  const valeur = lireMontant(saisie.texte, langue);
-  const invalide = saisie.texte.trim() !== '' && valeur === null;
+  // Un montant seul ou un calcul, lus de la même façon (recherche R2).
+  const lecture =
+    saisie.texte.trim() === '' ? null : evaluer(saisie.texte, langue);
+  const valeur = lecture && 'valeur' in lecture ? lecture.valeur : null;
+  const erreur = lecture && 'erreur' in lecture ? lecture.erreur : null;
   const tauxDuChamp = (champ: ChampSaisi) =>
     champ === 'reference' ? 1 : champ === 'devise' ? taux : seconde?.taux;
   const valide = (t: number | undefined) =>
@@ -125,7 +132,9 @@ export function deriver(
     texteDevise: d.texte,
     texteReference: r.texte,
     texteSeconde: s.texte,
-    invalide,
+    invalide: erreur !== null,
+    calcul: estUnCalcul(saisie.texte),
+    erreur,
   };
 }
 

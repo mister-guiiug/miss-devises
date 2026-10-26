@@ -69,6 +69,23 @@ const fr = {
     retirerSeconde: 'Retirer {code}',
     absentSeconde:
       'Aucun taux connu pour {code}. Il se chargera dès que l’appareil sera en ligne.',
+    calculatrice: 'Calculatrice',
+    pave: {
+      cible: 'Saisie en {nom}',
+      virgule: 'virgule',
+      plus: 'plus',
+      moins: 'moins',
+      fois: 'multiplié par',
+      divise: 'divisé par',
+      retour: 'Effacer le dernier caractère',
+      effacer: 'Tout effacer',
+      egal: 'Égal',
+    },
+    resultat: '= {montant}',
+    calculIllisible:
+      'Calcul illisible : des chiffres, + − × ÷, et une virgule ou un point.',
+    division: 'Division par zéro.',
+    negatif: 'Le calcul donne un montant négatif.',
   },
   money: {
     title: 'Billets et pièces',
@@ -321,6 +338,23 @@ const en: typeof fr = {
     retirerSeconde: 'Remove {code}',
     absentSeconde:
       'No rate known for {code} yet. It will load as soon as the device is online.',
+    calculatrice: 'Calculator',
+    pave: {
+      cible: 'Typing into: {nom}',
+      virgule: 'point',
+      plus: 'plus',
+      moins: 'minus',
+      fois: 'times',
+      divise: 'divided by',
+      retour: 'Delete last character',
+      effacer: 'Clear all',
+      egal: 'Equals',
+    },
+    resultat: '= {montant}',
+    calculIllisible:
+      'Unreadable calculation: digits, + − × ÷, and one comma or point.',
+    division: 'Division by zero.',
+    negatif: 'The calculation gives a negative amount.',
   },
   money: {
     title: 'Banknotes and coins',

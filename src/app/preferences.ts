@@ -40,6 +40,11 @@ const schema = z.object({
    * version.
    */
   seconde: CODE.nullable().default(null),
+  /**
+   * Le pavé de la calculatrice remplace le clavier du téléphone dans la saisie
+   * des montants (spécification 003, récit 2). Éteint par défaut.
+   */
+  calculatrice: z.boolean().default(false),
 });
 
 export type Preferences = z.infer<typeof schema>;
@@ -64,6 +69,7 @@ export const DEFAUTS: Preferences = {
   marge: 0,
   decimales: null,
   seconde: null,
+  calculatrice: false,
 };
 
 /**
@@ -115,6 +121,7 @@ interface EtatPreferences extends Preferences {
   /** Refusé pour la référence ou la devise (EF-002). */
   choisirSeconde: (code: string) => void;
   retirerSeconde: () => void;
+  basculerCalculatrice: () => void;
 }
 
 /** Une fabrique, pour qu'un test relise les préférences comme au rechargement. */
@@ -134,6 +141,7 @@ export function creerPreferences() {
         marge,
         decimales,
         seconde,
+        calculatrice,
       } = get();
       preferencesStore.save({
         reference,
@@ -147,6 +155,7 @@ export function creerPreferences() {
         marge,
         decimales,
         seconde,
+        calculatrice,
       });
     };
     const enTeteDesRecentes = (code: string) =>
@@ -218,6 +227,7 @@ export function creerPreferences() {
         sauver({ seconde: code, recentes: enTeteDesRecentes(code) });
       },
       retirerSeconde: () => sauver({ seconde: null }),
+      basculerCalculatrice: () => sauver({ calculatrice: !get().calculatrice }),
     };
   });
 }

@@ -1,5 +1,11 @@
 import { lazy, Suspense, useMemo, useState } from 'react';
-import { ArrowUpDown, Banknote as IconeBillets, Plus, X } from 'lucide-react';
+import {
+  ArrowUpDown,
+  Banknote as IconeBillets,
+  Calculator,
+  Plus,
+  X,
+} from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
 import { useIdlePrefetch } from '@mister-guiiug/dev-pwa-config/react/use-prefetch';
@@ -10,12 +16,16 @@ import { codesConnus, tauxDuJour } from '../../rates/service.ts';
 import { rafraichirTaux } from '../../shared/queries/taux.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import { nomAuPluriel } from '../../domain/currencies.ts';
+import { formaterMontant } from '../../domain/money.ts';
+import { appuyer, type Touche } from '../../domain/calcul.ts';
 import {
   deriver,
+  texteDe as ecrireMontant,
   useConversion,
   type Champ,
   type ChampSaisi,
 } from './conversion.ts';
+import { Pave } from './Pave.tsx';
 import { CurrencyPicker } from './CurrencyPicker.tsx';
 import { RateLine } from './RateLine.tsx';
 import { SaveForm } from './SaveForm.tsx';
@@ -39,7 +49,8 @@ const MoneySheet = lazy(() =>
  *
  * Une SECONDE DEVISE, facultative, ajoute un troisième champ sous la paire
  * (spécification 003, récit 1) : les trois passent par la référence, et
- * chaque devise a sa ligne de taux.
+ * chaque devise a sa ligne de taux. La CALCULATRICE (récit 2) remplace le
+ * clavier du téléphone par un pavé qui écrit dans le dernier champ touché.
  */
 export function ConvertScreen() {
   const { t, locale } = useI18n();
@@ -58,11 +69,15 @@ export function ConvertScreen() {
   const seconde = usePreferences(s => s.seconde);
   const choisirSeconde = usePreferences(s => s.choisirSeconde);
   const retirerSeconde = usePreferences(s => s.retirerSeconde);
+  const calculatrice = usePreferences(s => s.calculatrice);
+  const basculerCalculatrice = usePreferences(s => s.basculerCalculatrice);
   const saisie = useConversion(s => s.saisie);
   const haut = useConversion(s => s.haut);
   const saisir = useConversion(s => s.saisir);
   const inverser = useConversion(s => s.inverser);
   const [volet, setVolet] = useState(false);
+  /** Le dernier champ qui a reçu le focus : celui où le pavé écrit (R4). */
+  const [cible, setCible] = useState<ChampSaisi>(saisie.champ);
 
   const codes = useMemo(() => codesConnus(etat), [etat]);
   const maintenant = new Date();
@@ -110,6 +125,61 @@ export function ConvertScreen() {
       : lequel === 'reference'
         ? d.texteReference
         : d.texteSeconde;
+  const montantDe = (lequel: ChampSaisi) =>
+    lequel === 'devise'
+      ? d.montantDevise
+      : lequel === 'reference'
+        ? d.montantReference
+        : d.montantSeconde;
+
+  // Une cible retirée (la seconde devise) rend la main à la référence.
+  const cibleActive: ChampSaisi =
+    cible === 'seconde' && !seconde ? 'reference' : cible;
+
+  /**
+   * Une touche du pavé (recherche R4). Dans le champ saisi, elle prolonge sa
+   * saisie ; dans un autre, un chiffre commence une saisie neuve et un
+   * opérateur prolonge le montant affiché (« 3,40 + »).
+   */
+  const toucher = (touche: Touche) => {
+    const neuve = /^\d$/.test(touche) || touche === 'decimal';
+    const depart =
+      cibleActive === saisie.champ
+        ? saisie.texte
+        : neuve || touche === 'effacer'
+          ? ''
+          : texteDe(cibleActive);
+    saisir(cibleActive, appuyer(depart, touche, locale));
+  };
+
+  /** « = » : le calcul devient son résultat, aux décimales de la devise (R5). */
+  const egal = () => {
+    const montant = montantDe(saisie.champ);
+    if (cibleActive !== saisie.champ || !d.calcul || montant === null) return;
+    saisir(
+      saisie.champ,
+      ecrireMontant(montant, codeDe(saisie.champ), locale, null)
+    );
+  };
+
+  const erreur =
+    d.erreur === null
+      ? undefined
+      : d.erreur === 'division'
+        ? t('convert.division')
+        : d.erreur === 'negatif'
+          ? t('convert.negatif')
+          : d.calcul
+            ? t('convert.calculIllisible')
+            : t('convert.invalide');
+  const resultat = (lequel: ChampSaisi) => {
+    const montant = montantDe(lequel);
+    return saisie.champ === lequel && d.calcul && montant !== null
+      ? t('convert.resultat', {
+          montant: formaterMontant(montant, codeDe(lequel), locale),
+        })
+      : undefined;
+  };
 
   /**
    * Retirer la seconde devise ne perd pas un montant qui y était saisi : il
@@ -140,16 +210,16 @@ export function ConvertScreen() {
       label={t('convert.montant', {
         nom: nomAuPluriel(codeDe(lequel), locale),
       })}
-      inputMode="decimal"
+      // Calculatrice allumée : le champ garde le focus et le curseur, le
+      // téléphone n'ouvre pas son clavier (recherche R3).
+      inputMode={calculatrice ? 'none' : 'decimal'}
       autoComplete="off"
       enterKeyHint="done"
       value={texteDe(lequel)}
+      onFocus={() => setCible(lequel)}
       onChange={event => saisir(lequel, event.target.value)}
-      error={
-        saisie.champ === lequel && d.invalide
-          ? t('convert.invalide')
-          : undefined
-      }
+      hint={resultat(lequel)}
+      error={saisie.champ === lequel ? erreur : undefined}
     />
   );
 
@@ -193,15 +263,33 @@ export function ConvertScreen() {
       />
       <Card className="flex flex-col gap-2">
         {champ(haut)}
-        <button
-          type="button"
-          onClick={inverser}
-          aria-label={t('convert.inverser')}
-          className="mx-auto flex size-10 items-center justify-center rounded-full border"
-          style={{ borderColor: 'var(--dwc-border-strong)' }}
-        >
-          <ArrowUpDown aria-hidden="true" className="size-5" />
-        </button>
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center">
+          <span aria-hidden="true" />
+          <button
+            type="button"
+            onClick={inverser}
+            aria-label={t('convert.inverser')}
+            className="flex size-10 items-center justify-center rounded-full border"
+            style={{ borderColor: 'var(--dwc-border-strong)' }}
+          >
+            <ArrowUpDown aria-hidden="true" className="size-5" />
+          </button>
+          <button
+            type="button"
+            onClick={basculerCalculatrice}
+            aria-label={t('convert.calculatrice')}
+            aria-pressed={calculatrice}
+            className="flex size-10 items-center justify-center justify-self-end rounded-full border"
+            style={{
+              borderColor: calculatrice
+                ? 'var(--dwc-primary)'
+                : 'var(--dwc-border-strong)',
+              background: calculatrice ? 'var(--dwc-primary-soft)' : undefined,
+            }}
+          >
+            <Calculator aria-hidden="true" className="size-5" />
+          </button>
+        </div>
         {champ(bas, true)}
         {seconde && (
           <div className="flex items-end gap-2">
@@ -217,6 +305,13 @@ export function ConvertScreen() {
           </div>
         )}
       </Card>
+      {calculatrice && (
+        <Pave
+          cible={nomAuPluriel(codeDe(cibleActive), locale)}
+          onTouche={toucher}
+          onEgal={egal}
+        />
+      )}
       <RateLine
         jour={jour}
         pret={pret}

@@ -20,6 +20,7 @@ describe('les préférences', () => {
       marge,
       decimales,
       seconde,
+      calculatrice,
     } = creerPreferences().getState();
     expect({
       reference,
@@ -33,6 +34,7 @@ describe('les préférences', () => {
       marge,
       decimales,
       seconde,
+      calculatrice,
     }).toEqual(DEFAUTS);
     expect(DEFAUTS.reference).toBe('EUR');
   });
@@ -190,6 +192,17 @@ describe('les préférences', () => {
         },
       });
       expect(creerPreferences().getState().seconde).toBeNull();
+    });
+  });
+
+  describe('la calculatrice (spécification 003, récit 2)', () => {
+    it('est éteinte par défaut, s’allume, et le reste au rechargement', () => {
+      const prefs = creerPreferences();
+      expect(prefs.getState().calculatrice).toBe(false);
+      prefs.getState().basculerCalculatrice();
+      expect(creerPreferences().getState().calculatrice).toBe(true);
+      prefs.getState().basculerCalculatrice();
+      expect(creerPreferences().getState().calculatrice).toBe(false);
     });
   });
 });

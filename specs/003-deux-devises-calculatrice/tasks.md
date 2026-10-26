@@ -32,18 +32,18 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
 
 ## Phase 3 : récit 2, la mini-calculatrice (P2)
 
-- [ ] T008 [P] [R2] Tests puis `src/domain/calcul.ts` : lecture d'un calcul,
+- [x] T008 [P] [R2] Tests puis `src/domain/calcul.ts` : lecture d'un calcul,
       priorités, opérateur final, erreurs, gestes du pavé (recherche R2, R4).
-- [ ] T009 [R2] Tests puis `deriver` comprend un calcul, rend `calcul` et
+- [x] T009 [R2] Tests puis `deriver` comprend un calcul, rend `calcul` et
       `erreur` (`conversion.ts`).
-- [ ] T010 [P] [R2] Tests puis la préférence `calculatrice`
+- [x] T010 [P] [R2] Tests puis la préférence `calculatrice`
       (`preferences.ts`).
-- [ ] T011 [R2] Le pavé (`Pave.tsx`), le bouton « Calculatrice », la cible,
+- [x] T011 [R2] Le pavé (`Pave.tsx`), le bouton « Calculatrice », la cible,
       `inputMode="none"`, le résultat sous le champ, « = » (`ConvertScreen.tsx`) ;
       tests d'écran.
-- [ ] T012 [R2] e2e `@critical` : scénarios 2 à 4, 8 et 9, rechargement ; axe
+- [x] T012 [R2] e2e `@critical` : scénarios 2 à 4, 8 et 9, rechargement ; axe
       pavé ouvert dans les deux thèmes (CR-004).
-- [ ] T013 [R2] Messages fr et en.
+- [x] T013 [R2] Messages fr et en.
 
 ## Phase 4 : finitions
 

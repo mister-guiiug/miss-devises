@@ -232,3 +232,43 @@ describe('deriver à trois champs (spécification 003, récit 1)', () => {
     expect(d.texteDevise).toBe('');
   });
 });
+
+describe('deriver comprend un calcul (spécification 003, récit 2)', () => {
+  const egp = (texte: string, champ: 'devise' | 'reference' = 'reference') =>
+    deriver({ champ, texte }, 'EGP', 'EUR', 58.83, 'fr');
+
+  it('« 12,5 + 7,5 » en euros donne 1 176,60 EGP ; le champ garde le calcul (scénario 3)', () => {
+    const d = egp('12,5 + 7,5');
+    expect(d.texteReference).toBe('12,5 + 7,5');
+    expect(d.montantReference).toBe(20);
+    expect(lisible(d.texteDevise)).toBe('1 176,60');
+    expect(d.calcul).toBe(true);
+    expect(d.erreur).toBeNull();
+    expect(d.invalide).toBe(false);
+  });
+
+  it('un montant seul n’est pas un calcul', () => {
+    const d = egp('20');
+    expect(d.calcul).toBe(false);
+    expect(d.erreur).toBeNull();
+  });
+
+  it('une frappe en cours suit le calcul déjà lisible, sans erreur (scénario 6)', () => {
+    const d = egp('12 +');
+    expect(d.montantReference).toBe(12);
+    expect(d.invalide).toBe(false);
+  });
+
+  it('division par zéro et résultat négatif disent leur erreur, sans rien remplir (scénario 7)', () => {
+    expect(egp('12 ÷ 0').erreur).toBe('division');
+    expect(egp('12 ÷ 0').texteDevise).toBe('');
+    expect(egp('5 − 8').erreur).toBe('negatif');
+    expect(egp('5 − 8').invalide).toBe(true);
+    expect(egp('abc').erreur).toBe('illisible');
+  });
+
+  it('un champ vide n’est pas une erreur', () => {
+    expect(egp('').erreur).toBeNull();
+    expect(egp('').invalide).toBe(false);
+  });
+});
