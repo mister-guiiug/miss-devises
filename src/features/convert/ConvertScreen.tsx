@@ -226,41 +226,53 @@ export function ConvertScreen() {
   return (
     <div className="flex flex-col gap-2">
       <h2 className="sr-only">{t('convert.title')}</h2>
-      <CurrencyPicker
-        code={devise}
-        codes={codes}
-        recentes={recentes}
-        epinglees={epinglees}
-        onEpingler={epingler}
-        onChoisir={choisirDevise}
-        exclure={reference}
-      />
-      <CurrencyPicker
-        code={seconde}
-        codes={codes.filter(c => c !== devise)}
-        recentes={recentes}
-        epinglees={epinglees}
-        onEpingler={epingler}
-        onChoisir={choisirSeconde}
-        exclure={reference}
-        etiquette={t('convert.choisirSeconde')}
-        titre={t('convert.seconde')}
-        declencheur={
-          seconde
-            ? undefined
-            : ouvrir => (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="self-start"
-                  onClick={ouvrir}
-                >
-                  <Plus aria-hidden="true" className="size-4" />
-                  {t('convert.ajouterSeconde')}
-                </Button>
-              )
-        }
-      />
+      {/* LES DEUX DEVISES CÔTE À CÔTE, sans rangée de plus : l'écran tient
+          sans défilement à 390 × 844 avec la seconde (CR-005). Sans elle,
+          « + Devise » occupe la place, nommé en entier pour un lecteur
+          d'écran. */}
+      <div className="flex gap-2">
+        <div className="min-w-0 flex-1">
+          <CurrencyPicker
+            code={devise}
+            codes={codes}
+            recentes={recentes}
+            epinglees={epinglees}
+            onEpingler={epingler}
+            onChoisir={choisirDevise}
+            exclure={reference}
+            compact={seconde !== null}
+          />
+        </div>
+        <div className={seconde ? 'min-w-0 flex-1' : 'shrink-0'}>
+          <CurrencyPicker
+            code={seconde}
+            codes={codes.filter(c => c !== devise)}
+            recentes={recentes}
+            epinglees={epinglees}
+            onEpingler={epingler}
+            onChoisir={choisirSeconde}
+            exclure={reference}
+            etiquette={t('convert.choisirSeconde')}
+            titre={t('convert.seconde')}
+            compact
+            declencheur={
+              seconde
+                ? undefined
+                : ouvrir => (
+                    <Button
+                      variant="outline"
+                      className="min-h-11"
+                      aria-label={t('convert.ajouterSeconde')}
+                      onClick={ouvrir}
+                    >
+                      <Plus aria-hidden="true" className="size-4" />
+                      {t('convert.ajouterCourt')}
+                    </Button>
+                  )
+            }
+          />
+        </div>
+      </div>
       <Card className="flex flex-col gap-2">
         {champ(haut)}
         <div className="grid grid-cols-[1fr_auto_1fr] items-center">

@@ -29,6 +29,11 @@ interface Props {
    * même feuille (spécification 003).
    */
   declencheur?: (ouvrir: () => void) => ReactNode;
+  /**
+   * Le drapeau et le code seuls : deux devises côte à côte n'ont pas la place
+   * de leur nom, qui reste dans l'intitulé du bouton.
+   */
+  compact?: boolean;
 }
 
 /**
@@ -48,6 +53,7 @@ export function CurrencyPicker({
   etiquette,
   titre,
   declencheur,
+  compact = false,
 }: Props) {
   const { t, locale } = useI18n();
   const [ouvert, setOuvert] = useState(false);
@@ -88,7 +94,12 @@ export function CurrencyPicker({
         >
           <Drapeau code={code} hauteur={20} />
           <span className="text-fluid-lg font-bold">{code}</span>
-          <span className="min-w-0 flex-1 truncate">{nom}</span>
+          <span
+            className={compact ? 'flex-1' : 'min-w-0 flex-1 truncate'}
+            aria-hidden={compact || undefined}
+          >
+            {compact ? null : nom}
+          </span>
           <ChevronDown aria-hidden="true" className="size-5 shrink-0" />
         </button>
       )}

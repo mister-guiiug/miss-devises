@@ -20,8 +20,8 @@ défaut, zéro dette, zéro info.
 
 ## Scénarios à rejouer à la main
 
-1. **Seconde devise** : sur Convertir, avec la paire EUR-EGP, « Ajouter une
-   devise », choisir USD. Saisir 20 dans les euros : livres et dollars se
+1. **Seconde devise** : sur Convertir, avec la paire EUR-EGP, « + Devise »,
+   choisir USD. Saisir 20 dans les euros : livres et dollars se
    remplissent ; saisir dans les dollars : euros et livres suivent. Deux
    lignes de taux, chacune avec sa source. Recharger : USD reste. Le retirer :
    l'écran revient à la paire.

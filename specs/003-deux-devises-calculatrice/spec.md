@@ -13,7 +13,7 @@ montants. »
 ### Récit 1 : convertir vers deux devises à la fois (priorité P1)
 
 En Égypte, il paie en livres et négocie parfois en dollars, mais il compte en
-euros. Sous la devise de l'écran Convertir, il ajoute le dollar : trois champs
+euros. À côté de la devise de l'écran Convertir, il ajoute le dollar : trois champs
 liés, euro, livre et dollar. Il tape dans n'importe lequel, les deux autres se
 remplissent, et chaque devise a sa ligne de taux, avec sa source et sa date.
 
@@ -29,8 +29,8 @@ retrouver USD ; le retirer, retrouver l'écran d'avant.
 BCE 1,0812 USD pour 1 €) :
 
 1. **Étant donné** une première ouverture, **alors** l'écran n'a que la paire
-   et se comporte comme avant cette spécification ; un bouton « Ajouter une
-   devise » se trouve sous le choix de la devise.
+   et se comporte comme avant cette spécification ; un bouton « + Devise »,
+   nommé « Ajouter une devise », se trouve à côté du choix de la devise.
 2. **Étant donné** la référence EUR, la devise EGP et la seconde devise USD,
    **quand** je saisis 20 dans le champ des euros, **alors** le champ des
    livres affiche 1 176,60 et celui des dollars 21,62.

@@ -21,7 +21,7 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
       du carnet, lecture d'une préférence d'avant (`src/app/preferences.ts`).
 - [x] T003 [P] [R1] Tests puis `deriver` à trois champs, par la référence,
       marge comprise (recherche R1 ; `src/features/convert/conversion.ts`).
-- [x] T004 [R1] L'écran : « Ajouter une devise », son choix et son retrait, le
+- [x] T004 [R1] L'écran : « + Devise », son choix et son retrait, le
       troisième champ, la seconde ligne de taux, l'enregistrement de la paire
       saisie (`ConvertScreen.tsx`, `RateLine.tsx`) ; tests d'écran.
 - [x] T005 [R1] L'historique compare un montant saisi dans la seconde devise
@@ -47,9 +47,9 @@ spécification. Chaque tâche de règle commence par son test, vu rouge
 
 ## Phase 4 : finitions
 
-- [ ] T014 Vérification dans le navigateur : 320 px, 390 × 844 avec la seconde
+- [x] T014 Vérification dans le navigateur : 320 px, 390 × 844 avec la seconde
       devise (CR-005), pavé ouvert, thèmes clair et sombre.
-- [ ] T015 README (fonctionnalités) ; budget de poids et `pwa-doctor --strict`
+- [x] T015 README (fonctionnalités) ; budget de poids et `pwa-doctor --strict`
       au build.
 
 ## Dépendances et ordre
