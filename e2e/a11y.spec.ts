@@ -46,6 +46,16 @@ const ECRANS: Ecran[] = [
     },
   },
   {
+    nom: 'mots utiles, en arabe égyptien (spécification 004)',
+    aller: async page => {
+      await saisir200(page);
+      await page.getByRole('button', { name: 'Mots utiles' }).click();
+      await expect(
+        page.getByRole('dialog', { name: 'Mots utiles' }).getByRole('listitem')
+      ).toHaveCount(16);
+    },
+  },
+  {
     nom: 'volet des billets ouvert',
     aller: async page => {
       await saisir200(page);
