@@ -90,7 +90,14 @@ export default defineConfig(({ command }) => {
         // Frankfurter, le marché via jsDelivr puis son repli Cloudflare
         // Pages. Le sous-domaine du repli porte la date lue
         // (`2025-10-06.currency-api.pages.dev`), d'où le joker.
+        // `'self'` D'ABORD : la liste remplace le défaut du socle, qui le
+        // contient. Sans lui, la sonde du réseau de « Forcer la mise à jour »
+        // (`sw-update`, socle 6.28.0 : une requête HEAD vers la page avant de
+        // purger) était bloquée, l'app se croyait hors ligne et ne purgeait
+        // plus jamais ; en développement, la websocket du rechargement à chaud
+        // l'était aussi.
         connectSrc: [
+          "'self'",
           'https://api.frankfurter.dev',
           'https://cdn.jsdelivr.net',
           'https://*.currency-api.pages.dev',
