@@ -55,8 +55,12 @@ export function Pave({ cible, onTouche, onEgal }: Props) {
     touche in NOMS
       ? t(`convert.pave.${NOMS[touche as keyof typeof NOMS]}`)
       : undefined;
+  // Les chiffres neutres, les opérateurs en couleur, « = » plein : la
+  // disposition d'une calculatrice, où l'œil trouve l'opération d'abord.
   const variante = (touche: Touche) =>
-    /^\d$/.test(touche) || touche === 'decimal' ? 'outline' : 'secondary';
+    touche === '+' || touche === '−' || touche === '×' || touche === '÷'
+      ? 'outline'
+      : 'secondary';
 
   return (
     <div

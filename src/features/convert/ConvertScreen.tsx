@@ -4,7 +4,6 @@ import {
   Banknote as IconeBillets,
   Calculator,
   Plus,
-  X,
 } from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
@@ -255,19 +254,33 @@ export function ConvertScreen() {
             etiquette={t('convert.choisirSeconde')}
             titre={t('convert.seconde')}
             compact
+            retirer={
+              seconde
+                ? {
+                    libelle: t('convert.retirerSeconde', { code: seconde }),
+                    action: retirer,
+                  }
+                : undefined
+            }
             declencheur={
               seconde
                 ? undefined
                 : ouvrir => (
-                    <Button
-                      variant="outline"
-                      className="min-h-11"
-                      aria-label={t('convert.ajouterSeconde')}
+                    // Une place libre, pas une action principale : le contour
+                    // en tirets et la taille du bouton voisin, sans couleur.
+                    <button
+                      type="button"
                       onClick={ouvrir}
+                      aria-label={t('convert.ajouterSeconde')}
+                      className="flex h-full min-h-11 items-center gap-2 rounded-xl border border-dashed px-4 font-semibold"
+                      style={{
+                        borderColor: 'var(--dwc-border-strong)',
+                        color: 'var(--dwc-text)',
+                      }}
                     >
-                      <Plus aria-hidden="true" className="size-4" />
+                      <Plus aria-hidden="true" className="size-5" />
                       {t('convert.ajouterCourt')}
-                    </Button>
+                    </button>
                   )
             }
           />
@@ -275,12 +288,13 @@ export function ConvertScreen() {
       </div>
       <Card className="flex flex-col gap-2">
         {champ(haut)}
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center">
-          <span aria-hidden="true" />
+        {/* Les deux gestes sur les champs, ensemble au milieu. */}
+        <div className="flex items-center justify-center gap-3">
           <button
             type="button"
             onClick={inverser}
             aria-label={t('convert.inverser')}
+            title={t('convert.inverser')}
             className="flex size-10 items-center justify-center rounded-full border"
             style={{ borderColor: 'var(--dwc-border-strong)' }}
           >
@@ -291,31 +305,23 @@ export function ConvertScreen() {
             onClick={basculerCalculatrice}
             aria-label={t('convert.calculatrice')}
             aria-pressed={calculatrice}
-            className="flex size-10 items-center justify-center justify-self-end rounded-full border"
-            style={{
-              borderColor: calculatrice
-                ? 'var(--dwc-primary)'
-                : 'var(--dwc-border-strong)',
-              background: calculatrice ? 'var(--dwc-primary-soft)' : undefined,
-            }}
+            title={t('convert.calculatrice')}
+            className="flex size-10 items-center justify-center rounded-full border"
+            style={
+              calculatrice
+                ? {
+                    borderColor: 'var(--dwc-primary)',
+                    background: 'var(--dwc-primary)',
+                    color: 'var(--dwc-primary-contrast)',
+                  }
+                : { borderColor: 'var(--dwc-border-strong)' }
+            }
           >
             <Calculator aria-hidden="true" className="size-5" />
           </button>
         </div>
         {champ(bas, true)}
-        {seconde && (
-          <div className="flex items-end gap-2">
-            <div className="min-w-0 flex-1">{champ('seconde')}</div>
-            <button
-              type="button"
-              onClick={retirer}
-              aria-label={t('convert.retirerSeconde', { code: seconde })}
-              className="flex size-11 shrink-0 items-center justify-center rounded-lg"
-            >
-              <X aria-hidden="true" className="size-5" />
-            </button>
-          </div>
-        )}
+        {seconde && champ('seconde')}
       </Card>
       {calculatrice && (
         <Pave
