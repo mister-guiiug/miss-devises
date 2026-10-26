@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { ChevronDown, Pin } from 'lucide-react';
+import { ChevronDown, Pin, X } from 'lucide-react';
 import { Sheet } from '@mister-guiiug/dev-pwa-config/react/sheet';
 import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
 import { useI18n } from '../../i18n/index.ts';
@@ -34,6 +34,12 @@ interface Props {
    * de leur nom, qui reste dans l'intitulé du bouton.
    */
   compact?: boolean;
+  /**
+   * Un « × » dans la même boîte que le bouton, qui retire la devise : la
+   * seconde devise se retire là où elle se choisit, et son champ garde toute
+   * la largeur, comme les autres.
+   */
+  retirer?: { libelle: string; action: () => void };
 }
 
 /**
@@ -54,6 +60,7 @@ export function CurrencyPicker({
   titre,
   declencheur,
   compact = false,
+  retirer,
 }: Props) {
   const { t, locale } = useI18n();
   const [ouvert, setOuvert] = useState(false);
@@ -82,26 +89,51 @@ export function CurrencyPicker({
     <>
       {declencheur && declencheur(() => setOuvert(true))}
       {!declencheur && code && (
-        <button
-          type="button"
-          onClick={() => setOuvert(true)}
-          aria-label={`${etiquette ?? t('convert.choisir')} : ${code}, ${nom}`}
-          className="flex min-h-11 w-full items-center gap-3 rounded-xl border px-4 py-2 text-left"
+        <div
+          className="flex h-full min-h-11 w-full items-stretch rounded-xl border"
           style={{
             borderColor: 'var(--dwc-border)',
             background: 'var(--dwc-surface)',
           }}
         >
-          <Drapeau code={code} hauteur={20} />
-          <span className="text-fluid-lg font-bold">{code}</span>
-          <span
-            className={compact ? 'flex-1' : 'min-w-0 flex-1 truncate'}
-            aria-hidden={compact || undefined}
+          <button
+            type="button"
+            onClick={() => setOuvert(true)}
+            aria-label={`${etiquette ?? t('convert.choisir')} : ${code}, ${nom}`}
+            className={
+              compact
+                ? // Le bouton est un conteneur : son chevron ne paraît que
+                  // s'il a la place. Mesuré : le contenu en demande 98 px
+                  // avec lui ; la case de la seconde devise en laisse 109 à
+                  // 390 px, 94 à 360 px, 74 à 320 px.
+                  '@container flex min-w-0 flex-1 items-center gap-2 rounded-xl py-2 ps-3 pe-2 text-left'
+                : 'flex min-w-0 flex-1 items-center gap-3 rounded-xl px-4 py-2 text-left'
+            }
           >
-            {compact ? null : nom}
-          </span>
-          <ChevronDown aria-hidden="true" className="size-5 shrink-0" />
-        </button>
+            <Drapeau code={code} hauteur={20} />
+            <span className="text-fluid-lg font-bold">{code}</span>
+            {!compact && <span className="min-w-0 flex-1 truncate">{nom}</span>}
+            <ChevronDown
+              aria-hidden="true"
+              className={
+                compact
+                  ? 'ms-auto size-5 shrink-0 @max-[6.25rem]:hidden'
+                  : 'size-5 shrink-0'
+              }
+            />
+          </button>
+          {retirer && (
+            <button
+              type="button"
+              onClick={retirer.action}
+              aria-label={retirer.libelle}
+              className="flex w-11 shrink-0 items-center justify-center rounded-e-xl border-s"
+              style={{ borderColor: 'var(--dwc-border)' }}
+            >
+              <X aria-hidden="true" className="size-5" />
+            </button>
+          )}
+        </div>
       )}
 
       <Sheet
