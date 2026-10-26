@@ -34,6 +34,17 @@ const schema = z.object({
    * devise. Ajouté avec un défaut, il ne relève pas la version.
    */
   decimales: z.number().int().min(0).max(8).nullable().default(null),
+  /**
+   * Une seconde devise, convertie avec la paire (spécification 003). Jamais la
+   * référence ni la devise. Ajoutée avec un défaut, elle ne relève pas la
+   * version.
+   */
+  seconde: CODE.nullable().default(null),
+  /**
+   * Le pavé de la calculatrice remplace le clavier du téléphone dans la saisie
+   * des montants (spécification 003, récit 2). Éteint par défaut.
+   */
+  calculatrice: z.boolean().default(false),
 });
 
 export type Preferences = z.infer<typeof schema>;
@@ -57,6 +68,8 @@ export const DEFAUTS: Preferences = {
   epinglees: [],
   marge: 0,
   decimales: null,
+  seconde: null,
+  calculatrice: false,
 };
 
 /**
@@ -84,10 +97,12 @@ export const preferencesStore = createVersionedStore<Preferences>({
 });
 
 interface EtatPreferences extends Preferences {
+  /** Si `code` est la seconde devise, la devise d'avant prend sa place. */
   choisirDevise: (code: string) => void;
   /**
    * Change de référence. Si la nouvelle référence est la devise affichée, les
    * deux s'échangent : référence et devise ne sont jamais la même (EF-004).
+   * De même avec la seconde devise (spécification 003, EF-002).
    */
   choisirReference: (code: string) => void;
   basculerVolet: () => void;
@@ -98,8 +113,15 @@ interface EtatPreferences extends Preferences {
   epingler: (code: string) => void;
   choisirMarge: (marge: number) => void;
   choisirDecimales: (decimales: number | null) => void;
-  /** Pose la référence et la devise d'un coup, pour rouvrir une ligne. */
+  /**
+   * Pose la référence et la devise d'un coup, pour rouvrir une ligne. La
+   * seconde devise se retire si elle est l'une des deux.
+   */
   poserPaire: (reference: string, devise: string) => void;
+  /** Refusé pour la référence ou la devise (EF-002). */
+  choisirSeconde: (code: string) => void;
+  retirerSeconde: () => void;
+  basculerCalculatrice: () => void;
 }
 
 /** Une fabrique, pour qu'un test relise les préférences comme au rechargement. */
@@ -118,6 +140,8 @@ export function creerPreferences() {
         epinglees,
         marge,
         decimales,
+        seconde,
+        calculatrice,
       } = get();
       preferencesStore.save({
         reference,
@@ -130,24 +154,29 @@ export function creerPreferences() {
         epinglees,
         marge,
         decimales,
+        seconde,
+        calculatrice,
       });
     };
+    const enTeteDesRecentes = (code: string) =>
+      [code, ...get().recentes.filter(c => c !== code)].slice(0, 6);
     return {
       ...preferencesStore.load(),
-      choisirDevise: code =>
+      choisirDevise: code => {
+        const { devise, seconde } = get();
         sauver({
           devise: code,
-          recentes: [code, ...get().recentes.filter(c => c !== code)].slice(
-            0,
-            6
-          ),
-        }),
+          recentes: enTeteDesRecentes(code),
+          ...(code === seconde ? { seconde: devise } : {}),
+        });
+      },
       choisirReference: code => {
-        const { reference, devise } = get();
+        const { reference, devise, seconde } = get();
         if (code === reference) return;
         sauver({
           reference: code,
           ...(code === devise ? { devise: reference } : {}),
+          ...(code === seconde ? { seconde: reference } : {}),
         });
       },
       basculerVolet: () =>
@@ -182,15 +211,23 @@ export function creerPreferences() {
       },
       poserPaire: (reference, devise) => {
         if (reference === devise) return;
+        const { seconde } = get();
         sauver({
           reference,
           devise,
-          recentes: [devise, ...get().recentes.filter(c => c !== devise)].slice(
-            0,
-            6
-          ),
+          recentes: enTeteDesRecentes(devise),
+          ...(seconde === reference || seconde === devise
+            ? { seconde: null }
+            : {}),
         });
       },
+      choisirSeconde: code => {
+        const { reference, devise } = get();
+        if (code === reference || code === devise) return;
+        sauver({ seconde: code, recentes: enTeteDesRecentes(code) });
+      },
+      retirerSeconde: () => sauver({ seconde: null }),
+      basculerCalculatrice: () => sauver({ calculatrice: !get().calculatrice }),
     };
   });
 }

@@ -19,6 +19,8 @@ describe('les préférences', () => {
       epinglees,
       marge,
       decimales,
+      seconde,
+      calculatrice,
     } = creerPreferences().getState();
     expect({
       reference,
@@ -31,6 +33,8 @@ describe('les préférences', () => {
       epinglees,
       marge,
       decimales,
+      seconde,
+      calculatrice,
     }).toEqual(DEFAUTS);
     expect(DEFAUTS.reference).toBe('EUR');
   });
@@ -128,5 +132,77 @@ describe('les préférences', () => {
     expect(relues.recentes).toEqual(['MAD', 'USD']);
     expect(relues.sensVolet).toBe('reference');
     expect(relues.periode).toBe('6M');
+  });
+
+  describe('la seconde devise (spécification 003, récit 1)', () => {
+    it('n’existe pas par défaut, se pose, s’ajoute aux récentes et survit à un rechargement', () => {
+      const prefs = creerPreferences();
+      expect(prefs.getState().seconde).toBeNull();
+      prefs.getState().choisirSeconde('USD');
+      expect(prefs.getState().seconde).toBe('USD');
+      expect(prefs.getState().recentes[0]).toBe('USD');
+      expect(creerPreferences().getState().seconde).toBe('USD');
+      prefs.getState().retirerSeconde();
+      expect(creerPreferences().getState().seconde).toBeNull();
+    });
+
+    it('n’est jamais la référence ni la devise (EF-002)', () => {
+      const prefs = creerPreferences();
+      prefs.getState().choisirSeconde('EUR');
+      prefs.getState().choisirSeconde('EGP');
+      expect(prefs.getState().seconde).toBeNull();
+    });
+
+    it('s’échange avec la devise quand elle devient la devise', () => {
+      const prefs = creerPreferences();
+      prefs.getState().choisirSeconde('USD');
+      prefs.getState().choisirDevise('USD');
+      expect(prefs.getState().devise).toBe('USD');
+      expect(prefs.getState().seconde).toBe('EGP');
+    });
+
+    it('s’échange avec la référence quand elle devient la référence', () => {
+      const prefs = creerPreferences();
+      prefs.getState().choisirSeconde('USD');
+      prefs.getState().choisirReference('USD');
+      expect(prefs.getState().reference).toBe('USD');
+      expect(prefs.getState().devise).toBe('EGP');
+      expect(prefs.getState().seconde).toBe('EUR');
+    });
+
+    it('se retire quand une ligne rouverte du carnet la prend pour paire', () => {
+      const prefs = creerPreferences();
+      prefs.getState().choisirSeconde('USD');
+      prefs.getState().poserPaire('EUR', 'MAD');
+      expect(prefs.getState().seconde).toBe('USD');
+      prefs.getState().poserPaire('EUR', 'USD');
+      expect(prefs.getState().devise).toBe('USD');
+      expect(prefs.getState().seconde).toBeNull();
+    });
+
+    it('se lit absente dans une préférence écrite avant elle', () => {
+      preferencesStore.store.set('preferences', {
+        v: 2,
+        data: {
+          reference: 'EUR',
+          devise: 'MAD',
+          recentes: [],
+          sensVolet: 'devise',
+          periode: '1A',
+        },
+      });
+      expect(creerPreferences().getState().seconde).toBeNull();
+    });
+  });
+
+  describe('la calculatrice (spécification 003, récit 2)', () => {
+    it('est éteinte par défaut, s’allume, et le reste au rechargement', () => {
+      const prefs = creerPreferences();
+      expect(prefs.getState().calculatrice).toBe(false);
+      prefs.getState().basculerCalculatrice();
+      expect(creerPreferences().getState().calculatrice).toBe(true);
+      prefs.getState().basculerCalculatrice();
+      expect(creerPreferences().getState().calculatrice).toBe(false);
+    });
   });
 });

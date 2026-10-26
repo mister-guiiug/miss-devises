@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ChevronDown, Pin } from 'lucide-react';
 import { Sheet } from '@mister-guiiug/dev-pwa-config/react/sheet';
 import { TextField } from '@mister-guiiug/dev-pwa-config/react/field';
@@ -11,7 +11,8 @@ import {
 import { Drapeau } from '../../ui/Drapeau.tsx';
 
 interface Props {
-  code: string;
+  /** La devise choisie ; `null` quand il n'y en a pas encore. */
+  code: string | null;
   codes: readonly string[];
   recentes: readonly string[];
   onChoisir: (code: string) => void;
@@ -23,6 +24,16 @@ interface Props {
   etiquette?: string;
   /** Le titre de la feuille : « Devise ». */
   titre?: string;
+  /**
+   * Remplace le bouton qui nomme la devise : « Ajouter une devise » ouvre la
+   * même feuille (spécification 003).
+   */
+  declencheur?: (ouvrir: () => void) => ReactNode;
+  /**
+   * Le drapeau et le code seuls : deux devises côte à côte n'ont pas la place
+   * de leur nom, qui reste dans l'intitulé du bouton.
+   */
+  compact?: boolean;
 }
 
 /**
@@ -41,6 +52,8 @@ export function CurrencyPicker({
   onEpingler,
   etiquette,
   titre,
+  declencheur,
+  compact = false,
 }: Props) {
   const { t, locale } = useI18n();
   const [ouvert, setOuvert] = useState(false);
@@ -51,7 +64,7 @@ export function CurrencyPicker({
     [codes, locale, recentes, exclure, epinglees]
   );
   const trouvees = chercherDevises(liste, requete);
-  const nom = nomDevise(code, locale);
+  const nom = code ? nomDevise(code, locale) : '';
 
   const fermer = () => {
     setOuvert(false);
@@ -67,21 +80,29 @@ export function CurrencyPicker({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOuvert(true)}
-        aria-label={`${etiquette ?? t('convert.choisir')} : ${code}, ${nom}`}
-        className="flex min-h-11 w-full items-center gap-3 rounded-xl border px-4 py-2 text-left"
-        style={{
-          borderColor: 'var(--dwc-border)',
-          background: 'var(--dwc-surface)',
-        }}
-      >
-        <Drapeau code={code} hauteur={20} />
-        <span className="text-fluid-lg font-bold">{code}</span>
-        <span className="min-w-0 flex-1 truncate">{nom}</span>
-        <ChevronDown aria-hidden="true" className="size-5 shrink-0" />
-      </button>
+      {declencheur && declencheur(() => setOuvert(true))}
+      {!declencheur && code && (
+        <button
+          type="button"
+          onClick={() => setOuvert(true)}
+          aria-label={`${etiquette ?? t('convert.choisir')} : ${code}, ${nom}`}
+          className="flex min-h-11 w-full items-center gap-3 rounded-xl border px-4 py-2 text-left"
+          style={{
+            borderColor: 'var(--dwc-border)',
+            background: 'var(--dwc-surface)',
+          }}
+        >
+          <Drapeau code={code} hauteur={20} />
+          <span className="text-fluid-lg font-bold">{code}</span>
+          <span
+            className={compact ? 'flex-1' : 'min-w-0 flex-1 truncate'}
+            aria-hidden={compact || undefined}
+          >
+            {compact ? null : nom}
+          </span>
+          <ChevronDown aria-hidden="true" className="size-5 shrink-0" />
+        </button>
+      )}
 
       <Sheet
         open={ouvert}

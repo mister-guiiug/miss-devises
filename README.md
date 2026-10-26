@@ -18,6 +18,15 @@ et bâtie sur
   défaut et se change dans les réglages : un franc suisse, un dollar… Une
   paire dont la BCE publie les deux devises se lit à son taux, les autres au
   taux de marché, toujours à une seule date.
+- **Convertir vers deux devises à la fois** : « + Devise » ajoute une seconde
+  devise à côté de la première, et trois champs liés, par exemple l'euro, la
+  livre égyptienne et le dollar. On tape dans n'importe lequel, les deux autres
+  se remplissent en passant par la référence ; chaque devise garde sa ligne de
+  taux, avec sa source et sa date.
+- **Calculer dans la saisie** : un champ comprend « 12,5 + 7,5 » et convertit
+  le résultat, affiché sous lui. Le bouton « Calculatrice » remplace le clavier
+  du téléphone, qui n'a pas d'opérateurs, par un pavé (+ − × ÷, ⌫, C, =) qui
+  écrit dans le dernier champ touché.
 - **Voir les billets et les pièces** de 41 devises de voyage, dessinés à leur
   couleur et à leur taille relative, ou, à la demande, en photos libres de
   Wikimedia Commons, chacun avec sa valeur dans la monnaie de référence, et

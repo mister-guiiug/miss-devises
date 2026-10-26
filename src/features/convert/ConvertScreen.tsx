@@ -1,5 +1,11 @@
 import { lazy, Suspense, useMemo, useState } from 'react';
-import { ArrowUpDown, Banknote as IconeBillets } from 'lucide-react';
+import {
+  ArrowUpDown,
+  Banknote as IconeBillets,
+  Calculator,
+  Plus,
+  X,
+} from 'lucide-react';
 import { Button } from '@mister-guiiug/dev-pwa-config/react/button';
 import { Card } from '@mister-guiiug/dev-pwa-config/react/card';
 import { useIdlePrefetch } from '@mister-guiiug/dev-pwa-config/react/use-prefetch';
@@ -10,7 +16,16 @@ import { codesConnus, tauxDuJour } from '../../rates/service.ts';
 import { rafraichirTaux } from '../../shared/queries/taux.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import { nomAuPluriel } from '../../domain/currencies.ts';
-import { deriver, useConversion, type Champ } from './conversion.ts';
+import { formaterMontant } from '../../domain/money.ts';
+import { appuyer, type Touche } from '../../domain/calcul.ts';
+import {
+  deriver,
+  texteDe as ecrireMontant,
+  useConversion,
+  type Champ,
+  type ChampSaisi,
+} from './conversion.ts';
+import { Pave } from './Pave.tsx';
 import { CurrencyPicker } from './CurrencyPicker.tsx';
 import { RateLine } from './RateLine.tsx';
 import { SaveForm } from './SaveForm.tsx';
@@ -31,6 +46,11 @@ const MoneySheet = lazy(() =>
  * L'écran principal (récit 1) : deux champs liés, l'un saisi, l'autre
  * calculé — le calculé porte la lecture. Tient sans défilement sur un
  * téléphone (CR-005).
+ *
+ * Une SECONDE DEVISE, facultative, ajoute un troisième champ sous la paire
+ * (spécification 003, récit 1) : les trois passent par la référence, et
+ * chaque devise a sa ligne de taux. La CALCULATRICE (récit 2) remplace le
+ * clavier du téléphone par un pavé qui écrit dans le dernier champ touché.
  */
 export function ConvertScreen() {
   const { t, locale } = useI18n();
@@ -46,14 +66,28 @@ export function ConvertScreen() {
   const marge = usePreferences(s => s.marge);
   const decimales = usePreferences(s => s.decimales);
   const choisirDevise = usePreferences(s => s.choisirDevise);
+  const seconde = usePreferences(s => s.seconde);
+  const choisirSeconde = usePreferences(s => s.choisirSeconde);
+  const retirerSeconde = usePreferences(s => s.retirerSeconde);
+  const calculatrice = usePreferences(s => s.calculatrice);
+  const basculerCalculatrice = usePreferences(s => s.basculerCalculatrice);
   const saisie = useConversion(s => s.saisie);
   const haut = useConversion(s => s.haut);
   const saisir = useConversion(s => s.saisir);
   const inverser = useConversion(s => s.inverser);
   const [volet, setVolet] = useState(false);
+  /** Le dernier champ qui a reçu le focus : celui où le pavé écrit (R4). */
+  const [cible, setCible] = useState<ChampSaisi>(saisie.champ);
 
   const codes = useMemo(() => codesConnus(etat), [etat]);
-  const jour = tauxDuJour(reference, devise, etat, new Date());
+  const maintenant = new Date();
+  const jour = tauxDuJour(reference, devise, etat, maintenant);
+  const jourSeconde = seconde
+    ? tauxDuJour(reference, seconde, etat, maintenant)
+    : undefined;
+  const avecSeconde = seconde
+    ? { code: seconde, taux: jourSeconde?.taux }
+    : null;
   const d = deriver(
     saisie,
     devise,
@@ -61,18 +95,111 @@ export function ConvertScreen() {
     jour?.taux,
     locale,
     marge,
-    decimales
+    decimales,
+    avecSeconde
   );
   const indicatif =
     marge === 0
       ? d
-      : deriver(saisie, devise, reference, jour?.taux, locale, 0, decimales);
+      : deriver(
+          saisie,
+          devise,
+          reference,
+          jour?.taux,
+          locale,
+          0,
+          decimales,
+          avecSeconde
+        );
 
   const bas: Champ = haut === 'devise' ? 'reference' : 'devise';
+  const codeDe = (lequel: ChampSaisi) =>
+    lequel === 'devise'
+      ? devise
+      : lequel === 'reference'
+        ? reference
+        : (seconde ?? reference);
+  const texteDe = (lequel: ChampSaisi) =>
+    lequel === 'devise'
+      ? d.texteDevise
+      : lequel === 'reference'
+        ? d.texteReference
+        : d.texteSeconde;
+  const montantDe = (lequel: ChampSaisi) =>
+    lequel === 'devise'
+      ? d.montantDevise
+      : lequel === 'reference'
+        ? d.montantReference
+        : d.montantSeconde;
+
+  // Une cible retirée (la seconde devise) rend la main à la référence.
+  const cibleActive: ChampSaisi =
+    cible === 'seconde' && !seconde ? 'reference' : cible;
+
+  /**
+   * Une touche du pavé (recherche R4). Dans le champ saisi, elle prolonge sa
+   * saisie ; dans un autre, un chiffre commence une saisie neuve et un
+   * opérateur prolonge le montant affiché (« 3,40 + »).
+   */
+  const toucher = (touche: Touche) => {
+    const neuve = /^\d$/.test(touche) || touche === 'decimal';
+    const depart =
+      cibleActive === saisie.champ
+        ? saisie.texte
+        : neuve || touche === 'effacer'
+          ? ''
+          : texteDe(cibleActive);
+    saisir(cibleActive, appuyer(depart, touche, locale));
+  };
+
+  /** « = » : le calcul devient son résultat, aux décimales de la devise (R5). */
+  const egal = () => {
+    const montant = montantDe(saisie.champ);
+    if (cibleActive !== saisie.champ || !d.calcul || montant === null) return;
+    saisir(
+      saisie.champ,
+      ecrireMontant(montant, codeDe(saisie.champ), locale, null)
+    );
+  };
+
+  const erreur =
+    d.erreur === null
+      ? undefined
+      : d.erreur === 'division'
+        ? t('convert.division')
+        : d.erreur === 'negatif'
+          ? t('convert.negatif')
+          : d.calcul
+            ? t('convert.calculIllisible')
+            : t('convert.invalide');
+  const resultat = (lequel: ChampSaisi) => {
+    const montant = montantDe(lequel);
+    return saisie.champ === lequel && d.calcul && montant !== null
+      ? t('convert.resultat', {
+          montant: formaterMontant(montant, codeDe(lequel), locale),
+        })
+      : undefined;
+  };
+
+  /**
+   * Retirer la seconde devise ne perd pas un montant qui y était saisi : il
+   * passe dans le champ de la référence, sans la marge, que le calcul
+   * appliquera de nouveau.
+   */
+  const retirer = () => {
+    if (saisie.champ === 'seconde') {
+      saisir('reference', indicatif.texteReference);
+    }
+    retirerSeconde();
+  };
+
+  // Le carnet garde la paire du champ saisi : celle de la seconde devise
+  // quand c'est là qu'on a tapé (spécification 003, EF-005).
+  const enSeconde = saisie.champ === 'seconde' && seconde !== null;
 
   // « Montant en livres égyptiennes », « Montant en euros » : un montant se
   // compte au pluriel, dans les deux langues.
-  const champ = (lequel: Champ, heros = false) => (
+  const champ = (lequel: ChampSaisi, heros = false) => (
     <TextField
       key={lequel}
       className={
@@ -81,46 +208,122 @@ export function ConvertScreen() {
           : '[&_[data-dwc=field-control]]:tabular-nums'
       }
       label={t('convert.montant', {
-        nom: nomAuPluriel(lequel === 'devise' ? devise : reference, locale),
+        nom: nomAuPluriel(codeDe(lequel), locale),
       })}
-      inputMode="decimal"
+      // Calculatrice allumée : le champ garde le focus et le curseur, le
+      // téléphone n'ouvre pas son clavier (recherche R3).
+      inputMode={calculatrice ? 'none' : 'decimal'}
       autoComplete="off"
       enterKeyHint="done"
-      value={lequel === 'devise' ? d.texteDevise : d.texteReference}
+      value={texteDe(lequel)}
+      onFocus={() => setCible(lequel)}
       onChange={event => saisir(lequel, event.target.value)}
-      error={
-        saisie.champ === lequel && d.invalide
-          ? t('convert.invalide')
-          : undefined
-      }
+      hint={resultat(lequel)}
+      error={saisie.champ === lequel ? erreur : undefined}
     />
   );
 
   return (
     <div className="flex flex-col gap-2">
       <h2 className="sr-only">{t('convert.title')}</h2>
-      <CurrencyPicker
-        code={devise}
-        codes={codes}
-        recentes={recentes}
-        epinglees={epinglees}
-        onEpingler={epingler}
-        onChoisir={choisirDevise}
-        exclure={reference}
-      />
+      {/* LES DEUX DEVISES CÔTE À CÔTE, sans rangée de plus : l'écran tient
+          sans défilement à 390 × 844 avec la seconde (CR-005). Sans elle,
+          « + Devise » occupe la place, nommé en entier pour un lecteur
+          d'écran. */}
+      <div className="flex gap-2">
+        <div className="min-w-0 flex-1">
+          <CurrencyPicker
+            code={devise}
+            codes={codes}
+            recentes={recentes}
+            epinglees={epinglees}
+            onEpingler={epingler}
+            onChoisir={choisirDevise}
+            exclure={reference}
+            compact={seconde !== null}
+          />
+        </div>
+        <div className={seconde ? 'min-w-0 flex-1' : 'shrink-0'}>
+          <CurrencyPicker
+            code={seconde}
+            codes={codes.filter(c => c !== devise)}
+            recentes={recentes}
+            epinglees={epinglees}
+            onEpingler={epingler}
+            onChoisir={choisirSeconde}
+            exclure={reference}
+            etiquette={t('convert.choisirSeconde')}
+            titre={t('convert.seconde')}
+            compact
+            declencheur={
+              seconde
+                ? undefined
+                : ouvrir => (
+                    <Button
+                      variant="outline"
+                      className="min-h-11"
+                      aria-label={t('convert.ajouterSeconde')}
+                      onClick={ouvrir}
+                    >
+                      <Plus aria-hidden="true" className="size-4" />
+                      {t('convert.ajouterCourt')}
+                    </Button>
+                  )
+            }
+          />
+        </div>
+      </div>
       <Card className="flex flex-col gap-2">
         {champ(haut)}
-        <button
-          type="button"
-          onClick={inverser}
-          aria-label={t('convert.inverser')}
-          className="mx-auto flex size-10 items-center justify-center rounded-full border"
-          style={{ borderColor: 'var(--dwc-border-strong)' }}
-        >
-          <ArrowUpDown aria-hidden="true" className="size-5" />
-        </button>
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center">
+          <span aria-hidden="true" />
+          <button
+            type="button"
+            onClick={inverser}
+            aria-label={t('convert.inverser')}
+            className="flex size-10 items-center justify-center rounded-full border"
+            style={{ borderColor: 'var(--dwc-border-strong)' }}
+          >
+            <ArrowUpDown aria-hidden="true" className="size-5" />
+          </button>
+          <button
+            type="button"
+            onClick={basculerCalculatrice}
+            aria-label={t('convert.calculatrice')}
+            aria-pressed={calculatrice}
+            className="flex size-10 items-center justify-center justify-self-end rounded-full border"
+            style={{
+              borderColor: calculatrice
+                ? 'var(--dwc-primary)'
+                : 'var(--dwc-border-strong)',
+              background: calculatrice ? 'var(--dwc-primary-soft)' : undefined,
+            }}
+          >
+            <Calculator aria-hidden="true" className="size-5" />
+          </button>
+        </div>
         {champ(bas, true)}
+        {seconde && (
+          <div className="flex items-end gap-2">
+            <div className="min-w-0 flex-1">{champ('seconde')}</div>
+            <button
+              type="button"
+              onClick={retirer}
+              aria-label={t('convert.retirerSeconde', { code: seconde })}
+              className="flex size-11 shrink-0 items-center justify-center rounded-lg"
+            >
+              <X aria-hidden="true" className="size-5" />
+            </button>
+          </div>
+        )}
       </Card>
+      {calculatrice && (
+        <Pave
+          cible={nomAuPluriel(codeDe(cibleActive), locale)}
+          onTouche={toucher}
+          onEgal={egal}
+        />
+      )}
       <RateLine
         jour={jour}
         pret={pret}
@@ -128,6 +331,15 @@ export function ConvertScreen() {
         marge={marge}
         onReessayer={() => void rafraichirTaux({ force: true })}
       />
+      {seconde && (
+        <RateLine
+          jour={jourSeconde}
+          pret={pret}
+          horsLigne={echec}
+          secondaire={{ code: seconde }}
+          onReessayer={() => void rafraichirTaux({ force: true })}
+        />
+      )}
       <CompositionLigne montant={d.montantDevise} devise={devise} />
       <div className="flex flex-col gap-2">
         <Button variant="outline" block onClick={() => setVolet(true)}>
@@ -135,11 +347,15 @@ export function ConvertScreen() {
           {t('convert.billets')}
         </Button>
         <SaveForm
-          devise={devise}
+          devise={enSeconde ? seconde : devise}
           reference={reference}
-          jour={jour}
-          derive={indicatif}
-          champ={saisie.champ}
+          jour={enSeconde ? jourSeconde : jour}
+          derive={
+            enSeconde
+              ? { ...indicatif, montantDevise: indicatif.montantSeconde }
+              : indicatif
+          }
+          champ={enSeconde ? 'devise' : (saisie.champ as Champ)}
           marge={marge}
         />
       </div>

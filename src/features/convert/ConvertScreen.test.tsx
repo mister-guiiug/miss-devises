@@ -40,7 +40,14 @@ beforeEach(() => {
     chargement: false,
     echec: false,
   });
-  usePreferences.setState({ reference: 'EUR', devise: 'EGP', recentes: [] });
+  usePreferences.setState({
+    reference: 'EUR',
+    devise: 'EGP',
+    recentes: [],
+    seconde: null,
+    marge: 0,
+    calculatrice: false,
+  });
   useConversion.setState({
     saisie: { champ: 'devise', texte: '' },
     haut: 'devise',
@@ -218,5 +225,226 @@ describe('le volet des billets et des pièces (récit 2)', () => {
         name: /Composition de 200,00\sEGP/,
       })
     ).toBeInTheDocument();
+  });
+});
+
+describe('deux devises à la fois (spécification 003, récit 1)', () => {
+  async function ajouterUsd(user: ReturnType<typeof userEvent.setup>) {
+    await user.click(
+      screen.getByRole('button', { name: 'Ajouter une devise' })
+    );
+    const feuille = await screen.findByRole('dialog', {
+      name: 'Seconde devise',
+    });
+    await user.type(
+      within(feuille).getByLabelText('Rechercher une devise'),
+      'dollar'
+    );
+    await user.click(within(feuille).getByRole('button', { name: /^USD/ }));
+  }
+
+  it('aucune seconde devise par défaut : deux champs, comme avant', () => {
+    monter();
+    expect(screen.getAllByLabelText(/^Montant en/)).toHaveLength(2);
+    expect(
+      screen.getByRole('button', { name: 'Ajouter une devise' })
+    ).toBeInTheDocument();
+  });
+
+  it('20 € donnent les livres ET les dollars ; chaque devise dit son taux', async () => {
+    const user = userEvent.setup();
+    monter();
+    await ajouterUsd(user);
+    expect(usePreferences.getState().seconde).toBe('USD');
+    await user.type(screen.getByLabelText('Montant en euros'), '20');
+    expect(
+      lisible(
+        (
+          screen.getByLabelText(
+            'Montant en livres égyptiennes'
+          ) as HTMLInputElement
+        ).value
+      )
+    ).toBe('1 176,60');
+    expect(screen.getByLabelText(/^Montant en dollars/)).toHaveValue('21,63');
+    expect(screen.getByText(/1\s€ = 58,83 EGP/)).toBeInTheDocument();
+    expect(screen.getByText(/1\s€ = 1,0815 USD/)).toBeInTheDocument();
+  });
+
+  it('une saisie en dollars remplit les euros et les livres', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ seconde: 'USD' });
+    monter();
+    await user.type(screen.getByLabelText(/^Montant en dollars/), '10');
+    expect(screen.getByLabelText('Montant en euros')).toHaveValue('9,25');
+    expect(screen.getByLabelText('Montant en livres égyptiennes')).toHaveValue(
+      '543,97'
+    );
+  });
+
+  it('le choix de la seconde devise ne propose ni la référence ni la devise', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.click(
+      screen.getByRole('button', { name: 'Ajouter une devise' })
+    );
+    const feuille = await screen.findByRole('dialog', {
+      name: 'Seconde devise',
+    });
+    expect(
+      within(feuille).queryByRole('button', { name: /^EUR/ })
+    ).not.toBeInTheDocument();
+    expect(
+      within(feuille).queryByRole('button', { name: /^EGP/ })
+    ).not.toBeInTheDocument();
+    expect(
+      within(feuille).getByRole('button', { name: /^USD/ })
+    ).toBeInTheDocument();
+  });
+
+  it('retirée, elle rend son montant au champ des euros', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ seconde: 'USD' });
+    monter();
+    await user.type(screen.getByLabelText(/^Montant en dollars/), '10');
+    await user.click(screen.getByRole('button', { name: 'Retirer USD' }));
+    expect(usePreferences.getState().seconde).toBeNull();
+    expect(screen.queryByLabelText(/^Montant en dollars/)).toBeNull();
+    expect(screen.getByLabelText('Montant en euros')).toHaveValue('9,25');
+    // Les euros affichés deviennent la saisie : les livres en partent
+    // (recherche R5), 9,25 × 58,83.
+    expect(screen.getByLabelText('Montant en livres égyptiennes')).toHaveValue(
+      '544,18'
+    );
+  });
+
+  it('un montant saisi en dollars s’enregistre de USD vers EUR, à son taux', async () => {
+    const user = userEvent.setup();
+    useCarnet.setState({ conversions: [], pending: null, error: null });
+    usePreferences.setState({ seconde: 'USD' });
+    monter();
+    await user.type(screen.getByLabelText(/^Montant en dollars/), '10');
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }));
+    const gardee = useCarnet.getState().conversions[0];
+    expect(gardee?.de).toEqual({ code: 'USD', montant: 10 });
+    expect(gardee?.vers.code).toBe('EUR');
+    expect(gardee?.taux).toBe(1.0815);
+  });
+});
+
+describe('la mini-calculatrice (spécification 003, récit 2)', () => {
+  const touches = async (
+    user: ReturnType<typeof userEvent.setup>,
+    noms: string[]
+  ) => {
+    const pave = screen.getByRole('group', { name: 'Calculatrice' });
+    for (const nom of noms) {
+      await user.click(within(pave).getByRole('button', { name: nom }));
+    }
+  };
+
+  it('éteinte par défaut : pas de pavé, le clavier décimal du téléphone', () => {
+    monter();
+    expect(screen.queryByRole('group', { name: 'Calculatrice' })).toBeNull();
+    expect(
+      screen.getByRole('button', { name: 'Calculatrice' })
+    ).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByLabelText('Montant en euros')).toHaveAttribute(
+      'inputmode',
+      'decimal'
+    );
+  });
+
+  it('allumée, un pavé s’affiche et les champs n’ouvrent plus le clavier', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.click(screen.getByRole('button', { name: 'Calculatrice' }));
+    expect(usePreferences.getState().calculatrice).toBe(true);
+    expect(
+      screen.getByRole('group', { name: 'Calculatrice' })
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Montant en euros')).toHaveAttribute(
+      'inputmode',
+      'none'
+    );
+  });
+
+  it('« 12,5 + 7,5 » au pavé dans les euros : le résultat sous le champ, les livres déjà calculées, puis « = »', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ calculatrice: true });
+    monter();
+    const eur = screen.getByLabelText('Montant en euros');
+    await user.click(eur);
+    await touches(user, [
+      '1',
+      '2',
+      'virgule',
+      '5',
+      'plus',
+      '7',
+      'virgule',
+      '5',
+    ]);
+    expect(eur).toHaveValue('12,5 + 7,5');
+    expect(screen.getByText(/^=\s20,00\s€$/)).toBeInTheDocument();
+    expect(
+      lisible(
+        (
+          screen.getByLabelText(
+            'Montant en livres égyptiennes'
+          ) as HTMLInputElement
+        ).value
+      )
+    ).toBe('1 176,60');
+    await touches(user, ['Égal']);
+    expect(eur).toHaveValue('20,00');
+    // Le champ garde le focus : le pavé n'en prend pas.
+    expect(eur).toHaveFocus();
+  });
+
+  it('dans un autre champ, un opérateur prolonge le montant affiché, un chiffre le remplace', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ calculatrice: true });
+    monter();
+    await user.click(screen.getByLabelText('Montant en euros'));
+    await touches(user, ['2', '0']);
+    const egp = screen.getByLabelText(
+      'Montant en livres égyptiennes'
+    ) as HTMLInputElement;
+    await user.click(egp);
+    await touches(user, ['plus', '1']);
+    expect(lisible(egp.value)).toBe('1 176,60 + 1');
+    expect(screen.getByLabelText('Montant en euros')).toHaveValue('20,02');
+
+    await user.click(screen.getByLabelText('Montant en euros'));
+    await touches(user, ['5']);
+    expect(screen.getByLabelText('Montant en euros')).toHaveValue('5');
+  });
+
+  it('une division par zéro le dit, et ne remplit rien', async () => {
+    const user = userEvent.setup();
+    usePreferences.setState({ calculatrice: true });
+    monter();
+    await user.click(screen.getByLabelText('Montant en euros'));
+    await touches(user, ['1', '2', 'divisé par', '0']);
+    expect(screen.getByText('Division par zéro.')).toBeInTheDocument();
+    expect(screen.getByLabelText('Montant en livres égyptiennes')).toHaveValue(
+      ''
+    );
+  });
+
+  it('calculatrice éteinte, un calcul tapé au clavier est compris', async () => {
+    const user = userEvent.setup();
+    monter();
+    await user.type(screen.getByLabelText('Montant en euros'), '12+8');
+    expect(
+      lisible(
+        (
+          screen.getByLabelText(
+            'Montant en livres égyptiennes'
+          ) as HTMLInputElement
+        ).value
+      )
+    ).toBe('1 176,60');
   });
 });

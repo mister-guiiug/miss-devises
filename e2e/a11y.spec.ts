@@ -30,6 +30,22 @@ const ECRANS: Ecran[] = [
     },
   },
   {
+    nom: 'accueil, seconde devise et calculatrice (spécification 003)',
+    aller: async page => {
+      await saisir200(page);
+      await page.getByRole('button', { name: 'Ajouter une devise' }).click();
+      const feuille = page.getByRole('dialog', { name: 'Seconde devise' });
+      await feuille.getByLabel('Rechercher une devise').fill('dollar des');
+      await feuille.getByRole('button', { name: /^USD/ }).click();
+      await page.getByRole('button', { name: 'Calculatrice' }).click();
+      const pave = page.getByRole('group', { name: 'Calculatrice' });
+      await page.getByLabel('Montant en euros').click();
+      await pave.getByRole('button', { name: 'plus' }).click();
+      await pave.getByRole('button', { name: '1', exact: true }).click();
+      await expect(page.getByText(/^=\s4,40\s€$/)).toBeVisible();
+    },
+  },
+  {
     nom: 'volet des billets ouvert',
     aller: async page => {
       await saisir200(page);

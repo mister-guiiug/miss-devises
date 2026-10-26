@@ -16,6 +16,12 @@ interface Props {
   /** Marge en pour cent. 0 : le taux indicatif, sans phrase. */
   marge?: number;
   onReessayer: () => void;
+  /**
+   * La ligne de la seconde devise (spécification 003) : son taux, sa source et
+   * sa date, sans redire ce que la ligne de la paire dit déjà pour les deux
+   * (indicatif, marge, hors ligne).
+   */
+  secondaire?: { code: string };
 }
 
 /**
@@ -29,11 +35,19 @@ export function RateLine({
   horsLigne,
   marge = 0,
   onReessayer,
+  secondaire,
 }: Props) {
   const { t, locale } = useI18n();
 
   if (!jour) {
     if (!pret) return null;
+    if (secondaire) {
+      return (
+        <p role="status" className="m-0 text-sm">
+          {t('convert.absentSeconde', { code: secondaire.code })}
+        </p>
+      );
+    }
     return (
       <div role="status" className="flex flex-wrap items-center gap-2 text-sm">
         <p className="m-0 flex-1">{t('convert.absent')}</p>
@@ -50,13 +64,13 @@ export function RateLine({
       source: t(`convert.source.${jour.source}`),
       date,
     }),
-    t('convert.indicatif'),
-    marge > 0
+    secondaire ? null : t('convert.indicatif'),
+    marge > 0 && !secondaire
       ? t('convert.marge', {
           marge: formatNumber(marge, locale, { maximumFractionDigits: 2 }),
         })
       : null,
-    horsLigne ? t('convert.horsLigne') : null,
+    horsLigne && !secondaire ? t('convert.horsLigne') : null,
   ]
     .filter(Boolean)
     .join(' · ');

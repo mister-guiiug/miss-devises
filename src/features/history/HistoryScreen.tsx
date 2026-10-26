@@ -185,7 +185,24 @@ function Comparaison({
   const { t, locale } = useI18n();
   const saisie = useConversion(s => s.saisie);
   const decimales = usePreferences(s => s.decimales);
-  const d = deriver(saisie, devise, reference, stats.fin.taux, locale);
+  const seconde = usePreferences(s => s.seconde);
+  const etat = useTaux(s => s.etat);
+  // Un montant saisi dans la seconde devise (spécification 003) se compare
+  // par son équivalent en référence, au taux du jour de SA paire.
+  const tauxSeconde =
+    saisie.champ === 'seconde' && seconde
+      ? tauxDuJour(reference, seconde, etat, new Date())?.taux
+      : undefined;
+  const d = deriver(
+    saisie,
+    devise,
+    reference,
+    stats.fin.taux,
+    locale,
+    0,
+    null,
+    seconde ? { code: seconde, taux: tauxSeconde } : null
+  );
   const enDevise = saisie.champ === 'devise';
   const montant = enDevise ? d.montantDevise : d.montantReference;
 

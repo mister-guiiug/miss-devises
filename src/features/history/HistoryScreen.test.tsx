@@ -63,6 +63,7 @@ beforeEach(() => {
     reference: 'EUR',
     devise: 'EGP',
     periode: '1A',
+    seconde: null,
   });
   useConversion.setState({ saisie: { champ: 'devise', texte: '' } });
 });
@@ -107,6 +108,28 @@ describe('l’historique (récit 3)', () => {
     expect(
       await screen.findByText(
         '20,00 € valaient 1 123,60 EGP le 1 oct. 2025, et valent 1 176,60 EGP aujourd’hui.'
+      )
+    ).toBeTruthy();
+  });
+
+  it('un montant saisi dans la seconde devise se compare par son équivalent en référence', async () => {
+    vi.spyOn(serviceTaux, 'serie').mockResolvedValue(unAn);
+    useTaux.setState({
+      etat: {
+        marche: {
+          source: 'marche',
+          date: AUJOURDHUI,
+          taux: { EGP: 58.83, USD: 1.0815 },
+        },
+      },
+    });
+    usePreferences.setState({ seconde: 'USD' });
+    useConversion.setState({ saisie: { champ: 'seconde', texte: '10' } });
+    monter();
+    // 10 USD = 9,2464 € au taux du jour, puis la comparaison des euros.
+    expect(
+      await screen.findByText(
+        '9,25 € valaient 519,46 EGP le 1 oct. 2025, et valent 543,97 EGP aujourd’hui.'
       )
     ).toBeTruthy();
   });
