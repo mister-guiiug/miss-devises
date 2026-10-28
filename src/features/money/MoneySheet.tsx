@@ -474,9 +474,14 @@ function Contenu({
         <button
           type="button"
           onClick={() => ajouter(cle)}
-          aria-label={nom}
           className="relative flex flex-col items-center gap-1 rounded-lg p-1"
         >
+          {/* LE NOM EST UN TEXTE RÉSERVÉ, PAS UN aria-label. Le dessin et la
+              légende, décoratifs, montrent « 0,25 EGP » ; un aria-label à
+              part (« Billet de 0,25 livre égyptienne, soit… ») les laissait
+              hors du nom accessible (WCAG 2.5.3 ; axe 4.14, le 29/10/2026).
+              Le nom ne change pas et porte la coupure affichée. */}
+          <span className="sr-only">{nom}</span>
           {dessin}
           {legende(valeur)}
           {plusEmis && (

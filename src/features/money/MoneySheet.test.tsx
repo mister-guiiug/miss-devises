@@ -54,7 +54,13 @@ async function dessins(section: string) {
   const region = await screen.findByRole('region', { name: section });
   return within(region)
     .getAllByRole('button')
-    .map(bouton => lisible(bouton.getAttribute('aria-label')))
+    .map(bouton =>
+      lisible(
+        bouton.getAttribute('aria-label') ??
+          bouton.querySelector('.sr-only')?.textContent ??
+          ''
+      )
+    )
     .filter(nom => !nom.startsWith('Retirer'));
 }
 
