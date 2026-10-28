@@ -112,6 +112,11 @@ export function CurrencyPicker({
           >
             <Drapeau code={code} hauteur={20} />
             <span className="text-fluid-lg font-bold">{code}</span>
+            {/* L'espace compte : sans elle, le texte du bouton se lit
+                « EGPLivre égyptienne », que le nom accessible ne contient pas
+                (WCAG 2.5.3 ; axe 4.14, le 29/10/2026). La marge ne sépare
+                que l'affichage. */}
+            {!compact && ' '}
             {!compact && <span className="min-w-0 flex-1 truncate">{nom}</span>}
             <ChevronDown
               aria-hidden="true"
