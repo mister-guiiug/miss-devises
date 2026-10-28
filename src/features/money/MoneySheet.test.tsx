@@ -107,7 +107,8 @@ describe('le volet des billets et des pièces (récit 2)', () => {
     expect(billets).toContain('Billet de 200 euros, soit 11 766,00 EGP');
     expect(usePreferences.getState().sensVolet).toBe('reference');
     // Le billet de 500 € a cours légal, mais n'est plus émis.
-    expect(screen.getByText(/n’est plus émis/)).toBeInTheDocument();
+    // Texte exact : la mention visible, pas le nom du billet qui la reprend.
+    expect(screen.getByText('n’est plus émis')).toBeInTheDocument();
   });
 
   it('avec le franc pour référence, ses coupures valent des livres', async () => {
