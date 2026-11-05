@@ -1,13 +1,20 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { onlineManager } from '@tanstack/react-query';
 import {
   wrapWithQueryClient,
   clearQueryClient,
 } from '@mister-guiiug/dev-pwa-config/testing/query';
 import { I18nProvider } from '../../i18n/index.ts';
 import { serviceTaux, useTaux } from '../../rates/store.ts';
-import type { Serie } from '../../rates/service.ts';
+import {
+  createServiceTaux,
+  grilleMarche,
+  type CacheTaux,
+  type Serie,
+} from '../../rates/service.ts';
+import type { Recuperer } from '../../rates/sources.ts';
 import { usePreferences } from '../../app/preferences.ts';
 import { useConversion } from '../convert/conversion.ts';
 import { HistoryScreen } from './HistoryScreen.tsx';
@@ -186,5 +193,59 @@ describe('l’historique (récit 3)', () => {
     monter();
     expect(screen.getByText(/Aucun taux connu pour cette devise/)).toBeTruthy();
     expect(serie).not.toHaveBeenCalled();
+  });
+});
+
+/*
+ * HORS LIGNE, CE QUE L'APPAREIL A GARDÉ (audit hors ligne du 05/11/2026).
+ *
+ * Query met en PAUSE une requête hors ligne (`networkMode: 'online'`, son
+ * défaut) : la `queryFn` ne part jamais. Or celle de la série lit IndexedDB
+ * d'abord. Une période déjà consultée s'affichait donc « jamais consultée »,
+ * avec ses relevés sur l'appareil. Le service est ici le vrai, sur un cache
+ * rempli et un réseau qui refuse tout.
+ */
+describe('l’historique, hors ligne', () => {
+  afterEach(() => {
+    onlineManager.setOnline(true);
+  });
+
+  function cacheRempli(): CacheTaux {
+    const valeurs = new Map<string, unknown>(
+      grilleMarche('1A', new Date())
+        .slice(0, -1)
+        .map((date, i) => [
+          `jour:${date}`,
+          { source: 'marche', date, taux: { EGP: 50 + (i % 10) } },
+        ])
+    );
+    return {
+      get: async <T,>(cle: string) => valeurs.get(cle) as T | undefined,
+      set: async (cle, valeur) => {
+        valeurs.set(cle, valeur);
+        return true;
+      },
+      keys: async () => [...valeurs.keys()],
+      remove: async cle => valeurs.delete(cle),
+    };
+  }
+
+  it('une période déjà consultée s’affiche depuis l’appareil', async () => {
+    const reseau = vi
+      .fn<Recuperer>()
+      .mockRejectedValue(new TypeError('Failed to fetch'));
+    const surAppareil = createServiceTaux({
+      cache: cacheRempli(),
+      recuperer: reseau,
+    });
+    vi.spyOn(serviceTaux, 'serie').mockImplementation(surAppareil.serie);
+    onlineManager.setOnline(false);
+
+    monter();
+
+    expect(await screen.findByText('Plus haut')).toBeTruthy();
+    expect(chiffre('Plus haut')).toBe('59 EGP');
+    expect(screen.queryByText(/n’a pas encore été consultée/)).toBeNull();
+    expect(reseau).not.toHaveBeenCalled();
   });
 });

@@ -41,6 +41,12 @@ export function useSerie(
     // Une série manquante (hors ligne) se dit tout de suite — pas de seconde
     // tentative qui retarderait le message « jamais consultée ».
     retry: false,
+    // HORS LIGNE, LA `queryFn` PART QUAND MÊME. En `'online'` (le défaut),
+    // Query la met en pause sans l'appeler : la série gardée sur l'appareil
+    // n'était jamais lue, et une période déjà consultée se disait « jamais
+    // consultée ». Ici elle lit IndexedDB d'abord et ne demande au réseau que
+    // ce qui manque — ce n'est qu'à défaut qu'elle échoue.
+    networkMode: 'offlineFirst',
   });
 
   // `isLoading` : en attente sans donnée encore (pas un refetch en arrière-plan).
