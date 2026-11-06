@@ -196,4 +196,26 @@ describe('Claude avec la clé du visiteur (BYOK)', () => {
       message: expect.stringContaining('onglet « Modèle »'),
     });
   });
+
+  it('une demande refusée garde le détail de l’API, sans préfixe : la conversation l’encadre', async () => {
+    const { fetch } = fauxReseau(
+      400,
+      JSON.stringify({
+        type: 'error',
+        error: { type: 'invalid_request_error', message: 'prompt is too long' },
+      })
+    );
+    const evenements = await tout(
+      creerModeleClaude({
+        modele: 'claude-opus-5-5',
+        effort: 'low',
+        cle: CLE,
+        fetch,
+      })
+    );
+    const erreur = evenements.at(-1) as { code?: string; message?: string };
+    expect(erreur.code).toBe('demande');
+    // Le statut et le texte de l'API, et rien de français autour.
+    expect(erreur.message).toMatch(/^400 .*prompt is too long/);
+  });
 });

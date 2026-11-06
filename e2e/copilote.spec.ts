@@ -63,4 +63,30 @@ test.describe('@critical 007 : le copilote de démonstration', () => {
 
     expect(erreurs).toEqual([]);
   });
+
+  test('en anglais, Claude sans clé : la conversation le dit en anglais', async ({
+    page,
+  }) => {
+    await page.addInitScript(() => localStorage.setItem('dwc_locale', 'en'));
+    await page.goto('/reglages');
+    await page.getByRole('switch', { name: 'Copilot (demo)' }).click();
+    await page.getByRole('button', { name: 'Copilot' }).click();
+
+    const panneau = page.getByRole('complementary', { name: 'Copilot' });
+    await panneau.getByRole('tab', { name: 'Model' }).click();
+    await panneau
+      .getByRole('radio', { name: /^Claude, with your Anthropic key/ })
+      .check();
+    await panneau.getByRole('tab', { name: 'Chat' }).click();
+    await panneau.getByRole('textbox').fill('1200 JPY');
+    await panneau.getByRole('button', { name: 'Send' }).click();
+
+    // Aucun appel ne part (la garde du `beforeEach` le vérifie) : l'exécution
+    // s'arrête sur « cle-absente », que le bandeau dit dans la langue de l'app.
+    const alerte = panneau.getByRole('alert');
+    await expect(alerte).toContainText(
+      'No Anthropic key: enter it in the “Model” tab'
+    );
+    await expect(alerte).not.toContainText('Modèle');
+  });
 });

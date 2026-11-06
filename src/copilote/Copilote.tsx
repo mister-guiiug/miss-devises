@@ -41,7 +41,7 @@ import {
   recevoir,
   type Journal,
 } from './journal.ts';
-import { useLibelles } from './libelles.ts';
+import { libelleErreur, useLibelles } from './libelles.ts';
 import { lireDepenses } from './depenses.ts';
 import { AgentNavigateur } from './agent/agent-navigateur.ts';
 import { OngletModele } from './OngletModele.tsx';
@@ -172,12 +172,20 @@ function Panneau() {
       : `${MODELES.find(m => m.id === idModele)?.nom ?? idModele}${cle ? '' : ` · ${t('sansCle')}`}`;
   const depenses = lireDepenses(agent.state).length;
   // La dernière exécution a échoué (clé absente ou refusée, réseau) : la
-  // conversation le dit, sans obliger à ouvrir l'inspecteur.
+  // conversation le dit, sans obliger à ouvrir l'inspecteur, et dans la langue
+  // de l'interface — par le code de l'erreur (`libelleErreur`).
   const derniere = journal.executions.at(-1);
-  const erreur =
+  const ligneErreur =
     derniere?.issue === 'erreur'
-      ? derniere.lignes.findLast(l => l.famille === 'erreur')?.resume
+      ? derniere.lignes.findLast(l => l.famille === 'erreur')
       : undefined;
+  const erreur =
+    ligneErreur &&
+    libelleErreur(
+      t,
+      (ligneErreur.corps as { code?: unknown } | null)?.code,
+      ligneErreur.resume
+    );
   const libelles: Record<Onglet, string> = {
     conversation: t('ongletConversation'),
     evenements: `${t('ongletEvenements')} (${String(journal.total)})`,

@@ -79,6 +79,18 @@ const fr = {
     'Entrée envoyée : {messages} messages ({roles}), outils : {outils}, {contexte} contextes',
   jetons: 'Jetons : {entree} en entrée ({cache} en cache), {sortie} en sortie',
   modeleInconnu: 'modèle ?',
+  erreurCleAbsente:
+    'Aucune clé Anthropic : saisissez-la dans l’onglet « Modèle », ou choisissez le modèle simulé.',
+  erreurCle:
+    'Clé Anthropic refusée : vérifiez la clé saisie dans l’onglet « Modèle ».',
+  erreurAcces:
+    'Cette clé n’a pas accès à ce modèle : choisissez-en un autre dans l’onglet « Modèle ».',
+  erreurLimite: 'Trop de demandes pour cette clé : réessayez dans un instant.',
+  erreurReseau: 'L’API d’Anthropic ne répond pas : êtes-vous hors ligne ?',
+  erreurDemande: 'Demande refusée par l’API : {detail}',
+  erreurApi: 'Erreur de l’API : {detail}',
+  erreurRefus: 'Le modèle a refusé de répondre à cette demande.',
+  erreurTronque: 'La réponse a été coupée avant la fin d’un appel d’outil.',
 } as const;
 
 type Cle = keyof typeof fr;
@@ -156,16 +168,58 @@ const en: Record<Cle, string> = {
     'Input sent: {messages} messages ({roles}), tools: {outils}, {contexte} contexts',
   jetons: 'Tokens: {entree} in ({cache} cached), {sortie} out',
   modeleInconnu: 'model ?',
+  erreurCleAbsente:
+    'No Anthropic key: enter it in the “Model” tab, or choose the simulated model.',
+  erreurCle: 'Anthropic key refused: check the key entered in the “Model” tab.',
+  erreurAcces:
+    'This key has no access to this model: choose another one in the “Model” tab.',
+  erreurLimite: 'Too many requests for this key: try again in a moment.',
+  erreurReseau: 'The Anthropic API is not responding: are you offline?',
+  erreurDemande: 'Request refused by the API: {detail}',
+  erreurApi: 'API error: {detail}',
+  erreurRefus: 'The model declined to answer this request.',
+  erreurTronque: 'The answer was cut off before the end of a tool call.',
 };
+
+/**
+ * LE CODE D'UNE ERREUR EST LE CONTRAT, SON MESSAGE N'EST QUE SA PRÉSENTATION.
+ * `RUN_ERROR` porte les deux ; la conversation dit le code dans la langue de
+ * l'interface. Le message de l'événement reste ce que l'agent a émis, et
+ * l'inspecteur le montre tel quel. Pour `demande` et `api`, il porte le détail
+ * rendu par l'API d'Anthropic, qui n'est pas à nous de traduire. Un code
+ * inconnu, ou un échec du client lui-même, garde son message brut.
+ */
+const ERREURS: ReadonlyMap<string, Cle> = new Map([
+  ['cle-absente', 'erreurCleAbsente'],
+  ['cle', 'erreurCle'],
+  ['acces', 'erreurAcces'],
+  ['limite', 'erreurLimite'],
+  ['reseau', 'erreurReseau'],
+  ['demande', 'erreurDemande'],
+  ['api', 'erreurApi'],
+  ['refus', 'erreurRefus'],
+  ['tronque', 'erreurTronque'],
+]);
+
+export function libelleErreur(
+  t: ReturnType<typeof libellesPour>,
+  code: unknown,
+  message: string
+): string {
+  const cle = typeof code === 'string' ? ERREURS.get(code) : undefined;
+  return cle ? t(cle, { detail: message }) : message;
+}
+
+/** Les libellés d'une langue, hors de React (les tests, `libelleErreur`). */
+export function libellesPour(locale: string) {
+  const table: Record<Cle, string> = locale === 'en' ? en : fr;
+  return (cle: Cle, valeurs: Record<string, string | number> = {}) =>
+    table[cle].replace(/\{(\w+)\}/g, (_, nom: string) =>
+      String(valeurs[nom] ?? '')
+    );
+}
 
 export function useLibelles() {
   const { locale } = useI18n();
-  const table: Record<Cle, string> = locale === 'en' ? en : fr;
-  return {
-    locale,
-    t: (cle: Cle, valeurs: Record<string, string | number> = {}) =>
-      table[cle].replace(/\{(\w+)\}/g, (_, nom: string) =>
-        String(valeurs[nom] ?? '')
-      ),
-  };
+  return { locale, t: libellesPour(locale) };
 }

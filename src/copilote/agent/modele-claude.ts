@@ -126,11 +126,10 @@ function traduireErreur(erreur: unknown): unknown {
       'limite'
     );
   }
+  // `demande` et `api` : le message EST le détail de l'API (« 400 … », statut
+  // compris), que la conversation encadre dans sa langue (`libelleErreur`).
   if (erreur instanceof Anthropic.BadRequestError) {
-    return new ErreurModele(
-      `Demande refusée par l’API : ${erreur.message}`,
-      'demande'
-    );
+    return new ErreurModele(erreur.message, 'demande');
   }
   if (erreur instanceof Anthropic.APIConnectionError) {
     return new ErreurModele(
@@ -139,10 +138,7 @@ function traduireErreur(erreur: unknown): unknown {
     );
   }
   if (erreur instanceof Anthropic.APIError) {
-    return new ErreurModele(
-      `Erreur de l’API (${String(erreur.status)}) : ${erreur.message}`,
-      'api'
-    );
+    return new ErreurModele(erreur.message, 'api');
   }
   return erreur;
 }
