@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { Component, lazy, Suspense, type ReactNode } from 'react';
 import {
   BrowserRouter,
   Link,
@@ -21,6 +21,7 @@ import { useIdlePrefetch } from '@mister-guiiug/dev-pwa-config/react/use-prefetc
 import { HomeScreen } from './features/home/HomeScreen.tsx';
 import { getQueryClient } from './shared/queries/client.ts';
 import { useTauxBootstrap } from './shared/queries/taux.ts';
+import { usePreferences } from './app/preferences.ts';
 
 /**
  * LES ÉCRANS AUTRES QUE CONVERTIR, À LA DEMANDE (spécification 006, récit 4).
@@ -43,6 +44,46 @@ const SettingsScreen = lazy(() =>
 const AboutScreen = lazy(() =>
   chargerEcrans().then(m => ({ default: m.AboutScreen }))
 );
+
+/**
+ * LE COPILOTE DE DÉMONSTRATION (spécification 007), monté quand le visiteur
+ * l'active dans les réglages, éteint par défaut. Ses morceaux (CopilotKit, le
+ * client AG-UI, le SDK d'Anthropic) ne sont chargés qu'à ce moment-là, et ne
+ * sont jamais précachés : `vite.config.ts` les range sous
+ * `assets/copilote/`, hors du précache.
+ */
+const Copilote = lazy(() => import('./copilote/Copilote.tsx'));
+
+/**
+ * Hors ligne, ou après un déploiement que la coquille n'a pas encore pris, le
+ * morceau du copilote peut manquer : son import échoue. Cette frontière, dans
+ * le morceau principal, garde l'échec pour elle — sans elle, il remontait à
+ * celle de l'application, qui remplaçait tout l'écran.
+ */
+class FrontiereCopilote extends Component<
+  { children: ReactNode },
+  { echec: boolean }
+> {
+  override state = { echec: false };
+  static getDerivedStateFromError() {
+    return { echec: true };
+  }
+  override render() {
+    return this.state.echec ? null : this.props.children;
+  }
+}
+
+function CopiloteSiActive() {
+  const actif = usePreferences(s => s.copilote);
+  if (!actif) return null;
+  return (
+    <FrontiereCopilote>
+      <Suspense fallback={null}>
+        <Copilote />
+      </Suspense>
+    </FrontiereCopilote>
+  );
+}
 
 /**
  * LE CADRE : `AppShell` du socle (en-tête, contenu borné, barre basse).
@@ -285,6 +326,7 @@ export function App() {
           <ThemeProvider>
             <BrowserRouter basename={import.meta.env.BASE_URL}>
               <Shell />
+              <CopiloteSiActive />
             </BrowserRouter>
           </ThemeProvider>
         </AppUpdates>

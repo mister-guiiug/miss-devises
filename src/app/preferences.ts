@@ -63,6 +63,12 @@ const schema = z.object({
   /** Les frais enregistrés, et ceux que l'écran Convertir applique. */
   frais: z.array(FRAIS).max(MAX_FRAIS).default([]),
   fraisChoisis: z.string().nullable().default(null),
+  /**
+   * Le copilote de démonstration (spécification 007), éteint par défaut :
+   * rien n'en est chargé tant qu'il l'est. Ajouté avec un défaut, il ne
+   * relève pas la version.
+   */
+  copilote: z.boolean().default(false),
 });
 
 export type Preferences = z.infer<typeof schema>;
@@ -90,6 +96,7 @@ export const DEFAUTS: Preferences = {
   calculatrice: false,
   frais: [],
   fraisChoisis: null,
+  copilote: false,
 };
 
 /**
@@ -148,6 +155,7 @@ interface EtatPreferences extends Preferences {
   /** Supprimer les frais choisis revient à « aucun ». */
   supprimerFrais: (id: string) => void;
   choisirFrais: (id: string | null) => void;
+  basculerCopilote: () => void;
 }
 
 export type FraisEnregistres = Preferences['frais'][number];
@@ -176,6 +184,7 @@ export function creerPreferences() {
         calculatrice,
         frais,
         fraisChoisis,
+        copilote,
       } = get();
       preferencesStore.save({
         reference,
@@ -192,6 +201,7 @@ export function creerPreferences() {
         calculatrice,
         frais,
         fraisChoisis,
+        copilote,
       });
     };
     const valides = (frais: Omit<FraisEnregistres, 'id'>, id: string) => {
@@ -290,6 +300,7 @@ export function creerPreferences() {
         if (id !== null && !get().frais.some(f => f.id === id)) return;
         sauver({ fraisChoisis: id });
       },
+      basculerCopilote: () => sauver({ copilote: !get().copilote }),
     };
   });
 }

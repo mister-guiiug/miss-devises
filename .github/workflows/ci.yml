@@ -28,3 +28,16 @@ jobs:
       # à l'import. Le jour où typescript-eslint#10940 se ferme, cette entrée
       # et l'alias `typescript-7` disparaissent ensemble.
       run-type-check-7: true
+      # SEUIL D'AUDIT ABAISSÉ À « critical » le 07/11/2026, PAR DÉCISION DU
+      # PROPRIÉTAIRE (spécification 007, copilote publié). CopilotKit, le
+      # client AG-UI et A2UI embarquent zod 3.25.76, que l'avis
+      # GHSA-mrhx-c7xc-m3w5 (« high » : épuisement mémoire en validant une
+      # collection géante) touche sans correctif 3.x — il n'est corrigé qu'en
+      # zod ≥ 4.6.6, et forcer zod 4 sur ces paquets les casse (A2UI appelle
+      # `z.ZodType.prototype.describe`, absent de zod 4). Sans surface ici : ce
+      # zod ne valide que les événements de l'agent, dans le navigateur du
+      # visiteur, sur des entrées qu'il écrit lui-même.
+      # LE REVERS : un autre « high » de l'application passerait aussi. À
+      # REMETTRE à « high » (supprimer ces lignes) dès que CopilotKit et A2UI
+      # passent à zod 4 : `npm audit --omit=dev` le dira.
+      npm-audit-level: critical

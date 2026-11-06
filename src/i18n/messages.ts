@@ -319,6 +319,9 @@ const fr = {
     rechargerAide:
       '« Recharger » relance l’application et relit les taux. Si elle semble ancienne ou bloquée, « Forcer la mise à jour » vide son cache puis la recharge : vos conversions et vos réglages restent.',
     majPrete: 'Une nouvelle version est prête : rechargez pour l’utiliser.',
+    copilote: 'Copilote (démonstration)',
+    copiloteAide:
+      'Un assistant qui règle le convertisseur à partir d’une phrase ou d’une photo, et montre les événements du protocole AG-UI. Il demande le réseau. Il tourne sans clé sur un modèle simulé ; avec Claude, il utilise votre propre clé Anthropic, et ce que vous lui écrivez part chez Anthropic.',
   },
   about: {
     title: 'À propos',
@@ -657,6 +660,9 @@ const en: typeof fr = {
     rechargerAide:
       '“Reload” restarts the app and reads the rates again. If it looks outdated or stuck, “Force the update” clears its cache, then reloads it: your conversions and settings stay.',
     majPrete: 'A new version is ready: reload to use it.',
+    copilote: 'Copilot (demo)',
+    copiloteAide:
+      'An assistant that sets the converter from a sentence or a photo, and shows the AG-UI protocol events. It needs the network. It runs without a key on a simulated model; with Claude, it uses your own Anthropic key, and what you write to it goes to Anthropic.',
   },
   about: {
     title: 'About',
