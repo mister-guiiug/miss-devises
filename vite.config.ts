@@ -1,4 +1,4 @@
-import { defineConfig, type PluginOption } from 'vite';
+import { defineConfig, loadEnv, type PluginOption } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
@@ -40,7 +40,45 @@ const HOTES_PHOTOS = [
   'https://upload.wikimedia.org',
 ];
 
-export default defineConfig(({ command }) => {
+/**
+ * LE COPILOTE DE DÉMONSTRATION (spécification 007) : en développement, et
+ * seulement avec `VITE_COPILOTE` (`npm run dev:copilote`). Le greffon monte
+ * l'agent AG-UI à `/agent`, à la même origine que l'application. Au build,
+ * rien de tout cela n'est importé : ni l'agent, ni le SDK du modèle.
+ *
+ * La clé vient de l'environnement ou de `.env.local` (jamais commité) ; elle
+ * reste dans ce processus, le navigateur ne la voit pas.
+ */
+const EFFORTS = new Set(['low', 'medium', 'high', 'xhigh', 'max'] as const);
+
+async function greffonsDuCopilote(
+  command: 'build' | 'serve',
+  mode: string
+): Promise<PluginOption[]> {
+  if (command !== 'serve' || !process.env.VITE_COPILOTE) return [];
+  const env = {
+    ...loadEnv(mode, process.cwd(), ['ANTHROPIC_', 'COPILOTE_']),
+    ...process.env,
+  };
+  const { greffonAgent } = await import('./agent/greffon.ts');
+  return [
+    greffonAgent(async () => {
+      if (env.COPILOTE_MODELE === 'simule') {
+        const { creerModeleSimule } = await import('./agent/modele-simule.ts');
+        return creerModeleSimule();
+      }
+      const { creerModeleClaude } = await import('./agent/modele-claude.ts');
+      const effort = [...EFFORTS].find(e => e === env.COPILOTE_EFFORT) ?? 'low';
+      return creerModeleClaude({
+        modele: env.COPILOTE_MODELE || 'claude-opus-5-5',
+        effort,
+        cle: env.ANTHROPIC_API_KEY,
+      });
+    }),
+  ];
+}
+
+export default defineConfig(async ({ command, mode }) => {
   // `VITE_BASE_PATH` est prioritaire : le déploiement famille le pose, et la
   // CI Lighthouse le met à `/` pour servir le build à la racine. Sans cette
   // priorité, l'audit part sur un chemin qui n'existe pas et rend NO_FCP.
@@ -160,6 +198,8 @@ export default defineConfig(({ command }) => {
           ],
         })
       ),
+
+      ...(await greffonsDuCopilote(command, mode)),
 
       ...(analyze
         ? [

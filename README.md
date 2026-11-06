@@ -157,6 +157,35 @@ npm run test:e2e
 
 Les e2e simulent le réseau : ils ne dépendent ni de la BCE ni de jsDelivr.
 
+## Le copilote de démonstration (développement seulement)
+
+Une démonstration d'[AG-UI](https://docs.ag-ui.com) et de
+[CopilotKit](https://docs.copilotkit.ai) : un copilote règle l'écran Convertir
+à partir d'une phrase (« un ramen à 1 200 yens ») ou d'une photo d'étiquette,
+applique des frais, note des dépenses dans un état partagé, et un inspecteur
+montre chaque événement du protocole.
+[Spécification 007](./specs/007-copilote-ag-ui/spec.md).
+
+```bash
+npm run dev:copilote:simule
+```
+
+```bash
+npm run dev:copilote
+```
+
+Le premier tourne sans compte, sur un modèle simulé qui produit les mêmes
+événements. Le second appelle Claude : poser `ANTHROPIC_API_KEY` dans
+l'environnement ou dans `.env.local` (ignoré par git). La clé reste dans le
+serveur de développement ; le navigateur ne la voit jamais. `COPILOTE_MODELE`
+et `COPILOTE_EFFORT` changent le modèle (`claude-opus-5-5`) et l'effort
+(`low`).
+
+**Le site publié n'en contient rien** : le copilote n'existe qu'avec
+`npm run dev:copilote`, et le build de production n'émet ni son morceau ni
+CopilotKit. Ce qu'on lui écrit part chez Anthropic ; c'est pourquoi il reste
+hors de la section « Confidentialité », qui décrit le site publié.
+
 ## La méthode
 
 Chaque fonctionnalité suit la démarche de Spec Kit : la

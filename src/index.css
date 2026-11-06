@@ -1,4 +1,8 @@
 @import 'tailwindcss';
+/* Le copilote de démonstration (spécification 007) a sa propre feuille et
+   n'est pas publié : Tailwind ne lit pas son dossier, la feuille publiée ne
+   change pas d'un octet. */
+@source not './copilote';
 @import '@mister-guiiug/dev-pwa-config/tailwind-preset.css';
 
 /*

@@ -10,6 +10,8 @@
   "description": "Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.",
   "scripts": {
     "dev": "vite",
+    "dev:copilote": "node scripts/with-env.mjs VITE_COPILOTE=1 -- vite",
+    "dev:copilote:simule": "node scripts/with-env.mjs VITE_COPILOTE=1 COPILOTE_MODELE=simule -- vite",
     "build": "tsc -b && vite build && pwa-bundle-budget && pwa-doctor --strict",
     "build:analyze": "node scripts/with-env.mjs ANALYZE=1 -- npm run build",
     "preview": "vite preview --base /miss-devises/",
@@ -36,9 +38,14 @@
     "mainChunkKb": 621
   },
   "devDependencies": {
+    "@ag-ui/client": "^1.0.2",
+    "@ag-ui/core": "^1.0.2",
+    "@ag-ui/encoder": "^1.0.2",
+    "@anthropic-ai/sdk": "^1.6.0",
     "@axe-core/playwright": "^4.14.0",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
+    "@copilotkit/react-core": "^1.85.0",
     "@eslint/js": "^10.0.1",
     "@mister-guiiug/dev-pwa-config": "^6.31.0",
     "@playwright/test": "^1.64.1",

@@ -45,6 +45,18 @@ const AboutScreen = lazy(() =>
 );
 
 /**
+ * LE COPILOTE DE DÉMONSTRATION (spécification 007), en développement
+ * seulement et avec `VITE_COPILOTE` (`npm run dev:copilote`). Au build,
+ * `import.meta.env.DEV` vaut `false` : la branche tombe, et ni le morceau ni
+ * CopilotKit ne sont émis — le site publié n'envoie rien à un modèle
+ * (constitution, principe II).
+ */
+const Copilote =
+  import.meta.env.DEV && import.meta.env.VITE_COPILOTE
+    ? lazy(() => import('./copilote/Copilote.tsx'))
+    : null;
+
+/**
  * LE CADRE : `AppShell` du socle (en-tête, contenu borné, barre basse).
  *
  * PROMU, PAS INVENTÉ. Ce fichier assemblait déjà `AppHeader` + `PageContainer`
@@ -285,6 +297,11 @@ export function App() {
           <ThemeProvider>
             <BrowserRouter basename={import.meta.env.BASE_URL}>
               <Shell />
+              {Copilote && (
+                <Suspense fallback={null}>
+                  <Copilote />
+                </Suspense>
+              )}
             </BrowserRouter>
           </ThemeProvider>
         </AppUpdates>
