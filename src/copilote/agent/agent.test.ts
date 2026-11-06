@@ -16,8 +16,9 @@ import {
 } from '@ag-ui/client';
 import { EventSchema } from '@ag-ui/core/schemas';
 import { executer } from './agent.ts';
-import { creerModeleSimule } from './modele-simule.ts';
+import { creerModeleSimule, decouper } from './modele-simule.ts';
 import { ErreurModele, type Modele, type Requete } from './modele.ts';
+import type { Bloc } from './protocole.ts';
 
 class AgentLocal extends AbstractAgent {
   readonly recus: BaseEvent[] = [];
@@ -152,6 +153,79 @@ describe('une exécution AG-UI de bout en bout', () => {
         expect.objectContaining({ type: 'thinking', signature: 'simule' }),
       ]),
     });
+  });
+
+  it('un tour sans texte (raisonnement puis appel) garde son message, et son tour brut revient', async () => {
+    // Claude répond souvent ainsi : un raisonnement signé, puis l'appel, sans
+    // une phrase avant. Le modèle simulé, lui, écrit toujours une phrase.
+    const muet: Modele = {
+      nom: 'muet',
+      fournisseur: 'test',
+      tour: requete => {
+        const relance = requete.messages.length > 1;
+        const contenu: Bloc[] = relance
+          ? [{ type: 'text', text: 'Fait.', citations: null }]
+          : [
+              { type: 'thinking', thinking: 'Je convertis.', signature: 'sig' },
+              {
+                type: 'tool_use',
+                id: 'toolu_muet',
+                name: 'convertir',
+                input: { montant: 1200, devise: 'JPY' },
+              },
+            ];
+        return {
+          flux: (async function* () {
+            yield* decouper(contenu);
+          })(),
+          fin: async () => ({
+            contenu,
+            arret: relance ? 'end_turn' : 'tool_use',
+            modele: 'muet',
+            jetons: { entree: 1, sortie: 1, lusEnCache: 0, ecritsEnCache: 0 },
+          }),
+        };
+      },
+    };
+    const agent = new AgentLocal(muet);
+    agent.addMessage(utilisateur('1200 JPY'));
+    await agent.runAgent({ tools: [CONVERTIR] });
+
+    // Aucun `TEXT_MESSAGE_START` : c'est `TOOL_CALL_START` qui, par son
+    // `parentMessageId`, fait créer au client le message de l'assistant (AG-UI
+    // le prévoit). Le message existe donc, porte l'appel ET le tour brut.
+    expect(agent.recus.some(e => e.type === EventType.TEXT_MESSAGE_START)).toBe(
+      false
+    );
+    expect(agent.messages.map(m => m.role)).toEqual([
+      'user',
+      'reasoning',
+      'assistant',
+    ]);
+    const appel = agent.messages[2] as Extract<Message, { role: 'assistant' }>;
+    expect(
+      agent.recus.find(e => e.type === EventType.TOOL_CALL_START)
+    ).toMatchObject({ parentMessageId: appel.id });
+    expect(appel.toolCalls?.[0]?.id).toBe('toolu_muet');
+    expect(appel.encryptedValue).toEqual(expect.any(String));
+
+    agent.addMessage({
+      id: 'r1',
+      role: 'tool',
+      toolCallId: 'toolu_muet',
+      content: '{"ok":true}',
+    });
+    await agent.runAgent({ tools: [CONVERTIR] });
+    // Le raisonnement signé est revenu au modèle, tel qu'il l'avait écrit.
+    expect(agent.requetes.at(-1)?.messages[1]).toMatchObject({
+      role: 'assistant',
+      content: [
+        { type: 'thinking', signature: 'sig' },
+        { type: 'tool_use', id: 'toolu_muet' },
+      ],
+    });
+    for (const evenement of agent.recus)
+      expect(EventSchema.safeParse(evenement).success).toBe(true);
   });
 
   it('le contexte de l’écran et l’état partagé arrivent au modèle, hors du préambule fixe', async () => {
