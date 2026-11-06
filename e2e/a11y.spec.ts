@@ -132,6 +132,26 @@ const ECRANS: Ecran[] = [
     },
   },
   {
+    // L'onglet « Modèle » et le panneau du copilote, qui sont à nous. La
+    // conversation de CopilotKit reste dans son onglet masqué : axe ne juge
+    // que ce qui est rendu, et ses composants ne sont pas les nôtres.
+    nom: 'copilote, onglet Modèle avec Claude (spécification 007)',
+    aller: async page => {
+      await page.goto('/reglages');
+      await page
+        .getByRole('switch', { name: 'Copilote (démonstration)' })
+        .click();
+      await page.getByRole('link', { name: 'Convertir' }).click();
+      await page.getByRole('button', { name: 'Copilote' }).click();
+      const panneau = page.getByRole('complementary', { name: 'Copilote' });
+      await panneau.getByRole('tab', { name: 'Modèle' }).click();
+      await panneau.getByLabel(/^Claude, avec votre clé/).check();
+      await expect(
+        panneau.getByLabel('Votre clé d’API Anthropic')
+      ).toBeVisible();
+    },
+  },
+  {
     nom: 'historique, courbe chargée',
     aller: async page => {
       await saisir200(page);

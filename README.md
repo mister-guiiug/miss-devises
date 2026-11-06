@@ -119,6 +119,17 @@ la politique devise par devise et les doutes sont dans
   90 jours. L'application le dit avant la première photo. Le lien « sur
   Wikipédia », pour les coupures restées dessinées, ouvre l'article dans un
   nouvel onglet, sans référent ; rien n'est demandé à Wikimedia avant ce clic.
+- **Copilote de démonstration (éteint par défaut).** Si vous l'activez dans
+  les réglages, il répond d'abord avec un modèle simulé, et rien ne part. Si
+  vous choisissez Claude et collez votre propre clé d'API Anthropic, votre
+  navigateur envoie directement à Anthropic (`api.anthropic.com`, Anthropic
+  PBC, États-Unis) ce que vous écrivez au copilote, la description de l'écran
+  Convertir, les dépenses notées et les photos jointes, avec votre clé ; les
+  appels sont facturés sur votre compte, selon la
+  [politique de confidentialité d'Anthropic](https://www.anthropic.com/legal/privacy).
+  L'application ne voit ni la clé ni les échanges : elle n'a pas de serveur.
+  La clé reste dans l'onglet (`sessionStorage`) et disparaît à sa fermeture.
+  L'application le dit avant le premier envoi.
 - **Mesure** : Sentry ne se charge que si `VITE_SENTRY_DSN` est posée au build,
   et PostHog (nuage européen) ne mesure qu'après accord dans un bandeau, si
   `VITE_POSTHOG_KEY` est posée. **Au 01/10/2026, aucune des deux n'est posée** :
@@ -157,34 +168,24 @@ npm run test:e2e
 
 Les e2e simulent le réseau : ils ne dépendent ni de la BCE ni de jsDelivr.
 
-## Le copilote de démonstration (développement seulement)
+## Le copilote de démonstration
 
 Une démonstration d'[AG-UI](https://docs.ag-ui.com) et de
-[CopilotKit](https://docs.copilotkit.ai) : un copilote règle l'écran Convertir
-à partir d'une phrase (« un ramen à 1 200 yens ») ou d'une photo d'étiquette,
-applique des frais, note des dépenses dans un état partagé, et un inspecteur
-montre chaque événement du protocole.
-[Spécification 007](./specs/007-copilote-ag-ui/spec.md).
+[CopilotKit](https://docs.copilotkit.ai), **éteinte par défaut** : on
+l'active dans les réglages (« Copilote (démonstration) »). Un copilote règle
+l'écran Convertir à partir d'une phrase (« un ramen à 1 200 yens ») ou d'une
+photo d'étiquette, applique des frais, note des dépenses dans un état partagé,
+et un inspecteur montre chaque événement du protocole.
+[Spécification 007](./specs/007-copilote-ag-ui/spec.md),
+[ADR 0014](./docs/adr/0014-assistant-sans-serveur-cle-du-visiteur.md).
 
-```bash
-npm run dev:copilote:simule
-```
-
-```bash
-npm run dev:copilote
-```
-
-Le premier tourne sans compte, sur un modèle simulé qui produit les mêmes
-événements. Le second appelle Claude : poser `ANTHROPIC_API_KEY` dans
-l'environnement ou dans `.env.local` (ignoré par git). La clé reste dans le
-serveur de développement ; le navigateur ne la voit jamais. `COPILOTE_MODELE`
-et `COPILOTE_EFFORT` changent le modèle (`claude-opus-5-5`) et l'effort
-(`low`).
-
-**Le site publié n'en contient rien** : le copilote n'existe qu'avec
-`npm run dev:copilote`, et le build de production n'émet ni son morceau ni
-CopilotKit. Ce qu'on lui écrit part chez Anthropic ; c'est pourquoi il reste
-hors de la section « Confidentialité », qui décrit le site publié.
+Il répond d'abord avec un **modèle simulé** : rien ne quitte l'appareil.
+Pour Claude, l'onglet « Modèle » demande **votre propre clé d'API
+Anthropic** (BYOK) : l'application n'a ni serveur ni clé, votre navigateur
+appelle l'API d'Anthropic directement, et la clé reste dans l'onglet
+(`sessionStorage`). Ses morceaux, lourds, ne se téléchargent qu'à
+l'activation et restent hors du précache : le copilote ne marche pas hors
+ligne.
 
 ## La méthode
 

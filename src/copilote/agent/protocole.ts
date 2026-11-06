@@ -198,10 +198,23 @@ const VERSION = 1;
  * Claude refuserait cette signature).
  */
 export function emballer(contenu: readonly Bloc[], modele: string): string {
-  return Buffer.from(
-    JSON.stringify({ v: VERSION, modele, contenu }),
-    'utf8'
-  ).toString('base64');
+  return versBase64(JSON.stringify({ v: VERSION, modele, contenu }));
+}
+
+/** Base64 d'un texte UTF-8, sans `Buffer` : l'agent tourne dans le navigateur. */
+function versBase64(texte: string): string {
+  let binaire = '';
+  for (const octet of new TextEncoder().encode(texte)) {
+    binaire += String.fromCharCode(octet);
+  }
+  return btoa(binaire);
+}
+
+function depuisBase64(valeur: string): string {
+  const binaire = atob(valeur);
+  return new TextDecoder().decode(
+    Uint8Array.from(binaire, caractere => caractere.charCodeAt(0))
+  );
 }
 
 /**
@@ -215,9 +228,7 @@ export function deballer(
 ): BlocEnvoye[] | null {
   if (!valeur) return null;
   try {
-    const lu: unknown = JSON.parse(
-      Buffer.from(valeur, 'base64').toString('utf8')
-    );
+    const lu: unknown = JSON.parse(depuisBase64(valeur));
     if (typeof lu !== 'object' || lu === null) return null;
     const { v, modele: auteur, contenu } = lu as Record<string, unknown>;
     if (v !== VERSION || auteur !== modele || !Array.isArray(contenu))

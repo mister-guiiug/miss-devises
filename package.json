@@ -10,8 +10,6 @@
   "description": "Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.",
   "scripts": {
     "dev": "vite",
-    "dev:copilote": "node scripts/with-env.mjs VITE_COPILOTE=1 -- vite",
-    "dev:copilote:simule": "node scripts/with-env.mjs VITE_COPILOTE=1 COPILOTE_MODELE=simule -- vite",
     "build": "tsc -b && vite build && pwa-bundle-budget && pwa-doctor --strict",
     "build:analyze": "node scripts/with-env.mjs ANALYZE=1 -- npm run build",
     "preview": "vite preview --base /miss-devises/",
@@ -32,20 +30,15 @@
     "screenshots": "pwa-screenshots --wide-path historique --prepare scripts/captures.mjs --locale fr-FR"
   },
   "bundleBudget": {
-    "_pourquoi": "RELEVÉ DE 271 / 201 / 608 À 284 / 214 / 621 le 05/10/2026 : entrée de `@tanstack/react-query` (~13 kB gzip) pour les taux du jour et les séries, sur le modèle de miss-supaboss. Pose précédente, le 03/10/2026, quand les Réglages (PR 22) ont laissé 0,2 % de marge au total (run 37078622970 : 245,5 kB gzip au total, 182,3 kB préchargés, morceau principal 552 kB brut). La formule est celle de pwa-bundle-budget : poids courant + 10 %, arrondi au kilo-octet supérieur. MESURER EN CI, PAS EN LOCAL : gh run view <id> -R mister-guiiug/miss-devises --log | grep 'TOTAL gzip'. Le jeu de données des coupures (5,6 kB gzip) est un morceau à part, chargé à l’ouverture du volet : il compte dans le total, pas dans le préchargé. posthog-js (environ 49 kB gzip, build slim) n’est chargé qu’après accord, et ne compte que dans le total.",
-    "totalGzipKb": 284,
+    "_pourquoi": "RELEVÉ DE 284 À 311 kB (TOTAL) le 07/11/2026, spécification 007 : 282,1 kB mesurés en local (279,6 avant), l'interrupteur du copilote dans les réglages et le découpage que Rolldown impose quand un morceau à la demande partage des modules avec l'application (exécutif, jsx-runtime, zod, money.ts deviennent des morceaux communs). Formule de pwa-bundle-budget : poids courant + 10 %, arrondi au kilo-octet supérieur ; à resserrer sur la mesure de la CI. LE COPILOTE N'ENTRE PAS DANS CETTE MESURE, et c'est voulu : pwa-bundle-budget ne lit que dist/assets, pas ses sous-dossiers, et le copilote vit sous dist/assets/copilote/ (vite.config.ts), hors du précache, chargé seulement par qui l'active — 659 kB gzip pour son morceau principal, plus de 3 Mo avec les langages et diagrammes que son rendu Markdown charge à la demande. Le compter rendrait le budget aveugle à toute régression de l'application. Pose précédente, le 05/10/2026 : 271 / 201 / 608 → 284 / 214 / 621, entrée de @tanstack/react-query (~13 kB gzip). MESURER EN CI, PAS EN LOCAL : gh run view <id> -R mister-guiiug/miss-devises --log | grep 'TOTAL gzip'. posthog-js (environ 49 kB gzip, build slim) n'est chargé qu'après accord, et ne compte que dans le total.",
+    "totalGzipKb": 311,
     "preloadGzipKb": 214,
     "mainChunkKb": 621
   },
   "devDependencies": {
-    "@ag-ui/client": "^1.0.2",
-    "@ag-ui/core": "^1.0.2",
-    "@ag-ui/encoder": "^1.0.2",
-    "@anthropic-ai/sdk": "^1.6.0",
     "@axe-core/playwright": "^4.14.0",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
-    "@copilotkit/react-core": "^1.85.0",
     "@eslint/js": "^10.0.1",
     "@mister-guiiug/dev-pwa-config": "^6.31.0",
     "@playwright/test": "^1.64.1",
@@ -72,6 +65,10 @@
     "vitest": "^5.1.0"
   },
   "dependencies": {
+    "@ag-ui/client": "1.0.2",
+    "@ag-ui/core": "1.0.2",
+    "@anthropic-ai/sdk": "^1.6.0",
+    "@copilotkit/react-core": "^1.85.0",
     "@tanstack/react-query": "^5.105.3",
     "country-flag-icons": "^1.6.20",
     "lucide-react": "^1.68.0",
@@ -79,6 +76,7 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.5",
+    "rxjs": "^7.8.1",
     "tailwindcss": "^4.3.4",
     "zod": "^4.6.7",
     "zustand": "^5.0.16"

@@ -62,7 +62,7 @@ export function repondre(requete: Requete): Bloc[] {
   if (blocs.some(b => b.type === 'image')) {
     return [
       texte(
-        'Mode simulé : je ne lis pas les images. Avec Claude (`npm run dev:copilote`), la photo d’une étiquette donne son prix et sa devise.'
+        'Mode simulé : je ne lis pas les images. Avec Claude (onglet « Modèle », votre clé Anthropic), la photo d’une étiquette donne son prix et sa devise.'
       ),
     ];
   }

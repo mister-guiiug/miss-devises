@@ -55,7 +55,7 @@ export function Branchements() {
     },
     [locale]
   );
-  // L'outil serveur de l'agent n'a pas de gestionnaire ici, seulement sa fiche.
+  // L'outil de l'agent lui-même n'a pas de gestionnaire ici, seulement sa fiche.
   useRenderTool(
     {
       name: 'noter_depense',

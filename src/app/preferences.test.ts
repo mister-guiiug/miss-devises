@@ -23,6 +23,7 @@ describe('les préférences', () => {
       calculatrice,
       frais,
       fraisChoisis,
+      copilote,
     } = creerPreferences().getState();
     expect({
       reference,
@@ -39,8 +40,15 @@ describe('les préférences', () => {
       calculatrice,
       frais,
       fraisChoisis,
+      copilote,
     }).toEqual(DEFAUTS);
     expect(DEFAUTS.reference).toBe('EUR');
+  });
+
+  it('gardent le copilote éteint par défaut, et son interrupteur au rechargement (spécification 007)', () => {
+    expect(DEFAUTS.copilote).toBe(false);
+    creerPreferences().getState().basculerCopilote();
+    expect(creerPreferences().getState().copilote).toBe(true);
   });
 
   it('mettent la devise choisie en tête des récentes, sans doublon, six au plus', () => {

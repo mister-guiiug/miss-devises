@@ -235,6 +235,7 @@ export function SettingsScreen() {
       <Card>
         <TitreSection>{t('settings.application')}</TitreSection>
         <ReglagesApplication />
+        <ReglageCopilote />
       </Card>
 
       {/* LA MESURE D’AUDIENCE SE RETIRE ICI, EN UN CLIC, comme elle s’accepte
@@ -576,6 +577,68 @@ function ReglagesApplication() {
       >
         {t('settings.rechargerAide')}
       </p>
+    </div>
+  );
+}
+
+/**
+ * LE COPILOTE DE DÉMONSTRATION (spécification 007), éteint par défaut : rien
+ * n'en est chargé tant qu'il l'est. L'interrupteur reprend celui des vraies
+ * photos (`BasculePhotos`) : la pastille change de côté, la couleur n'est pas
+ * seule à parler.
+ */
+function ReglageCopilote() {
+  const { t } = useI18n();
+  const actif = usePreferences(s => s.copilote);
+  const basculer = usePreferences(s => s.basculerCopilote);
+  const idTitre = useId();
+  const idAide = useId();
+  return (
+    <div
+      className="mt-4 flex items-start gap-3 border-t pt-4"
+      style={{ borderColor: 'var(--dwc-border)' }}
+    >
+      <div className="flex min-w-0 flex-1 flex-col">
+        <span id={idTitre} className="text-sm font-semibold">
+          {t('settings.copilote')}
+        </span>
+        <span
+          id={idAide}
+          className="text-sm"
+          style={{ color: 'var(--dwc-text-soft)' }}
+        >
+          {t('settings.copiloteAide')}
+        </span>
+      </div>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={actif}
+        aria-labelledby={idTitre}
+        aria-describedby={idAide}
+        onClick={basculer}
+        className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full"
+      >
+        <span
+          aria-hidden="true"
+          className="relative block h-6 w-10 rounded-full transition-colors"
+          style={{
+            background: actif
+              ? 'var(--dwc-primary)'
+              : 'var(--dwc-border-strong)',
+          }}
+        >
+          <span
+            className="absolute top-0.5 block size-5 rounded-full shadow transition-[left]"
+            style={{
+              left: actif ? 18 : 2,
+              background: actif
+                ? 'var(--dwc-primary-contrast)'
+                : 'var(--dwc-surface)',
+            }}
+          />
+        </span>
+      </button>
     </div>
   );
 }

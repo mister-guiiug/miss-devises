@@ -317,3 +317,136 @@
   font-weight: 500;
   cursor: default;
 }
+
+/* L'onglet « Modèle » : le choix du répondant et la clé du visiteur. */
+.copilote-modele {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  font-size: 0.9rem;
+}
+.copilote-modele fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.copilote-modele legend {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+.copilote-choix {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.6rem;
+  row-gap: 0.15rem;
+  align-items: start;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--dwc-border);
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+.copilote-choix:has(input:checked) {
+  border-color: var(--dwc-primary);
+  background: var(--dwc-primary-soft);
+}
+.copilote-choix input {
+  grid-row: span 2;
+  margin-top: 0.2rem;
+  accent-color: var(--dwc-primary);
+}
+.copilote-choix small,
+.copilote-champ small {
+  color: var(--dwc-text-soft);
+}
+.copilote-champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.copilote-champ input,
+.copilote-champ select {
+  min-height: 2.5rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--dwc-border-strong);
+  border-radius: 0.5rem;
+  background: var(--dwc-bg);
+  color: var(--dwc-text);
+  font: inherit;
+}
+.copilote-champ a,
+.copilote-avis a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--dwc-primary);
+}
+.copilote-avis {
+  padding: 0.6rem 0.75rem;
+  border-left: 3px solid var(--dwc-warning);
+  border-radius: 0.4rem;
+  background: var(--dwc-surface);
+  font-size: 0.82rem;
+}
+.copilote-avis p {
+  margin: 0 0 0.4rem;
+}
+.copilote-avis p:last-child {
+  margin: 0;
+}
+.copilote-cle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.copilote-action {
+  align-self: flex-start;
+  min-height: 2.5rem;
+  padding: 0.4rem 0.9rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--dwc-primary);
+  color: var(--dwc-primary-contrast);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.copilote-action:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.copilote-lien {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--dwc-primary);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.copilote-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* La panne de la dernière exécution, au-dessus de la conversation. */
+.copilote-vue-conversation > .copilote-erreur {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0.5rem 0.75rem 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--dwc-danger);
+  border-radius: 0.5rem;
+  background: var(--dwc-surface);
+  font-size: 0.85rem;
+}

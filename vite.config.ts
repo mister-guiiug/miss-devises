@@ -1,4 +1,7 @@
-import { defineConfig, loadEnv, type PluginOption } from 'vite';
+import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { defineConfig, type PluginOption } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
@@ -41,44 +44,156 @@ const HOTES_PHOTOS = [
 ];
 
 /**
- * LE COPILOTE DE DÉMONSTRATION (spécification 007) : en développement, et
- * seulement avec `VITE_COPILOTE` (`npm run dev:copilote`). Le greffon monte
- * l'agent AG-UI à `/agent`, à la même origine que l'application. Au build,
- * rien de tout cela n'est importé : ni l'agent, ni le SDK du modèle.
+ * LE COPILOTE DE DÉMONSTRATION (spécification 007) : ses morceaux vivent sous
+ * `assets/copilote/`, NOMMÉS SANS EMPREINTE ET HORS DU PRÉCACHE.
  *
- * La clé vient de l'environnement ou de `.env.local` (jamais commité) ; elle
- * reste dans ce processus, le navigateur ne la voit pas.
+ * Hors du précache : CopilotKit, le client AG-UI et le SDK d'Anthropic ne se
+ * téléchargent que pour qui active le copilote — le service worker ne les
+ * impose pas à tous les visiteurs. Sans empreinte : un morceau hors précache
+ * nommé par son contenu meurt au déploiement suivant, alors que la coquille
+ * précachée le demande encore (`pwa-doctor`, règle `chunk-hors-precache`).
+ *
+ * QUI EST DU COPILOTE SE LIT DANS LE GRAPHE, PAS DANS UNE LISTE. Le rendu
+ * Markdown de CopilotKit tire Shiki, Mermaid et KaTeX : des centaines de
+ * morceaux (un par langage, par thème, par diagramme) et leurs polices. Une
+ * liste de paquets en oublierait ; le graphe, non. Avant le rendu, on parcourt
+ * les imports depuis l'entrée SANS franchir `src/copilote/` : ce qui est
+ * atteint est l'application. Un morceau dont aucun module n'en est est du
+ * copilote — y compris ceux que le copilote charge à son tour.
+ *
+ * Un module partagé (React, zustand, les magasins de l'écran) est atteint par
+ * l'application : son morceau garde son empreinte et son précache. Sans cela,
+ * l'entrée l'importerait depuis un fichier hors précache, et l'application ne
+ * démarrerait plus hors ligne (`pwa-doctor`, règle `entree-hors-precache`).
  */
-const EFFORTS = new Set(['low', 'medium', 'high', 'xhigh', 'max'] as const);
+const DOSSIER_COPILOTE = /[\\/]src[\\/]copilote[\\/]/;
 
-async function greffonsDuCopilote(
-  command: 'build' | 'serve',
-  mode: string
-): Promise<PluginOption[]> {
-  if (command !== 'serve' || !process.env.VITE_COPILOTE) return [];
-  const env = {
-    ...loadEnv(mode, process.cwd(), ['ANTHROPIC_', 'COPILOTE_']),
-    ...process.env,
-  };
-  const { greffonAgent } = await import('./agent/greffon.ts');
-  return [
-    greffonAgent(async () => {
-      if (env.COPILOTE_MODELE === 'simule') {
-        const { creerModeleSimule } = await import('./agent/modele-simule.ts');
-        return creerModeleSimule();
-      }
-      const { creerModeleClaude } = await import('./agent/modele-claude.ts');
-      const effort = [...EFFORTS].find(e => e === env.COPILOTE_EFFORT) ?? 'low';
-      return creerModeleClaude({
-        modele: env.COPILOTE_MODELE || 'claude-opus-5-5',
-        effort,
-        cle: env.ANTHROPIC_API_KEY,
-      });
-    }),
-  ];
+/** Un chemin comparable : barres obliques, sans requête (`?no-inline`). */
+const normaliser = (chemin: string) =>
+  chemin.replace(/\\/g, '/').replace(/\?.*$/, '');
+
+/**
+ * Le paquet d'un module : son chemin jusqu'au dossier du paquet, copies
+ * imbriquées comprises (`node_modules/@copilotkit/core/node_modules/zod`
+ * n'est pas `node_modules/zod`). `null` hors de `node_modules`.
+ */
+function paquetDe(id: string): string | null {
+  const chemin = normaliser(id);
+  const debut = chemin.indexOf('node_modules/');
+  if (debut < 0) return null;
+  const fin = chemin.lastIndexOf('node_modules/') + 'node_modules/'.length;
+  const segments = chemin.slice(fin).split('/');
+  const nom = segments[0]?.startsWith('@')
+    ? segments.slice(0, 2).join('/')
+    : segments[0];
+  return `${chemin.slice(debut, fin)}${nom ?? ''}`;
 }
 
-export default defineConfig(async ({ command, mode }) => {
+/**
+ * Les paquets que l'application atteint sans le copilote, posés avant le
+ * rendu. Un PAQUET, pas un module : un import de `lucide-react` atteint ses
+ * mille icônes dans le graphe, même si le build n'en garde que dix. Un
+ * paquet que l'application n'atteint jamais est du copilote, entier.
+ */
+let paquetsDeLApplication: ReadonlySet<string> | null = null;
+
+function estDuCopilote(moduleIds: readonly string[]): boolean {
+  const application = paquetsDeLApplication;
+  // Hors build (ou avant le parcours), rien n'est rangé à part.
+  if (!application) return false;
+  return moduleIds.some(id => {
+    if (DOSSIER_COPILOTE.test(normaliser(id))) return true;
+    const paquet = paquetDe(id);
+    return paquet !== null && !application.has(paquet);
+  });
+}
+
+/**
+ * Les feuilles et les polices du copilote : sa CSS, et les polices de KaTeX.
+ * Celles-ci n'arrivent que par un `url()` de la feuille de KaTeX : elles ne
+ * portent pas leur chemin d'origine, seulement leur nom.
+ */
+function estUnFichierDuCopilote(asset: {
+  names: readonly string[];
+  originalFileNames: readonly string[];
+}): boolean {
+  if (asset.names.some(nom => /^(Copilote[.-]|KaTeX_)/.test(nom))) return true;
+  return estDuCopilote(asset.originalFileNames);
+}
+
+function graphesDuCopilote(): PluginOption {
+  return {
+    name: 'miss-devises:copilote-hors-precache',
+    apply: 'build',
+    renderStart() {
+      const atteints = new Set<string>();
+      const pile = [...this.getModuleIds()].filter(
+        id => this.getModuleInfo(id)?.isEntry
+      );
+      while (pile.length > 0) {
+        const id = pile.pop()!;
+        if (atteints.has(id) || DOSSIER_COPILOTE.test(normaliser(id))) {
+          continue;
+        }
+        atteints.add(id);
+        const info = this.getModuleInfo(id);
+        if (info)
+          pile.push(...info.importedIds, ...info.dynamicallyImportedIds);
+      }
+      paquetsDeLApplication = new Set(
+        [...atteints].flatMap(id => paquetDe(id) ?? [])
+      );
+    },
+  };
+}
+
+/**
+ * LE ZOD DE CHAQUE PAQUET (spécification 007). Au build, `cspPlugin` du socle
+ * renvoie tout `import … from 'zod'` vers le zod de l'APPLICATION, configuré
+ * sans compilation pour la CSP (`\0dwc-zod-jitless`). Juste pour le code de
+ * l'application ; faux pour un paquet qui porte SA copie de zod. CopilotKit,
+ * le client AG-UI et A2UI embarquent zod 3 : ils recevaient zod 4, où
+ * `z.ZodType.prototype.describe` n'existe plus, et le copilote plantait au
+ * chargement (« reading 'call' »), en production seulement.
+ *
+ * On rend à chacun la copie que Node lui donnerait. Le code de l'application,
+ * et tout paquet qui partage son zod, garde le zod sans compilation. À
+ * remonter au socle : c'est `cspPlugin` qui doit faire cette distinction.
+ */
+const ZOD_SANS_COMPILATION = '\0dwc-zod-jitless';
+
+function zodDeChaquePaquet(): PluginOption {
+  let zodDeLApplication = '';
+  return {
+    name: 'miss-devises:zod-de-chaque-paquet',
+    apply: 'build',
+    enforce: 'pre',
+    configResolved(config) {
+      const exige = createRequire(join(config.root, 'package.json'));
+      zodDeLApplication = dirname(exige.resolve('zod/package.json'));
+    },
+    resolveId(source, importer) {
+      if (source !== ZOD_SANS_COMPILATION || !importer) return null;
+      let manifeste: string;
+      try {
+        manifeste = createRequire(importer.replace(/\?.*$/, '')).resolve(
+          'zod/package.json'
+        );
+      } catch {
+        return null;
+      }
+      if (dirname(manifeste) === zodDeLApplication) return null;
+      const paquet = JSON.parse(readFileSync(manifeste, 'utf8')) as {
+        exports?: { '.'?: { import?: string } };
+        module?: string;
+      };
+      const entree = paquet.exports?.['.']?.import ?? paquet.module;
+      return entree ? join(dirname(manifeste), entree) : null;
+    },
+  };
+}
+
+export default defineConfig(({ command }) => {
   // `VITE_BASE_PATH` est prioritaire : le déploiement famille le pose, et la
   // CI Lighthouse le met à `/` pour servir le build à la racine. Sans cette
   // priorité, l'audit part sur un chemin qui n'existe pas et rend NO_FCP.
@@ -97,10 +212,26 @@ export default defineConfig(async ({ command, mode }) => {
     // `strictPort` : un port pris fait échouer le démarrage, au lieu de glisser
     // en silence vers un autre que `.claude/launch.json` ne connaît pas.
     server: { port: devPortOf(APP_ID, 5213), strictPort: true },
-    build: { sourcemap: true },
+    build: {
+      sourcemap: true,
+      rolldownOptions: {
+        output: {
+          chunkFileNames: chunk =>
+            estDuCopilote(chunk.moduleIds)
+              ? 'assets/copilote/[name].js'
+              : 'assets/[name]-[hash].js',
+          assetFileNames: asset =>
+            estUnFichierDuCopilote(asset)
+              ? 'assets/copilote/[name]-[hash][extname]'
+              : 'assets/[name]-[hash][extname]',
+        },
+      },
+    },
     plugins: [
       react(),
       tailwindcss(),
+      graphesDuCopilote(),
+      zodDeChaquePaquet(),
 
       // AVANT `cspPlugin` : il pose un script inline dans le `<head>`, que la
       // CSP doit hacher après coup.
@@ -139,6 +270,11 @@ export default defineConfig(async ({ command, mode }) => {
           'https://api.frankfurter.dev',
           'https://cdn.jsdelivr.net',
           'https://*.currency-api.pages.dev',
+          // Le copilote de démonstration avec Claude (spécification 007) :
+          // le navigateur appelle l'API d'Anthropic directement, avec la clé
+          // du visiteur. Rien n'y part tant qu'il n'a pas activé le copilote,
+          // choisi Claude et saisi sa clé.
+          'https://api.anthropic.com',
         ],
         // Les photos des coupures, et elles seules en plus du défaut.
         imgSrc: ["'self'", 'data:', 'blob:', ...HOTES_PHOTOS],
@@ -177,6 +313,17 @@ export default defineConfig(async ({ command, mode }) => {
           ],
           description:
             'Convertisseur de devises visuel : billets et pièces sous les yeux, conversion dans les deux sens, historique des taux et conversions annotées.',
+          // Le copilote de démonstration reste HORS DU PRÉCACHE (spécification
+          // 007) : ses morceaux et ses polices pèsent plusieurs mégaoctets, et
+          // seul qui l'active doit les télécharger. Les deux premiers motifs
+          // sont ceux du socle, que `workbox` remplace sans les fusionner.
+          workbox: {
+            globIgnores: [
+              '**/node_modules/**/*',
+              '**/version.json',
+              '**/assets/copilote/**',
+            ],
+          },
           // Les photos déjà vues restent hors ligne. La règle d'images du
           // socle ne voit pas une autre origine (Workbox n'y applique une
           // expression régulière que depuis le début de l'adresse) : celle-ci
@@ -198,8 +345,6 @@ export default defineConfig(async ({ command, mode }) => {
           ],
         })
       ),
-
-      ...(await greffonsDuCopilote(command, mode)),
 
       ...(analyze
         ? [

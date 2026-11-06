@@ -22,6 +22,13 @@ publiques : les taux, et, quand l'utilisateur les demande, les photos libres
 des billets et des pièces. Ce qui a été lu une fois reste disponible hors
 ligne.
 
+Une seule exception, et à trois conditions : un assistant peut envoyer ce que
+l'utilisateur lui écrit à un fournisseur de modèle, si l'utilisateur l'a
+activé lui-même, s'il a choisi ce fournisseur et apporté SA clé, et si
+l'application le lui a dit avant le premier envoi. Elle n'a ni serveur ni clé
+à elle : le navigateur parle au fournisseur, avec la clé de l'utilisateur,
+gardée le temps de l'onglet.
+
 ### III. Visuel, accessible et légal
 
 Les billets et les pièces se dessinent en formes stylisées (couleur dominante,
@@ -55,10 +62,12 @@ applications partagent se propose au socle plutôt que de se copier.
 
 - Poids sous le budget du squelette (`totalGzipKb`, `mainChunkKb`), et
   `pwa-doctor --strict` à zéro défaut.
-- Toute requête vers un tiers (sources de taux, photos) est nommée dans la
-  section « Confidentialité » du README, et dans l'application avant la
-  première qui n'est pas indispensable.
-- Aucun secret dans le dépôt ; les sources de taux retenues n'en demandent pas.
+- Toute requête vers un tiers (sources de taux, photos, fournisseur de modèle
+  de l'assistant) est nommée dans la section « Confidentialité » du README, et
+  dans l'application avant la première qui n'est pas indispensable.
+- Aucun secret dans le dépôt ; les sources de taux retenues n'en demandent pas,
+  et la clé d'un fournisseur de modèle est celle de l'utilisateur, jamais
+  celle de l'application.
 - `main` est protégé : tout passe par une pull request et une CI verte.
 - Aucune signature d'assistant dans les commits, les pull requests ou la
   documentation (règle 1 du parc).
@@ -78,11 +87,18 @@ request qui dit ce qui change et pourquoi, et relève sa version : majeure pour
 un principe retiré ou renversé, mineure pour un principe ajouté, correctif pour
 une précision.
 
-**Version** : 2.0.0 · **Ratifiée le** : 01/10/2026 · **Dernière modification** :
-02/10/2026
+**Version** : 3.0.0 · **Ratifiée le** : 01/10/2026 · **Dernière modification** :
+07/11/2026
 
 ### Modifications
 
+- **3.0.0** (07/11/2026) : le principe II, qui réservait le réseau à la
+  lecture de données publiques, admet une exception : un assistant activé par
+  l'utilisateur peut envoyer ce qu'il lui écrit au fournisseur de modèle qu'il
+  a choisi, avec sa propre clé, après un avis. Les contraintes du parc nomment
+  ce tiers et la clé. Majeure : un principe est renversé en partie. Raison :
+  la démonstration AG-UI et CopilotKit publiée sur le site (spécification
+  007).
 - **2.0.0** (02/10/2026) : le principe III, qui excluait toute image, permet
   désormais une photo libre, réduite, d'une seule face et créditée, à la
   demande de l'utilisateur ; le principe II l'admet parmi les lectures du

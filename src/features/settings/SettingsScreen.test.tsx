@@ -287,3 +287,18 @@ describe('l’application : recharger, et forcer la mise à jour', () => {
     ).toBeDisabled();
   });
 });
+
+describe('le copilote de démonstration (spécification 007)', () => {
+  it('un interrupteur éteint par défaut, qui dit ce qui part chez Anthropic', async () => {
+    const user = userEvent.setup();
+    monter();
+    const interrupteur = screen.getByRole('switch', {
+      name: 'Copilote (démonstration)',
+    });
+    expect(interrupteur).toHaveAttribute('aria-checked', 'false');
+    expect(interrupteur).toHaveAccessibleDescription(/part chez Anthropic/);
+    await user.click(interrupteur);
+    expect(interrupteur).toHaveAttribute('aria-checked', 'true');
+    expect(usePreferences.getState().copilote).toBe(true);
+  });
+});

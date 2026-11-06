@@ -4,7 +4,7 @@
  * l'entrée (`RunAgentInput`) — la conversation, les outils du navigateur, le
  * contexte de l'écran, l'état partagé.
  *
- * La boucle : le modèle parle ; s'il appelle l'outil serveur `noter_depense`,
+ * La boucle : le modèle parle ; s'il appelle son propre outil, `noter_depense`,
  * l'agent l'exécute, écrit l'état partagé par un correctif JSON
  * (`STATE_DELTA`) et rend la main au modèle ; s'il appelle un outil du
  * navigateur, l'exécution s'arrête là — c'est le client qui l'exécute, puis
@@ -78,7 +78,7 @@ export const OUTILS_SERVEUR: Outil[] = [
 ];
 const SERVEUR = new Set(OUTILS_SERVEUR.map(o => o.name));
 
-/** Au-delà, une boucle d'outils serveur tourne en rond : on l'arrête. */
+/** Au-delà, une boucle sur l'outil de l'agent tourne en rond : on l'arrête. */
 const TOURS_MAX = 6;
 
 export interface OptionsExecution {
@@ -215,7 +215,7 @@ function lireEtat(etat: unknown): EtatPartage {
 }
 
 /**
- * L'outil serveur : il n'agit pas sur l'écran, il écrit l'état partagé. Le
+ * L'outil de l'agent : il n'agit pas sur l'écran, il écrit l'état partagé. Le
  * correctif est un JSON Patch (RFC 6902) : `add /depenses/-` ajoute en fin de
  * liste, et le client applique le même correctif à sa copie.
  */

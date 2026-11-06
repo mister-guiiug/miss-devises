@@ -61,7 +61,7 @@ const utilisateur = (content: string): Message => ({
 });
 
 describe('une exécution AG-UI de bout en bout', () => {
-  it('« note un taxi » : outil serveur, correctif d’état, puis la réponse', async () => {
+  it('« note un taxi » : outil de l’agent, correctif d’état, puis la réponse', async () => {
     const agent = new AgentLocal(creerModeleSimule({ pause: 0 }));
     agent.addMessage(utilisateur('note un taxi à 3000 yens'));
     await agent.runAgent();

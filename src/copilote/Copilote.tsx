@@ -1,12 +1,15 @@
 /**
- * LE COPILOTE DE DÉMONSTRATION (spécification 007). Monté par `App.tsx` en
- * développement seulement, avec `VITE_COPILOTE` : ce module et tout ce qu'il
- * importe (CopilotKit, le client AG-UI) forment un morceau que le build de
- * production n'émet pas.
+ * LE COPILOTE DE DÉMONSTRATION (spécification 007). Monté par `App.tsx`
+ * quand le visiteur l'active dans les réglages : ce module et tout ce qu'il
+ * importe (CopilotKit, le client AG-UI, le SDK d'Anthropic) forment des
+ * morceaux à part, chargés à ce moment-là et jamais précachés.
  *
- * CopilotKit se branche DIRECTEMENT sur l'agent (R1) : un `HttpAgent` du
- * client AG-UI, qui poste à `/agent`, où le serveur de développement le sert.
- * `agents__unsafe_dev_only` dit par son nom ce qu'est la démonstration.
+ * CopilotKit se branche DIRECTEMENT sur l'agent (R1), qui tourne dans la page
+ * (`AgentNavigateur`). `agents__unsafe_dev_only` est l'option qui accepte un
+ * agent local ; son « unsafe » désigne un point d'accès d'agent exposé sans
+ * l'authentification du serveur de CopilotKit — il n'y en a aucun ici, l'agent
+ * ne quitte pas la page, et seule l'API d'Anthropic est appelée, avec la clé
+ * du visiteur.
  */
 import '@copilotkit/react-core/v2/styles.css';
 import './copilote.css';
@@ -21,7 +24,7 @@ import {
   type ReactNode,
 } from 'react';
 import { Bot, X } from 'lucide-react';
-import { HttpAgent, type BaseEvent, type RunAgentInput } from '@ag-ui/client';
+import type { BaseEvent, RunAgentInput } from '@ag-ui/client';
 import {
   CopilotChat,
   CopilotKit,
@@ -40,6 +43,9 @@ import {
 } from './journal.ts';
 import { useLibelles } from './libelles.ts';
 import { lireDepenses } from './depenses.ts';
+import { AgentNavigateur } from './agent/agent-navigateur.ts';
+import { OngletModele } from './OngletModele.tsx';
+import { MODELES, modeleCourant, useReglage } from './reglage.ts';
 
 /**
  * UNE PANNE DU COPILOTE RESTE DANS LE COPILOTE. Sans cette frontière, une
@@ -78,8 +84,7 @@ export default function Copilote() {
 function CopiloteBranche() {
   const agent = useMemo(
     () =>
-      new HttpAgent({
-        url: `${import.meta.env.BASE_URL}agent`,
+      new AgentNavigateur(() => modeleCourant(), {
         agentId: AGENT,
         initialState: { depenses: [] },
       }),
@@ -120,7 +125,7 @@ function reduire(journal: Journal, action: Action): Journal {
   }
 }
 
-const ONGLETS = ['conversation', 'evenements', 'depenses'] as const;
+const ONGLETS = ['conversation', 'evenements', 'depenses', 'modele'] as const;
 type Onglet = (typeof ONGLETS)[number];
 
 function Panneau() {
@@ -136,6 +141,7 @@ function Panneau() {
     conversation: null,
     evenements: null,
     depenses: null,
+    modele: null,
   });
 
   // L'inspecteur s'abonne à l'agent que CopilotKit fait tourner : il voit ce
@@ -156,12 +162,27 @@ function Panneau() {
     return unsubscribe;
   }, [agent]);
 
-  const modele = journal.executions.at(-1)?.modele;
+  // Qui répondra au prochain message : le réglage, pas la dernière exécution.
+  const mode = useReglage(s => s.mode);
+  const idModele = useReglage(s => s.modele);
+  const cle = useReglage(s => s.cle);
+  const repondant =
+    mode === 'simule'
+      ? t('modeSimule')
+      : `${MODELES.find(m => m.id === idModele)?.nom ?? idModele}${cle ? '' : ` · ${t('sansCle')}`}`;
   const depenses = lireDepenses(agent.state).length;
+  // La dernière exécution a échoué (clé absente ou refusée, réseau) : la
+  // conversation le dit, sans obliger à ouvrir l'inspecteur.
+  const derniere = journal.executions.at(-1);
+  const erreur =
+    derniere?.issue === 'erreur'
+      ? derniere.lignes.findLast(l => l.famille === 'erreur')?.resume
+      : undefined;
   const libelles: Record<Onglet, string> = {
     conversation: t('ongletConversation'),
     evenements: `${t('ongletEvenements')} (${String(journal.total)})`,
     depenses: `${t('ongletDepenses')} (${String(depenses)})`,
+    modele: t('ongletModele'),
   };
 
   /** Les flèches passent d'un onglet à l'autre (motif ARIA des onglets). */
@@ -198,8 +219,14 @@ function Panneau() {
           <div>
             <h2>{t('titre')}</h2>
             <p>
-              {t('sousTitre')}
-              {modele ? ` · ${modele}` : ''}
+              {t('sousTitre')} ·{' '}
+              <button
+                type="button"
+                className="copilote-lien"
+                onClick={() => setOnglet('modele')}
+              >
+                {repondant}
+              </button>
             </p>
           </div>
           <button
@@ -242,6 +269,18 @@ function Panneau() {
           className="copilote-vue copilote-vue-conversation"
           hidden={onglet !== 'conversation'}
         >
+          {erreur && (
+            <div role="alert" className="copilote-erreur">
+              <span>{erreur}</span>
+              <button
+                type="button"
+                className="copilote-lien"
+                onClick={() => setOnglet('modele')}
+              >
+                {t('ongletModele')}
+              </button>
+            </div>
+          )}
           <CopilotChat
             agentId={AGENT}
             labels={{
@@ -281,6 +320,15 @@ function Panneau() {
           hidden={onglet !== 'depenses'}
         >
           <ListeDepenses />
+        </section>
+        <section
+          role="tabpanel"
+          id="copilote-vue-modele"
+          aria-labelledby="copilote-onglet-modele"
+          className="copilote-vue"
+          hidden={onglet !== 'modele'}
+        >
+          <OngletModele />
         </section>
       </aside>
     </>

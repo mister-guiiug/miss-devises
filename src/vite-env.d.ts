@@ -21,12 +21,6 @@ interface ImportMetaEnv {
    * donc muette, et poser la variable est le seul geste qui l'allume.
    */
   readonly VITE_POSTHOG_KEY?: string;
-  /**
-   * Monte le copilote de démonstration (spécification 007). Posée par
-   * `npm run dev:copilote`, lue en développement seulement : le build de
-   * production ignore la branche qui la lit.
-   */
-  readonly VITE_COPILOTE?: string;
 }
 
 interface ImportMeta {

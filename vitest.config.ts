@@ -21,9 +21,6 @@ export default defineConfig({
   },
   test: {
     ...baseTestOptions,
-    // L'agent du copilote de démonstration vit hors de `src/` (spécification
-    // 007) : il tourne dans Node, pas dans le navigateur.
-    include: [...baseTestOptions.include, 'agent/**/*.test.ts'],
     // Les specs Playwright vivent dans `e2e/` : Vitest ne doit pas y piocher.
     exclude: ['**/node_modules/**', '**/e2e/**'],
     // Vitest stube les feuilles : `import … from './index.css?raw'` rendrait

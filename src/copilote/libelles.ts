@@ -19,8 +19,30 @@ const fr = {
   sousTitre: 'démo AG-UI · CopilotKit',
   onglets: 'Vues du copilote',
   ongletConversation: 'Conversation',
-  ongletEvenements: 'Événements AG-UI',
+  ongletEvenements: 'Événements',
   ongletDepenses: 'Dépenses',
+  ongletModele: 'Modèle',
+  modeleLegende: 'Qui répond ?',
+  modeSimule: 'Le modèle simulé',
+  modeSimuleAide:
+    'Un script qui comprend quelques tournures. Rien ne quitte l’appareil, aucune clé.',
+  modeClaude: 'Claude, avec votre clé Anthropic',
+  modeClaudeAide:
+    'Comprend vos phrases et lit les photos. Les appels sont facturés sur votre compte Anthropic.',
+  modeleChoix: 'Modèle',
+  avisEnvoi:
+    'Ce que vous écrivez au copilote, la description de l’écran Convertir, les dépenses notées et les photos jointes partent chez Anthropic (États-Unis), directement depuis ce navigateur, avec votre clé. L’application n’a pas de serveur : elle ne voit ni la clé ni les échanges.',
+  avisCle:
+    'La clé reste dans cet onglet (sessionStorage) et disparaît à sa fermeture.',
+  avisPolitique: 'Politique de confidentialité d’Anthropic',
+  nouvelOnglet: '(nouvel onglet)',
+  cleLibelle: 'Votre clé d’API Anthropic',
+  cleDouteuse: 'Une clé d’API Anthropic commence par « sk-ant- ».',
+  cleUtiliser: 'Utiliser cette clé',
+  cleObtenir: 'Créer une clé dans la console d’Anthropic',
+  cleEnregistree: 'Clé enregistrée pour cet onglet (…{fin})',
+  oublierCle: 'Oublier la clé',
+  sansCle: 'clé à saisir',
   placeholder: 'Ex. : un ramen à 1 200 yens',
   bienvenue:
     'Demandez une conversion en une phrase, ou joignez la photo d’une étiquette. Je règle l’écran, et je réponds avec ce que l’application calcule.',
@@ -74,8 +96,30 @@ const en: Record<Cle, string> = {
   sousTitre: 'AG-UI · CopilotKit demo',
   onglets: 'Copilot views',
   ongletConversation: 'Chat',
-  ongletEvenements: 'AG-UI events',
+  ongletEvenements: 'Events',
   ongletDepenses: 'Expenses',
+  ongletModele: 'Model',
+  modeleLegende: 'Who answers?',
+  modeSimule: 'The simulated model',
+  modeSimuleAide:
+    'A script that understands a few phrasings. Nothing leaves the device, no key.',
+  modeClaude: 'Claude, with your Anthropic key',
+  modeClaudeAide:
+    'Understands your sentences and reads photos. Calls are billed to your Anthropic account.',
+  modeleChoix: 'Model',
+  avisEnvoi:
+    'What you write to the copilot, the description of the Convert screen, the noted expenses and attached photos go to Anthropic (United States), straight from this browser, with your key. The app has no server: it sees neither the key nor the exchanges.',
+  avisCle:
+    'The key stays in this tab (sessionStorage) and is gone when it closes.',
+  avisPolitique: 'Anthropic’s privacy policy',
+  nouvelOnglet: '(new tab)',
+  cleLibelle: 'Your Anthropic API key',
+  cleDouteuse: 'An Anthropic API key starts with “sk-ant-”.',
+  cleUtiliser: 'Use this key',
+  cleObtenir: 'Create a key in the Anthropic console',
+  cleEnregistree: 'Key saved for this tab (…{fin})',
+  oublierCle: 'Forget the key',
+  sansCle: 'key needed',
   placeholder: 'E.g. a ramen for 1,200 yen',
   bienvenue:
     'Ask for a conversion in one sentence, or attach a photo of a price tag. I set the screen, and answer with what the app computes.',
