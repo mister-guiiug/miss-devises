@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen, within } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ToastProvider } from '@mister-guiiug/dev-pwa-config/react/toast';
 import { I18nProvider } from './i18n/index.ts';
@@ -97,5 +103,64 @@ describe('sous un basename, la barre dit où l’on est', () => {
     // L'accueil est `end: true` : il ne doit pas rester allumé sous un
     // chemin qui commence par `/`.
     expect(entree(/^Convertir/)).not.toHaveAttribute('aria-current');
+  });
+});
+
+/*
+ * LE CLIC QUI RÉPOND, SANS « CHARGEMENT… » QUI CLIGNOTE.
+ *
+ * Le routeur navigue dans une transition : React garde l'écran courant tant
+ * que le morceau des écrans n'est pas arrivé. C'est la barre qui le dit
+ * (`navNavigate`, socle 6.33.0) : l'entrée cliquée porte `aria-busy`.
+ *
+ * Le repli de la frontière, lui, ne doit pas paraître au clic. L'app la
+ * remontait à chaque chemin (`key={pathname}`) avant que la coquille ne
+ * transmette `navigate` : une frontière neuve montre son repli, même pour un
+ * écran déjà en mémoire, et React le garde environ 300 ms. Remettre la clé
+ * fait échouer les deux tests ; retirer `navNavigate`, le premier.
+ */
+function guetterLeRepli() {
+  const vu = { repli: false };
+  const observateur = new MutationObserver(() => {
+    if (screen.queryByText('Chargement…')) vu.repli = true;
+  });
+  observateur.observe(document.body, { childList: true, subtree: true });
+  return {
+    vu,
+    arreter: () => observateur.disconnect(),
+  };
+}
+
+describe('au clic dans la barre, l’entrée dit qu’elle charge', () => {
+  it('vers un écran pas encore chargé : l’entrée occupée, pas de repli', async () => {
+    const entree = monterSous('/');
+    const guet = guetterLeRepli();
+
+    fireEvent.click(entree(/^Historique/));
+
+    expect(entree(/^Historique/)).toHaveAttribute('aria-busy', 'true');
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Historique' })
+    ).toBeInTheDocument();
+    expect(entree(/^Historique/)).toHaveAttribute('aria-current', 'page');
+    expect(entree(/^Historique/)).not.toHaveAttribute('aria-busy');
+    guet.arreter();
+    expect(guet.vu.repli).toBe(false);
+  });
+
+  it('vers un écran du morceau déjà arrivé : aucun repli non plus', async () => {
+    const entree = monterSous('/');
+    fireEvent.click(entree(/^Historique/));
+    await screen.findByRole('heading', { level: 1, name: 'Historique' });
+
+    // Le morceau des écrans est là ; le carnet n'a encore jamais été rendu.
+    const guet = guetterLeRepli();
+    fireEvent.click(entree(/^Carnet/));
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Carnet' })
+    ).toBeInTheDocument();
+    guet.arreter();
+    expect(guet.vu.repli).toBe(false);
   });
 });

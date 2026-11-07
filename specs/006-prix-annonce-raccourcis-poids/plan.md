@@ -47,6 +47,11 @@ repos.
 - **R4, le poids** : historique, carnet, réglages et À propos en `lazy()`, avec
   des fonctions de chargement nommées, partagées avec `useIdlePrefetch` ; le
   refus `nav-attente` de `package.json`, devenu faux, est retiré.
+  **Revu le 07/11/2026** : la frontière n'a plus de clé par chemin. Elle
+  coûtait un « Chargement… » d'environ 300 ms au premier passage sur chaque
+  écran, même préchargé. La barre pilote désormais la navigation
+  (`navNavigate` de `AppShell`, socle 6.33.0) et dit qu'elle charge ; la
+  garde est `src/App.nav.test.tsx`.
 
 ## Mesure (R4)
 

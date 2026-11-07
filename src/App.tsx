@@ -5,6 +5,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useNavigate,
 } from 'react-router-dom';
 import { ChartLine, Coins, Info, NotebookPen, Settings } from 'lucide-react';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -108,11 +109,21 @@ function CopiloteSiActive() {
  * ligne, jamais en développement ni en e2e, servis sous `/`. Relevé le
  * 03/10/2026 ; la prop existe depuis le socle 6.23.0.
  *
+ * `navNavigate={navigate}` : la barre pilote la navigation dans sa propre
+ * transition, et l'entrée cliquée dit qu'elle charge tant que le morceau des
+ * écrans n'est pas arrivé. La coquille ne transmettait pas `navigate` avant le
+ * socle 6.33.0 ; l'app remontait alors la frontière `Suspense` à chaque chemin
+ * (`key={pathname}`) pour que son repli paraisse. Ce remède coûtait un
+ * « Chargement… » d'environ 300 ms au premier passage sur chaque écran, même
+ * préchargé : `lazy()` suspend au moins une micro-tâche, une frontière neuve
+ * montre son repli, et React le garde ce délai minimal.
+ *
  * Exporté pour `App.nav.test.tsx`, qui le monte sous un `basename`.
  */
 export function Shell() {
   const { t } = useI18n();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   /*
    * UNE VUE DE PAGE PAR NAVIGATION — ni zéro, ni deux. PostHog en envoie une
@@ -238,6 +249,7 @@ export function Shell() {
       hrefProp="to"
       navItems={nav}
       navCurrentPath={pathname}
+      navNavigate={navigate}
       beforeMain={<ConnectionBanner />}
       afterMain={
         /*
@@ -279,11 +291,13 @@ export function Shell() {
         />
       }
     >
-      {/* UNE FRONTIÈRE PAR ROUTE (`key={pathname}`) : le routeur navigue dans
-          une transition, et sans elle le repli ne paraîtrait jamais au clic
-          vers un écran pas encore chargé (pwa-doctor, `nav-attente`). */}
+      {/* UNE SEULE FRONTIÈRE, SANS CLÉ. Au clic dans la barre, c'est l'entrée
+          qui dit qu'elle charge (`navNavigate`), et l'écran courant reste en
+          place le temps du morceau. Le repli ne paraît qu'à l'arrivée directe
+          sur un écran pas encore chargé. Une clé par chemin le ferait
+          reparaître à chaque premier passage, même préchargé : la garde est
+          `App.nav.test.tsx`. */}
       <Suspense
-        key={pathname}
         fallback={
           <p role="status" className="m-0 p-4 text-sm">
             {t('app.chargement')}
