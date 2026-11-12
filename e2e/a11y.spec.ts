@@ -15,6 +15,24 @@ interface Ecran {
   regles?: string[];
 }
 
+/**
+ * Attend la fin des animations FINIES de la page. CopilotKit 2.0 fait
+ * apparaître la réponse mot à mot, en fondu : axe lancé pendant ce fondu juge
+ * une couleur de passage (mesuré : #b3b7be sur blanc, 2,01:1) et rougit au
+ * hasard du minutage. Les animations sans fin (un indicateur qui pulse) sont
+ * laissées de côté : leur `finished` n'arrive jamais.
+ */
+async function finirAnimations(page: Page) {
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter(a => a.effect?.getComputedTiming().iterations !== Infinity)
+        .map(a => a.finished.catch(() => undefined))
+    )
+  );
+}
+
 async function saisir200(page: Page) {
   await page.goto('/');
   await page.getByLabel('Montant en livres égyptiennes').fill('200');
@@ -149,6 +167,34 @@ const ECRANS: Ecran[] = [
       await expect(
         panneau.getByLabel('Votre clé d’API Anthropic')
       ).toBeVisible();
+    },
+  },
+  {
+    // LA CONVERSATION, cette fois, avec la fiche de conversion que l'app y
+    // rend. L'entrée précédente l'évitait ; c'est ainsi qu'en thème sombre la
+    // fiche est restée illisible (texte sombre sur fond sombre) sans qu'axe le
+    // voie : CopilotKit n'active son thème sombre que sous une classe `.dark`,
+    // et l'app pose `data-theme`.
+    nom: 'copilote, conversation avec une fiche de conversion (spécification 007)',
+    aller: async page => {
+      await page.goto('/reglages');
+      await page
+        .getByRole('switch', { name: 'Copilote (démonstration)' })
+        .click();
+      await page.getByRole('link', { name: 'Convertir' }).click();
+      await page.getByRole('button', { name: 'Copilote' }).click();
+      const panneau = page.getByRole('complementary', { name: 'Copilote' });
+      await panneau.getByRole('textbox').fill('1200 JPY');
+      await panneau.getByRole('button', { name: 'Envoyer' }).click();
+      await expect(
+        panneau.getByText('Calculé par l’application')
+      ).toBeVisible();
+      // La réponse ENTIÈRE, jusqu'à sa parenthèse finale, puis la fin de son
+      // fondu : axe juge le texte tel qu'il reste, pas en train d'apparaître.
+      await expect(
+        panneau.getByText(/^D’après l’application : .*\)\.$/)
+      ).toBeVisible();
+      await finirAnimations(page);
     },
   },
   {
