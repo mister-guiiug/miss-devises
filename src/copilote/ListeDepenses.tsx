@@ -5,7 +5,7 @@
  * l'entrée de l'exécution suivante.
  */
 import { X } from 'lucide-react';
-import { useAgent, UseAgentUpdate } from '@copilotkit/react-core/v2';
+import { useAgent, UseAgentUpdate } from '@copilotkit/react-core';
 import { usePreferences } from '../app/preferences.ts';
 import { useTaux } from '../rates/store.ts';
 import { Drapeau } from '../ui/Drapeau.tsx';
