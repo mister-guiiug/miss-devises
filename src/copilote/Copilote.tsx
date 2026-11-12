@@ -24,6 +24,7 @@ import {
   type ReactNode,
 } from 'react';
 import { Bot, X } from 'lucide-react';
+import { useThemeContext } from '@mister-guiiug/dev-pwa-config/react/theme-provider';
 import type { BaseEvent, RunAgentInput } from '@ag-ui/client';
 import {
   CopilotChat,
@@ -130,6 +131,12 @@ type Onglet = (typeof ONGLETS)[number];
 
 function Panneau() {
   const { t } = useLibelles();
+  // LE THÈME DE L'APP, DIT À COPILOTKIT. Sa feuille n'active le thème sombre
+  // que sous une classe `.dark` ; l'app, elle, pose `data-theme` sur `<html>`
+  // (`ThemeProvider` du socle). Sans ce pont, la conversation restait claire
+  // dans une app sombre, et la fiche de conversion y était illisible. Le thème
+  // RÉSOLU : « système » a déjà été tranché par le fournisseur.
+  const sombre = useThemeContext()?.resolved === 'dark';
   const [ouvert, setOuvert] = useState(false);
   const [onglet, setOnglet] = useState<Onglet>('conversation');
   const [journal, envoyer] = useReducer(reduire, undefined, journalVide);
@@ -219,7 +226,7 @@ function Panneau() {
       </button>
       <aside
         id="copilote-panneau"
-        className="copilote"
+        className={sombre ? 'copilote dark' : 'copilote'}
         aria-label={t('titre')}
         hidden={!ouvert}
       >

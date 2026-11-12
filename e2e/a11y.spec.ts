@@ -152,6 +152,28 @@ const ECRANS: Ecran[] = [
     },
   },
   {
+    // LA CONVERSATION, cette fois, avec la fiche de conversion que l'app y
+    // rend. L'entrée précédente l'évitait ; c'est ainsi qu'en thème sombre la
+    // fiche est restée illisible (texte sombre sur fond sombre) sans qu'axe le
+    // voie : CopilotKit n'active son thème sombre que sous une classe `.dark`,
+    // et l'app pose `data-theme`.
+    nom: 'copilote, conversation avec une fiche de conversion (spécification 007)',
+    aller: async page => {
+      await page.goto('/reglages');
+      await page
+        .getByRole('switch', { name: 'Copilote (démonstration)' })
+        .click();
+      await page.getByRole('link', { name: 'Convertir' }).click();
+      await page.getByRole('button', { name: 'Copilote' }).click();
+      const panneau = page.getByRole('complementary', { name: 'Copilote' });
+      await panneau.getByRole('textbox').fill('1200 JPY');
+      await panneau.getByRole('button', { name: 'Envoyer' }).click();
+      await expect(
+        panneau.getByText('Calculé par l’application')
+      ).toBeVisible();
+    },
+  },
+  {
     nom: 'historique, courbe chargée',
     aller: async page => {
       await saisir200(page);

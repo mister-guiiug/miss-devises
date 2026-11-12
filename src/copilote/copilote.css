@@ -142,6 +142,9 @@
   border: 1px solid var(--dwc-border);
   border-radius: 0.75rem;
   background: var(--dwc-surface);
+  /* Le fond est celui de l'app : le texte aussi. Hérité de la conversation de
+     CopilotKit, il suivait SON thème, pas celui du fond posé ici. */
+  color: var(--dwc-text);
   font-size: 0.9rem;
 }
 .copilote-fiche[data-etat='attente'] {
