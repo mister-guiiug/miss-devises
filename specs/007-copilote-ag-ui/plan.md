@@ -30,9 +30,11 @@ navigateur                                                     Anthropic
 
 ## Contexte technique
 
-- **Client** : `@copilotkit/react-core` 1.85 (API v2), `@ag-ui/client` et
-  `@ag-ui/core` 1.0.2, épinglés sur la version que CopilotKit épingle (une
-  seule copie, un seul type `AbstractAgent`).
+- **Client** : `@copilotkit/react-core` 2.0 (version candidate `rc.45`
+  depuis le 13/11/2026 ; 1.85 et son API `v2` avant), `@ag-ui/client` et
+  `@ag-ui/core` 1.0.4, épinglés sur la version que CopilotKit tire (une seule
+  copie, un seul type `AbstractAgent`). La feuille de style vient de
+  `@copilotkit/core/styles.css`, importée en fichier (`injectStyles={false}`).
 - **Modèle** : `@anthropic-ai/sdk` 1.6, `claude-opus-5-5` par défaut,
   Sonnet 5.5 et Haiku 5.5 au choix du visiteur.
 - **Dépendances d'exécution** : elles partent dans le site publié, donc
@@ -112,10 +114,16 @@ d'empreinté hors du précache, rien d'importé au démarrage hors du précache.
 
 **R12. Le zod de chaque paquet.** Au build, le socle renvoie tout
 `import 'zod'` vers le zod de l'application (sans compilation, pour la CSP).
-CopilotKit, le client AG-UI et A2UI portent zod 3 et recevaient zod 4 : le
-copilote plantait au chargement, en production seulement. Un greffon rend à
-chaque paquet sa copie (`zodDeChaquePaquet`). La correction appartient au
-socle.
+CopilotKit 1.x, le client AG-UI et A2UI portaient zod 3 et recevaient zod 4 :
+le copilote plantait au chargement, en production seulement. Un greffon
+rendait à chaque paquet sa copie (`zodDeChaquePaquet`), jusqu'à ce que le
+socle fasse ce tri lui-même (6.33.0).
+
+**Retiré le 13/11/2026 avec CopilotKit 2.0**, qui exige zod 4 et ne tire plus
+A2UI : il ne reste qu'un zod, celui de l'application. C'est aussi ce qui ferme
+l'avis GHSA-mrhx-c7xc-m3w5 (zod 3, « high », sans correctif 3.x), pour lequel
+le seuil d'audit de la CI avait été abaissé à « critical » le 07/11 ; il est
+revenu au défaut du socle, « high ».
 
 ## Contrôle de la constitution
 

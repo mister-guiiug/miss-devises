@@ -1,6 +1,3 @@
-import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
 import { defineConfig, type PluginOption } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react';
@@ -147,52 +144,6 @@ function graphesDuCopilote(): PluginOption {
   };
 }
 
-/**
- * LE ZOD DE CHAQUE PAQUET (spécification 007). Au build, `cspPlugin` du socle
- * renvoie tout `import … from 'zod'` vers le zod de l'APPLICATION, configuré
- * sans compilation pour la CSP (`\0dwc-zod-jitless`). Juste pour le code de
- * l'application ; faux pour un paquet qui porte SA copie de zod. CopilotKit,
- * le client AG-UI et A2UI embarquent zod 3 : ils recevaient zod 4, où
- * `z.ZodType.prototype.describe` n'existe plus, et le copilote plantait au
- * chargement (« reading 'call' »), en production seulement.
- *
- * On rend à chacun la copie que Node lui donnerait. Le code de l'application,
- * et tout paquet qui partage son zod, garde le zod sans compilation. À
- * remonter au socle : c'est `cspPlugin` qui doit faire cette distinction.
- */
-const ZOD_SANS_COMPILATION = '\0dwc-zod-jitless';
-
-function zodDeChaquePaquet(): PluginOption {
-  let zodDeLApplication = '';
-  return {
-    name: 'miss-devises:zod-de-chaque-paquet',
-    apply: 'build',
-    enforce: 'pre',
-    configResolved(config) {
-      const exige = createRequire(join(config.root, 'package.json'));
-      zodDeLApplication = dirname(exige.resolve('zod/package.json'));
-    },
-    resolveId(source, importer) {
-      if (source !== ZOD_SANS_COMPILATION || !importer) return null;
-      let manifeste: string;
-      try {
-        manifeste = createRequire(importer.replace(/\?.*$/, '')).resolve(
-          'zod/package.json'
-        );
-      } catch {
-        return null;
-      }
-      if (dirname(manifeste) === zodDeLApplication) return null;
-      const paquet = JSON.parse(readFileSync(manifeste, 'utf8')) as {
-        exports?: { '.'?: { import?: string } };
-        module?: string;
-      };
-      const entree = paquet.exports?.['.']?.import ?? paquet.module;
-      return entree ? join(dirname(manifeste), entree) : null;
-    },
-  };
-}
-
 export default defineConfig(({ command }) => {
   // `VITE_BASE_PATH` est prioritaire : le déploiement famille le pose, et la
   // CI Lighthouse le met à `/` pour servir le build à la racine. Sans cette
@@ -231,7 +182,6 @@ export default defineConfig(({ command }) => {
       react(),
       tailwindcss(),
       graphesDuCopilote(),
-      zodDeChaquePaquet(),
 
       // AVANT `cspPlugin` : il pose un script inline dans le `<head>`, que la
       // CSP doit hacher après coup.

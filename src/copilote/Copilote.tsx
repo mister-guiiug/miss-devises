@@ -11,7 +11,12 @@
  * ne quitte pas la page, et seule l'API d'Anthropic est appelée, avec la clé
  * du visiteur.
  */
-import '@copilotkit/react-core/v2/styles.css';
+// LA FEUILLE DE COPILOTKIT EN FICHIER, PAS EN BALISE. Depuis la 2.0, le
+// fournisseur injecte sa CSS dans un `<style>` ; `injectStyles={false}`
+// l'en empêche, et la feuille importée ici part avec les morceaux du copilote
+// (`assets/copilote/`, hors précache), comme avant. La 1.x la rangeait sous
+// `@copilotkit/react-core/v2/styles.css`.
+import '@copilotkit/core/styles.css';
 import './copilote.css';
 import {
   Component,
@@ -30,7 +35,7 @@ import {
   CopilotKit,
   useAgent,
   UseAgentUpdate,
-} from '@copilotkit/react-core/v2';
+} from '@copilotkit/react-core';
 import { AGENT, Branchements } from './Branchements.tsx';
 import { ListeDepenses } from './ListeDepenses.tsx';
 import { Inspecteur } from './Inspecteur.tsx';
@@ -96,6 +101,7 @@ function CopiloteBranche() {
     <CopilotKit
       agents__unsafe_dev_only={{ [AGENT]: agent }}
       agentId={AGENT}
+      injectStyles={false}
       enableInspector={false}
       showIntelligenceIndicator={false}
     >

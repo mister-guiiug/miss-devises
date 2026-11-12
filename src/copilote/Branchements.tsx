@@ -11,7 +11,7 @@ import {
   useFrontendTool,
   useRenderTool,
   UseAgentUpdate,
-} from '@copilotkit/react-core/v2';
+} from '@copilotkit/react-core';
 import { usePreferences } from '../app/preferences.ts';
 import { deriver, useConversion } from '../features/convert/conversion.ts';
 import { tauxDuJour } from '../rates/service.ts';
