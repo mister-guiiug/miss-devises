@@ -25,8 +25,8 @@ pour les 41 devises illustrées (`src/data/langues.ts`).
 | ko     | non merci        | gwaenchansseumnida              | gwaenchanseumnida                        | romanisation révisée                                                     |
 | ko     | casser un billet | 이 지폐 좀 바꿔 주실 수 있어요? | 이 지폐 잔돈으로 좀 바꿔 주실 수 있어요? | « changer » seul se lit comme un change de devises                       |
 | hi     | une erreur       | kuch                            | kuchh                                    | transcription cohérente avec « chhutte »                                 |
-| hi     | casser un billet | यह नोट तोड़ सकते हैं            | इस नोट के छुट्टे दे सकते हैं             | la tournure courante                                                     |
-| th     | casser un billet | แลกแบงก์นี้ได้ไหม               | แตกแบงก์นี้ได้ไหม                        | แลก se lit comme un change ; แตกแบงก์ est « casser un billet »           |
+| hi     | casser un billet | यह नोट तोड़ सकते हैं                | इस नोट के छुट्टे दे सकते हैं                     | la tournure courante                                                     |
+| th     | casser un billet | แลกแบงก์นี้ได้ไหม                   | แตกแบงก์นี้ได้ไหม                            | แลก se lit comme un change ; แตกแบงก์ est « casser un billet »            |
 | vi     | casser un billet | Đổi giúp tôi tờ tiền này…       | Đổi giúp tôi tờ này ra tiền lẻ…          | « đổi tiền » seul veut dire changer des devises                          |
 | vi     | dernier prix     | Giá cuối                        | Giá chót                                 | le mot du marchandage                                                    |
 | id     | casser un billet | Bisa pecah uang ini?            | Bisa tukar uang ini dengan uang kecil?   | « pecah » ne se construit pas ainsi                                      |
