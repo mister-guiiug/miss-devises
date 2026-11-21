@@ -1,4 +1,16 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>mister-guiiug/dev-pwa-config//renovate/default.json"]
+  "extends": ["github>mister-guiiug/dev-pwa-config//renovate/default.json"],
+  "packageRules": [
+    {
+      "description": "Le copilote : CopilotKit et AG-UI montent ensemble, dans leur propre PR. @copilotkit/core tire @ag-ui/client à une version exacte : monter AG-UI seul dans le lot mineur installe deux AG-UI (21/11/2026, lot #70).",
+      "matchPackageNames": ["/^@copilotkit[/]/", "/^@ag-ui[/]/"],
+      "groupName": "copilote (CopilotKit + AG-UI)"
+    },
+    {
+      "description": "rxjs suit l'épingle exacte de @ag-ui/client (7.8.1 en 1.0.5) : une autre version installe deux rxjs, et les Observable de l'agent du navigateur ne sont plus ceux d'AG-UI (TS2322 au typecheck, lot #70 du 21/11/2026). Il se monte à la main, avec AG-UI.",
+      "matchPackageNames": ["rxjs"],
+      "enabled": false
+    }
+  ]
 }
