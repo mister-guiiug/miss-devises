@@ -65,11 +65,11 @@
     "vitest": "^5.1.1"
   },
   "dependencies": {
-    "@ag-ui/client": "1.0.4",
-    "@ag-ui/core": "1.0.4",
+    "@ag-ui/client": "1.0.5",
+    "@ag-ui/core": "1.0.5",
     "@anthropic-ai/sdk": "^1.12.0",
-    "@copilotkit/core": "2.0.0-rc.45",
-    "@copilotkit/react-core": "2.0.0-rc.45",
+    "@copilotkit/core": "2.0.0-rc.68",
+    "@copilotkit/react-core": "2.0.0-rc.68",
     "@tanstack/react-query": "^5.108.2",
     "country-flag-icons": "^1.6.20",
     "lucide-react": "^1.77.0",

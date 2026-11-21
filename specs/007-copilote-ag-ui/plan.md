@@ -30,10 +30,10 @@ navigateur                                                     Anthropic
 
 ## Contexte technique
 
-- **Client** : `@copilotkit/react-core` 2.0 (version candidate `rc.45`
-  depuis le 13/11/2026 ; 1.85 et son API `v2` avant), `@ag-ui/client` et
-  `@ag-ui/core` 1.0.4, épinglés sur la version que CopilotKit tire (une seule
-  copie, un seul type `AbstractAgent`). La feuille de style vient de
+- **Client** : `@copilotkit/react-core` 2.0 (version candidate `rc.68`
+  depuis le 21/11/2026, `rc.45` du 13/11/2026 ; 1.85 et son API `v2` avant),
+  `@ag-ui/client` et `@ag-ui/core` 1.0.5, épinglés sur la version que
+  CopilotKit tire (une seule copie, un seul type `AbstractAgent`). La feuille de style vient de
   `@copilotkit/core/styles.css`, importée en fichier (`injectStyles={false}`).
 - **Modèle** : `@anthropic-ai/sdk` 1.6, `claude-opus-5-5` par défaut,
   Sonnet 5.5 et Haiku 5.5 au choix du visiteur.
