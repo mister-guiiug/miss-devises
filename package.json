@@ -69,7 +69,7 @@
     "@ag-ui/core": "1.0.4",
     "@anthropic-ai/sdk": "^1.6.0",
     "@copilotkit/core": "2.0.0-rc.45",
-    "@copilotkit/react-core": "2.0.0-rc.45",
+    "@copilotkit/react-core": "2.0.0-rc.68",
     "@tanstack/react-query": "^5.105.3",
     "country-flag-icons": "^1.6.20",
     "lucide-react": "^1.68.0",
